@@ -263,14 +263,7 @@ const PaypalOpening = () => {
           width: 1200,
           height: 400,
         }}
-        layout="default"
-        theme={{
-          headingColor: "text-yellow-50",
-          subheadingColor: "text-gray-700",
-          descriptionColor: "text-slate-50",
-          backgroundColor: "bg-blue-500",
-          bgSubHeadingColor: "bg-blue-50",
-        }}
+        
       />
       <StepsSection
         heading="مزایای افتتاح حساب پی پال"
