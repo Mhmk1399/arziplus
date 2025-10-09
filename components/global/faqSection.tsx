@@ -2,8 +2,7 @@
 import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import Link from "next/link";
-import { estedadBold } from "@/next-persian-fonts/estedad";
+ import { estedadBold } from "@/next-persian-fonts/estedad";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);

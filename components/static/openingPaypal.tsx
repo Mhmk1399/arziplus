@@ -20,10 +20,6 @@ import {
   FaPeopleArrows,
   FaShoppingCart,
   FaUniversity,
-  FaBook,
-  FaMoneyBillWave,
-  FaRegClipboard,
-  FaUserAlt,
   FaPhone,
   FaEnvelope,
   FaRocket,
@@ -137,8 +133,6 @@ const PaypalOpening = () => {
         "پرداخت و خرید اشتراک سرویس‌هایی مثل Netflix، Adobe، ChatGPT، MQL5 و بسیاری از پلتفرم‌های آنلاین با پی‌پال.",
     },
   ];
-
-
 
   const faqData = [
     {
@@ -263,7 +257,6 @@ const PaypalOpening = () => {
           width: 1200,
           height: 400,
         }}
-        
       />
       <StepsSection
         heading="مزایای افتتاح حساب پی پال"
