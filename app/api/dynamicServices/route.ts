@@ -114,7 +114,7 @@ export async function POST(request: NextRequest) {
     await connect();
     const body = await request.json();
 
-    console.log("POST Request Body:", JSON.stringify(body, null, 2));
+
 
     // Transform fields to ensure options are properly saved
     if (body.fields) {
@@ -130,7 +130,7 @@ export async function POST(request: NextRequest) {
       });
     }
 
-    console.log("Transformed Body:", JSON.stringify(body, null, 2));
+
 
     const services = new DynamicService(body);
     await services.save();
@@ -171,8 +171,7 @@ export async function PUT(request: NextRequest) {
     const body = await request.json();
     const { id, ...updateData } = body;
 
-    console.log("PUT Request - ID:", id);
-    console.log("PUT Request - Update Data:", JSON.stringify(updateData, null, 2));
+
 
     // Transform fields to ensure options are properly saved
     if (updateData.fields) {
@@ -188,7 +187,7 @@ export async function PUT(request: NextRequest) {
       });
     }
 
-    console.log("PUT Transformed Data:", JSON.stringify(updateData, null, 2));
+
 
     if (!id) {
       return NextResponse.json(
@@ -210,7 +209,7 @@ export async function PUT(request: NextRequest) {
       { new: true, runValidators: true }
     );
 
-    console.log("Updated service:", updatedservice ? "Success" : "Not found");
+
 
     if (!updatedservice) {
       return NextResponse.json(
@@ -246,8 +245,7 @@ export async function PATCH(request: NextRequest) {
     const body = await request.json();
     const { id, ...updateData } = body;
 
-    console.log("PATCH Request - ID:", id);
-    console.log("PATCH Request - Update Data:", JSON.stringify(updateData, null, 2));
+
 
     if (!id) {
       return NextResponse.json(

@@ -138,7 +138,7 @@ const ServiceBuilder: React.FC<ServiceBuilderProps> = ({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    console.log("Form data being submitted:", JSON.stringify(formData, null, 2));
+
 
     // Basic validation
     if (!formData.title.trim()) {
