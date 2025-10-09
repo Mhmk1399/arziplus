@@ -44,8 +44,8 @@ import {
   FaGavel,
 } from "react-icons/fa";
 import { MdVerifiedUser, MdChatBubble } from "react-icons/md";
-import { IconType } from "react-icons";
 import { MenuItems } from "@/types/menu";
+import { IconType } from "react-icons/lib";
 
 // Icon component helper
 export const IconComponent = ({
