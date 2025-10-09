@@ -23,7 +23,6 @@ const DynamicServiceSchema = new mongoose.Schema({
   fee: { type: Number, required: true },
   wallet: { type: Boolean, required: true },
   description: { type: String },
-  icon: { type: String },
   status: { type: String, default: "active" },
   image: { type: String },
   fields: [FieldDefinitionSchema],

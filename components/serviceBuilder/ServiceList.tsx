@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { DynamicService } from '@/types/serviceBuilder/types';
 import ServiceRenderer from './ServiceRenderer';
+import { showToast } from '@/utilities/toast';
 
 interface ServiceListProps {
   onServiceSelect?: (service: DynamicService) => void;
@@ -104,12 +105,12 @@ const ServiceList: React.FC<ServiceListProps> = ({
           onSubmit={(data) => {
             console.log('Service request submitted:', data);
             // Handle the submission (e.g., show success message, redirect, etc.)
-            alert('درخواست با موفقیت ثبت شد');
+            showToast.service.requestSubmitted(selectedService.title);
             handleBackToList();
           }}
           onError={(error) => {
             console.error('Service request error:', error);
-            alert('خطا در ثبت درخواست');
+            showToast.error('خطا در ثبت درخواست');
           }}
         />
       </div>
