@@ -1,83 +1,52 @@
-// Utility functions for S3 file URL management
+// Utility functions for CloudFront file URL management
 
-export interface S3FileInfo {
+export interface CloudFrontFileInfo {
   key: string;
   url: string;
   originalName?: string;
   size?: number;
   type?: string;
   uploadedAt?: string;
-  urlExpiry?: string;
 }
 
 /**
- * Get a fresh pre-signed URL for an S3 file key
+ * Generate CloudFront URL from S3 key (no expiration - permanent URLs)
  * @param key - The S3 file key
- * @param expiresIn - Expiration time in seconds (default: 7 days)
- * @returns Promise with the signed URL response
+ * @returns CloudFront URL
  */
-export async function getSignedFileUrl(key: string, expiresIn: number = 604800): Promise<S3FileInfo | null> {
-  try {
-    const response = await fetch(`/api/upload/get-url?key=${encodeURIComponent(key)}&expires=${expiresIn}`);
-    const result = await response.json();
-    
-    if (result.success) {
-      return {
-        key,
-        url: result.data.url,
-        urlExpiry: result.data.expiresAt
-      };
-    }
-    
-    console.error('Failed to get signed URL:', result.error);
-    return null;
-  } catch (error) {
-    console.error('Error getting signed URL:', error);
-    return null;
+export function getCloudFrontUrl(key: string): string {
+  const cloudFrontDomain = process.env.NEXT_PUBLIC_CLOUDFRONT_DOMAIN || process.env.AWS_CLOUDFRONT_DOMAIN;
+  
+  if (!cloudFrontDomain) {
+    console.error('CloudFront domain not configured');
+    return '';
   }
+  
+  return `https://${cloudFrontDomain}/${key}`;
 }
 
 /**
- * Get fresh pre-signed URLs for multiple S3 file keys
+ * Generate CloudFront URLs from multiple S3 keys
  * @param keys - Array of S3 file keys
- * @param expiresIn - Expiration time in seconds (default: 7 days)
- * @returns Promise with array of signed URL responses
+ * @returns Array of CloudFront URLs
  */
-export async function getSignedFileUrls(keys: string[], expiresIn: number = 604800): Promise<S3FileInfo[]> {
-  try {
-    const response = await fetch('/api/upload/get-url', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ keys, expiresIn }),
-    });
-    
-    const result = await response.json();
-    
-    if (result.success) {
-      return result.data.map((item: any) => ({
-        key: item.key,
-        url: item.url,
-        urlExpiry: result.expiresAt,
-        success: item.success
-      }));
-    }
-    
-    console.error('Failed to get signed URLs:', result.error);
-    return [];
-  } catch (error) {
-    console.error('Error getting signed URLs:', error);
-    return [];
-  }
+export function getCloudFrontUrls(keys: string[]): string[] {
+  return keys.map(key => getCloudFrontUrl(key));
 }
 
 /**
- * Check if a URL is expired based on its expiry date
- * @param urlExpiry - ISO date string of when the URL expires
- * @returns boolean indicating if the URL is expired
+ * Extract S3 key from CloudFront URL
+ * @param url - CloudFront URL
+ * @returns S3 key
  */
-export function isUrlExpired(urlExpiry?: string): boolean {
-  if (!urlExpiry) return false;
-  return new Date(urlExpiry) < new Date();
+export function extractKeyFromUrl(url: string): string {
+  const cloudFrontDomain = process.env.NEXT_PUBLIC_CLOUDFRONT_DOMAIN || process.env.AWS_CLOUDFRONT_DOMAIN;
+  
+  if (!cloudFrontDomain || !url.includes(cloudFrontDomain)) {
+    return '';
+  }
+  
+  return url.split(`${cloudFrontDomain}/`)[1] || '';
 }
 
 /**
@@ -85,7 +54,7 @@ export function isUrlExpired(urlExpiry?: string): boolean {
  * @param file - File object to upload
  * @returns Promise with upload response
  */
-export async function uploadFile(file: File): Promise<S3FileInfo | null> {
+export async function uploadFile(file: File): Promise<CloudFrontFileInfo | null> {
   try {
     const formData = new FormData();
     formData.append('file', file);

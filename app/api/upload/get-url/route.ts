@@ -7,7 +7,7 @@ export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
     const key = searchParams.get('key');
-    const expiresIn = searchParams.get('expires') || '31536000'; // Default 1 year
+    const expiresIn = searchParams.get('expires') || '604800'; // Default 7 days (max allowed)
 
     if (!key) {
       return NextResponse.json(
@@ -30,8 +30,12 @@ export async function GET(req: NextRequest) {
       ResponseContentDisposition: 'inline',
     });
 
+    // Ensure expiresIn doesn't exceed AWS limit of 7 days
+    const maxExpiry = 7 * 24 * 60 * 60; // 7 days in seconds
+    const validExpiresIn = Math.min(parseInt(expiresIn), maxExpiry);
+    
     const signedUrl = await getSignedUrl(s3, getObjectCommand, { 
-      expiresIn: parseInt(expiresIn)
+      expiresIn: validExpiresIn
     });
 
     return NextResponse.json({
@@ -39,8 +43,8 @@ export async function GET(req: NextRequest) {
       data: {
         key,
         url: signedUrl,
-        expiresIn: parseInt(expiresIn),
-        expiresAt: new Date(Date.now() + parseInt(expiresIn) * 1000).toISOString()
+        expiresIn: validExpiresIn,
+        expiresAt: new Date(Date.now() + validExpiresIn * 1000).toISOString()
       }
     });
 

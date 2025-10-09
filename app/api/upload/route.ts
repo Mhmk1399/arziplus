@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { PutObjectCommand, GetObjectCommand } from "@aws-sdk/client-s3";
-import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
+import { PutObjectCommand } from "@aws-sdk/client-s3";
 import { s3 } from "@/lib/s3";
 
 // Allowed file types and size limits
@@ -72,7 +71,7 @@ export async function POST(req: NextRequest) {
     // Convert file to buffer
     const buffer = Buffer.from(await file.arrayBuffer());
 
-    // Upload to S3
+    // Upload to S3 (CloudFront will serve the files)
     const uploadCommand = new PutObjectCommand({
       Bucket: process.env.AWS_S3_BUCKET,
       Key: key,
@@ -87,21 +86,18 @@ export async function POST(req: NextRequest) {
 
     const uploadResult = await s3.send(uploadCommand);
 
-    // Generate a pre-signed URL for file access
-    const getObjectCommand = new GetObjectCommand({
-      Bucket: process.env.AWS_S3_BUCKET,
-      Key: key,
-    });
-
-    const signedUrl = await getSignedUrl(s3, getObjectCommand, { 
-      expiresIn: 365 * 24 * 60 * 60 // 1 year
-    });
+    // Generate CloudFront URL (permanent, no expiration)
+    if (!process.env.AWS_CLOUDFRONT_DOMAIN) {
+      throw new Error('AWS_CLOUDFRONT_DOMAIN environment variable is required');
+    }
+    
+    const publicUrl = `https://${process.env.AWS_CLOUDFRONT_DOMAIN}/${key}`;
 
     return NextResponse.json({
       success: true,
       data: {
         key,
-        url: signedUrl,
+        url: publicUrl,
         originalName: file.name,
         size: file.size,
         type: file.type,
@@ -111,6 +107,8 @@ export async function POST(req: NextRequest) {
     });
 
   } catch (error) {
+    console.error("Upload error:", error);
+    
     // Handle specific AWS errors
     if (error instanceof Error) {
       if (error.name === 'NoSuchBucket') {
@@ -126,6 +124,19 @@ export async function POST(req: NextRequest) {
           { status: 500 }
         );
       }
+      
+      if (error.name === 'CredentialsError' || error.name === 'InvalidAccessKeyId') {
+        return NextResponse.json(
+          { success: false, error: "Invalid AWS credentials" },
+          { status: 500 }
+        );
+      }
+      
+      // Return the actual error message for debugging
+      return NextResponse.json(
+        { success: false, error: `Upload failed: ${error.message}` },
+        { status: 500 }
+      );
     }
 
     return NextResponse.json(
@@ -138,7 +149,7 @@ export async function POST(req: NextRequest) {
 // GET endpoint to check upload service status
 export async function GET() {
   try {
-    const requiredVars = ['AWS_S3_BUCKET', 'AWS_REGION', 'AWS_ACCESS_KEY_ID', 'AWS_SECRET_ACCESS_KEY'];
+    const requiredVars = ['AWS_S3_BUCKET', 'AWS_REGION', 'AWS_ACCESS_KEY_ID', 'AWS_SECRET_ACCESS_KEY', 'AWS_CLOUDFRONT_DOMAIN'];
     const missingVars = requiredVars.filter(varName => !process.env[varName]);
 
     if (missingVars.length > 0) {
@@ -155,6 +166,7 @@ export async function GET() {
       config: {
         bucket: process.env.AWS_S3_BUCKET,
         region: process.env.AWS_REGION,
+        cloudfront: process.env.AWS_CLOUDFRONT_DOMAIN,
         allowedTypes: ALLOWED_TYPES,
         maxFileSize: `${MAX_FILE_SIZE / (1024 * 1024)}MB`
       }
