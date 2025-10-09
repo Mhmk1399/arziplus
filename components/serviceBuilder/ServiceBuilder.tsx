@@ -138,6 +138,8 @@ const ServiceBuilder: React.FC<ServiceBuilderProps> = ({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    console.log("Form data being submitted:", JSON.stringify(formData, null, 2));
+
     // Basic validation
     if (!formData.title.trim()) {
       showToast.error("عنوان سرویس الزامی است");
@@ -415,6 +417,7 @@ const ServiceBuilder: React.FC<ServiceBuilderProps> = ({
                     <FieldBuilder
                       key={index}
                       field={field}
+                      allFields={formData.fields}
                       onUpdate={(updatedField) =>
                         updateField(index, updatedField)
                       }

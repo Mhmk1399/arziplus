@@ -168,17 +168,17 @@ const ServiceRenderer: React.FC<ServiceRendererProps> = ({
         
         <div className="flex items-center justify-center gap-3 mb-2">
           {service.icon && <span className="text-3xl">{service.icon}</span>}
-          <h2 className="text-2xl font-bold text-white">{service.title}</h2>
+          <h2 className="text-2xl font-bold text-[#0A1D37]">{service.title}</h2>
         </div>
         
         {service.description && (
-          <p className="text-white/70 mb-4">{service.description}</p>
+          <p className="text-[#0A1D37]/70 mb-4">{service.description}</p>
         )}
         
         <div className="flex items-center justify-center gap-4 text-sm">
           <div className="bg-white/10 px-3 py-1 rounded-full border border-white/20">
-            <span className="text-white/90">هزینه: </span>
-            <span className="font-medium text-white">
+            <span className="text-[#0A1D37]/90">هزینه: </span>
+            <span className="font-medium text-[#0A1D37]">
               {service.fee.toLocaleString('fa-IR')} تومان
             </span>
           </div>
