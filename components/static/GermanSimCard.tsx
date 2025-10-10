@@ -1,0 +1,305 @@
+import HeroSection from "../global/heroSection";
+import { FaExplosion } from "react-icons/fa6";
+import StepsSection from "../global/stepsSection";
+import {
+  ctaThemes,
+  faqThemes,
+  splitSectionThemes,
+  stepThemes,
+  textBoxThemes,
+  textBoxTypography,
+  themesWhyus,
+} from "@/lib/theme";
+import {
+  FaClock,
+  FaHeadset,
+  FaDollarSign,
+  FaMoneyBillWave,
+  FaRegClipboard,
+  FaEnvelope,
+  FaRocket,
+  FaShieldAlt,
+  FaGlobe,
+  FaPhone,
+  FaMapMarkerAlt,
+} from "react-icons/fa";
+import WhyUsSection from "../global/whyUs";
+import FAQSection from "../global/faqSection";
+import CTABanner from "../global/ctaBanner";
+import TextBox from "../global/textBox";
+import { FaMedal, FaLock } from "react-icons/fa";
+import HeroSplitSection from "../global/heroSplitSection";
+
+const GermanSimCard = () => {
+  const longText = `با خرید سیم‌کارت فیزیکی آلمان از ارزی پلاس، یک خط بین‌المللی با پیش‌شماره معتبر آلمان (+49) دریافت می‌کنید. این سیمکارت امکان ارسال و دریافت پیامک بین‌المللی، ثبت‌نام در سایت‌ها و اپلیکیشن‌هایی که ایران را تحریم کرده‌اند، و همچنین استفاده از سرویس‌های احراز هویت جهانی را برایتان فراهم می‌سازد. این سیم‌کارت‌ها بدون نیاز به اقامت یا مدارک آلمانی، قابل استفاده در ایران و خارج از کشور هستند و پس از فعال‌سازی، از طریق یکی از اپراتورهای معتبر ایرانی، سرویس‌دهی می‌شوند. در سال 2025، با گسترش 5G و eSIMها، سیمکارت‌های prepaid از Telekom, Vodafone و O2 همچنان گزینه‌های برتر برای verification بین‌المللی هستند با پلن‌هایی مانند Telekom Prepaid 5G (10GB + unlimited calls برای 10€/month) یا Vodafone CallYa (20GB + EU roaming) ارزی پلاس با صدور فیزیکی و ارسال به ایران، فرآیند را ایمن نگه می‌دارد، و با recharge هر 5 ماه، از غیرفعال شدن جلوگیری می‌کند.`;
+
+  const simSteps = [
+    {
+      id: "register",
+      title: "ثبت نام در ارزی پلاس",
+      description:
+        "حساب کاربری خود را در سایت ارزی پلاس ایجاد کنید و جزئیات سفارشی را برای سیمکارت وارد نمایید.",
+      icon: <FaRegClipboard />,
+      isActive: true,
+    },
+    {
+      id: "request",
+      title: "ثبت درخواست",
+      description:
+        "درخواست خود را از طریق فرم ثبت سفارش ارسال کنید، با انتخاب پلن prepaid مناسب.",
+      icon: <FaDollarSign />,
+    },
+    {
+      id: "payment",
+      title: "پرداخت هزینه",
+      description:
+        "هزینه سفارش را از طریق شماره حساب سایت پرداخت نمایید، با گزینه‌های امن.",
+      icon: <FaMoneyBillWave />,
+      isActive: true,
+    },
+    {
+      id: "delivery",
+      title: "تحویل و فعال‌سازی",
+      description:
+        "سیم‌کارت بلافاصله فعال و در کمتر از یک هفته به آدرس شما در ایران تحویل داده می‌شود.",
+      icon: <FaRocket />,
+    },
+  ];
+
+  const simWhyUs = [
+    {
+      id: 1,
+      icon: <FaClock size={32} />,
+      iconColor: "bg-emerald-700",
+      title: "فعال سازی سریع",
+      description:
+        "سیم‌کارت بلافاصله قبل از ارسال به صورت کامل فعال می‌شود و نیازی به مراحل پیچیده یا مدارک خاص ندارد. آماده استفاده برای پیامک، تماس و ثبت‌نام در سایت‌های بین‌المللی می‌باشد، با پلن‌های prepaid مانند O2 Prepaid 5G (5€/month, 3GB)",
+    },
+    {
+      id: 2,
+      icon: <FaMapMarkerAlt size={32} />,
+      iconColor: "bg-emerald-700",
+      title: "تحویل سریع در ایران",
+      description:
+        "سیم‌کارت به صورت فیزیکی مستقیماً درب منزل شما در ایران تحویل داده می‌شود. جهت فعال سازی نیازی به مراجعه حضور و یا سفر خارج از کشور نمی‌باشد، با پوشش roaming در 220+ کشور",
+    },
+    {
+      id: 3,
+      icon: <FaPhone size={32} />,
+      iconColor: "bg-emerald-700",
+      title: "دریافت و ارسال پیامک و تماس",
+      description:
+        "سیمکارت‌های فیزیکی آلمان از اپراتور‌های معتبر ایرانی سرویس دریافت می‌کنند، امکان ارسال و دریافت پیامک و تماس با شماره‌های داخلی و بین‌المللی را خواهید داشت، با unlimited calls در EU از Vodafone",
+    },
+    {
+      id: 4,
+      icon: <FaGlobe size={32} />,
+      iconColor: "bg-emerald-700",
+      title: "جهت احراز هویت در سایت‌های بین‌المللی",
+      description:
+        "سیم‌کارت دارای پیش‌شماره معتبر آلمان بوده و در بیشتر پلتفرم‌ها و سایت‌هایی که ایران را تحریم کرده‌اند، برای احراز هویت و ثبت‌نام قابل استفاده است، ایده‌آل برای Upwork و banking verification",
+    },
+    {
+      id: 5,
+      icon: <FaShieldAlt size={32} />,
+      iconColor: "bg-emerald-700",
+      title: "توجه! شارژ منظم",
+      description:
+        "سیم‌کارت‌های آلمان از نوع اعتباری بوده و هر 5 ماه باید شارژ شوند- در غیر اینصورت غیرفعال شده و  قابل بازیابی نمی‌باشند، مشابه prepaid validity در Telekom (recharge هر 90 days)",
+    },
+  ];
+
+  const simFaq = [
+    {
+      id: "1",
+      question: "آیا سیم‌کارت‌ها واقعی هستند؟",
+      answer:
+        "بله، سیم‌کارت‌ها به صورت فیزیکی هستند و به نام متقاضی فعال و به آدرس شما در ایران ارسال میشوند. از اپراتورهای معتبر مانند Telekom یا Vodafone، با physical SIM برای roaming international",
+      category: "واقعی بودن",
+    },
+    {
+      id: "2",
+      question: "تفاوت سیم‌کارت‌های مجازی و فیزیکی چیست؟",
+      answer:
+        "سیم‌کارت‌های مجازی وجود خارجی نداشته و صرفا شماره می‌باشد که امکان تماس ندارند، همچنین احتمال از دست دادن شماره سیم‌کارت هم وجود دارد. سیم‌کارت‌های فیزیکی با مشخصات متقاضی فعال و با شماره ثابت در اختیار وی قرار می‌گیرد. فیزیکی: تماس/SMS واقعی، مجازی: فقط SMS موقت، با eSIM گزینه جایگزین در 2025",
+      category: "تفاوت مجازی/فیزیکی",
+    },
+    {
+      id: "3",
+      question: "آیا این سیم‌کارت‌ها تاریخ انقضا دارند؟",
+      answer:
+        "خیر، این سیم‌کارت‌ها تاریخ انقضا ندارند و فقط لازم است که هر 5 ماه یک بار شارژ شوند تا غیرفعال نشوند. مشابه prepaid plans در O2 (recharge هر 90 days برای validity)",
+      category: "تاریخ انقضا",
+    },
+    {
+      id: "4",
+      question: "سیم‌کارت چه کشورهایی موجود است؟",
+      answer:
+        "در حال حاضر سیم‌کارت  انگلیس، آلمان، استونی و سلکام مالزی موجود می‌باشد. آلمان از Telekom/Vodafone برای verification banking و freelancing ایده‌آل است",
+      category: "کشورهای موجود",
+    },
+    {
+      id: "5",
+      question: "وضعیت آنتن دهی این سیم‌کارت‌ها در ایران چگونه است؟",
+      answer:
+        "کلیه سیم‌کارت‌های مجموعه ارزی پلاس از پوشش مناسبی در کشور برخوردار بوده و قابلیت دریافت پیامک و تماس‌های بین المللی را دارا می‌باشند. از roaming partners ایرانی مانند MCI برای coverage",
+      category: "آنتن‌دهی",
+    },
+    {
+      id: "6",
+      question: "آیا از ایران می‌توان با این سیم‌کارت‌ها تماس گرفت؟",
+      answer:
+        "بله، اما هزینه‌های تماس آن طبق تعرفه رومینگ حساب می‌شود. برای calls به EU/international، rates از 0.09€/min در Vodafone CallYa",
+      category: "تماس از ایران",
+    },
+  ];
+
+  return (
+    <div>
+      <HeroSection
+        heading="سیم‌کارت‌ بین‌المللی آلمان — خرید سیمکارت فیزیکی آلمان در ایران"
+        subheading=" خرید سیمکارت آلمان"
+        description="این سیمکارت امکان ارسال و دریافت پیامک بین‌المللی، ثبت‌نام در سایت‌ها و اپلیکیشن‌هایی که ایران را تحریم کرده‌اند، و همچنین استفاده از سرویس‌های احراز هویت جهانی را برایتان فراهم می‌سازد. این سیم‌کارت‌ها بدون نیاز به اقامت یا مدارک آلمانی، قابل استفاده در ایران و خارج از کشور هستند و پس از فعال‌سازی، از طریق یکی از اپراتورهای معتبر ایرانی، سرویس‌دهی می‌شوند. با خرید سیم‌کارت فیزیکی آلمان از ارزی پلاس، یک خط بین‌المللی با پیش‌شماره معتبر آلمان (+49) دریافت می‌کنید."
+        buttons={[
+          {
+            text: "خرید سیمکارت آلمان",
+            href: "/register",
+            variant: "primary",
+            icon: <FaExplosion />,
+          },
+        ]}
+        media={{
+          type: "image",
+          src: "/assets/images/german-sim.webp",
+          alt: "سیمکارت آلمان با ارزی پلاس",
+          width: 1200,
+          height: 800,
+        }}
+        layout="default"
+        theme={{
+          headingColor: "text-gray-50",
+          subheadingColor: "text-gray-700",
+          descriptionColor: "text-gray-200",
+          backgroundColor: "bg-indigo-700",
+          bgSubHeadingColor: "bg-fuchsia-50",
+        }}
+      />
+
+      <StepsSection
+        heading="ویژگی‌های سیمکارت بین‌المللی آلمان"
+        description="با ارزی پلاس، خرید و فعال‌سازی سیمکارت آلمان ساده و سریع است."
+        steps={simSteps}
+        theme={stepThemes.default}
+        layout="vertical"
+        boxShape="rounded"
+        boxSize="sm"
+        showNumbers={true}
+        animated={true}
+        interactive={false}
+        showIcons={true}
+      />
+
+      <WhyUsSection
+        heading="ویژگی و کاربرد‌های اختصاصی سیم‌کارت‌های بین المللی ارزی پلاس"
+        description="کسانی که می خواهند از خدمات دولتی یا خصوصی یک کشور مانند: ثبت شرکت ایجاد حساب بانکی احراز هویت پیامکی تایید آدرس و …. را بهره ببرند، نیاز به تهیه سیم‌کارت آن کشور را دارند. سیم‌کارت آلمانی با پیش‌شماره بین‌المللی 0049 از جمله سیم‌کارت‌های معتبر اروپا محسوب می‌شود که توسط یکی از اپراتورهای شناخته‌شده ارائه شده و قابلیت استفاده در بیش از ۲۲۰ کشور جهان را دارد. این سیم‌کارت فیزیکی در ایران نیز فعال است و امکان برقراری تماس، دریافت و ارسال پیامک بین‌المللی را به‌صورت کامل در اختیار شما قرار می‌دهد. داشتن یک شماره ثابت بین‌المللی به شما این امکان را می‌دهد تا بدون نیاز به ارائه مدارک اقامتی یا سفر به آلمان، در سرویس‌ها و وبسایت‌های خارجی که ایران را تحریم کرده‌اند ثبت‌نام کرده و به خدمات بین‌المللی دسترسی پیدا کنید. این سیم‌کارت انتخابی بسیار مناسب برای افرادی‌ست که قصد دارند در پلتفرم‌های فریلنسری مانند Upwork، Freelancer، PeoplePerHour و سایر سرویس‌های مالی یا حرفه‌ای بین‌المللی فعالیت داشته باشند. همچنین گیمرها، تریدرها، کاربران حوزه کریپتو، افراد علاقه‌مند به هوش مصنوعی و کسانی که نیاز به تایید هویت در سرویس‌های خارجی دارند می‌توانند با استفاده از این سیم‌کارت بدون در نظر گرفتن محدودیت جغرافیایی فعالیت خود را آغاز کنند."
+        buttonText="خرید سیمکارت"
+        buttonLink="/german-sim"
+        items={simWhyUs}
+        buttonColor="bg-indigo-700 hover:bg-indigo-800 text-white"
+        theme={themesWhyus.default}
+      />
+
+      <TextBox
+        heading="توجه! شارژ منظم"
+        content={longText}
+        height={300}
+        theme={textBoxThemes.default}
+        typography={textBoxTypography.medium}
+        spacing={{
+          padding: "p-8",
+          gap: "space-y-6",
+        }}
+        style={{
+          rounded: true,
+          shadow: true,
+          border: true,
+        }}
+      />
+
+      <HeroSplitSection
+        heading="چرا ارزی پلاس؟"
+        subHeading="سابقه، امنیت و پشتیبانی حرفه‌ای"
+        description="ارزی پلاس با سابقه چندین ساله، تضمین امنیت تراکنش‌ها و نرخ رقابتی، بهترین گزینه برای نقد کردن پی‌پال است."
+        buttons={[
+          {
+            text: "ثبت درخواست نقد کردن",
+            href: "/cashing-paypal",
+            variant: "primary",
+            icon: <FaShieldAlt />,
+          },
+        ]}
+        imageSrc="/assets/images/cash-paypal-2.webp"
+        imageAlt="ارزی پلاس"
+        theme={splitSectionThemes.dark}
+        layout="image-left"
+        imageWidth="1/2"
+        features={[
+          {
+            id: 1,
+            title: "تجربه چندین ساله",
+            description:
+              "ارزی پلاس با سابقه چندین ساله بهترین خدمات نقد کردن پی‌پال را ارائه می‌دهد.",
+            icon: <FaMedal />,
+          },
+          {
+            id: 2,
+            title: "امنیت کامل تراکنش‌ها",
+            description: "اطمینان از امنیت و محرمانگی کامل اطلاعات کاربران.",
+            icon: <FaLock />,
+          },
+          {
+            id: 3,
+            title: "پشتیبانی حرفه‌ای",
+            description:
+              "پشتیبانی ۲۴ ساعته در تمام مراحل نقد کردن موجودی پی‌پال.",
+            icon: <FaHeadset />,
+          },
+        ]}
+      />
+
+      <FAQSection
+        heading="سوالات متداول کاربران"
+        description="پاسخ به متداول‌ترین سوالاتی که در ذهن دارید درباره سیم‌کارت‌های آلمان"
+        faqItems={simFaq}
+        buttons={[
+          {
+            text: "تماس با پشتیبانی",
+            href: "/support",
+            variant: "outline",
+            icon: <FaEnvelope />,
+          },
+        ]}
+        theme={faqThemes.dark}
+        layout="default"
+        showCategories={true}
+        searchable={true}
+        animate={true}
+      />
+
+      <CTABanner
+        heading="خرید سیم‌کارت فیزیکی آلمان در ایران"
+        description="با ارزی پلاس، سیمکارت آلمان را بدون نیاز به اقامت دریافت کنید. ارزی پلاس با سرعت، امنیت و کارمزد کم، فرآیند را مدیریت می‌کند."
+        button={{
+          text: "خرید سیمکارت آلمان",
+          href: "/german-sim",
+          variant: "primary",
+          icon: <FaRocket />,
+        }}
+        theme={ctaThemes.primary}
+        height={50}
+      />
+    </div>
+  );
+};
+
+export default GermanSimCard;

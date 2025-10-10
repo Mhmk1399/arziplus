@@ -101,7 +101,7 @@ export default function SmoothTimeline({
         y: 0,
         scale: 1,
         rotationX: 0,
-        duration: 0.5, // کاهش از 1 به 0.5
+        duration: 0.1, // کاهش از 1 به 0.5
         ease: "power2.out",
         scrollTrigger: {
           trigger: stepEl,
@@ -156,7 +156,7 @@ export default function SmoothTimeline({
         gsap.to(textContent, {
           opacity: 1,
           x: 0,
-          duration: 0.4, // کاهش از 0.8 به 0.4
+          duration: 0.1, // کاهش از 0.8 به 0.4
           ease: "power2.out",
           scrollTrigger: {
             trigger: stepEl,
@@ -329,7 +329,7 @@ export default function SmoothTimeline({
           {/* ایستگاه‌ها */}
           <div
             className={`relative flex flex-col ${
-              compact ? "gap-8 md:gap-16" : "gap-24 md:gap-32"
+              compact ? "gap-8 md:gap-16" : "gap-24 md:gap-12"
             }`}
           >
             {steps?.map((step, i) => (
@@ -388,7 +388,7 @@ export default function SmoothTimeline({
 
                   <h3
                     className={`${
-                      compact ? "text-sm md:text-lg" : "text-lg md:text-2xl"
+                      compact ? "text-sm md:text-lg" : "text-lg md:text-lg"
                     } font-bold ${
                       compact ? "mb-2" : "mb-3"
                     } text-[#0A1D37] relative z-10`}

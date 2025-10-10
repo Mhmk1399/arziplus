@@ -26,6 +26,7 @@ interface StepsSectionProps {
     stepActiveColor?: string;
     stepCompletedColor?: string;
     stepTextColor?: string;
+    stepDescriptionColor?: string;
     stepActiveTextColor?: string;
     stepCompletedTextColor?: string;
     connectionLineColor?: string;
@@ -73,9 +74,9 @@ export default function StepsSection({
   // Responsive step width calculation
   const getStepWidth = () => {
     if (typeof window === "undefined") return 300;
-    if (window.innerWidth < 640) return 280; // mobile
-    if (window.innerWidth < 768) return 320; // tablet
-    return 300; // desktop
+    if (window.innerWidth < 640) return 280;
+    if (window.innerWidth < 768) return 320;
+    return 300;
   };
 
   const [stepWidth, setStepWidth] = useState(300);
@@ -87,7 +88,34 @@ export default function StepsSection({
     return stepIndex >= currentIndex && stepIndex < currentIndex + stepsPerPage;
   };
 
-  const { descriptionColor = "text-[#0A1D37]" } = theme;
+  const {
+    backgroundColor = "bg-gray-50",
+    stepDescriptionColor = "text-gray-400",
+    backgroundGradient,
+    headingColor = "text-gray-900",
+    descriptionColor = "text-gray-600",
+    stepBoxColor = "bg-white",
+    stepActiveColor = "bg-blue-50",
+    stepCompletedColor = "bg-green-50",
+    stepTextColor = "text-gray-700",
+    stepActiveTextColor = "text-blue-700",
+    stepCompletedTextColor = "text-green-700",
+    connectionLineColor = "border-gray-300",
+    numberColor = "bg-gray-200 text-gray-700",
+    numberActiveColor = "bg-blue-500 text-white",
+    numberCompletedColor = "bg-green-500 text-white"
+  } = theme;
+
+  // Helper function to extract hex color and apply as inline style
+  const getBoxStyle = (colorClass: string) => {
+    if (colorClass.includes('bg-[#')) {
+      const hexMatch = colorClass.match(/bg-\[#([A-Fa-f0-9]{6})\]/);
+      if (hexMatch) {
+        return { backgroundColor: `#${hexMatch[1]}` };
+      }
+    }
+    return {};
+  };
 
   // Calculate max scroll
   const getMaxScroll = () => {
@@ -184,7 +212,7 @@ export default function StepsSection({
     };
   }, [isMounted, showNavigation, steps.length]);
 
-  // Intersection Observer برای انیمیشن
+  // Intersection Observer for animation
   useEffect(() => {
     if (!animated || !isMounted) return;
 
@@ -209,7 +237,7 @@ export default function StepsSection({
     return () => observer.disconnect();
   }, [animated, isMounted]);
 
-  // مدیریت کلیک روی step
+  // Handle step click
   const handleStepClick = (stepId: string) => {
     if (interactive) {
       setActiveStep(activeStep === stepId ? null : stepId);
@@ -228,7 +256,7 @@ export default function StepsSection({
     scrollToIndex(newIndex);
   };
 
-  // Add drag and touch functionality
+  // Fixed drag and touch functionality for RTL
   useEffect(() => {
     const container = scrollContainerRef.current;
     const content = contentRef.current;
@@ -256,24 +284,27 @@ export default function StepsSection({
     const handleMove = (clientX: number) => {
       if (!isDown) return;
 
-      // Reverse delta for RTL
-      const deltaX = -(clientX - startX);
+      // RTL: Drag right = move left (negative), Drag left = move right (positive)
+      const deltaX = clientX - startX;
       const newX = currentX + deltaX;
       const maxScroll = getMaxScroll();
 
       let boundedX = newX;
+
+      // Add rubber band effect at boundaries
       if (newX > 0) {
-        boundedX = newX * 0.3;
+        boundedX = newX * 0.3; // Pull from left edge
       } else if (newX < -maxScroll) {
-        boundedX = -maxScroll + (newX + maxScroll) * 0.3;
+        boundedX = -maxScroll + (newX + maxScroll) * 0.3; // Pull from right edge
       }
 
       gsap.set(content, { x: boundedX });
 
+      // Calculate velocity for momentum
       const now = Date.now();
       const dt = now - lastMoveTime;
       if (dt > 0) {
-        velocity = -(clientX - lastMoveX) / dt; // Reverse for RTL
+        velocity = (clientX - lastMoveX) / dt;
         lastMoveX = clientX;
         lastMoveTime = now;
       }
@@ -291,16 +322,20 @@ export default function StepsSection({
       const maxScroll = getMaxScroll();
       let targetX = currentPos;
 
+      // Snap back if out of bounds
       if (currentPos > 0) {
         targetX = 0;
       } else if (currentPos < -maxScroll) {
         targetX = -maxScroll;
       } else {
+        // Snap to nearest card
         const cardStep = stepWidth + gap;
         const currentStepIndex = Math.abs(currentPos) / cardStep;
         let snapIndex = Math.round(currentStepIndex);
 
+        // Add momentum based on velocity
         if (Math.abs(velocity) > 0.5) {
+          // RTL: positive velocity = dragging right = go to previous
           if (velocity > 0) {
             snapIndex = Math.floor(currentStepIndex);
           } else {
@@ -374,19 +409,15 @@ export default function StepsSection({
   // Mobile simple layout (no sliding)
   if (!isDesktop && isMounted) {
     return (
-      <section className={`py-16 md:py-20 ${className}`} dir="rtl">
+      <section className={`py-16 md:py-20 ${backgroundGradient || backgroundColor} ${className}`} dir="rtl">
         <div className="max-w-5xl mx-auto px-6 md:px-8">
           {/* Header */}
           <div className="text-center mb-12">
-            <h2
-              className={`text-2xl md:text-3xl font-bold text-blue-500 mb-4 leading-tight`}
-            >
+            <h2 className={`text-2xl md:text-3xl font-bold ${headingColor} mb-4 leading-tight`}>
               {heading}
             </h2>
             {description && (
-              <p
-                className={`text-sm text-gray-900 max-w-xl mx-auto leading-relaxed opacity-75`}
-              >
+              <p className={`text-sm ${descriptionColor} max-w-xl mx-auto leading-relaxed opacity-75`}>
                 {description}
               </p>
             )}
@@ -396,20 +427,23 @@ export default function StepsSection({
           <div className="flex flex-col gap-6 p-4">
             {steps.map((step) => (
               <div key={step.id} className="w-full">
-                <div className="bg-black/2 shadow-xl backdrop-blur-lg rounded-xl border border-gray-400/10 p-6 transition-all duration-300 hover:border-gray-200 hover:shadow-2xl hover:scale-105 h-32">
+                <div 
+                  className={`${stepBoxColor.includes('bg-[#') ? '' : stepBoxColor} shadow-xl backdrop-blur-lg rounded-xl border border-gray-400/10 p-6 transition-all duration-300 hover:border-gray-200 hover:shadow-2xl hover:scale-105 h-32`}
+                  style={getBoxStyle(stepBoxColor)}
+                >
                   <div className="h-full flex flex-col justify-center">
                     <div className="flex items-center gap-3 mb-2">
                       {showIcons && step.icon && (
-                        <div className="text-lg text-blue-500 flex-shrink-0">
+                        <div className={`text-lg ${stepActiveTextColor} flex-shrink-0`}>
                           {step.icon}
                         </div>
                       )}
-                      <h3 className="text-sm font-bold text-[#0A1D37] flex-1 line-clamp-2">
+                      <h3 className={`text-sm font-bold ${stepTextColor} flex-1 line-clamp-2`}>
                         {step.title}
                       </h3>
                     </div>
                     {step.description && (
-                      <p className="text-xs text-gray-600 leading-7 line-clamp-2">
+                      <p className={`text-xs ${descriptionColor} leading-7 line-clamp-2`}>
                         {step.description}
                       </p>
                     )}
@@ -423,30 +457,22 @@ export default function StepsSection({
     );
   }
 
-  // Desktop sliding layout (existing functionality)
+  // Desktop sliding layout
   return (
     <section
       ref={containerRef}
-      className={`py-16 md:py-20 ${className}`}
+      className={`py-16 md:py-20 ${backgroundGradient || backgroundColor} ${className}`}
       dir="rtl"
     >
       <div className="max-w-5xl mx-auto px-6 md:px-8">
-        {/* Minimal Header */}
+        {/* Header */}
         <div className="text-center mb-12">
-          {/* Small Trust Sign */}
-
-          {/* Clean Title */}
-          <h2
-            className={`text-2xl md:text-3xl font-bold text-[#4DBFF0] mb-4 leading-tight`}
-          >
+          <h2 className={`text-2xl md:text-3xl font-bold ${headingColor} mb-4 leading-tight`}>
             {heading}
           </h2>
 
-          {/* Small Description */}
           {description && (
-            <p
-              className={`text-sm text-[#0A1D37] max-w-xl mx-auto leading-relaxed opacity-75`}
-            >
+            <p className={`text-sm ${descriptionColor} max-w-xl mx-auto leading-relaxed opacity-75`}>
               {description}
             </p>
           )}
@@ -454,22 +480,27 @@ export default function StepsSection({
 
         {/* Steps Container */}
         <div className="relative" suppressHydrationWarning>
-          {/* Navigation Buttons - Desktop Only */}
+          {/* Navigation Buttons */}
           {showNavigation && (
             <>
+              {/* Previous button (right side in RTL) */}
               <button
                 onClick={handlePrevious}
                 disabled={!canScrollLeft}
-                className="hidden md:flex absolute left-0 top-1/2 -translate-y-1/2 -translate-x-12 z-10 w-10 h-10 items-center justify-center rounded-full bg-white shadow-lg border border-gray-200 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
+                className="hidden md:flex absolute right-0 top-1/2 -translate-y-1/2 translate-x-12 z-10 w-10 h-10 items-center justify-center rounded-full bg-white shadow-lg border border-gray-200 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
+                aria-label="Previous"
               >
-                <ChevronLeftIcon className="w-5 h-5 text-[#4DBFF0]" />
+                <ChevronRightIcon className={`w-5 h-5 ${stepActiveTextColor}`} />
               </button>
+
+              {/* Next button (left side in RTL) */}
               <button
                 onClick={handleNext}
                 disabled={!canScrollRight}
-                className="hidden md:flex absolute right-0 top-1/2 -translate-y-1/2 translate-x-12 z-10 w-10 h-10 items-center justify-center rounded-full bg-white shadow-lg border border-gray-200 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
+                className="hidden md:flex absolute left-0 top-1/2 -translate-y-1/2 -translate-x-12 z-10 w-10 h-10 items-center justify-center rounded-full bg-white shadow-lg border border-gray-200 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
+                aria-label="Next"
               >
-                <ChevronRightIcon className="w-5 h-5 text-[#4DBFF0]" />
+                <ChevronLeftIcon className={`w-5 h-5 ${stepActiveTextColor}`} />
               </button>
             </>
           )}
@@ -481,8 +512,7 @@ export default function StepsSection({
           >
             <div
               ref={contentRef}
-              className="flex flex-col md:flex-row p-4 w-full"
-              dir="ltr"
+              className="flex flex-row-reverse p-4 w-full"
               style={{
                 gap: `${gap}px`,
                 willChange: "transform",
@@ -496,18 +526,12 @@ export default function StepsSection({
                   <div
                     key={step.id}
                     data-step-id={step.id}
-                    className={`w-full md:flex-shrink-0 transition-all duration-500 ${
+                    className={`flex-shrink-0   transition-all duration-500 ${
                       isActive ? "opacity-100 scale-100" : "opacity-40 scale-95"
                     } ${isDragging ? "pointer-events-none" : ""}`}
                     style={{
-                      width:
-                        isMounted && window.innerWidth >= 768
-                          ? `${stepWidth}px`
-                          : "100%",
-                      minWidth:
-                        isMounted && window.innerWidth >= 768
-                          ? `${stepWidth}px`
-                          : "auto",
+                      width: `${stepWidth}px`,
+                      minWidth: `${stepWidth}px`,
                     }}
                     onClick={(e) => {
                       if (isDragging) {
@@ -516,79 +540,41 @@ export default function StepsSection({
                       }
                     }}
                   >
-                    {/* Minimal Clean Step Box */}
                     <div
-                      className={`bg-[#0A1D37]/10 shadow-xl backdrop-blur-lg rounded-xl border p-6 md:p-8 transition-all duration-500 h-32 md:h-64 ${
+                      className={`${stepBoxColor.includes('bg-[#') ? '' : stepBoxColor} shadow-xl backdrop-blur-lg rounded-xl border p-6 md:p-8 transition-all duration-500 h-64 ${
                         isActive
-                          ? "border-blue-300/30 shadow-blue-200/20 hover:border-[#0A1D37] hover:shadow-2xl hover:scale-105"
+                          ? `${stepActiveColor} hover:shadow-2xl hover:scale-105`
                           : "border-gray-400/10 hover:border-gray-200 hover:opacity-60"
                       }`}
+                      style={getBoxStyle(stepBoxColor)}
                     >
-                      {/* Mobile Layout: Icon + Title in one line */}
-                      <div className="md:hidden h-full flex flex-col justify-center">
-                        <div className="flex items-center gap-3 mb-2">
-                          {/* Mobile Icon */}
-                          {showIcons && step.icon && (
-                            <div
-                              className={`text-lg flex-shrink-0 transition-colors duration-300 ${
-                                isActive ? "text-[#4DBFF0]" : "text-gray-400"
-                              }`}
-                            >
-                              {step.icon}
-                            </div>
-                          )}
-                          {/* Mobile Title */}
-                          <h3
-                            className={`text-sm font-bold flex-1 line-clamp-2 transition-colors duration-300 ${
-                              isActive ? "text-[#0A1D37]" : "text-gray-500"
-                            }`}
-                          >
-                            {step.title}
-                          </h3>
+                      {/* Icon */}
+                      {showIcons && step.icon && (
+                        <div
+                          className={`flex justify-center text-xl my-6 transition-colors duration-300 ${
+                            isActive ? stepActiveTextColor : "text-gray-400"
+                          }`}
+                        >
+                          {step.icon}
                         </div>
-                        {/* Mobile Description */}
+                      )}
+
+                      {/* Content */}
+                      <div className="text-center space-y-9">
+                        <h3
+                          className={`text-md font-bold transition-colors duration-300 ${
+                            isActive ? stepTextColor : "text-gray-500"
+                          }`}
+                        >
+                          {step.title}
+                        </h3>
                         {step.description && (
                           <p
-                            className={`text-xs leading-7 line-clamp-2 transition-colors duration-300 ${
-                              isActive ? "text-[#0A1D37]" : "text-gray-400"
-                            }`}
+                            className={`text-xs leading-relaxed transition-colors duration-300 ${stepDescriptionColor}  `}
                           >
                             {step.description}
                           </p>
                         )}
-                      </div>
-
-                      {/* Desktop Layout: Original centered layout */}
-                      <div className="hidden md:block">
-                        {/* Desktop Icon */}
-                        {showIcons && step.icon && (
-                          <div
-                            className={`flex justify-center text-xl my-6 transition-colors duration-300 ${
-                              isActive ? "text-[#4DBFF0]" : "text-gray-400"
-                            }`}
-                          >
-                            {step.icon}
-                          </div>
-                        )}
-                        {/* Desktop Content */}
-                        <div className="text-center space-y-9">
-                          <h3
-                            className={`text-md font-bold transition-colors duration-300 ${
-                              isActive ? "text-[#0A1D37]" : "text-gray-500"
-                            }`}
-                          >
-                            {step.title}
-                          </h3>
-                          {step.description && (
-                            <p
-                              className={`text-xs leading-relaxed transition-colors duration-300 ${
-                                isActive ? "text-gray-600" : "text-gray-400"
-                              }`}
-                            >
-                              {step.description}
-                            </p>
-                          )}
-                        </div>
                       </div>
                     </div>
                   </div>
@@ -597,7 +583,7 @@ export default function StepsSection({
             </div>
           </div>
 
-          {/* Navigation Dots - Show current position */}
+          {/* Navigation Dots */}
           {showNavigation && (
             <div className="flex justify-center gap-2 mt-8">
               {Array.from({
@@ -608,9 +594,10 @@ export default function StepsSection({
                   onClick={() => scrollToIndex(index)}
                   className={`w-2 h-2 rounded-full transition-all duration-300 ${
                     currentIndex === index
-                      ? "bg-[#4DBFF0] w-8"
+                      ? `${numberActiveColor.replace('text-white', '')} w-8`
                       : "bg-gray-300 hover:bg-gray-400"
                   }`}
+                  aria-label={`Go to page ${index + 1}`}
                 />
               ))}
             </div>
@@ -620,7 +607,7 @@ export default function StepsSection({
         {/* Active Steps Indicator */}
         {showNavigation && (
           <div className="text-center mt-6">
-            <p className="text-sm text-gray-500">
+            <p className={`text-sm ${descriptionColor}`}>
               نمایش مراحل {currentIndex + 1} تا{" "}
               {Math.min(currentIndex + stepsPerPage, steps.length)} از{" "}
               {steps.length}
@@ -630,12 +617,10 @@ export default function StepsSection({
       </div>
 
       <style jsx>{`
-        /* Smooth scrolling improvements */
         * {
           -webkit-overflow-scrolling: touch;
         }
 
-        /* Remove highlight on mobile */
         .select-none {
           -webkit-touch-callout: none;
           -webkit-user-select: none;
@@ -646,7 +631,6 @@ export default function StepsSection({
           -webkit-tap-highlight-color: transparent;
         }
 
-        /* Cursor improvements */
         .cursor-grab {
           cursor: grab;
         }
@@ -655,7 +639,6 @@ export default function StepsSection({
           cursor: grabbing;
         }
 
-        /* Smooth animations */
         .group:hover .group-hover\\:scale-110 {
           transform: scale(1.1);
         }
@@ -663,5 +646,3 @@ export default function StepsSection({
     </section>
   );
 }
-
-// Preset Themes

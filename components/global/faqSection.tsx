@@ -2,7 +2,7 @@
 import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
- import { estedadBold } from "@/next-persian-fonts/estedad";
+import { estedadBold } from "@/next-persian-fonts/estedad";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
@@ -51,7 +51,7 @@ export default function FAQSection({
   description,
   svgIcon,
   faqItems,
-  buttons = [],
+  // buttons = [],
   theme = {},
   layout = "default",
   showCategories = false,
@@ -69,13 +69,13 @@ export default function FAQSection({
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
 
   const {
-    backgroundColor = "",
+    // backgroundColor = "",
     headingColor = "text-[#FFFFFF]",
     descriptionColor = "text-[#A0A0A0]",
     questionColor = "text-[#FFFFFF]",
     answerColor = "text-[#A0A0A0]",
     iconColor = "text-[#FF7A00]",
-    borderColor = "border-[#FF7A00]/20",
+    // borderColor = "border-[#FF7A00]/20",
     activeColor = "text-[#FF7A00]",
   } = theme;
 
@@ -235,7 +235,6 @@ export default function FAQSection({
     });
   }, [openItems, faqItems]);
 
-
   const layoutClasses = {
     default: "max-w-7xl mx-auto px-4 md:px-8",
     centered: "max-w-4xl mx-auto px-4 md:px-8",
@@ -292,7 +291,7 @@ export default function FAQSection({
       <div className="absolute inset-0 bg-white/5 backdrop-blur-[2px]"></div>
 
       <div className={`relative z-10 ${layoutClasses[layout]}`}>
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center">
           {/* Right Side - Header & Buttons */}
           <div ref={headerRef} className="lg:order-1">
             {/* Header with Glass Background */}
@@ -339,7 +338,6 @@ export default function FAQSection({
                 </p>
               )}
             </div>
-
             {/* Enhanced Search Box */}
             {searchable && (
               <div className="animate-text mb-6">
@@ -349,7 +347,7 @@ export default function FAQSection({
                     placeholder="جستجو در سوالات..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    className="w-full placeholder:text-[#A0A0A0] text-[#FFFFFF] px-6 py-4 pr-14 bg-white/10 border border-[#FF7A00]/30 rounded-2xl focus:ring-2 focus:ring-[#4DBFF0] focus:border-[#4DBFF0] focus:outline-none backdrop-blur-sm transition-all duration-300 hover:bg-white/15"
+                    className="w-full placeholder:text-[#A0A0A0] text-[#000] px-6 py-4 pr-14 bg-white/10 border border-[#FF7A00]/30 rounded-2xl focus:ring-2 focus:ring-[#4DBFF0] focus:border-[#4DBFF0] focus:outline-none backdrop-blur-sm transition-all duration-300 hover:bg-white/15"
                   />
                   <div className="absolute right-4 top-1/2 transform -translate-y-1/2">
                     <svg
@@ -369,7 +367,9 @@ export default function FAQSection({
                 </div>
               </div>
             )}
-
+          </div>
+          {/* Left Side - Enhanced FAQ Items */}
+          <div ref={faqListRef} className="lg:order-2">
             {/* Enhanced Categories */}
             {showCategories && categories.length > 0 && (
               <div className="animate-text mb-8">
@@ -400,11 +400,6 @@ export default function FAQSection({
                 </div>
               </div>
             )}
-
-       
-          </div>
-          {/* Left Side - Enhanced FAQ Items */}
-          <div ref={faqListRef} className="lg:order-2">
             <div className="space-y-4 md:space-y-6">
               {filteredItems.length > 0 ? (
                 filteredItems.map((item) => (

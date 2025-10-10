@@ -4,27 +4,28 @@ import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { gsap } from "gsap";
 import { menuItems, IconComponent } from "@/lib/menuData";
-import { MenuItem, DropdownItem } from "@/types/menu";
+import { DropdownItem } from "@/types/menu";
 import { MdClose, MdMenu } from "react-icons/md";
 import Image from "next/image";
 
 export default function NewNavbar() {
-  const [isScrolled, setIsScrolled] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
-  const [activeSubDropdown, setActiveSubDropdown] = useState<string | null>(
-    null
-  );
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [mobileActiveItem, setMobileActiveItem] = useState<string | null>(null);
   const [mobileActiveSubItem, setMobileActiveSubItem] = useState<string | null>(
     null
   );
   const [isMounted, setIsMounted] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
 
   const navRef = useRef<HTMLElement>(null);
   const mobileMenuRef = useRef<HTMLDivElement>(null);
   const logoRef = useRef<HTMLDivElement>(null);
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const megaMenuRef = useRef<HTMLDivElement>(null);
+  const closeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const menuItemRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const isMouseOverMenu = useRef(false);
+  const previousDropdown = useRef<string | null>(null);
 
   // Hydration fix
   useEffect(() => {
@@ -36,35 +37,63 @@ export default function NewNavbar() {
     if (!isMounted) return;
 
     const handleScroll = () => {
-      const scrolled = window.scrollY > 50;
+      const scrolled = window.scrollY > 20;
       setIsScrolled(scrolled);
+
+      if (navRef.current) {
+        if (scrolled) {
+          gsap.to(navRef.current, {
+            backgroundColor: "rgba(255, 255, 255, 0.3)",
+            boxShadow: "0 4px 30px rgba(0, 0, 0, 0.1)",
+            duration: 0.3,
+            ease: "power2.out",
+          });
+        } else {
+          gsap.to(navRef.current, {
+            backgroundColor: "rgba(255, 255, 255, 0.7)",
+            boxShadow: "0 2px 10px rgba(0, 0, 0, 0.05)",
+            duration: 0.3,
+            ease: "power2.out",
+          });
+        }
+      }
     };
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, [isMounted]);
 
-  // Initial navbar animation
-  useEffect(() => {
-    if (!isMounted || !navRef.current) return;
-
-    gsap.fromTo(
-      navRef.current,
-      { y: -100, opacity: 0 },
-      { y: 0, opacity: 1, duration: 1, ease: "power3.out" }
-    );
-  }, [isMounted]);
-
   // Logo animation
   useEffect(() => {
     if (!isMounted || !logoRef.current) return;
 
-    gsap.to(logoRef.current, {
-      rotation: 360,
-      duration: 20,
-      repeat: -1,
-      ease: "none",
-    });
+    const logo = logoRef.current;
+
+    const handleMouseEnter = () => {
+      gsap.to(logo, {
+        scale: 1.1,
+        rotation: 5,
+        duration: 0.4,
+        ease: "back.out(2)",
+      });
+    };
+
+    const handleMouseLeave = () => {
+      gsap.to(logo, {
+        scale: 1,
+        rotation: 0,
+        duration: 0.4,
+        ease: "back.out(2)",
+      });
+    };
+
+    logo.addEventListener("mouseenter", handleMouseEnter);
+    logo.addEventListener("mouseleave", handleMouseLeave);
+
+    return () => {
+      logo.removeEventListener("mouseenter", handleMouseEnter);
+      logo.removeEventListener("mouseleave", handleMouseLeave);
+    };
   }, [isMounted]);
 
   // Mobile menu animation
@@ -75,63 +104,115 @@ export default function NewNavbar() {
       gsap.fromTo(
         mobileMenuRef.current,
         { x: "100%", opacity: 0 },
-        { x: "0%", opacity: 1, duration: 0.4, ease: "power2.out" }
+        { x: "0%", opacity: 1, duration: 0.5, ease: "power3.out" }
+      );
+
+      const items = mobileMenuRef.current.querySelectorAll(".mobile-menu-item");
+      gsap.fromTo(
+        items,
+        { x: 50, opacity: 0 },
+        {
+          x: 0,
+          opacity: 1,
+          duration: 0.4,
+          stagger: 0.08,
+          delay: 0.2,
+          ease: "power2.out",
+        }
       );
     } else {
       gsap.to(mobileMenuRef.current, {
         x: "100%",
         opacity: 0,
-        duration: 0.3,
-        ease: "power2.in",
+        duration: 0.4,
+        ease: "power3.in",
       });
     }
   }, [isMobileOpen, isMounted]);
 
-  const handleMouseEnter = (title: string) => {
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-      timeoutRef.current = null;
-    }
-    setActiveDropdown(title);
-    setActiveSubDropdown("all");
-  };
+  // Mega menu animation - only on initial open
+  useEffect(() => {
+    if (!isMounted || !megaMenuRef.current) return;
 
-  const handleMouseLeave = () => {
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-    }
-    timeoutRef.current = setTimeout(() => {
-      setActiveDropdown(null);
-      setActiveSubDropdown(null);
-    }, 200);
-  };
+    if (activeDropdown && previousDropdown.current === null) {
+      // Only animate when opening for the first time
+      const megaMenu = megaMenuRef.current;
 
-  const handleMegaMenuMouseEnter = () => {
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-      timeoutRef.current = null;
+      gsap.fromTo(
+        megaMenu,
+        { y: -10, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.3, ease: "power2.out" }
+      );
     }
-    setActiveSubDropdown("all");
-  };
 
-  const handleMegaMenuMouseLeave = () => {
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
+    // Update previous dropdown
+    previousDropdown.current = activeDropdown;
+
+    // Reset when closing
+    if (!activeDropdown) {
+      previousDropdown.current = null;
     }
-    timeoutRef.current = setTimeout(() => {
-      setActiveDropdown(null);
-      setActiveSubDropdown(null);
-    }, 200);
-  };
+  }, [activeDropdown, isMounted]);
 
   // Cleanup timeout on unmount
   useEffect(() => {
     return () => {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
+      if (closeTimeoutRef.current) {
+        clearTimeout(closeTimeoutRef.current);
       }
     };
   }, []);
+
+  // Improved hover handlers - Smooth switching between menus
+  const handleMenuEnter = (title: string) => {
+    // Clear any pending close timeout
+    if (closeTimeoutRef.current) {
+      clearTimeout(closeTimeoutRef.current);
+      closeTimeoutRef.current = null;
+    }
+
+    isMouseOverMenu.current = true;
+
+    // Just update the active dropdown without closing
+    setActiveDropdown(title);
+  };
+
+  const handleMenuLeave = () => {
+    isMouseOverMenu.current = false;
+
+    // Set timeout to close menu
+    if (closeTimeoutRef.current) {
+      clearTimeout(closeTimeoutRef.current);
+    }
+
+    closeTimeoutRef.current = setTimeout(() => {
+      if (!isMouseOverMenu.current) {
+        setActiveDropdown(null);
+      }
+    }, 300);
+  };
+
+  const handleMegaMenuMouseEnter = () => {
+    // Cancel closing when entering mega menu
+    if (closeTimeoutRef.current) {
+      clearTimeout(closeTimeoutRef.current);
+      closeTimeoutRef.current = null;
+    }
+    isMouseOverMenu.current = true;
+  };
+
+  const handleMegaMenuMouseLeave = () => {
+    isMouseOverMenu.current = false;
+
+    // Close menu after delay
+    if (closeTimeoutRef.current) {
+      clearTimeout(closeTimeoutRef.current);
+    }
+
+    closeTimeoutRef.current = setTimeout(() => {
+      setActiveDropdown(null);
+    }, 200);
+  };
 
   const toggleMobileMenu = () => {
     setIsMobileOpen(!isMobileOpen);
@@ -142,7 +223,8 @@ export default function NewNavbar() {
   };
 
   const handleMobileItemClick = (title: string) => {
-    setMobileActiveItem(mobileActiveItem === title ? null : title);
+    const newState = mobileActiveItem === title ? null : title;
+    setMobileActiveItem(newState);
     setMobileActiveSubItem(null);
   };
 
@@ -150,53 +232,34 @@ export default function NewNavbar() {
     setMobileActiveSubItem(mobileActiveSubItem === name ? null : name);
   };
 
-  // Prevent hydration mismatch by showing a simple navbar until client hydrates
+  // Prevent hydration mismatch
   if (!isMounted) {
     return (
       <nav
-        className="fixed top-0 left-0 right-0 z-50 bg-white/10 backdrop-blur-md"
+        className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md shadow-sm"
         dir="rtl"
       >
-        <div className="max-w-7xl mx-auto px-4 lg:px-8">
-          <div className="flex items-center justify-between h-16 lg:h-20">
-            <div className="flex items-center space-x-3 space-x-reverse">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <div className="flex items-center justify-between h-20">
+            <div className="flex items-center">
               <Image
                 src="/assets/images/logoArzi.webp"
                 width={90}
                 height={90}
                 alt="logo"
+                priority
               />
             </div>
-            <div className="hidden lg:flex items-center space-x-2 space-x-reverse">
+            <div className="hidden lg:flex items-center space-x-6 space-x-reverse">
               {menuItems.map((item) => (
                 <button
                   key={item.title}
-                  className="px-4 py-2 font-medium text-sm text-[#0A1D37] rounded-lg"
+                  className="px-4 py-2 font-medium text-sm text-[#0A1D37]"
                 >
                   {item.title}
                 </button>
               ))}
             </div>
-            <div className="hidden lg:flex items-center space-x-3 space-x-reverse">
-              <button className="p-2 rounded-xl text-gray-700">
-                <svg
-                  className="w-5 h-5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
-                  />
-                </svg>
-              </button>
-            </div>
-            <button className="lg:hidden p-2 rounded-xl text-gray-700">
-              <MdMenu className="text-2xl" />
-            </button>
           </div>
         </div>
       </nav>
@@ -208,135 +271,60 @@ export default function NewNavbar() {
       {/* Navbar */}
       <nav
         ref={navRef}
-        className="fixed top-0 left-0 right-0 z-50   backdrop-blur-md transition-all duration-500"
+        className="fixed top-0 left-0 right-0 z-50 backdrop-blur-sm transition-all duration-500 border-b border-white/10"
+        style={{
+          backgroundColor: "rgba(255, 255, 255, 0.2)",
+        }}
         dir="rtl"
         suppressHydrationWarning
       >
-        <div className="max-w-7xl mx-auto px-4 lg:px-8">
-          <div className="flex items-center justify-between h-16 lg:h-20">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <div className="flex items-center justify-between h-20 lg:h-24">
             {/* Logo */}
-            <div className="flex items-center space-x-3 space-x-reverse">
+            <div ref={logoRef} className="flex items-center cursor-pointer">
               <Image
-                src={"/assets/images/logoArzi.webp"}
-                width={90}
-                height={90}
-                alt={"logo"}
+                src="/assets/images/logoArzi.webp"
+                width={100}
+                height={100}
+                alt="logo"
+                priority
+                className="transition-all duration-300"
               />
             </div>
 
             {/* Desktop Menu */}
-            <div className="hidden lg:flex items-center space-x-2 space-x-reverse">
-              {menuItems.map((item) => (
+            <div className="hidden lg:flex items-center space-x-1 space-x-reverse">
+              {menuItems.map((item, index) => (
                 <div
                   key={item.title}
+                  ref={(el) => {
+                    menuItemRefs.current[index] = el;
+                  }}
                   className="relative group"
-                  onMouseEnter={() => handleMouseEnter(item.title)}
-                  onMouseLeave={handleMouseLeave}
+                  onMouseEnter={() => handleMenuEnter(item.title)}
+                  onMouseLeave={handleMenuLeave}
                 >
-                  <button className="px-4 py-2 font-medium text-sm text-[#0A1D37] hover:text-blue-600 transition-all duration-300 rounded-lg ">
+                  <button
+                    className={`relative px-5 py-3 font-semibold cursor-pointer text-sm transition-all duration-300 rounded-xl ${
+                      activeDropdown === item.title
+                        ? "text-[#FF7A00]  "
+                        : "text-[#0A1D37] hover:text-[#FF7A00]"
+                    }`}
+                  >
                     {item.title}
-                    <div className="absolute -bottom-1 left-0 w-0 h-0.5  bg-gradient-to-r from-blue-400 to-purple-400 transition-all duration-300 group-hover:w-full"></div>
                   </button>
-
-                  {/* Mega Menu Dropdown - Centered */}
-                  {activeDropdown === item.title && (
-                    <>
-                      {/* Enhanced Backdrop with blur */}
-                      <div
-                        className="fixed inset-0 z-40 backdrop-blur-sm"
-                        onClick={() => setActiveDropdown(null)}
-                      />
-
-                      <div
-                        className="fixed left-1/2 transform -translate-x-1/2 top-24 w-[95vw] max-w-7xl bg-white/95 backdrop-blur-md border border-white/20 rounded-3xl p-6 animate-in fade-in-0 zoom-in-95 duration-300 z-50"
-                        onMouseEnter={handleMegaMenuMouseEnter}
-                        onMouseLeave={handleMegaMenuMouseLeave}
-                        suppressHydrationWarning
-                      >
-                        {/* Header */}
-                        <div className="text-center mb-8">
-                          <h2 className="text-xl font-bold text-[#0A1D37] mb-1">
-                            {item.title}
-                          </h2>
-                          <div className="w-16 h-0.5 mt-3 bg-gradient-to-r from-[#4DBFF0] to-[#FF7A00] mx-auto rounded-full"></div>
-                        </div>
-
-                        {/* Dynamic Grid Layout based on dropdown count */}
-                        <div
-                          className="grid gap-6"
-                          style={{
-                            gridTemplateColumns: `repeat(${item.childrens.dropdowns.length}, minmax(0, 1fr))`,
-                          }}
-                          suppressHydrationWarning
-                        >
-                          {item.childrens.dropdowns.map((dropdown: DropdownItem) => (
-                            <div
-                              key={dropdown.name}
-                              className="space-y-3 min-w-0 border-r border-gray-200"
-                            >
-                              {/* Category Header - More compact */}
-                              <div className="flex items-center space-x-2 space-x-reverse pb-2 border-b border-gray-200/50">
-                                <div className="flex-shrink-0 p-1.5 rounded-lg">
-                                  <IconComponent
-                                    icon={dropdown.icon}
-                                    className="text-base text-[#FF7A00]"
-                                  />
-                                </div>
-                                <h3 className="text-[#0A1D37] font-semibold text-sm truncate">
-                                  {dropdown.name}
-                                </h3>
-                              </div>
-
-                              {/* Sub Menu Items */}
-                              <div className="space-y-1">
-                                {dropdown.childrens.map((subItem) => (
-                                  <Link
-                                    key={subItem.name}
-                                    href={subItem.href}
-                                    className="flex items-center space-x-2 space-x-reverse p-2 text-gray-600 hover:text-[#0A1D37] text-xs rounded-lg hover:bg-blue-400/40 transition-all duration-200 group/item border border-transparent hover:border-gray-200/30 hover:shadow-sm"
-                                    onClick={() => setActiveDropdown(null)}
-                                  >
-                                    <IconComponent
-                                      icon={subItem.icon}
-                                      className="flex-shrink-0 text-xs text-[#4DBFF0] group-hover/item:text-blue-600 transition-colors duration-200"
-                                    />
-                                    <span className="flex-1 truncate leading-tight">
-                                      {subItem.name}
-                                    </span>
-                                    <svg
-                                      className="w-3 h-3 text-gray-300 group-hover/item:text-gray-500 opacity-0 group-hover/item:opacity-100 transition-all duration-200 flex-shrink-0"
-                                      fill="none"
-                                      stroke="currentColor"
-                                      viewBox="0 0 24 24"
-                                    >
-                                      <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth={2}
-                                        d="M9 5l7 7-7 7"
-                                      />
-                                    </svg>
-                                  </Link>
-                                ))}
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    </>
-                  )}
                 </div>
               ))}
             </div>
 
             {/* Desktop CTA */}
-            <div className="hidden lg:flex items-center space-x-3 space-x-reverse">
+            <div className="hidden lg:flex items-center  gap-2">
               <button
-                className="p-2 rounded-xl bg-white/20 hover:bg-white/30 backdrop-blur-sm transition-all duration-300 text-[#FF7A00] hover:text-blue-600"
+                className="group p-3 rounded-xl bg-gradient-to-r from-[#FF7A00]/10 to-[#4DBFF0]/10 hover:from-[#FF7A00]/20 hover:to-[#4DBFF0]/20 backdrop-blur-sm transition-all duration-300 border border-[#FF7A00]/20 hover:border-[#FF7A00]/40 hover:scale-105"
                 suppressHydrationWarning
               >
                 <svg
-                  className="w-5 h-5"
+                  className="w-5 h-5 text-[#FF7A00] group-hover:scale-110 transition-transform duration-300"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -352,28 +340,158 @@ export default function NewNavbar() {
 
               <Link
                 href="/auth/login"
-                className="px-6 py-2 font-medium text-sm text-[#0A1D37] hover:text-blue-600 bg-white/20 hover:bg-white/30 backdrop-blur-sm border border-[#FF7A00] rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl"
+                className="group relative px-6 py-3 font-bold text-sm text-white overflow-hidden rounded-xl transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-[#FF7A00]/20"
                 suppressHydrationWarning
               >
-                ورود / ثبت نام
+                <span className="absolute inset-0 bg-gradient-to-r from-[#FF7A00] to-[#4DBFF0]" />
+                <span className="absolute inset-0 bg-gradient-to-r from-[#4DBFF0] to-[#FF7A00] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <span className="relative z-10">ورود / ثبت نام</span>
               </Link>
             </div>
 
             {/* Mobile Menu Button */}
             <button
               onClick={toggleMobileMenu}
-              className="lg:hidden p-2 rounded-xl bg-white/20 hover:bg-white/30 backdrop-blur-sm transition-all duration-300 text-gray-700 hover:text-[#0A1D37]"
+              className="lg:hidden p-3 rounded-xl bg-gradient-to-r from-[#FF7A00]/10 to-[#4DBFF0]/10 backdrop-blur-sm transition-all duration-300 hover:scale-105 border border-[#FF7A00]/20"
               suppressHydrationWarning
             >
               {isMobileOpen ? (
-                <MdClose className="text-2xl" />
+                <MdClose className="text-2xl text-[#0A1D37]" />
               ) : (
-                <MdMenu className="text-2xl" />
+                <MdMenu className="text-2xl text-[#0A1D37]" />
               )}
             </button>
           </div>
         </div>
       </nav>
+
+      {/* Mega Menu Dropdown */}
+      {activeDropdown && (
+        <>
+          {/* Backdrop */}
+          <div
+            className="fixed inset-0 z-40 bg-black/20 backdrop-blur-sm transition-opacity duration-300"
+            onClick={() => {
+              setActiveDropdown(null);
+              isMouseOverMenu.current = false;
+            }}
+          />
+
+          {/* Bridge div to prevent gap issues */}
+          <div
+            className="fixed left-0 right-0 z-50 h-2"
+            style={{ top: "96px" }}
+            onMouseEnter={handleMegaMenuMouseEnter}
+            onMouseLeave={handleMegaMenuMouseLeave}
+          />
+
+          {/* Mega Menu Container */}
+          <div
+            ref={megaMenuRef}
+            className="fixed left-1/2 transform -translate-x-1/2 z-50 w-[95vw] max-w-7xl transition-opacity duration-200"
+            style={{ top: "100px" }}
+            onMouseEnter={handleMegaMenuMouseEnter}
+            onMouseLeave={handleMegaMenuMouseLeave}
+            dir="rtl"
+            suppressHydrationWarning
+          >
+            <div className="bg-white/90 backdrop-blur-sm border border-white/20 rounded-3xl shadow-2xl shadow-[#FF7A00]/10 overflow-hidden">
+              {/* Header */}
+              <div className="relative px-8 py-6 bg-gradient-to-r from-[#FF7A00]/5 to-[#4DBFF0]/5 border-b border-gray-100">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h2 className="text-2xl font-black text-[#0A1D37]">
+                      {activeDropdown}
+                    </h2>
+                    <p className="text-sm text-gray-600 mt-1">
+                      انتخاب کنید از میان خدمات زیر
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Dynamic Grid Layout */}
+              <div className="p-8">
+                <div
+                  className="grid gap-8"
+                  style={{
+                    gridTemplateColumns: `repeat(${
+                      menuItems.find((item) => item.title === activeDropdown)
+                        ?.childrens.dropdowns.length || 1
+                    }, minmax(0, 1fr))`,
+                  }}
+                  suppressHydrationWarning
+                >
+                  {menuItems
+                    .find((item) => item.title === activeDropdown)
+                    ?.childrens.dropdowns.map(
+                      (dropdown: DropdownItem, dropdownIndex) => (
+                        <div
+                          key={dropdown.name}
+                          className="dropdown-column space-y-4 relative"
+                        >
+                          {/* Divider line between columns */}
+                          {dropdownIndex !== 0 && (
+                            <div className="absolute right-0 top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-gray-200 to-transparent" />
+                          )}
+
+                          {/* Category Header */}
+                          <div className="flex items-center space-x-3 space-x-reverse pb-4 border-b-2 border-gradient-to-r from-[#FF7A00] to-[#4DBFF0]">
+                            <div className="flex-shrink-0 p-2.5 rounded-xl bg-gradient-to-br from-[#FF7A00]/10 to-[#4DBFF0]/10">
+                              <IconComponent
+                                icon={dropdown.icon}
+                                className="text-xl text-[#FF7A00]"
+                              />
+                            </div>
+                            <h3 className="text-[#0A1D37] font-bold text-base">
+                              {dropdown.name}
+                            </h3>
+                          </div>
+
+                          {/* Sub Menu Items - No animations */}
+                          <div className="space-y-2">
+                            {dropdown.childrens.map((subItem) => (
+                              <Link
+                                key={subItem.name}
+                                href={subItem.href}
+                                className="dropdown-item group flex items-center space-x-3 space-x-reverse p-3 text-gray-700 hover:text-[#0A1D37] text-sm rounded-xl hover:bg-gradient-to-r hover:from-[#FF7A00]/5 hover:to-[#4DBFF0]/5 transition-all duration-300 border border-transparent hover:border-[#FF7A00]/20 hover:shadow-md"
+                                onClick={() => {
+                                  setActiveDropdown(null);
+                                  isMouseOverMenu.current = false;
+                                }}
+                              >
+                                <IconComponent
+                                  icon={subItem.icon}
+                                  className="flex-shrink-0 text-base text-[#4DBFF0] group-hover:text-[#FF7A00] group-hover:scale-110 transition-all duration-300"
+                                />
+                                <span className="flex-1 font-medium group-hover:translate-x-1 transition-transform duration-300">
+                                  {subItem.name}
+                                </span>
+                                <svg
+                                  className="w-4 h-4 text-gray-300 group-hover:text-[#FF7A00] opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-300 flex-shrink-0"
+                                  fill="none"
+                                  stroke="currentColor"
+                                  viewBox="0 0 24 24"
+                                >
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2}
+                                    d="M9 5l7 7-7 7"
+                                  />
+                                </svg>
+                              </Link>
+                            ))}
+                          </div>
+                        </div>
+                      )
+                    )}
+                </div>
+              </div>
+            </div>
+          </div>
+        </>
+      )}
 
       {/* Mobile Sidebar */}
       <div
@@ -384,34 +502,53 @@ export default function NewNavbar() {
       >
         {/* Backdrop */}
         <div
-          className={`absolute inset-0 bg-black/50 backdrop-blur-sm transition-opacity duration-300 ${
+          className={`absolute inset-0 bg-gradient-to-br from-[#0A1D37]/90 to-[#0A1D37]/80 backdrop-blur-md transition-opacity duration-500 ${
             isMobileOpen ? "opacity-100" : "opacity-0"
           }`}
           onClick={toggleMobileMenu}
-        ></div>
+        />
 
         {/* Sidebar */}
         <div
           ref={mobileMenuRef}
-          className="absolute right-0 top-0 h-full w-90 bg-white/10 backdrop-blur-2xl border-l border-white/20 shadow-2xl"
+          className="absolute right-0 top-0 h-full w-[85vw] max-w-sm bg-white/95 backdrop-blur-2xl shadow-2xl"
           style={{ transform: "translateX(100%)" }}
           suppressHydrationWarning
         >
-          <div className="p-4">
+          <div className="flex flex-col h-full">
             {/* Mobile Header */}
-            <div className="flex items-center justify-between mb-16"></div>
+            <div className="p-6 border-b border-gray-200">
+              <div className="flex items-center justify-between">
+                <Image
+                  src="/assets/images/logoArzi.webp"
+                  width={80}
+                  height={80}
+                  alt="logo"
+                />
+                <button
+                  onClick={toggleMobileMenu}
+                  className="p-2 rounded-xl bg-gradient-to-r from-[#FF7A00]/10 to-[#4DBFF0]/10 hover:scale-110 transition-transform duration-300"
+                >
+                  <MdClose className="text-2xl text-[#0A1D37]" />
+                </button>
+              </div>
+            </div>
 
             {/* Mobile Menu Items */}
-            <div className="space-y-2 max-h-[calc(100vh-200px)] overflow-y-auto">
+            <div className="flex-1 overflow-y-auto p-6 space-y-3 ">
               {menuItems.map((item) => (
-                <div key={item.title} className="space-y-2">
+                <div key={item.title} className="mobile-menu-item space-y-2">
                   <button
                     onClick={() => handleMobileItemClick(item.title)}
-                    className={`w-full flex items-center   bg-[#0A1D37]/20 justify-between p-4 text-white/90 hover:text-white font-medium rounded-xl hover:bg-white/10 transition-all duration-300`}
+                    className={`w-full flex items-center justify-between p-4 font-bold rounded-xl transition-all duration-300 ${
+                      mobileActiveItem === item.title
+                        ? "bg-gradient-to-r from-[#FF7A00] to-[#4DBFF0] text-white shadow-lg"
+                        : "bg-gray-50 text-[#0A1D37] hover:bg-gray-100"
+                    }`}
                   >
                     <span>{item.title}</span>
                     <svg
-                      className={`w-4 h-4 transition-transform duration-300 ${
+                      className={`w-5 h-5 transition-transform duration-300 ${
                         mobileActiveItem === item.title ? "rotate-180" : ""
                       }`}
                       fill="none"
@@ -430,68 +567,70 @@ export default function NewNavbar() {
                   {/* Mobile Dropdown Items */}
                   {mobileActiveItem === item.title && (
                     <div
-                      className={`space-y-1 p-3 ${
-                        mobileActiveItem ? "" : " bg-[#4DBFF0]/20"
-                      } animate-in fade-in-0 slide-in-from-top-2 duration-200`}
+                      className="space-y-2 pr-4"
+                      data-mobile-item={item.title}
                     >
-                      {item.childrens.dropdowns.map((dropdown: DropdownItem) => (
-                        <div key={dropdown.name} className="space-y-1">
-                          {/* Render button with sub-items */}
-                          <button
-                            onClick={() =>
-                              handleMobileSubItemClick(dropdown.name)
-                            }
-                            className="w-full flex items-center p-3 bg-white/10  justify-between  text-white/80 hover:text-white text-sm rounded-lg hover:bg-white/5 transition-all duration-200"
-                          >
-                            <div className="flex items-center space-x-1 space-x-reverse">
-                              <IconComponent
-                                icon={dropdown.icon}
-                                className="text-sm text-blue-300 "
-                              />
-                              <span className="mr-2">{dropdown.name}</span>
-                            </div>
-                            <svg
-                              className={`w-3 h-3 transition-transform duration-200 ${
-                                mobileActiveSubItem === dropdown.name
-                                  ? "rotate-180"
-                                  : ""
-                              }`}
-                              fill="none"
-                              stroke="currentColor"
-                              viewBox="0 0 24 24"
+                      {item.childrens.dropdowns.map(
+                        (dropdown: DropdownItem) => (
+                          <div key={dropdown.name} className="space-y-2">
+                            <button
+                              onClick={() =>
+                                handleMobileSubItemClick(dropdown.name)
+                              }
+                              className="w-full flex items-center justify-between p-3 bg-white rounded-lg hover:bg-gray-50 transition-all duration-200 border border-gray-200"
                             >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M19 9l-7 7-7-7"
-                              />
-                            </svg>
-                          </button>
+                              <div className="flex items-center space-x-2 space-x-reverse">
+                                <IconComponent
+                                  icon={dropdown.icon}
+                                  className="text-base text-[#FF7A00]"
+                                />
+                                <span className="text-sm font-semibold text-[#0A1D37]">
+                                  {dropdown.name}
+                                </span>
+                              </div>
+                              <svg
+                                className={`w-4 h-4 text-gray-400 transition-transform duration-200 ${
+                                  mobileActiveSubItem === dropdown.name
+                                    ? "rotate-180"
+                                    : ""
+                                }`}
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth={2}
+                                  d="M19 9l-7 7-7-7"
+                                />
+                              </svg>
+                            </button>
 
-                          {/* Mobile Sub Items */}
-                          {mobileActiveSubItem === dropdown.name && (
-                            <div className="space-y-1 p-2 animate-in fade-in-0 slide-in-from-top-1 duration-150">
-                              {dropdown.childrens.map((subItem) => (
-                                <Link
-                                  key={subItem.name}
-                                  href={subItem.href}
-                                  onClick={toggleMobileMenu}
-                                  className="flex items-center p-3 bg-[#0A1D37]/20 space-x-2 space-x-reverse  text-white hover:text-white text-xs rounded-lg hover:bg-white/5 transition-all duration-200"
-                                >
-                                  <IconComponent
-                                    icon={subItem.icon}
-                                    className="text-xs text-blue-300"
-                                  />
-                                  <span className="mr-2">
-                                    {subItem.name}
-                                  </span>
-                                </Link>
-                              ))}
-                            </div>
-                          )}
-                        </div>
-                      ))}
+                            {/* Mobile Sub Items */}
+                            {mobileActiveSubItem === dropdown.name && (
+                              <div className="space-y-1 pr-4">
+                                {dropdown.childrens.map((subItem) => (
+                                  <Link
+                                    key={subItem.name}
+                                    href={subItem.href}
+                                    onClick={toggleMobileMenu}
+                                    className="flex items-center space-x-2 space-x-reverse p-3 bg-gradient-to-r from-[#FF7A00]/5 to-[#4DBFF0]/5 hover:from-[#FF7A00]/10 hover:to-[#4DBFF0]/10 text-gray-700 hover:text-[#0A1D37] text-sm rounded-lg transition-all duration-200"
+                                  >
+                                    <IconComponent
+                                      icon={subItem.icon}
+                                      className="text-sm text-[#4DBFF0]"
+                                    />
+                                    <span className="font-medium">
+                                      {subItem.name}
+                                    </span>
+                                  </Link>
+                                ))}
+                              </div>
+                            )}
+                          </div>
+                        )
+                      )}
                     </div>
                   )}
                 </div>
@@ -499,13 +638,15 @@ export default function NewNavbar() {
             </div>
 
             {/* Mobile Footer */}
-            <div className="absolute bottom-6 left-6 right-6">
+            <div className="p-6 border-t border-gray-200 space-y-3">
               <Link
                 href="/auth/login"
                 onClick={toggleMobileMenu}
-                className="w-full flex items-center justify-center p-3 bg-gradient-to-r from-[#4DBFF0]/20 to-purple-500/20 backdrop-blur-sm border border-white/20 text-white font-medium rounded-xl hover:from-[#4DBFF0]/30 hover:to-purple-500/30 transition-all duration-300"
+                className="group relative w-full flex items-center justify-center p-4 font-bold text-white overflow-hidden rounded-xl transition-all duration-300 hover:scale-105 shadow-lg"
               >
-                ورود / ثبت نام
+                <span className="absolute inset-0 bg-gradient-to-r from-[#FF7A00] to-[#4DBFF0]" />
+                <span className="absolute inset-0 bg-gradient-to-r from-[#4DBFF0] to-[#FF7A00] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <span className="relative z-10">ورود / ثبت نام</span>
               </Link>
             </div>
           </div>

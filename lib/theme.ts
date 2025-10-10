@@ -14,6 +14,22 @@ export const stepThemes = {
     numberActiveColor: "bg-blue-500 text-white",
     numberCompletedColor: "bg-green-500 text-white",
   },
+  blue: {
+    backgroundColor: "bg-white",
+    headingColor: "text-gray-900",
+    descriptionColor: "text-gray-700",
+    stepBoxColor: "bg-[#0A1D37]",
+    stepActiveColor: "bg-blue-50",
+    stepCompletedColor: "bg-blue-50",
+    stepTextColor: "text-gray-50",
+    stepDescriptionColor: "text-gray-400",
+    stepActiveTextColor: "text-blue-700",
+    stepCompletedTextColor: "text-blue-700",
+    connectionLineColor: "border-gray-300",
+    numberColor: "bg-gray-200 text-gray-700",
+    numberActiveColor: "bg-blue-500 text-white",
+    numberCompletedColor: "bg-blue-500 text-white",
+  },
 
   dark: {
     backgroundColor: "bg-gray-900",
@@ -23,6 +39,8 @@ export const stepThemes = {
     stepActiveColor: "bg-blue-900",
     stepCompletedColor: "bg-green-900",
     stepTextColor: "text-gray-200",
+    stepDescriptionColor: "text-gray-400",
+
     stepActiveTextColor: "text-blue-300",
     stepCompletedTextColor: "text-green-300",
     connectionLineColor: "border-gray-600",
@@ -38,6 +56,8 @@ export const stepThemes = {
     stepActiveColor: "bg-fuchsia-900",
     stepCompletedColor: "bg-green-900",
     stepTextColor: "text-gray-200",
+    stepDescriptionColor: "text-gray-400",
+
     stepActiveTextColor: "text-fuchsia-300",
     stepCompletedTextColor: "text-green-300",
     connectionLineColor: "border-gray-600",
@@ -55,6 +75,8 @@ export const stepThemes = {
     stepActiveColor: "bg-purple-50",
     stepCompletedColor: "bg-green-50",
     stepTextColor: "text-gray-700",
+    stepDescriptionColor: "text-gray-400",
+
     stepActiveTextColor: "text-purple-700",
     stepCompletedTextColor: "text-green-700",
     connectionLineColor: "border-purple-300",
@@ -71,6 +93,8 @@ export const stepThemes = {
     stepActiveColor: "bg-cyan-900/30",
     stepCompletedColor: "bg-green-900/30",
     stepTextColor: "text-gray-200",
+    stepDescriptionColor: "text-gray-400",
+
     stepActiveTextColor: "text-cyan-300",
     stepCompletedTextColor: "text-green-300",
     connectionLineColor: "border-cyan-500",
@@ -86,6 +110,8 @@ export const stepThemes = {
     stepActiveColor: "bg-yellow-900/30",
     stepCompletedColor: "bg-yellow-900/30",
     stepTextColor: "text-gray-200",
+    stepDescriptionColor: "text-gray-400",
+
     stepActiveTextColor: "text-yellow-300",
     stepCompletedTextColor: "text-yellow-300",
     connectionLineColor: "border-yellow-500",
@@ -102,6 +128,8 @@ export const stepThemes = {
     stepActiveColor: "bg-gray-100",
     stepCompletedColor: "bg-gray-100",
     stepTextColor: "text-gray-700",
+    stepDescriptionColor: "text-gray-400",
+
     stepActiveTextColor: "text-gray-900",
     stepCompletedTextColor: "text-gray-900",
     connectionLineColor: "border-gray-200",
@@ -116,6 +144,8 @@ export const stepThemes = {
     headingColor: "text-gray-900",
     descriptionColor: "text-gray-600",
     stepBoxColor: "bg-white/20",
+    stepDescriptionColor: "text-gray-400",
+
     stepActiveColor: "bg-blue-50",
     stepCompletedColor: "bg-green-50",
     stepTextColor: "text-gray-700",
@@ -136,6 +166,8 @@ export const stepThemes = {
     stepBoxColor: "bg-white/20",
     stepActiveColor: "bg-green-50",
     stepCompletedColor: "bg-green-50",
+    stepDescriptionColor: "text-gray-400",
+
     stepTextColor: "text-gray-700",
     stepActiveTextColor: "text-green-700",
     stepCompletedTextColor: "text-green-700",
@@ -153,6 +185,8 @@ export const stepThemes = {
     stepBoxColor: "bg-white/20",
     stepActiveColor: "bg-red-50",
     stepCompletedColor: "bg-red-50",
+    stepDescriptionColor: "text-gray-400",
+
     stepTextColor: "text-gray-700",
     stepActiveTextColor: "text-red-700",
     stepCompletedTextColor: "text-red-700",
@@ -172,6 +206,7 @@ export const ctaThemes = {
     buttonText: "text-blue-600",
     buttonHover: "hover:bg-blue-50",
   },
+
   success: {
     backgroundColor: "bg-green-600",
     headingColor: "text-white",
@@ -302,11 +337,11 @@ export const themesWhyus = {
     button: "bg-blue-500 text-white hover:bg-blue-600",
   },
   gradient: {
-    background: "bg-gradient-to-br from-purple-100 via-pink-50 to-indigo-100",
+    background: "bg-gradient-to-br from-blue-400 to-white",
     textBoxBg: "bg-white/80 backdrop-blur-md",
     heading: "text-gray-900",
     description: "text-gray-600",
-    button: "bg-blue-600 text-white  hover:bg-blue-700",
+    button: "bg-blue-400 text-white  hover:bg-blue-600",
   },
   minimal: {
     background: "bg-white",
@@ -513,3 +548,4 @@ export const textBoxTypography = {
     fontWeight: "font-light",
   },
 };
+
