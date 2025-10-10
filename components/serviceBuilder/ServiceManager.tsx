@@ -8,6 +8,7 @@ import ServiceBuilder from "./ServiceBuilder";
 import ServiceList from "./ServiceList";
 import { useDynamicData } from "@/hooks/useDynamicData";
 import { showToast } from "@/utilities/toast";
+import FileUploaderModal from "@/components/FileUploaderModal";
 
 interface ServiceManagerProps {
   mode?: "admin" | "user";
@@ -24,6 +25,8 @@ const ServiceManager: React.FC<ServiceManagerProps> = ({
   const [selectedService, setSelectedService] = useState<DynamicService | null>(
     null
   );
+  const [isFileUploaderOpen, setIsFileUploaderOpen] = useState(false);
+  const [uploadedImageUrl, setUploadedImageUrl] = useState<string>("");
 
   const { mutate } = useDynamicData({
     endpoint: "/api/dynamicServices",
@@ -101,6 +104,13 @@ const ServiceManager: React.FC<ServiceManagerProps> = ({
   const handleCancel = () => {
     setCurrentView("list");
     setSelectedService(null);
+    setUploadedImageUrl("");
+  };
+
+  const handleFileUploaded = (fileUrl: string) => {
+    setUploadedImageUrl(fileUrl);
+    setIsFileUploaderOpen(false);
+    showToast.success("تصویر با موفقیت آپلود شد!");
   };
 
   if (mode === "user") {
@@ -154,22 +164,44 @@ const ServiceManager: React.FC<ServiceManagerProps> = ({
   // Admin mode - full management interface
   if (currentView === "create") {
     return (
-      <ServiceBuilder
-        onSave={handleCreateService}
-        onCancel={handleCancel}
-        isEditing={false}
-      />
+      <>
+        <ServiceBuilder
+          onSave={handleCreateService}
+          onCancel={handleCancel}
+          isEditing={false}
+          onImageUploadClick={() => setIsFileUploaderOpen(true)}
+          uploadedImageUrl={uploadedImageUrl}
+        />
+        <FileUploaderModal
+          isOpen={isFileUploaderOpen}
+          onClose={() => setIsFileUploaderOpen(false)}
+          onFileUploaded={handleFileUploaded}
+          acceptedTypes={['.jpg', '.jpeg', '.png', '.gif', '.webp']}
+          title="آپلود تصویر سرویس"
+        />
+      </>
     );
   }
 
   if (currentView === "edit" && selectedService) {
     return (
-      <ServiceBuilder
-        initialData={selectedService}
-        onSave={handleUpdateService}
-        onCancel={handleCancel}
-        isEditing={true}
-      />
+      <>
+        <ServiceBuilder
+          initialData={selectedService}
+          onSave={handleUpdateService}
+          onCancel={handleCancel}
+          isEditing={true}
+          onImageUploadClick={() => setIsFileUploaderOpen(true)}
+          uploadedImageUrl={uploadedImageUrl}
+        />
+        <FileUploaderModal
+          isOpen={isFileUploaderOpen}
+          onClose={() => setIsFileUploaderOpen(false)}
+          onFileUploaded={handleFileUploaded}
+          acceptedTypes={['.jpg', '.jpeg', '.png', '.gif', '.webp']}
+          title="آپلود تصویر سرویس"
+        />
+      </>
     );
   }
 

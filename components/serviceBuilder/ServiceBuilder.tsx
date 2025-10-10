@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   ServiceBuilderFormData,
   ServiceField,
@@ -12,6 +12,8 @@ interface ServiceBuilderProps {
   onSave: (data: ServiceBuilderFormData) => Promise<void>;
   onCancel?: () => void;
   isEditing?: boolean;
+  onImageUploadClick?: () => void;
+  uploadedImageUrl?: string;
 }
 
 const ServiceBuilder: React.FC<ServiceBuilderProps> = ({
@@ -19,6 +21,8 @@ const ServiceBuilder: React.FC<ServiceBuilderProps> = ({
   onSave,
   onCancel,
   isEditing = false,
+  onImageUploadClick,
+  uploadedImageUrl,
 }) => {
   const [formData, setFormData] = useState<ServiceBuilderFormData>({
     title: initialData?.title || "",
@@ -33,6 +37,16 @@ const ServiceBuilder: React.FC<ServiceBuilderProps> = ({
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Update image URL when uploadedImageUrl changes
+  useEffect(() => {
+    if (uploadedImageUrl) {
+      setFormData(prev => ({
+        ...prev,
+        image: uploadedImageUrl
+      }));
+    }
+  }, [uploadedImageUrl]);
 
   // Generate slug from title
   const generateSlug = (title: string) => {
@@ -322,15 +336,48 @@ const ServiceBuilder: React.FC<ServiceBuilderProps> = ({
 
                 <div>
                   <label className="block text-[#0A1D37] text-sm mb-2">
-                    تصویر (URL)
+                    تصویر سرویس
                   </label>
-                  <input
-                    type="url"
-                    value={formData.image}
-                    onChange={(e) => handleInputChange("image", e.target.value)}
-                    className="w-full px-4 py-3 bg-white/10 border border-[#4DBFF0] rounded-lg text-[#0A1D37] placeholder:text-[#0A1D37]/50"
-                    placeholder="https://example.com/image.jpg"
-                  />
+                  <div className="space-y-3">
+                    <div className="flex gap-2">
+                      <input
+                        type="url"
+                        value={formData.image}
+                        onChange={(e) => handleInputChange("image", e.target.value)}
+                        className="flex-1 px-4 py-3 bg-white/10 border border-[#4DBFF0] rounded-lg text-[#0A1D37] placeholder:text-[#0A1D37]/50"
+                        placeholder="https://example.com/image.jpg یا از دکمه آپلود استفاده کنید"
+                      />
+                      {onImageUploadClick && (
+                        <button
+                          type="button"
+                          onClick={onImageUploadClick}
+                          className="px-6 py-3 bg-gradient-to-r from-[#4DBFF0] to-[#FF7A00] text-white rounded-lg font-medium hover:from-[#4DBFF0]/80 hover:to-[#FF7A00]/80 transition-all duration-300 whitespace-nowrap"
+                        >
+                          📁 آپلود تصویر
+                        </button>
+                      )}
+                    </div>
+                    
+                    {/* Image Preview */}
+                    {formData.image && (
+                      <div className="mt-3 p-3 bg-white/5 rounded-lg border border-[#4DBFF0]/30">
+                        <p className="text-[#0A1D37]/70 text-sm mb-2">پیش‌نمایش تصویر:</p>
+                        <img
+                          src={formData.image}
+                          alt="پیش‌نمایش"
+                          className="w-32 h-32 object-cover rounded-lg border border-[#4DBFF0]/50"
+                          onError={(e) => {
+                            const img = e.target as HTMLImageElement;
+                            img.style.display = 'none';
+                          }}
+                          onLoad={(e) => {
+                            const img = e.target as HTMLImageElement;
+                            img.style.display = 'block';
+                          }}
+                        />
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
 
