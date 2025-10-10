@@ -339,7 +339,7 @@ export default function NewNavbar() {
               </button>
 
               <Link
-                href="/auth/login"
+                href="/auth/sms"
                 className="group relative px-6 py-3 font-bold text-sm text-white overflow-hidden rounded-xl transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-[#FF7A00]/20"
                 suppressHydrationWarning
               >
@@ -640,7 +640,7 @@ export default function NewNavbar() {
             {/* Mobile Footer */}
             <div className="p-6 border-t border-gray-200 space-y-3">
               <Link
-                href="/auth/login"
+                href="/auth/sms"
                 onClick={toggleMobileMenu}
                 className="group relative w-full flex items-center justify-center p-4 font-bold text-white overflow-hidden rounded-xl transition-all duration-300 hover:scale-105 shadow-lg"
               >
