@@ -67,7 +67,7 @@ export default function HeroSplitSection({
   buttons,
   imageSrc,
   imageAlt = "hero image",
-  theme,
+  // theme,
   layout = "image-left",
   imageWidth = "1/2",
   features = [],

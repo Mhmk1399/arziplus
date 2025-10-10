@@ -51,7 +51,7 @@ export default function FAQSection({
   description,
   svgIcon,
   faqItems,
-  buttons = [],
+  // buttons = [],
   theme = {},
   layout = "default",
   showCategories = false,
@@ -69,13 +69,13 @@ export default function FAQSection({
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
 
   const {
-    backgroundColor = "",
+    // backgroundColor = "",
     headingColor = "text-[#FFFFFF]",
     descriptionColor = "text-[#A0A0A0]",
     questionColor = "text-[#FFFFFF]",
     answerColor = "text-[#A0A0A0]",
     iconColor = "text-[#FF7A00]",
-    borderColor = "border-[#FF7A00]/20",
+    // borderColor = "border-[#FF7A00]/20",
     activeColor = "text-[#FF7A00]",
   } = theme;
 

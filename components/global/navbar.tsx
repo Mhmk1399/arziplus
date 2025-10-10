@@ -4,13 +4,12 @@ import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { gsap } from "gsap";
 import { menuItems, IconComponent } from "@/lib/menuData";
-import { MenuItem, DropdownItem } from "@/types/menu";
+import { DropdownItem } from "@/types/menu";
 import { MdClose, MdMenu } from "react-icons/md";
 import Image from "next/image";
 
 export default function NewNavbar() {
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [activeSubDropdown, setActiveSubDropdown] = useState<string | null>(
     null
   );
@@ -37,8 +36,7 @@ export default function NewNavbar() {
 
     const handleScroll = () => {
       const scrolled = window.scrollY > 50;
-      setIsScrolled(scrolled);
-    };
+     };
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);

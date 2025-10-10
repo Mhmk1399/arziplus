@@ -41,9 +41,9 @@ export default function CTABanner({
   description,
   button,
   theme = {},
-  height = 300,
+  // height = 300,
   rounded = true,
-  shadow = true,
+  // shadow = true,
   animate = true,
   className = "",
 }: CTABannerProps) {
@@ -123,10 +123,10 @@ export default function CTABanner({
   }, [animate]);
 
   const {
-    backgroundColor = "",
-    backgroundGradient,
+    // backgroundColor = "",
+    // backgroundGradient,
     descriptionColor = "text-[#A0A0A0]",
-    borderColor = "border-[#FF7A00]/20",
+    // borderColor = "border-[#FF7A00]/20",
   } = theme;
 
   // Enhanced luxury button classes

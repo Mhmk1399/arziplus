@@ -203,7 +203,7 @@ export default function HeroSection({
 
       // Interactive button hover animations
       const buttonElements = buttonsRef.current?.querySelectorAll("a, button");
-      buttonElements?.forEach((button, index) => {
+      buttonElements?.forEach((button) => {
         const handleMouseEnter = () => {
           gsap.to(button, {
             scale: 1.08,
