@@ -71,7 +71,10 @@ export async function POST(request: NextRequest) {
     const token = generateToken({
       id: user._id.toString(),
       email: user.contactInfo.email,
-      roles: user.roles
+      roles: user.roles,
+      firstName: user.nationalCredentials?.firstName,
+      lastName: user.nationalCredentials?.lastName,
+      phone: user.contactInfo.mobilePhone
     });
 
     // Check if user has complete profile (firstName exists)
