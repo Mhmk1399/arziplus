@@ -1,7 +1,6 @@
 "use client";
 import React, { useState } from "react";
 import { ServiceField } from "@/types/serviceBuilder/types";
-import { FormField } from "@/types/dynamicTypes/types";
 import { FaTrash } from "react-icons/fa";
 
 interface FieldBuilderProps {
