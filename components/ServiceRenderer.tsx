@@ -336,7 +336,7 @@ const ServiceRenderer: React.FC<ServiceRendererProps> = ({
                 <button
                   type="button"
                   onClick={() => handleFileUploadClick(field.name)}
-                  className="px-6 py-3 bg-gradient-to-r from-[#4DBFF0] to-[#FF7A00] text-white rounded-xl font-medium hover:from-[#4DBFF0]/80 hover:to-[#FF7A00]/80 transition-all duration-300 whitespace-nowrap"
+                  className="px-6 py-3 hover:bg-gradient-to-r from-[#4DBFF0] to-[#FF7A00] text-[#0A1D37] hover:text-white border border-[#4DBFF0] rounded-xl font-medium hover:from-[#4DBFF0]/80 hover:to-[#FF7A00]/80 transition-all duration-300 whitespace-nowrap"
                 >
                   📁 آپلود فایل
                 </button>
@@ -350,12 +350,11 @@ const ServiceRenderer: React.FC<ServiceRendererProps> = ({
                   </p>
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-reverse space-x-2">
-                      <span className="text-2xl">📎</span>
                       <a
                         href={value}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-[#4DBFF0] hover:text-[#4DBFF0]/80 text-sm underline"
+                        className="text-[#0A1D37] border border-[#4DBFF0] p-2 rounded-md hover:text-[#4DBFF0]/80 text-sm "
                       >
                         مشاهده فایل
                       </a>
@@ -363,7 +362,7 @@ const ServiceRenderer: React.FC<ServiceRendererProps> = ({
                     <button
                       type="button"
                       onClick={() => handleInputChange(field.name, "")}
-                      className="text-[#FF7A00] hover:text-[#FF7A00]/80 text-sm"
+                      className="text-[#FF7A00] border border-[#FF7A00] p-2 rounded-md hover:text-[#FF7A00]/80 text-sm"
                     >
                       حذف
                     </button>

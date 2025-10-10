@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import React, { useState, useRef } from 'react';
-import Image from 'next/image';
-import { showToast } from '@/utilities/toast';
+import React, { useState, useRef } from "react";
+import Image from "next/image";
+import { showToast } from "@/utilities/toast";
 
 interface UploadedFile {
   key: string;
@@ -26,9 +26,9 @@ const FileUploaderModal: React.FC<FileUploaderModalProps> = ({
   isOpen,
   onClose,
   onFileUploaded,
-  acceptedTypes = ['.jpg', '.jpeg', '.png', '.gif', '.webp'],
+  acceptedTypes = [".jpg", ".jpeg", ".png", ".gif", ".webp"],
   maxFileSize = 10 * 1024 * 1024, // 10MB
-  title = 'آپلود تصویر'
+  title = "آپلود تصویر",
 }) => {
   const [isUploading, setIsUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
@@ -50,10 +50,10 @@ const FileUploaderModal: React.FC<FileUploaderModalProps> = ({
 
     try {
       const formData = new FormData();
-      formData.append('file', file);
+      formData.append("file", file);
 
-      const response = await fetch('/api/upload', {
-        method: 'POST',
+      const response = await fetch("/api/upload", {
+        method: "POST",
         body: formData,
       });
 
@@ -64,17 +64,17 @@ const FileUploaderModal: React.FC<FileUploaderModalProps> = ({
         setUploadedFiles([uploadedFile]); // Only keep the latest file for modal
         showToast.success(`فایل "${file.name}" با موفقیت آپلود شد!`);
         setUploadProgress(100);
-        
+
         // Auto-select the uploaded file after a short delay
         setTimeout(() => {
           onFileUploaded(uploadedFile.url);
           handleClose();
         }, 1500);
       } else {
-        showToast.error(result.error || 'آپلود ناموفق بود');
+        showToast.error(result.error || "آپلود ناموفق بود");
       }
     } catch (error) {
-      showToast.error('خطا در آپلود فایل');
+      showToast.error("خطا در آپلود فایل");
     } finally {
       setIsUploading(false);
       setTimeout(() => setUploadProgress(0), 2000);
@@ -84,9 +84,9 @@ const FileUploaderModal: React.FC<FileUploaderModalProps> = ({
   const handleDrag = (e: React.DragEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    if (e.type === 'dragenter' || e.type === 'dragover') {
+    if (e.type === "dragenter" || e.type === "dragover") {
       setDragActive(true);
-    } else if (e.type === 'dragleave') {
+    } else if (e.type === "dragleave") {
       setDragActive(false);
     }
   };
@@ -115,17 +115,20 @@ const FileUploaderModal: React.FC<FileUploaderModalProps> = ({
   };
 
   const formatFileSize = (bytes: number) => {
-    if (bytes === 0) return '0 Bytes';
+    if (bytes === 0) return "0 Bytes";
     const k = 1024;
-    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+    const sizes = ["Bytes", "KB", "MB", "GB"];
     const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i];
   };
 
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4" dir="rtl">
+    <div
+      className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+      dir="rtl"
+    >
       <div className="bg-gradient-to-br from-white/95 via-white/90 to-white/85 backdrop-blur-xl rounded-2xl border border-[#4DBFF0]/30 shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-[#4DBFF0]/20">
@@ -144,8 +147,8 @@ const FileUploaderModal: React.FC<FileUploaderModalProps> = ({
           <div
             className={`relative border-2 border-dashed rounded-2xl p-8 text-center transition-all duration-300 mb-6 ${
               dragActive
-                ? 'border-[#FF7A00] bg-[#FF7A00]/10'
-                : 'border-[#4DBFF0]/50 hover:border-[#4DBFF0] hover:bg-[#4DBFF0]/5'
+                ? "border-[#FF7A00] bg-[#FF7A00]/10"
+                : "border-[#4DBFF0]/50 hover:border-[#4DBFF0] hover:bg-[#4DBFF0]/5"
             }`}
             onDragEnter={handleDrag}
             onDragLeave={handleDrag}
@@ -157,12 +160,10 @@ const FileUploaderModal: React.FC<FileUploaderModalProps> = ({
               type="file"
               onChange={(e) => handleFileSelect(e.target.files)}
               className="hidden"
-              accept={acceptedTypes.join(',')}
+              accept={acceptedTypes.join(",")}
             />
 
             <div className="space-y-4">
-              <div className="text-6xl text-[#4DBFF0]">🖼️</div>
-
               <div>
                 <h3 className="text-xl font-bold text-[#0A1D37] mb-2">
                   تصویر خود را اینجا بکشید یا کلیک کنید
@@ -178,9 +179,9 @@ const FileUploaderModal: React.FC<FileUploaderModalProps> = ({
               <button
                 onClick={() => fileInputRef.current?.click()}
                 disabled={isUploading}
-                className="bg-gradient-to-r from-[#4DBFF0] to-[#FF7A00] text-white px-8 py-3 rounded-xl font-medium hover:from-[#4DBFF0]/80 hover:to-[#FF7A00]/80 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300"
+                className="text-[#0A1D37] border border-[#4DBFF0] hover:bg-[#0A1D37]/10 px-8 py-3 rounded-xl font-medium hover:from-[#4DBFF0]/80 hover:to-[#FF7A00]/80 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300"
               >
-                {isUploading ? 'در حال آپلود...' : 'انتخاب تصویر'}
+                {isUploading ? "در حال آپلود..." : "انتخاب تصویر"}
               </button>
             </div>
           </div>
@@ -189,7 +190,9 @@ const FileUploaderModal: React.FC<FileUploaderModalProps> = ({
           {isUploading && (
             <div className="mb-6">
               <div className="flex items-center justify-between mb-2">
-                <span className="text-[#0A1D37] font-medium">در حال آپلود...</span>
+                <span className="text-[#0A1D37] font-medium">
+                  در حال آپلود...
+                </span>
                 <span className="text-[#0A1D37]/60">{uploadProgress}%</span>
               </div>
               <div className="w-full bg-[#4DBFF0]/20 rounded-full h-2">
@@ -204,8 +207,10 @@ const FileUploaderModal: React.FC<FileUploaderModalProps> = ({
           {/* Uploaded Files */}
           {uploadedFiles.length > 0 && (
             <div className="space-y-4">
-              <h3 className="text-lg font-bold text-[#0A1D37]">فایل آپلود شده:</h3>
-              
+              <h3 className="text-lg font-bold text-[#0A1D37]">
+                فایل آپلود شده:
+              </h3>
+
               {uploadedFiles.map((file, index) => (
                 <div
                   key={index}
@@ -215,16 +220,21 @@ const FileUploaderModal: React.FC<FileUploaderModalProps> = ({
                     <div className="flex items-center space-x-reverse space-x-3">
                       <div className="text-2xl">🖼️</div>
                       <div>
-                        <h4 className="font-medium text-[#0A1D37]">{file.originalName}</h4>
+                        <h4 className="font-medium text-[#0A1D37]">
+                          {file.originalName}
+                        </h4>
                         <p className="text-[#0A1D37]/60 text-sm">
-                          {formatFileSize(file.size)} • {new Date(file.uploadedAt).toLocaleDateString('fa-IR')}
+                          {formatFileSize(file.size)} •{" "}
+                          {new Date(file.uploadedAt).toLocaleDateString(
+                            "fa-IR"
+                          )}
                         </p>
                       </div>
                     </div>
                   </div>
 
                   {/* Image Preview */}
-                  {file.type.startsWith('image/') && (
+                  {file.type.startsWith("image/") && (
                     <div className="mb-4">
                       <Image
                         src={file.url}
@@ -261,7 +271,7 @@ const FileUploaderModal: React.FC<FileUploaderModalProps> = ({
         <div className="flex items-center justify-end p-6 border-t border-[#4DBFF0]/20 space-x-reverse space-x-3">
           <button
             onClick={handleClose}
-            className="px-6 py-2 text-[#0A1D37] border border-[#4DBFF0]/50 rounded-lg hover:bg-[#4DBFF0]/10 transition-colors"
+            className="px-6 py-2 text-[#0A1D37] border border-[#FF7A00]/50 rounded-lg hover:bg-[#FF7A00]/10 transition-colors"
           >
             انصراف
           </button>

@@ -227,15 +227,13 @@ const ServiceManager: React.FC<ServiceManagerProps> = ({
 
           <button
             onClick={() => setCurrentView("create")}
-            className="group relative overflow-hidden px-8 py-4 bg-gradient-to-r from-[#FF7A00] to-[#4DBFF0] text-[#0A1D37] font-bold rounded-2xl hover:from-[#FF7A00]/80 hover:to-[#4DBFF0]/80 transition-all duration-500 shadow-xl hover:shadow-[#FF7A00]/30 border border-white/10 backdrop-blur-sm transform-gpu perspective-1000"
+            className="group relative overflow-hidden px-8 py-4 border-[#4DBFF0] text-[#0A1D37] font-bold rounded-md transition-all duration-500 shadow-xl  border hover:bg-[#0A1D37]/10 backdrop-blur-sm transform-gpu perspective-1000"
           >
             {/* Content */}
             <span className="relative flex items-center justify-center gap-3 z-10">
               <span className="tracking-wide">ایجاد سرویس جدید</span>
             </span>
 
-            {/* Bottom Highlight */}
-            <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-white/50 to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-500"></div>
           </button>
         </div>
 

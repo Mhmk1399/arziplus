@@ -351,7 +351,7 @@ const ServiceBuilder: React.FC<ServiceBuilderProps> = ({
                         <button
                           type="button"
                           onClick={onImageUploadClick}
-                          className="px-6 py-3 bg-gradient-to-r from-[#4DBFF0] to-[#FF7A00] text-white rounded-lg font-medium hover:from-[#4DBFF0]/80 hover:to-[#FF7A00]/80 transition-all duration-300 whitespace-nowrap"
+                          className="px-6 py-3 border-[#4DBFF0] text-[#0A1D37] border hover:bg-[#0A1D37]/10  rounded-lg font-medium hover:from-[#4DBFF0]/80 hover:to-[#FF7A00]/80 transition-all duration-300 whitespace-nowrap"
                         >
                           📁 آپلود تصویر
                         </button>
