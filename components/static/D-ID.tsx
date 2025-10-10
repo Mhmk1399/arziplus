@@ -153,7 +153,7 @@ const DIDPage = () => {
         ]}
         media={{
           type: "image",
-          src: "/assets/images/d-id.webp",
+          src: "/assets/images/D-ID.png",
           alt: "خرید اکانت D-ID",
           width: 1200,
           height: 800,
@@ -161,7 +161,7 @@ const DIDPage = () => {
         layout="default"
         theme={{
           headingColor: "text-gray-50",
-          subheadingColor: "text-gray-200",
+          subheadingColor: "text-gray-500",
           descriptionColor: "text-gray-300",
           backgroundColor: "bg-indigo-700",
         }}

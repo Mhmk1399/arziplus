@@ -190,8 +190,7 @@ export default function TextBox({
     "scrollbar-corner-transparent",
     border ? `border ${borderColor}` : "",
     rounded ? "rounded-lg" : "",
-    "bg-white",
-    "p-4",
+     "p-4",
     "transition-all duration-200",
     "hover:bg-gray-50/90",
   ]
@@ -201,7 +200,7 @@ export default function TextBox({
   return (
     <div
       ref={containerRef}
-      className={`${containerClasses} sm:px-30  `}
+      className={` sm:px-30 py-12  `}
       dir="rtl"
     >
       {/* Heading */}

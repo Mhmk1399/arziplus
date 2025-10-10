@@ -67,6 +67,7 @@ export default function FAQSection({
   const [openItems, setOpenItems] = useState<Set<string>>(new Set());
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
+  const [hasAnimated, setHasAnimated] = useState(false);
 
   const {
     // backgroundColor = "",
@@ -107,7 +108,7 @@ export default function FAQSection({
 
   // Enhanced entrance animations
   useEffect(() => {
-    if (!animate) return;
+    if (!animate || hasAnimated) return;
 
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({
@@ -115,8 +116,10 @@ export default function FAQSection({
           trigger: containerRef.current,
           start: "top 80%",
           end: "bottom 20%",
-          toggleActions: "play none none reverse",
+          toggleActions: "play none none none",
+          once: true,
         },
+        onStart: () => setHasAnimated(true),
       });
 
       // Header entrance with 3D rotation
@@ -203,7 +206,7 @@ export default function FAQSection({
     }, containerRef);
 
     return () => ctx.revert();
-  }, [animate]);
+  }, [animate, hasAnimated]);
 
   // انیمیشن باز/بسته شدن FAQ items
   useEffect(() => {
@@ -246,15 +249,7 @@ export default function FAQSection({
       ref={containerRef}
       className={`relative min-h-screen py-12 md:py-24 overflow-hidden ${className}`}
       dir="rtl"
-      style={{
-        background: `
-          #0A1D37,
-          radial-gradient(circle at 20% 80%, rgba(255, 122, 0, 0.15) 0%, transparent 40%),
-          radial-gradient(circle at 80% 20%, rgba(77, 191, 240, 0.12) 0%, transparent 50%),
-          radial-gradient(circle at 40% 40%, rgba(255, 122, 0, 0.08) 0%, transparent 60%),
-          linear-gradient(135deg, rgba(255, 122, 0, 0.05) 0%, rgba(77, 191, 240, 0.05) 100%)
-        `,
-      }}
+    
     >
       {/* Floating Background Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -317,7 +312,7 @@ export default function FAQSection({
               )}
 
               <h2
-                className={`animate-text text-2xl md:text-3xl lg:text-4xl ${estedadBold.className} ${headingColor} mb-6 relative z-10`}
+                className={`animate-text text-2xl md:text-3xl lg:text-4xl md:leading-12 ${estedadBold.className} ${headingColor} mb-6 relative z-10`}
                 style={{
                   background:
                     "linear-gradient(135deg, #FFFFFF 0%, #4DBFF0 50%, #FF7A00 100%)",
@@ -332,7 +327,7 @@ export default function FAQSection({
 
               {description && (
                 <p
-                  className={`animate-text text-base md:text-lg ${descriptionColor} leading-relaxed relative z-10 max-w-2xl mx-auto lg:mx-0`}
+                  className={`animate-text text-gray-500 text-base md:text-lg   leading-relaxed relative z-10 max-w-2xl mx-auto lg:mx-0`}
                 >
                   {description}
                 </p>

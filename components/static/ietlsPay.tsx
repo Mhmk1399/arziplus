@@ -4,8 +4,7 @@ import StepsSection from "../global/stepsSection";
 import {
   ctaThemes,
   faqThemes,
-  splitSectionThemes,
-  stepThemes,
+   stepThemes,
   textBoxThemes,
   textBoxTypography,
   themesWhyus,
@@ -288,7 +287,7 @@ Terms & Conditions را مطالعه و تأیید کنید
         ]}
         media={{
           type: "image",
-          src: "/assets/images/pardakht azmon.png",
+          src: "/assets/images/ielts.png",
           alt: "پرداخت هزینه آزمون آیلتس با ارزی پلاس",
           width: 1200,
           height: 800,

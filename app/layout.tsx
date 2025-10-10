@@ -20,7 +20,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="fa">
-      <body className={` ${estedad.className} antialiased relative`}>
+      <body className={` ${estedad.className} antialiased relative`}  style={{
+        background: `
+          radial-gradient(circle at 20% 80%, rgba(10, 29, 55, 0.1) 0%, transparent 50%),
+          radial-gradient(circle at 80% 20%, rgba(255, 122, 0, 0.1) 0%, transparent 50%),
+          radial-gradient(circle at 40% 40%, rgba(77, 191, 240, 0.1) 0%, transparent 50%),
+          linear-gradient(135deg, rgba(255, 255, 255, 0.02) 0%, rgba(10, 29, 55, 0.02) 100%)
+        `,
+      }}>
         <SchemaProvider>
           <Toaster position="top-center" />
           <NewNavbar />

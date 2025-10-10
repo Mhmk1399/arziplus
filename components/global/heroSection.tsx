@@ -350,15 +350,8 @@ export default function HeroSection({
   return (
     <section
       ref={heroRef}
-      className={`${backgroundClasses} relative min-h-screen flex items-center justify-center overflow-hidden py-24 px-2`}
-      style={{
-        background: `
-          radial-gradient(circle at 20% 80%, rgba(10, 29, 55, 0.1) 0%, transparent 50%),
-          radial-gradient(circle at 80% 20%, rgba(255, 122, 0, 0.1) 0%, transparent 50%),
-          radial-gradient(circle at 40% 40%, rgba(77, 191, 240, 0.1) 0%, transparent 50%),
-          linear-gradient(135deg, rgba(255, 255, 255, 0.02) 0%, rgba(10, 29, 55, 0.02) 100%)
-        `,
-      }}
+      className={`  relative min-h-screen flex items-center justify-center overflow-hidden py-24 px-2`}
+       
     >
       {/* Animated Background Elements */}
       <div
@@ -406,7 +399,7 @@ export default function HeroSection({
         <div
           className={`relative z-10 grid grid-cols-1 ${
             layout === "centered" ? "" : "lg:grid-cols-2"
-          } gap-16 lg:gap-24 items-center justify-center`}
+          } gap-10 lg:gap-24 items-center justify-center`}
         >
           {/* Enhanced Media Section */}
           {layout !== "centered" && (
@@ -488,11 +481,11 @@ export default function HeroSection({
           {/* Enhanced Content Section */}
           <div dir="rtl" className="w-full relative">
             {/* Elegant Badge */}
-            <div className="mb-8 flex justify-center md:justify-start">
+            <div className="mb-4 md:mb-8 flex justify-center md:justify-start">
               {subheading && (
                 <div className="relative group/badge">
                   <span
-                    className={`inline-flex items-center px-6 py-3 rounded-full text-sm font-medium bg-gradient-to-r from-white/20 via-white/10 to-white/5 backdrop-blur-sm border border-white/30 shadow-lg ${subheadingColor} relative z-10`}
+                    className={`inline-flex items-center px-6 py-3 rounded-full text-[10px] md:text-sm font-medium bg-gradient-to-r from-white/20 via-white/10 to-white/5 backdrop-blur-sm border border-white/30 shadow-lg ${subheadingColor} relative z-10`}
                   >
                     <div className="absolute inset-0 bg-gradient-to-r from-[#4DBFF0]/10 to-[#FF7A00]/10 rounded-full group-hover/badge:from-[#4DBFF0]/20 group-hover/badge:to-[#FF7A00]/20 transition-all duration-300"></div>
                     <span className="relative flex items-center gap-2">
@@ -507,7 +500,7 @@ export default function HeroSection({
             {/* Luxury Main Heading */}
             <h1
               ref={headingRef}
-              className={`mb-8 text-3xl  leading-12 font-black -tracking-wide ${
+              className={`mb-8 text-xl md:text-4xl  md:leading-12 font-black -tracking-wide ${
                 estedadBold.className
               } ${headingColor} ${
                 layout === "centered"
@@ -532,7 +525,7 @@ export default function HeroSection({
             {/* Enhanced Description */}
             <p
               ref={descriptionRef}
-              className={`mb-10 text-justify text-base md:text-lg lg:text-base text-[#A0A0A0] leading-relaxed font-medium `}
+              className={`md:mb-10 mb-4 text-center md:text-justify text-sm md:text-lg lg:text-base text-[#A0A0A0] leading-relaxed font-medium `}
               style={{
                 textShadow: "0 2px 10px rgba(0,0,0,0.1)",
               }}
@@ -620,7 +613,7 @@ export default function HeroSection({
 
                     {/* Arrow Icon */}
                     <svg
-                      className="w-5 h-5 opacity-0 group-hover:opacity-100 translate-x-[-10px] group-hover:translate-x-0 transition-all duration-300"
+                      className="w-5 h-5 rotate-180 translate-x-[10px] group-hover:translate-x-0 transition-all duration-300"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"

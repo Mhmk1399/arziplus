@@ -103,12 +103,12 @@ export default function StepsSection({
     connectionLineColor = "border-gray-300",
     numberColor = "bg-gray-200 text-gray-700",
     numberActiveColor = "bg-blue-500 text-white",
-    numberCompletedColor = "bg-green-500 text-white"
+    numberCompletedColor = "bg-green-500 text-white",
   } = theme;
 
   // Helper function to extract hex color and apply as inline style
   const getBoxStyle = (colorClass: string) => {
-    if (colorClass.includes('bg-[#')) {
+    if (colorClass.includes("bg-[#")) {
       const hexMatch = colorClass.match(/bg-\[#([A-Fa-f0-9]{6})\]/);
       if (hexMatch) {
         return { backgroundColor: `#${hexMatch[1]}` };
@@ -409,15 +409,22 @@ export default function StepsSection({
   // Mobile simple layout (no sliding)
   if (!isDesktop && isMounted) {
     return (
-      <section className={`py-16 md:py-20 ${backgroundGradient || backgroundColor} ${className}`} dir="rtl">
+      <section
+        className={`py-16 md:py-20   ${className}`}
+        dir="rtl"
+      >
         <div className="max-w-5xl mx-auto px-6 md:px-8">
           {/* Header */}
           <div className="text-center mb-12">
-            <h2 className={`text-2xl md:text-3xl font-bold ${headingColor} mb-4 leading-tight`}>
+            <h2
+              className={`text-xl md:text-3xl font-bold ${headingColor} mb-4 leading-tight`}
+            >
               {heading}
             </h2>
             {description && (
-              <p className={`text-sm ${descriptionColor} max-w-xl mx-auto leading-relaxed opacity-75`}>
+              <p
+                className={`text-sm ${descriptionColor} max-w-xl mx-auto leading-relaxed opacity-75`}
+              >
                 {description}
               </p>
             )}
@@ -427,23 +434,31 @@ export default function StepsSection({
           <div className="flex flex-col gap-6 p-4">
             {steps.map((step) => (
               <div key={step.id} className="w-full">
-                <div 
-                  className={`${stepBoxColor.includes('bg-[#') ? '' : stepBoxColor} shadow-xl backdrop-blur-lg rounded-xl border border-gray-400/10 p-6 transition-all duration-300 hover:border-gray-200 hover:shadow-2xl hover:scale-105 h-32`}
+                <div
+                  className={`${
+                    stepBoxColor.includes("bg-[#") ? "" : stepBoxColor
+                  } shadow-xl backdrop-blur-lg rounded-xl border border-gray-400/10 p-6 transition-all duration-300 hover:border-gray-200 hover:shadow-2xl hover:scale-105 h-32`}
                   style={getBoxStyle(stepBoxColor)}
                 >
                   <div className="h-full flex flex-col justify-center">
                     <div className="flex items-center gap-3 mb-2">
                       {showIcons && step.icon && (
-                        <div className={`text-lg ${stepActiveTextColor} flex-shrink-0`}>
+                        <div
+                          className={`text-lg ${stepActiveTextColor} flex-shrink-0`}
+                        >
                           {step.icon}
                         </div>
                       )}
-                      <h3 className={`text-sm font-bold ${stepTextColor} flex-1 line-clamp-2`}>
+                      <h3
+                        className={`text-sm font-bold ${stepTextColor} flex-1 line-clamp-2`}
+                      >
                         {step.title}
                       </h3>
                     </div>
                     {step.description && (
-                      <p className={`text-xs ${descriptionColor} leading-7 line-clamp-2`}>
+                      <p
+                        className={`text-xs ${descriptionColor} leading-7 line-clamp-2`}
+                      >
                         {step.description}
                       </p>
                     )}
@@ -461,18 +476,26 @@ export default function StepsSection({
   return (
     <section
       ref={containerRef}
-      className={`py-16 md:py-20 ${backgroundGradient || backgroundColor} ${className}`}
+      className="relative py-16 md:py-20 overflow-hidden"
       dir="rtl"
     >
+      {/* Blurred Circle Background */}
+      <div className="absolute inset-0 flex justify-center items-center">
+        <div className="w-[400px] h-[400px] md:w-[200px] md:h-[450px] rounded-full bg-gradient-to-r   from-[#FF7A00] to-transparent blur-3xl opacity-40" />
+      </div>
       <div className="max-w-5xl mx-auto px-6 md:px-8">
         {/* Header */}
         <div className="text-center mb-12">
-          <h2 className={`text-2xl md:text-3xl font-bold ${headingColor} mb-4 leading-tight`}>
+          <h2
+            className={`text-2xl md:text-3xl font-bold ${headingColor} mb-4 leading-tight`}
+          >
             {heading}
           </h2>
 
           {description && (
-            <p className={`text-sm ${descriptionColor} max-w-xl mx-auto leading-relaxed opacity-75`}>
+            <p
+              className={`text-sm ${descriptionColor} max-w-xl mx-auto leading-relaxed opacity-75`}
+            >
               {description}
             </p>
           )}
@@ -490,7 +513,9 @@ export default function StepsSection({
                 className="hidden md:flex absolute right-0 top-1/2 -translate-y-1/2 translate-x-12 z-10 w-10 h-10 items-center justify-center rounded-full bg-white shadow-lg border border-gray-200 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
                 aria-label="Previous"
               >
-                <ChevronRightIcon className={`w-5 h-5 ${stepActiveTextColor}`} />
+                <ChevronRightIcon
+                  className={`w-5 h-5 ${stepActiveTextColor}`}
+                />
               </button>
 
               {/* Next button (left side in RTL) */}
@@ -541,7 +566,9 @@ export default function StepsSection({
                     }}
                   >
                     <div
-                      className={`${stepBoxColor.includes('bg-[#') ? '' : stepBoxColor} shadow-xl backdrop-blur-lg rounded-xl border p-6 md:p-8 transition-all duration-500 h-64 ${
+                      className={`${
+                        stepBoxColor.includes("bg-[#") ? "" : stepBoxColor
+                      } shadow-xl backdrop-blur-lg rounded-xl border p-6 md:p-8 transition-all duration-500 h-64 ${
                         isActive
                           ? `${stepActiveColor} hover:shadow-2xl hover:scale-105`
                           : "border-gray-400/10 hover:border-gray-200 hover:opacity-60"
@@ -594,7 +621,7 @@ export default function StepsSection({
                   onClick={() => scrollToIndex(index)}
                   className={`w-2 h-2 rounded-full transition-all duration-300 ${
                     currentIndex === index
-                      ? `${numberActiveColor.replace('text-white', '')} w-8`
+                      ? `${numberActiveColor.replace("text-white", "")} w-8`
                       : "bg-gray-300 hover:bg-gray-400"
                   }`}
                   aria-label={`Go to page ${index + 1}`}

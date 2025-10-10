@@ -379,7 +379,7 @@ export default function Footer() {
                 {/* CTA Phone Button */}
                 <a
                   href="tel:+989123456789"
-                  className="group inline-flex items-center gap-4 px-10 py-5 rounded-2xl bg-gradient-to-r from-[#FF7A00] to-[#4DBFF0] text-white font-bold text-lg shadow-[0_10px_40px_rgba(255,122,0,0.3)] hover:shadow-[0_15px_50px_rgba(255,122,0,0.4)] transition-all duration-500 hover:scale-105 hover:-translate-y-1"
+                  className="group inline-flex items-center gap-4 px-10 py-5 rounded-2xl bg-gradient-to-r from-[#FF7A00] to-[#4DBFF0] text-white font-bold text-lg shadow-[0_10px_40px_rgba(255,122,0,0.3)] hover:shadow-[0_15px_50px_rgba(255,122,0,0.4)] transition-all duration-75 hover:scale-105 hover:-translate-y-1"
                 >
                   <FaPhone className="text-xl group-hover:rotate-12 transition-transform duration-300" />
                   <span className="tracking-wider">۰۹۱۲-۳۴۵-۶۷۸۹</span>

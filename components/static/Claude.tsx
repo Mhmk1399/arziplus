@@ -153,7 +153,7 @@ const ClaudeAIPage = () => {
         ]}
         media={{
           type: "image",
-          src: "/assets/images/claude-ai.webp",
+          src: "/assets/images/claude.png",
           alt: "خرید اکانت Claude AI",
           width: 1200,
           height: 800,
@@ -161,7 +161,7 @@ const ClaudeAIPage = () => {
         layout="default"
         theme={{
           headingColor: "text-gray-50",
-          subheadingColor: "text-gray-200",
+          subheadingColor: "text-gray-500",
           descriptionColor: "text-gray-300",
           backgroundColor: "bg-indigo-700",
         }}
