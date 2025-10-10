@@ -301,6 +301,92 @@ export const schemaConfig: Record<string, Partial<SchemaData>> = {
     title: 'خدمات ارزی پلاس - فهرست کامل',
     description: 'فهرست کامل خدمات پرداخت ارزی، خرید اشتراک و باز کردن حساب خارجی',
     category: 'Services Directory'
+  },
+
+  // خدمات سیم کارت بینالمللی
+  '/EnglishSimCard': {
+    type: 'Service',
+    title: 'خرید سیم کارت انگلیس از ایران',
+    description: 'خرید سیم کارت انگلیس برای مسافرت و اقامت',
+    category: 'Telecom Services',
+    provider: 'UK Telecom'
+  },
+
+  '/EstonianSimCard': {
+    type: 'Service',
+    title: 'خرید سیم کارت استونی از ایران',
+    description: 'خرید سیم کارت استونی برای اروپا',
+    category: 'Telecom Services',
+    provider: 'Estonia Telecom'
+  },
+
+  '/GermanSimCard': {
+    type: 'Service',
+    title: 'خرید سیم کارت آلمان از ایران',
+    description: 'خرید سیم کارت آلمان برای مسافرت و تحصیل',
+    category: 'Telecom Services',
+    provider: 'Germany Telecom'
+  },
+
+  '/MalaysianSimCard': {
+    type: 'Service',
+    title: 'خرید سیم کارت مالزی از ایران',
+    description: 'خرید سیم کارت مالزی برای آسیا',
+    category: 'Telecom Services',
+    provider: 'Malaysia Telecom'
+  },
+
+  '/InternationalSimRecharge': {
+    type: 'Service',
+    title: 'شارژ سیم کارت بینالمللی از ایران',
+    description: 'شارژ اعتبار سیم کارتهای بینالمللی',
+    category: 'Telecom Services'
+  },
+
+  // خدمات اضافی
+  '/jokerPayment': {
+    type: 'Service',
+    title: 'خرید دامنه از Joker از ایران',
+    description: 'خرید دامنه از سایت Joker.com',
+    category: 'Domain Services',
+    provider: 'Joker.com'
+  },
+
+  '/opening-a-Upwork-account': {
+    type: 'Service',
+    title: 'باز کردن حساب Upwork از ایران',
+    description: 'راهنمای کامل باز کردن حساب Upwork برای فریلنسرها',
+    category: 'Freelance Services',
+    provider: 'Upwork'
+  },
+
+  '/AddressVerificationDocuments': {
+    type: 'Service',
+    title: 'مدارک تأیید آدرس بینالمللی',
+    description: 'دریافت مدارک تأیید آدرس برای حسابهای بینالمللی',
+    category: 'Document Services'
+  },
+
+  // صفحات اضافی
+  '/about': {
+    type: 'WebPage',
+    title: 'درباره ارزی پلاس',
+    description: 'آشنایی با ارزی پلاس و خدمات ما',
+    category: 'About'
+  },
+
+  '/contact': {
+    type: 'WebPage',
+    title: 'تماس با ارزی پلاس',
+    description: 'راههای تماس و پشتیبانی ارزی پلاس',
+    category: 'Contact'
+  },
+
+  '/services-client': {
+    type: 'WebPage',
+    title: 'پنل مشتری ارزی پلاس',
+    description: 'پنل مدیریت خدمات و سفارشات',
+    category: 'Client Panel'
   }
 }
 
@@ -312,4 +398,21 @@ export function getSchemaConfig(route: string): Partial<SchemaData> | undefined 
 // شمارش کل صفحات تعریف شده
 export function getTotalPagesCount(): number {
   return Object.keys(schemaConfig).length
+}
+
+// دریافت لیست صفحات جدید
+export function getNewPages(): string[] {
+  return [
+    '/EnglishSimCard',
+    '/EstonianSimCard', 
+    '/GermanSimCard',
+    '/MalaysianSimCard',
+    '/InternationalSimRecharge',
+    '/jokerPayment',
+    '/opening-a-Upwork-account',
+    '/AddressVerificationDocuments',
+    '/about',
+    '/contact',
+    '/services-client'
+  ]
 }

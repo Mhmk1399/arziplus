@@ -178,22 +178,22 @@ export const menuItems: MenuItems = [
               icon: MdChatBubble,
             },
             {
-              name: "خرید اکانت Claude AI",
+              name: "  اکانت Claude AI",
               href: "/buy-Claude",
               icon: FaBrain,
             },
             {
-              name: "خرید اکانت Midjourney",
+              name: "  اکانت Midjourney",
               href: "/buy-Midjourney",
               icon: FaStar,
             },
             {
-              name: "خرید اکانت D-ID",
+              name: "  اکانت D-ID",
               href: "/buy-D-ID",
               icon: FaIdCard,
             },
             {
-              name: "خرید اکانت DALL-E",
+              name: "  اکانت DALL-E",
               href: "/buy-DALL-E",
               icon: FaImage,
             },
@@ -230,74 +230,6 @@ export const menuItems: MenuItems = [
             },
           ],
         },
-        // {
-        //   name: "خرید از سایت‌ها و سایر",
-        //   icon: FaShoppingCart,
-        //   childrens: [
-        //     {
-        //       name: "خرید از ای‌بی (ebay)",
-        //       href: "/buy-from-ebay",
-        //       icon: FaCartArrowDown,
-        //     },
-        //     {
-        //       name: "خرید از علی‌بابا",
-        //       href: "/buy-from-alibaba",
-        //       icon: FaStore,
-        //     },
-        //     {
-        //       name: "خرید از شِاین (shein)",
-        //       href: "/buy-from-shein",
-        //       icon: FaShoppingBag,
-        //     },
-        //   ],
-        // },
-        {
-          name: "هاستینگ و دامنه",
-          icon: FaServer,
-          childrens: [
-            {
-              name: "هاستینگر (Hostinger)",
-              href: "/HostingerHostingPayment",
-              icon: FaDatabase,
-            },
-            {
-              name: "هتزنر (hetzner)",
-              href: "/HetznerInvoicePayment",
-              icon: FaCloud,
-            },
-            {
-              name: "خرید دامنه از جوکر",
-              href: "/joker-domain-purchase",
-              icon: FaGlobe,
-            },
-          ],
-        },
-        {
-          name: "پرداخت‌های دانشجویی",
-          icon: FaSchool,
-          childrens: [
-            {
-              name: "شهریه دانشگاه خارجی",
-              href: "/Paying-tuition-fees-at-a-foreign-university",
-              icon: FaFileInvoice,
-            },
-            {
-              name: "دیپازیت فی",
-              href: "/depositFeePayment",
-              icon: FaCoins,
-            },
-            {
-              name: "اپلیکیشن فی",
-              href: "/ApplicationFeePayment",
-              icon: FaFileContract,
-            },
-            {
-              name: "پرداخت هزینه uni-assist",
-              href: "/UniAssistPayment",
-              icon: FaGraduationCap,
-            },
-          ],
-        },
         {
           name: "سفارت / ویزا / هتل",
           icon: FaPassport,
@@ -329,6 +261,75 @@ export const menuItems: MenuItems = [
             },
           ],
         },
+        // {
+        //   name: "خرید از سایت‌ها و سایر",
+        //   icon: FaShoppingCart,
+        //   childrens: [
+        //     {
+        //       name: "خرید از ای‌بی (ebay)",
+        //       href: "/buy-from-ebay",
+        //       icon: FaCartArrowDown,
+        //     },
+        //     {
+        //       name: "خرید از علی‌بابا",
+        //       href: "/buy-from-alibaba",
+        //       icon: FaStore,
+        //     },
+        //     {
+        //       name: "خرید از شِاین (shein)",
+        //       href: "/buy-from-shein",
+        //       icon: FaShoppingBag,
+        //     },
+        //   ],
+        // },
+        {
+          name: "پرداخت‌های دانشجویی",
+          icon: FaSchool,
+          childrens: [
+            {
+              name: "شهریه دانشگاه خارجی",
+              href: "/Paying-tuition-fees-at-a-foreign-university",
+              icon: FaFileInvoice,
+            },
+            {
+              name: "دیپازیت فی",
+              href: "/depositFeePayment",
+              icon: FaCoins,
+            },
+            {
+              name: "اپلیکیشن فی",
+              href: "/ApplicationFeePayment",
+              icon: FaFileContract,
+            },
+            {
+              name: "پرداخت   uni-assist",
+              href: "/UniAssistPayment",
+              icon: FaGraduationCap,
+            },
+          ],
+        },
+
+        {
+          name: "هاستینگ و دامنه",
+          icon: FaServer,
+          childrens: [
+            {
+              name: "هاستینگر (Hostinger)",
+              href: "/HostingerHostingPayment",
+              icon: FaDatabase,
+            },
+            {
+              name: "هتزنر (hetzner)",
+              href: "/HetznerInvoicePayment",
+              icon: FaCloud,
+            },
+            {
+              name: "خرید دامنه از جوکر",
+              href: "/jokerPayment",
+              icon: FaGlobe,
+            },
+          ],
+        },
       ],
     },
   },
@@ -337,71 +338,72 @@ export const menuItems: MenuItems = [
     childrens: {
       dropdowns: [
         {
-          name: "وریفای و ثبت نام سایت های فریلنسری",
-          icon: FaUserCheck,
-          childrens: [
-            {
-              name: "افتتاح حساب آپورک",
-              href: "/UpWork-account",
-              icon: FaBriefcase,
-            },
-            {
-              name: "افتتاح حساب فریلنسر",
-              href: "/freeLancer-account",
-              icon: FaBriefcase,
-            },
-            {
-              name: "افتتاح حساب فایور",
-              href: "/fiver-account",
-              icon: FaBriefcase,
-            },
-          ],
-        },
-        {
           name: "سیم کارت های فیزیکی",
           icon: FaSimCard,
           childrens: [
             {
               name: "خرید سیم کارت مالزی",
-              href: "/buy-malasian-sim",
+              href: "/MalaysianSimCard",
               icon: FaMobileAlt,
             },
             {
               name: "خرید سیم کارت انگلیس",
-              href: "/buy-english-sim",
+              href: "/EnglishSimCard",
               icon: FaMobileAlt,
             },
             {
               name: "خرید سیم کارت استونی",
-              href: "/buy-stony-sim",
+              href: "/EstonianSimCard",
               icon: FaMobileAlt,
             },
             {
               name: "خرید سیم کارت آلمان",
-              href: "/buy-german-sim",
+              href: "/GermanSimCard",
               icon: FaMobileAlt,
             },
             {
               name: "شارژ سیم کارت بین الملل",
-              href: "/charge-sim",
+              href: "/InternationalSimRecharge",
               icon: FaBolt,
             },
           ],
         },
+        {
+          name: "وریفای و ثبت نام سایت های فریلنسری",
+          icon: FaUserCheck,
+          childrens: [
+            {
+              name: "افتتاح حساب آپورک",
+              href: "/opening-a-Upwork-account",
+              icon: FaBriefcase,
+            },
+            // {
+            //   name: "افتتاح حساب فریلنسر",
+            //   href: "/freeLancer-account",
+            //   icon: FaBriefcase,
+            // },
+            // {
+            //   name: "افتتاح حساب فایور",
+            //   href: "/fiver-account",
+            //   icon: FaBriefcase,
+            // },
+          ],
+        },
+
         {
           name: "وریفای حساب های خارجی",
           icon: MdVerifiedUser,
           childrens: [
             {
               name: "مدارک تایید ادرس -قبض-پرینت حساب بانکی",
-              href: "/adrees-bill",
+              href: "/AddressVerificationDocuments",
               icon: FaMapMarkerAlt,
             },
-            {
-              name: "مدارک فیزیکی تایید هویت بین الملل",
-              href: "/verfication-carts",
-              icon: FaIdCard,
-            },
+            // {
+            //   name: "مدارک فیزیکی تایید هویت بین الملل",
+            //   href: "/verfication-carts",
+            //   icon: FaIdCard,
+            // },
           ],
         },
       ],
@@ -417,12 +419,12 @@ export const menuItems: MenuItems = [
           childrens: [
             {
               name: "درباره ما",
-              href: "/about-us",
+              href: "/about",
               icon: FaInfoCircle,
             },
             {
               name: "تماس با ما",
-              href: "/contact-us",
+              href: "/contact",
               icon: FaPhoneAlt,
             },
             {

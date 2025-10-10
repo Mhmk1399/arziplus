@@ -255,7 +255,7 @@ Take the Test: شروع آزمون پس از خرید
         ]}
         media={{
           type: "image",
-          src: "/assets/images/duolingo-payment.webp",
+          src: "/assets/images/pardakht azmon.png",
           alt: "پرداخت هزینه آزمون Duolingo با ارزی پلاس",
           width: 1200,
           height: 800,

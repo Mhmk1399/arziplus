@@ -226,7 +226,7 @@ GRE Subject (تخصصی)
         ]}
         media={{
           type: "image",
-          src: "/assets/images/gre-payment.webp",
+          src: "/assets/images/pardakht azmon.png",
           alt: "پرداخت هزینه آزمون GRE با ارزی پلاس",
           width: 1200,
           height: 800,

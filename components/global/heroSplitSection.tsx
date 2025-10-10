@@ -258,7 +258,7 @@ export default function HeroSplitSection({
         <div
           ref={textRef}
           dir="rtl"
-          className={`relative ${textClass} flex flex-col justify-center gap-6 md:gap-8`}
+          className={`relative ${textClass} flex flex-col justify-center items-center md:items-start gap-6 md:gap-8`}
         >
           {/* Luxury Glass Background */}
           <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-white/10 via-white/5 to-transparent backdrop-blur-xl  -z-10">
@@ -341,7 +341,7 @@ export default function HeroSplitSection({
 
           {/* Enhanced Buttons */}
           {buttons?.length && (
-            <div className="animate-text flex flex-wrap gap-4 mt-8 justify-center md:justify-end">
+            <div className="animate-text flex flex-wrap gap-4 mt-8 justify-center md:justify-start">
               {buttons.map((button, index) => (
                 <Link
                   key={index}

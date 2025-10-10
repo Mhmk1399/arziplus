@@ -23,6 +23,23 @@ export const sitemapConfig = {
     '/Paying-for-the-Australia-Embassy': { priority: 0.7, changeFreq: 'monthly' as const },
     '/Paying-tuition-fees-at-a-foreign-university': { priority: 0.7, changeFreq: 'monthly' as const },
     
+    // Sim card services
+    '/EnglishSimCard': { priority: 0.7, changeFreq: 'monthly' as const },
+    '/EstonianSimCard': { priority: 0.7, changeFreq: 'monthly' as const },
+    '/GermanSimCard': { priority: 0.7, changeFreq: 'monthly' as const },
+    '/MalaysianSimCard': { priority: 0.7, changeFreq: 'monthly' as const },
+    '/InternationalSimRecharge': { priority: 0.7, changeFreq: 'monthly' as const },
+    
+    // Additional services
+    '/jokerPayment': { priority: 0.7, changeFreq: 'monthly' as const },
+    '/opening-a-Upwork-account': { priority: 0.7, changeFreq: 'monthly' as const },
+    '/AddressVerificationDocuments': { priority: 0.6, changeFreq: 'monthly' as const },
+    
+    // Info pages
+    '/about': { priority: 0.5, changeFreq: 'yearly' as const },
+    '/contact': { priority: 0.8, changeFreq: 'monthly' as const },
+    '/services-client': { priority: 0.6, changeFreq: 'weekly' as const },
+    
     // Default for other routes
     default: { priority: 0.6, changeFreq: 'monthly' as const }
   },
@@ -31,6 +48,7 @@ export const sitemapConfig = {
   excludeRoutes: [
     '/admin',
     '/api',
+    '/auth',
     '/examples'
   ]
 }

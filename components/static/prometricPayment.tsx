@@ -112,8 +112,8 @@ const PrometricPayment = () => {
 اگر در هر مرحله از پرداخت هزینه آزمون به مشکل خوردید، ارزی پلاس همراه شماست.
 با ثبت سفارش در سایت، کارشناسان ما هزینه آزمون پرومتریک شما را در کوتاه‌ترین زمان و با کارمزد پایین و پرداخت امن ارزی انجام می‌دهند.
 
-پس اگر قصد شرکت در آزمون‌های بین‌المللی مانند Prometric، TOEFL، IELTS، GRE یا Pearson را دارید، دیگر نگران پرداخت ارزی نباشید — ارزی پلاس این مسیر را برای شما ساده کرده است.`
-    const prometricSteps = [
+پس اگر قصد شرکت در آزمون‌های بین‌المللی مانند Prometric، TOEFL، IELTS، GRE یا Pearson را دارید، دیگر نگران پرداخت ارزی نباشید — ارزی پلاس این مسیر را برای شما ساده کرده است.`;
+  const prometricSteps = [
     {
       id: "register",
       title: "ثبت‌نام در ارزی پلاس",
@@ -216,7 +216,7 @@ const PrometricPayment = () => {
         ]}
         media={{
           type: "image",
-          src: "/assets/images/prometric-payment.webp",
+          src: "/assets/images/pardakht azmon.png",
           alt: "پرداخت هزینه آزمون پرومتریک با ارزی پلاس",
           width: 1200,
           height: 800,

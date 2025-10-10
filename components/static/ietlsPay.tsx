@@ -288,7 +288,7 @@ Terms & Conditions را مطالعه و تأیید کنید
         ]}
         media={{
           type: "image",
-          src: "/assets/images/ielts-payment.webp",
+          src: "/assets/images/pardakht azmon.png",
           alt: "پرداخت هزینه آزمون آیلتس با ارزی پلاس",
           width: 1200,
           height: 800,
