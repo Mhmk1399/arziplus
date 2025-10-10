@@ -445,36 +445,7 @@ const ServiceRenderer: React.FC<ServiceRendererProps> = ({
     >
       <div className="max-w-6xl mx-auto">
         {/* User Info Display */}
-        {currentUser && (
-          <div className="mb-8 p-4 bg-gradient-to-r from-[#4DBFF0]/10 to-[#FF7A00]/10 backdrop-blur-sm border border-[#4DBFF0]/30 rounded-2xl">
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-full bg-gradient-to-r from-[#4DBFF0] to-[#FF7A00] flex items-center justify-center text-white font-bold text-lg">
-                {currentUser.firstName?.charAt(0) || currentUser.email?.charAt(0) || 'U'}
-              </div>
-              <div>
-                <h3 className="text-[#0A1D37] font-semibold">
-                  {userDisplayName}
-                </h3>
-                <div className="text-sm text-[#0A1D37]/70 space-y-1">
-                  <p>📧 {currentUser.email}</p>
-                  {currentUser.phone && <p>📱 {currentUser.phone}</p>}
-                  <p>🆔 {currentUser.id}</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {!currentUser && (
-          <div className="mb-8 p-4 bg-yellow-50 border border-yellow-200 rounded-2xl">
-            <div className="text-center">
-              <p className="text-yellow-800 mb-2">برای استفاده از خدمات، لطفاً وارد حساب کاربری خود شوید</p>
-              <a href="/auth/sms" className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-[#4DBFF0] to-[#FF7A00] text-white rounded-lg hover:shadow-lg transition-all">
-                ورود / ثبت نام
-              </a>
-            </div>
-          </div>
-        )}
+       
         {!selectedService ? (
           // Services Grid
           <div>
