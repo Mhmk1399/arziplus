@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { ServiceField } from "@/types/serviceBuilder/types";
 import { showToast } from "@/utilities/toast";
+import FileUploaderModal from "@/components/FileUploaderModal";
 
 // Extended ServiceField interface to handle both options and items (backward compatibility)
 interface ExtendedServiceField extends ServiceField {
@@ -47,6 +48,8 @@ const ServiceRenderer: React.FC<ServiceRendererProps> = ({
   const [formData, setFormData] = useState<Record<string, any>>({});
   const [loading, setLoading] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [isFileModalOpen, setIsFileModalOpen] = useState(false);
+  const [currentFileField, setCurrentFileField] = useState<string | null>(null);
 
   useEffect(() => {
     if (propServices) {
@@ -90,6 +93,20 @@ const ServiceRenderer: React.FC<ServiceRendererProps> = ({
     }));
   };
 
+  const handleFileUploadClick = (fieldName: string) => {
+    setCurrentFileField(fieldName);
+    setIsFileModalOpen(true);
+  };
+
+  const handleFileUploaded = (fileUrl: string) => {
+    if (currentFileField) {
+      handleInputChange(currentFileField, fileUrl);
+      setCurrentFileField(null);
+    }
+    setIsFileModalOpen(false);
+    showToast.success("فایل با موفقیت آپلود شد!");
+  };
+
   const shouldShowField = (field: ExtendedServiceField): boolean => {
     if (!field.showIf) return true;
 
@@ -105,7 +122,7 @@ const ServiceRenderer: React.FC<ServiceRendererProps> = ({
 
     for (const field of requiredFields) {
       if (!formData[field.name] || formData[field.name] === "") {
-        showToast.error(`${field.label || field.name} is required`);
+        showToast.error(`فیلد ${field.label || field.name} الزامی است`);
         return false;
       }
     }
@@ -307,14 +324,70 @@ const ServiceRenderer: React.FC<ServiceRendererProps> = ({
 
         case "file":
           return (
-            <input
-              type="file"
-              onChange={(e) =>
-                handleInputChange(field.name, e.target.files?.[0])
-              }
-              className={`${baseInputClasses} file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-[#4DBFF0]/10 file:text-[#4DBFF0] hover:file:bg-[#4DBFF0]/20`}
-              required={field.required}
-            />
+            <div className="space-y-3">
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  value={value || ""}
+                  placeholder="فایل انتخاب نشده - از دکمه آپلود استفاده کنید"
+                  className={`${baseInputClasses} flex-1`}
+                  readOnly
+                />
+                <button
+                  type="button"
+                  onClick={() => handleFileUploadClick(field.name)}
+                  className="px-6 py-3 bg-gradient-to-r from-[#4DBFF0] to-[#FF7A00] text-white rounded-xl font-medium hover:from-[#4DBFF0]/80 hover:to-[#FF7A00]/80 transition-all duration-300 whitespace-nowrap"
+                >
+                  📁 آپلود فایل
+                </button>
+              </div>
+
+              {/* File Preview */}
+              {value && (
+                <div className="p-3 bg-white/5 rounded-lg border border-[#4DBFF0]/30">
+                  <p className="text-[#0A1D37]/70 text-sm mb-2">
+                    فایل آپلود شده:
+                  </p>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-reverse space-x-2">
+                      <span className="text-2xl">📎</span>
+                      <a
+                        href={value}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-[#4DBFF0] hover:text-[#4DBFF0]/80 text-sm underline"
+                      >
+                        مشاهده فایل
+                      </a>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => handleInputChange(field.name, "")}
+                      className="text-[#FF7A00] hover:text-[#FF7A00]/80 text-sm"
+                    >
+                      حذف
+                    </button>
+                  </div>
+
+                  {/* Image Preview if it's an image */}
+                  {value &&
+                    (value.includes("image") ||
+                      value.match(/\.(jpg|jpeg|png|gif|webp)$/i)) && (
+                      <div className="mt-2">
+                        <img
+                          src={value}
+                          alt="پیش‌نمایش"
+                          className="w-32 h-32 object-cover rounded-lg border border-[#4DBFF0]/50"
+                          onError={(e) => {
+                            const img = e.target as HTMLImageElement;
+                            img.style.display = "none";
+                          }}
+                        />
+                      </div>
+                    )}
+                </div>
+              )}
+            </div>
           );
 
         default:
@@ -414,24 +487,9 @@ const ServiceRenderer: React.FC<ServiceRendererProps> = ({
                           </p>
                         )}
 
-                        <div className="flex items-center justify-between pt-4 border-t border-[#4DBFF0]/20">
-                          <div className="text-[#0A1D37]">
-                            <span className="text-2xl font-bold text-[#FF7A00]">
-                              ${service.fee}
-                            </span>
-                          </div>
+                        <div className="flex items-center justify-between pt-4 border-t border-[#4DBFF0]/20"></div>
 
-                          <div className="flex items-center space-x-reverse space-x-2 text-[#0A1D37]/60 text-sm">
-                            <span>{service.fields.length} فیلد</span>
-                            {service.wallet && (
-                              <span className="bg-[#4DBFF0]/20 text-[#4DBFF0] px-2 py-1 rounded-full text-xs border border-[#4DBFF0]/30">
-                                پرداخت کیف پول
-                              </span>
-                            )}
-                          </div>
-                        </div>
-
-                        <button className="w-full bg-gradient-to-r from-[#4DBFF0] to-[#FF7A00] text-white py-3 rounded-xl font-medium hover:from-[#4DBFF0]/80 hover:to-[#FF7A00]/80 transition-all duration-300 transform group-hover:scale-105">
+                        <button className="w-full text-[#0A1D37] border border-[#FF7A00] hover:bg-[#4DBFF0]/10 hover:border-[#4DBFF] py-3 rounded-xl font-medium hover:from-[#4DBFF0]/80 hover:to-[#FF7A00]/80 transition-all duration-300 transform group-hover:scale-105">
                           درخواست خدمت
                         </button>
                       </div>
@@ -507,6 +565,29 @@ const ServiceRenderer: React.FC<ServiceRendererProps> = ({
           </div>
         )}
       </div>
+
+      {/* File Upload Modal */}
+      <FileUploaderModal
+        isOpen={isFileModalOpen}
+        onClose={() => {
+          setIsFileModalOpen(false);
+          setCurrentFileField(null);
+        }}
+        onFileUploaded={handleFileUploaded}
+        acceptedTypes={[
+          ".jpg",
+          ".jpeg",
+          ".png",
+          ".gif",
+          ".webp",
+          ".pdf",
+          ".doc",
+          ".docx",
+          ".txt",
+        ]}
+        maxFileSize={10 * 1024 * 1024} // 10MB
+        title="آپلود فایل"
+      />
     </div>
   );
 };
