@@ -15,11 +15,13 @@ export interface CloudFrontFileInfo {
  * @returns CloudFront URL
  */
 export function getCloudFrontUrl(key: string): string {
-  const cloudFrontDomain = process.env.NEXT_PUBLIC_CLOUDFRONT_DOMAIN || process.env.AWS_CLOUDFRONT_DOMAIN;
+  // Use the public environment variable for client-side access
+  const cloudFrontDomain = process.env.NEXT_PUBLIC_CLOUDFRONT_DOMAIN;
   
   if (!cloudFrontDomain) {
-    console.error('CloudFront domain not configured');
-    return '';
+    console.error('NEXT_PUBLIC_CLOUDFRONT_DOMAIN not configured');
+    // Fallback to hardcoded domain if env var not available (temporary)
+    return `https://d3v53265btnfty.cloudfront.net/${key}`;
   }
   
   return `https://${cloudFrontDomain}/${key}`;
@@ -40,9 +42,9 @@ export function getCloudFrontUrls(keys: string[]): string[] {
  * @returns S3 key
  */
 export function extractKeyFromUrl(url: string): string {
-  const cloudFrontDomain = process.env.NEXT_PUBLIC_CLOUDFRONT_DOMAIN || process.env.AWS_CLOUDFRONT_DOMAIN;
+  const cloudFrontDomain = process.env.NEXT_PUBLIC_CLOUDFRONT_DOMAIN || 'd3v53265btnfty.cloudfront.net';
   
-  if (!cloudFrontDomain || !url.includes(cloudFrontDomain)) {
+  if (!url.includes(cloudFrontDomain)) {
     return '';
   }
   

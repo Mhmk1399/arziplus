@@ -71,7 +71,7 @@ export async function POST(req: NextRequest) {
     // Convert file to buffer
     const buffer = Buffer.from(await file.arrayBuffer());
 
-    // Upload to S3 (CloudFront will serve the files)
+    // Upload to S3 (CloudFront will serve via OAC)
     const uploadCommand = new PutObjectCommand({
       Bucket: process.env.AWS_S3_BUCKET,
       Key: key,
