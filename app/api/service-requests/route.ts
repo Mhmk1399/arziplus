@@ -1,28 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import mongoose from "mongoose";
 import connect from "@/lib/data";
-
-// Service Request Schema
-const ServiceRequestSchema = new mongoose.Schema({
-  serviceId: { type: mongoose.Schema.Types.ObjectId, ref: 'dynamicServices', required: true },
-  serviceName: { type: String, required: true },
-  serviceSlug: { type: String, required: true },
-  serviceFee: { type: Number, required: true },
-  userInputs: { type: mongoose.Schema.Types.Mixed, required: true },
-  totalAmount: { type: Number, required: true },
-  status: {
-    type: String,
-    enum: ['pending', 'processing', 'completed', 'cancelled'],
-    default: 'pending'
-  },
-  userId: { type: mongoose.Schema.Types.ObjectId }, // Add when user auth is implemented
-  notes: { type: String }, // Admin notes
-  createdAt: { type: Date, default: Date.now },
-  updatedAt: { type: Date, default: Date.now }
-});
-
-const ServiceRequest = mongoose.models.ServiceRequest || 
-  mongoose.model("ServiceRequest", ServiceRequestSchema);
+import Request from "@/models/request";
+import DynamicService from "@/models/services";
 
 // GET - Retrieve service requests with filters and pagination
 export async function GET(request: NextRequest) {
@@ -43,7 +23,7 @@ export async function GET(request: NextRequest) {
         );
       }
 
-      const request = await ServiceRequest.findById(id).populate('serviceId');
+      const request = await Request.findById(id).populate('service');
       if (!request) {
         return NextResponse.json(
           { success: false, message: "Service request not found" },
@@ -60,18 +40,20 @@ export async function GET(request: NextRequest) {
       query.status = status;
     }
     if (serviceId) {
-      query.serviceId = serviceId;
+      query.service = serviceId;
     }
 
     const skip = (page - 1) * limit;
-    const requests = await ServiceRequest
+    const requests = await Request
       .find(query)
-      .populate('serviceId', 'title icon')
+      .populate('service', 'title icon slug')
+      .populate('customer', 'name email')
+      .populate('assignedTo', 'name')
       .sort({ createdAt: -1 })
       .skip(skip)
       .limit(limit);
 
-    const total = await ServiceRequest.countDocuments(query);
+    const total = await Request.countDocuments(query);
 
     return NextResponse.json({
       success: true,
@@ -99,7 +81,7 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
 
     // Validate required fields
-    const requiredFields = ['serviceId', 'serviceName', 'userInputs', 'serviceFee'];
+    const requiredFields = ['service', 'data', 'customer'];
     for (const field of requiredFields) {
       if (!body[field]) {
         return NextResponse.json(
@@ -109,29 +91,40 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    // Verify service exists
-    if (!mongoose.Types.ObjectId.isValid(body.serviceId)) {
+    // Verify service exists and get its details
+    if (!mongoose.Types.ObjectId.isValid(body.service)) {
       return NextResponse.json(
         { success: false, message: "Invalid service ID" },
         { status: 400 }
       );
     }
 
-    const serviceRequest = new ServiceRequest({
-      serviceId: body.serviceId,
-      serviceName: body.serviceName,
-      serviceSlug: body.serviceSlug,
-      serviceFee: body.serviceFee,
-      userInputs: body.userInputs,
-      totalAmount: body.totalAmount || body.serviceFee,
-      userId: body.userId, // Add when auth is implemented
-      notes: body.notes,
+    const service = await DynamicService.findById(body.service);
+    if (!service) {
+      return NextResponse.json(
+        { success: false, message: "Service not found" },
+        { status: 404 }
+      );
+    }
+
+    // Calculate payment amount
+    const paymentAmount = service.fee;
+
+    const serviceRequest = new Request({
+      service: body.service,
+      data: body.data,
+      customer: body.customer,
+      customerEmail: body.customerEmail,
+      customerName: body.customerName,
+      paymentAmount: paymentAmount,
+      priority: body.priority || 'medium',
+      assignedTo: body.assignedTo,
     });
 
     await serviceRequest.save();
 
     // Populate the service details for response
-    await serviceRequest.populate('serviceId', 'title icon');
+    await serviceRequest.populate('service', 'title icon slug fee');
 
     return NextResponse.json(
       {
@@ -177,11 +170,13 @@ export async function PUT(request: NextRequest) {
       );
     }
 
-    const updatedRequest = await ServiceRequest.findByIdAndUpdate(
+    const updatedRequest = await Request.findByIdAndUpdate(
       id,
-      { ...updateData, updatedAt: new Date() },
+      { ...updateData },
       { new: true, runValidators: true }
-    ).populate('serviceId', 'title icon');
+    ).populate('service', 'title icon slug')
+     .populate('customer', 'name email')
+     .populate('assignedTo', 'name');
 
     if (!updatedRequest) {
       return NextResponse.json(
@@ -241,7 +236,7 @@ export async function DELETE(request: NextRequest) {
       );
     }
 
-    const deletedRequest = await ServiceRequest.findByIdAndDelete(id);
+    const deletedRequest = await Request.findByIdAndDelete(id);
 
     if (!deletedRequest) {
       return NextResponse.json(

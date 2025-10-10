@@ -299,7 +299,7 @@ export function useDynamicForm(
       if (response.ok) {
       }
     } catch (error) {
-      console.log(error);
+
     } finally {
       setIsSubmitting(false);
     }

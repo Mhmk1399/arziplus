@@ -89,11 +89,7 @@ export const useDynamicData = ({ endpoint, filters = {}, page = 1, limit = 10 }:
 
   // Debug logging
   if (data) {
-    console.log('API Response:', data);
-    console.log('Has pagination:', !!data.pagination);
-    if (data.pagination) {
-      console.log('Pagination details:', data.pagination);
-    }
+
   }
 
   // Extract pagination data from different possible formats

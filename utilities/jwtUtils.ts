@@ -116,7 +116,7 @@ export const logoutUser = (): void => {
     
     keysToRemove.forEach(key => localStorage.removeItem(key));
     
-    console.log('User logged out successfully');
+
   } catch (error) {
     console.error('Error during logout:', error);
   }

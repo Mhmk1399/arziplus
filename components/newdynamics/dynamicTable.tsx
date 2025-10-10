@@ -103,7 +103,7 @@ const DynamicTable: React.FC<DynamicTablePropsExtended> = ({
   // Debug logging for pagination
   useEffect(() => {
     if (endpoint && swrPagination) {
-      console.log('Pagination data:', swrPagination);
+
     }
   }, [endpoint, swrPagination]);
 
@@ -641,7 +641,6 @@ const DynamicTable: React.FC<DynamicTablePropsExtended> = ({
         onRefresh();
       }
     } catch (error) {
-      console.log(error);
       toast.error("خطا در حذف آیتم");
     }
   };

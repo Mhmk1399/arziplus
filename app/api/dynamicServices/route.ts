@@ -1,13 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
-import service from "@/models/services";
+import DynamicService from "@/models/services";
 import connect from "@/lib/data";
 import mongoose from "mongoose";
 
 // Type for MongoDB query filters
-interface serviceQueryFilter {
-  isActive?: boolean;
+interface ServiceQueryFilter {
+  status?: string;
   $or?: Array<{
-    name?: { $regex: string; $options: string };
+    title?: { $regex: string; $options: string };
     description?: { $regex: string; $options: string };
   }>;
 }
@@ -31,41 +31,67 @@ export async function GET(request: NextRequest) {
         );
       }
 
-      const services = await service.findById(id);
-      if (!service) {
+      const services = await DynamicService.findById(id);
+      if (!services) {
         return NextResponse.json(
           { success: false, message: "service not found" },
           { status: 404 }
         );
       }
 
+      // Transform legacy data - map items to options for backwards compatibility
+      if (services.fields) {
+        services.fields = services.fields.map((field: any) => {
+          if (field.items && !field.options) {
+            field.options = field.items;
+            delete field.items;
+          }
+          return field;
+        });
+      }
+
       return NextResponse.json({ success: true, data: services });
     }
 
     // Build query filters
-    const query: serviceQueryFilter = {};
+    const query: ServiceQueryFilter = {};
     if (isActive !== null && isActive !== undefined) {
-      query.isActive = isActive === "true";
+      // Map isActive to status for backward compatibility
+      query.status = isActive === "true" ? "active" : "inactive";
     }
     if (search) {
       query.$or = [
-        { name: { $regex: search, $options: "i" } },
+        { title: { $regex: search, $options: "i" } },
         { description: { $regex: search, $options: "i" } },
       ];
     }
 
     const skip = (page - 1) * limit;
-    const services = await service
+    const services = await DynamicService
       .find(query)
       .sort({ createdAt: -1 })
       .skip(skip)
       .limit(limit);
 
-    const total = await service.countDocuments(query);
+    // Transform legacy data - map items to options for backwards compatibility
+    const transformedServices = services.map((service: any) => {
+      if (service.fields) {
+        service.fields = service.fields.map((field: any) => {
+          if (field.items && !field.options) {
+            field.options = field.items;
+            delete field.items;
+          }
+          return field;
+        });
+      }
+      return service;
+    });
+
+    const total = await DynamicService.countDocuments(query);
 
     return NextResponse.json({
       success: true,
-      data: services,
+      data: transformedServices,
       pagination: {
         page,
         limit,
@@ -88,7 +114,25 @@ export async function POST(request: NextRequest) {
     await connect();
     const body = await request.json();
 
-    const services = new service(body);
+
+
+    // Transform fields to ensure options are properly saved
+    if (body.fields) {
+      body.fields = body.fields.map((field: any) => {
+        // Ensure select/multiselect fields have options, not items
+        if (field.type === 'select' || field.type === 'multiselect') {
+          return {
+            ...field,
+            options: field.options || field.items || []
+          };
+        }
+        return field;
+      });
+    }
+
+
+
+    const services = new DynamicService(body);
     await services.save();
 
     return NextResponse.json(
@@ -127,6 +171,24 @@ export async function PUT(request: NextRequest) {
     const body = await request.json();
     const { id, ...updateData } = body;
 
+
+
+    // Transform fields to ensure options are properly saved
+    if (updateData.fields) {
+      updateData.fields = updateData.fields.map((field: any) => {
+        // Ensure select/multiselect fields have options, not items
+        if (field.type === 'select' || field.type === 'multiselect') {
+          return {
+            ...field,
+            options: field.options || field.items || []
+          };
+        }
+        return field;
+      });
+    }
+
+
+
     if (!id) {
       return NextResponse.json(
         { success: false, message: "ID is required" },
@@ -141,11 +203,13 @@ export async function PUT(request: NextRequest) {
       );
     }
 
-    const updatedservice = await service.findByIdAndUpdate(
+    const updatedservice = await DynamicService.findByIdAndUpdate(
       id,
-      { ...updateData, updatedAt: new Date() },
+      { ...updateData },
       { new: true, runValidators: true }
     );
+
+
 
     if (!updatedservice) {
       return NextResponse.json(
@@ -181,6 +245,8 @@ export async function PATCH(request: NextRequest) {
     const body = await request.json();
     const { id, ...updateData } = body;
 
+
+
     if (!id) {
       return NextResponse.json(
         { success: false, message: "ID is required" },
@@ -195,7 +261,7 @@ export async function PATCH(request: NextRequest) {
       );
     }
 
-    const updatedservice = await service.findByIdAndUpdate(
+    const updatedservice = await DynamicService.findByIdAndUpdate(
       id,
       { ...updateData, updatedAt: new Date() },
       { new: true, runValidators: true }
@@ -255,7 +321,7 @@ export async function DELETE(request: NextRequest) {
       );
     }
 
-    const deletedservice = await service.findByIdAndDelete(id);
+    const deletedservice = await DynamicService.findByIdAndDelete(id);
 
     if (!deletedservice) {
       return NextResponse.json(
