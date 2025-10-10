@@ -6,6 +6,7 @@ import { FaTelegramPlane, FaWhatsapp } from "react-icons/fa";
 import Link from "next/link";
 import { Toaster } from "react-hot-toast";
 import NewNavbar from "@/components/global/navbar";
+import SchemaProvider from "@/components/global/SchemaProvider";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -20,9 +21,11 @@ export default function RootLayout({
   return (
     <html lang="fa">
       <body className={` ${estedad.className} antialiased relative`}>
-        <Toaster position="top-center" />
-        <NewNavbar />
-        {children}
+        <SchemaProvider>
+          <Toaster position="top-center" />
+          <NewNavbar />
+          {children}
+        </SchemaProvider>
         <div className="fixed bottom-2 right-2 flex flex-col gap-1 z-50">
           {/* Telegram Button */}
           <Link

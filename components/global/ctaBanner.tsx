@@ -221,7 +221,7 @@ export default function CTABanner({
               {heading}
             </h3>
             <p
-              className={`animate-text text-sm lg:text-lg ${descriptionColor} leading-relaxed opacity-90 line-clamp-1`}
+              className={`animate-text text-sm lg:text-lg ${descriptionColor} leading-relaxed opacity-90 line-clamp-2`}
             >
               {description}
             </p>

@@ -189,12 +189,12 @@ export default function WhyUsSection({
                 </div>
                 <div className="flex border-r border-white px-4 flex-col  leading-relaxed tracking-wider gap-1">
                   <h3
-                    className={`text-right text-[10px]  md:text-lg font-extrabold  leading-relaxed transition-all duration-300 ${theme.heading}`}
+                    className={`text-right text-[10px] line-clamp-1  md:text-base font-extrabold  leading-relaxed transition-all duration-300 ${theme.heading}`}
                   >
                     {item.title}
                   </h3>{" "}
                   <p
-                    className={`text-[8px] text-right sm:leading-0.5  md:leading-relaxed transition-colors duration-300 ${theme.description}`}
+                    className={`text-[10px] text-right sm:leading-0.5  md:leading-relaxed transition-colors duration-300 ${theme.description}`}
                   >
                     {item.description}
                   </p>

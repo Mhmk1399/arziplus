@@ -96,24 +96,43 @@ export default function HeroSplitSection({
           trigger: sectionRef.current,
           start: "top 80%",
           end: "bottom 20%",
-          toggleActions: "play none none reverse"
-        }
+          toggleActions: "play none none reverse",
+        },
       });
 
       // Image entrance animation
       if (imageRef.current) {
-        tl.fromTo(imageRef.current,
-          { scale: 0.8, opacity: 0, rotationY: layout === "image-right" ? -15 : 15 },
-          { scale: 1, opacity: 1, rotationY: 0, duration: 1.2, ease: "power3.out" }
+        tl.fromTo(
+          imageRef.current,
+          {
+            scale: 0.8,
+            opacity: 0,
+            rotationY: layout === "image-right" ? -15 : 15,
+          },
+          {
+            scale: 1,
+            opacity: 1,
+            rotationY: 0,
+            duration: 1.2,
+            ease: "power3.out",
+          }
         );
       }
 
       // Text content stagger animation
       if (textRef.current) {
-        const textElements = textRef.current.querySelectorAll('.animate-text');
-        tl.fromTo(textElements,
+        const textElements = textRef.current.querySelectorAll(".animate-text");
+        tl.fromTo(
+          textElements,
           { y: 60, opacity: 0, rotationX: 45 },
-          { y: 0, opacity: 1, rotationX: 0, duration: 0.8, stagger: 0.15, ease: "power2.out" },
+          {
+            y: 0,
+            opacity: 1,
+            rotationX: 0,
+            duration: 0.8,
+            stagger: 0.15,
+            ease: "power2.out",
+          },
           "-=0.6"
         );
       }
@@ -127,9 +146,8 @@ export default function HeroSplitSection({
         repeat: -1,
         yoyo: true,
         ease: "sine.inOut",
-        stagger: 0.2
+        stagger: 0.2,
       });
-
     }, sectionRef);
 
     return () => ctx.revert();
@@ -188,7 +206,9 @@ export default function HeroSplitSection({
               width: `${12 + (i % 3) * 8}px`,
               height: `${12 + (i % 3) * 8}px`,
               background: `linear-gradient(45deg, 
-                ${i % 3 === 0 ? "#FF7A00" : i % 3 === 1 ? "#4DBFF0" : "#0A1D37"}, 
+                ${
+                  i % 3 === 0 ? "#FF7A00" : i % 3 === 1 ? "#4DBFF0" : "#0A1D37"
+                }, 
                 ${i % 3 === 0 ? "#FF7A00" : i % 3 === 1 ? "#4DBFF0" : "#0A1D37"}
               )`,
               borderRadius: i % 2 === 0 ? "50%" : "8px",
@@ -196,7 +216,7 @@ export default function HeroSplitSection({
             }}
           />
         ))}
-        
+
         {/* Geometric Shapes */}
         <div className="absolute top-20 right-20 w-32 h-32 border border-[#4DBFF0]/10 rounded-full animate-spin-slow"></div>
         <div className="absolute bottom-20 left-20 w-24 h-24 border-2 border-[#FF7A00]/10 rotate-45 animate-pulse"></div>
@@ -205,9 +225,11 @@ export default function HeroSplitSection({
       {/* Glass Morphism Overlay */}
       <div className="absolute inset-0 bg-gradient-to-br from-white/5 via-transparent to-white/5 backdrop-blur-[1px]"></div>
 
-      <div className={`relative z-10 w-full max-w-7xl mx-auto flex flex-col ${containerFlex} items-center gap-8 md:gap-16`}>
+      <div
+        className={`relative z-10 w-full max-w-7xl mx-auto flex flex-col ${containerFlex} items-center gap-8 md:gap-16`}
+      >
         {/* IMAGE SECTION */}
-        <div 
+        <div
           ref={imageRef}
           className={`relative ${imageClass} h-80 md:h-[70vh] group`}
         >
@@ -215,14 +237,14 @@ export default function HeroSplitSection({
           <div className="relative w-full h-full rounded-3xl overflow-hidden shadow-2xl bg-gradient-to-br from-white/20 via-white/10 to-white/5 backdrop-blur-xl border border-white/30">
             {/* Shimmer Effect */}
             <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent transition-transform duration-1000"></div>
-            
+
             <Image
               src={imageSrc}
-              alt={imageAlt}  
+              alt={imageAlt}
               fill
               className="object-contain p-4 md:p-8 transition-transform duration-700 group-hover:scale-105"
             />
-            
+
             {/* Glow Effect */}
             <div className="absolute -inset-4 rounded-3xl bg-gradient-to-r from-[#FF7A00]/20 via-[#4DBFF0]/20 to-[#0A1D37]/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10"></div>
           </div>
@@ -241,10 +263,13 @@ export default function HeroSplitSection({
           {/* Luxury Glass Background */}
           <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-white/10 via-white/5 to-transparent backdrop-blur-xl  -z-10">
             {/* Subtle Pattern Overlay */}
-            <div className="absolute inset-0 opacity-5" style={{
-              backgroundImage: `radial-gradient(circle at 1px 1px, rgba(255,122,0,0.15) 1px, transparent 0)`,
-              backgroundSize: '20px 20px'
-            }}></div>
+            <div
+              className="absolute inset-0 opacity-5"
+              style={{
+                backgroundImage: `radial-gradient(circle at 1px 1px, rgba(255,122,0,0.15) 1px, transparent 0)`,
+                backgroundSize: "20px 20px",
+              }}
+            ></div>
           </div>
 
           {/* Content with Animations */}
@@ -257,19 +282,21 @@ export default function HeroSplitSection({
             </div>
           )}
 
-          <h2 className={`animate-text text-2xl md:text-4xl lg:text-5xl ${estedadBold.className} text-center md:text-right font-extrabold leading-tight`}
+          <h2
+            className={`animate-text text-2xl md:text-4xl lg:text-5xl ${estedadBold.className} text-center md:text-right font-extrabold leading-tight`}
             style={{
-              background: "linear-gradient(135deg, #0A1D37 0%, #4DBFF0 50%, #FF7A00 100%)",
+              background:
+                "linear-gradient(135deg, #0A1D37 0%, #4DBFF0 50%, #FF7A00 100%)",
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
               backgroundClip: "text",
-              textShadow: "0 4px 20px rgba(10, 29, 55, 0.1)"
+              textShadow: "0 4px 20px rgba(10, 29, 55, 0.1)",
             }}
           >
             {heading}
           </h2>
 
-          <p className="animate-text text-[#A0A0A0] text-base md:text-lg leading-relaxed text-center md:text-right max-w-2xl opacity-90">
+          <p className="animate-text text-[#A0A0A0] text-base md:text-lg leading-relaxed text-center md:text-justify max-w-2xl opacity-90">
             {description}
           </p>
 
@@ -286,8 +313,16 @@ export default function HeroSplitSection({
                     {feature.icon ? (
                       <span className="text-white text-lg">{feature.icon}</span>
                     ) : (
-                      <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                      <svg
+                        className="w-5 h-5 text-white"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                          clipRule="evenodd"
+                        />
                       </svg>
                     )}
                   </div>
@@ -316,7 +351,9 @@ export default function HeroSplitSection({
                   <span className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></span>
                   <span className="relative flex items-center gap-3 z-10">
                     {button.icon && (
-                      <span className="text-lg group-hover:scale-110 transition-transform duration-200">{button.icon}</span>
+                      <span className="text-lg group-hover:scale-110 transition-transform duration-200">
+                        {button.icon}
+                      </span>
                     )}
                     <span>{button.text}</span>
                   </span>

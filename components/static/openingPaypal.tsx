@@ -30,6 +30,13 @@ import FAQSection from "../global/faqSection";
 import CTABanner from "../global/ctaBanner";
 import SmoothTimeline from "../global/scrollTimeline";
 import ServicesGrid from "../global/ServicesGrid";
+import { FaSimCard } from "react-icons/fa6";
+import { FaPaypal } from "react-icons/fa6";
+import { FaDochub } from "react-icons/fa6";
+import { FaUserEdit } from "react-icons/fa";
+import { FaAddressBook } from "react-icons/fa6";
+import { FcDataBackup } from "react-icons/fc";
+import { MdOutlineSupportAgent } from "react-icons/md";
 
 interface TimelineStep {
   id: number;
@@ -43,15 +50,23 @@ const PaypalOpening = () => {
       id: "fastRegistration",
       title: "افتتاح سریع",
       description:
-        "افتتاح حساب پی‌پال در کوتاه‌ترین زمان ممکن (۱ تا ۳ روز کاری) بدون هیچ دردسری.",
+        "افتتاح حساب پی‌پال در کوتاه‌ترین زمان ممکن (5 تا 7 روز کاری)         بدون هیچ دردسری.",
       icon: <FaClock />,
+      isActive: true,
+    },
+    {
+      id: "sim",
+      title: "سیم کارت فیزیکی خارجی",
+      description:
+        "به همراه افتتاح حساب پی پال وریفای شده یک سیم کارت فیزیکی بین المللی نیز به شما داده میشود که داخل ایران آنتن دهی و دریافت پیامک دارد",
+      icon: <FaSimCard />,
       isActive: true,
     },
     {
       id: "fullVerification",
       title: "وریفای کامل",
       description:
-        "حساب پی‌پال شما با مدارک معتبر خارجی وریفای کامل می‌شود تا بدون محدودیت استفاده کنید.",
+        "حساب پی‌پال شما با مدارک شخصی مشتری (پاسپورت ایرانی) و مدارک اقامتی معتبر وریفای کامل می‌شود تا بدون محدودیت استفاده کنید.",
       icon: <FaShieldAlt />,
     },
     {
@@ -79,16 +94,16 @@ const PaypalOpening = () => {
     },
     {
       id: "secureAccess",
-      title: "دسترسی امن از ایران",
+      title: "آموزش دسترسی امن از ایران",
       description:
-        "ورود و استفاده از پی‌پال با دسترسی ایمن از داخل ایران، بدون خطر مسدود شدن حساب.",
+        "آموزش کامل دسترسی از ایران به وسیله VPS  های مطمئن و ارائه خدمات آن",
       icon: <FaLock />,
     },
   ];
   const defaultSteps: TimelineStep[] = [
-    { id: 1, title: "ساحت حساب کاربری", desc: "" },
-    { id: 2, title: "احراز حویت حساب", desc: "" },
-    { id: 3, title: "ثبت درخواست", desc: "" },
+    { id: 1, title: " افتتاح حساب کاربری در وبسایت", desc: "" },
+    { id: 2, title: "احراز حویت حساب کاربری", desc: "" },
+    { id: 3, title: "ثبت درخواست افتتاح پی پال", desc: "" },
     { id: 4, title: "حساب شما آمادست", desc: "" },
   ];
   const itemsWhyus = [
@@ -104,7 +119,7 @@ const PaypalOpening = () => {
       id: 2,
       icon: <FaUniversity size={32} />,
       iconColor: "bg-blue-500",
-      title: "پرداخت هزینه آزمون‌های بین‌المللی",
+      title: "پرداخت آزمون‌های بین‌المللی",
       description:
         "امکان پرداخت آسان هزینه آزمون‌هایی مثل IELTS، TOEFL، GRE و بسیاری دیگر با استفاده از حساب پی‌پال.",
     },
@@ -152,9 +167,8 @@ const PaypalOpening = () => {
     {
       id: "3",
       question: "آیا می‌توانم با آی‌پی ایران وارد حساب شوم؟",
-      answer:
-        "بله، با استفاده از راهکارهای امن و اختصاصی ارزی پلاس می‌توانید بدون ریسک و مشکل از داخل ایران وارد حساب پی‌پال شوید.",
-      category: "ورود و امنیت",
+      answer: "خیر، حتما باید با VPS های امنی که شرکت در اختیار شما میدهد یا پیشنهاد میدهد، استفاده نمایید. به محض وارد شدن با آی پی ایران، حسابتان بسته میشود.",
+       category: "ورود و امنیت",
     },
   ];
   const faqIcons = {
@@ -284,47 +298,44 @@ const PaypalOpening = () => {
         title="مراحل ساخت حساب پی پال"
         subtitle="با طی کردن مراحل زیر به راحتی حساب خود را افتتاح کنید"
         steps={defaultSteps}
+        compact={false}
       />
       <ServicesGrid
-        services={[
+
+         services={[
           {
-            name: "حساب پی پال وسیم کارت",
+            name: "حساب پی پال وریفای شده",
             description:
               "دریافت حساب پی پال کامل همراه با سیم کارت مخصوص برای احراز هویت",
-            icon: <FaPhone />,
+            icon: <FaPaypal />,
           },
 
           {
-            name: "امانت حساب پی پال",
+            name: "سیم کارت فیزیکی بین المللی",
             description:
               "استفاده امن از حساب پی پال به صورت امانتی با ضمانت کامل",
-            icon: <FaShieldAlt />,
+            icon: <FaSimCard />,
           },
           {
-            name: "وی پی اس",
+            name: "آموزش کار با پی پال",
             description:
               "سرور مجازی اختصاصی برای دسترسی امن به خدمات بین‌المللی",
-            icon: <FaRocket />,
+            icon: <FaUserEdit />,
           },
           {
-            name: "حساب پی پال وسیم کارت",
+            name: "مدارک تایید آدرس",
             description:
               "دریافت حساب پی پال کامل همراه با سیم کارت مخصوص برای احراز هویت",
-            icon: <FaPhone />,
+            icon: <FaAddressBook />,
           },
           {
-            name: "امانت حساب پی پال",
+            name: "پشتیبانی ارزی پلاس",
             description:
               "استفاده امن از حساب پی پال به صورت امانتی با ضمانت کامل",
-            icon: <FaShieldAlt />,
-          },
-          {
-            name: "وی پی اس",
-            description:
-              "سرور مجازی اختصاصی برای دسترسی امن به خدمات بین‌المللی",
-            icon: <FaRocket />,
+            icon: <MdOutlineSupportAgent  />,
           },
         ]}
+        title="افتتاح حساب پی پال شامل چه مواردی میشود"
       />
       <HeroSplitSection
         heading="چرا ارزی پلاس؟"

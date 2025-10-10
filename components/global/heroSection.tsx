@@ -339,7 +339,7 @@ export default function HeroSection({
         alt={media.alt || "Hero Image"}
         width={media.width || 600}
         height={media.height || 600}
-        className="w-full h-full  lg:h-full rounded-2xl object-contain"
+        className="w-full h-full  lg:h-80 rounded-2xl object-contain"
         priority
       />
     );
