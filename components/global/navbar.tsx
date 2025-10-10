@@ -6,7 +6,10 @@ import { gsap } from "gsap";
 import { menuItems, IconComponent } from "@/lib/menuData";
 import { DropdownItem } from "@/types/menu";
 import { MdClose, MdMenu } from "react-icons/md";
+import { FaUser, FaSignOutAlt, FaTachometerAlt } from "react-icons/fa";
 import Image from "next/image";
+import { getCurrentUser, AuthUser } from "@/lib/auth";
+
 
 export default function NewNavbar() {
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
@@ -17,6 +20,8 @@ export default function NewNavbar() {
   );
   const [isMounted, setIsMounted] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [user, setUser] = useState<AuthUser | null>(null);
+  const [showUserDropdown, setShowUserDropdown] = useState(false);
 
   const navRef = useRef<HTMLElement>(null);
   const mobileMenuRef = useRef<HTMLDivElement>(null);
@@ -27,9 +32,11 @@ export default function NewNavbar() {
   const isMouseOverMenu = useRef(false);
   const previousDropdown = useRef<string | null>(null);
 
-  // Hydration fix
+  // Hydration fix and user authentication
   useEffect(() => {
     setIsMounted(true);
+    const currentUser = getCurrentUser();
+    setUser(currentUser);
   }, []);
 
   // Scroll handler
@@ -154,14 +161,23 @@ export default function NewNavbar() {
     }
   }, [activeDropdown, isMounted]);
 
-  // Cleanup timeout on unmount
+  // Cleanup timeout on unmount and click outside handler
   useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (showUserDropdown && !(event.target as Element).closest('.user-dropdown')) {
+        setShowUserDropdown(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    
     return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
       if (closeTimeoutRef.current) {
         clearTimeout(closeTimeoutRef.current);
       }
     };
-  }, []);
+  }, [showUserDropdown]);
 
   // Improved hover handlers - Smooth switching between menus
   const handleMenuEnter = (title: string) => {
@@ -231,6 +247,26 @@ export default function NewNavbar() {
   const handleMobileSubItemClick = (name: string) => {
     setMobileActiveSubItem(mobileActiveSubItem === name ? null : name);
   };
+
+  const handleLogout = () => {
+    localStorage.removeItem('authToken');
+    setUser(null);
+    setShowUserDropdown(false);
+    window.location.href = '/';
+  };
+
+  const getUserDisplayName = () => {
+    if (!user) return '';
+    if (user.firstName && user.lastName) {
+      return `${user.firstName} ${user.lastName}`;
+    }
+    if (user.firstName) return user.firstName;
+    if (user.email) return user.email;
+    return 'کاربر';
+  };
+
+  console.log(getCurrentUser , "........................")
+
 
   // Prevent hydration mismatch
   if (!isMounted) {
@@ -318,7 +354,7 @@ export default function NewNavbar() {
             </div>
 
             {/* Desktop CTA */}
-            <div className="hidden lg:flex items-center  gap-2">
+            <div className="hidden lg:flex items-center gap-2">
               <button
                 className="group p-3 rounded-xl bg-gradient-to-r from-[#FF7A00]/10 to-[#4DBFF0]/10 hover:from-[#FF7A00]/20 hover:to-[#4DBFF0]/20 backdrop-blur-sm transition-all duration-300 border border-[#FF7A00]/20 hover:border-[#FF7A00]/40 hover:scale-105"
                 suppressHydrationWarning
@@ -338,15 +374,63 @@ export default function NewNavbar() {
                 </svg>
               </button>
 
-              <Link
-                href="/auth/sms"
-                className="group relative px-6 py-3 font-bold text-sm text-white overflow-hidden rounded-xl transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-[#FF7A00]/20"
-                suppressHydrationWarning
-              >
-                <span className="absolute inset-0 bg-gradient-to-r from-[#FF7A00] to-[#4DBFF0]" />
-                <span className="absolute inset-0 bg-gradient-to-r from-[#4DBFF0] to-[#FF7A00] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                <span className="relative z-10">ورود / ثبت نام</span>
-              </Link>
+              {user ? (
+                <div className="relative user-dropdown">
+                  <button
+                    onClick={() => setShowUserDropdown(!showUserDropdown)}
+                    className="group relative px-4 py-3 font-bold text-sm text-[#0A1D37] overflow-hidden rounded-xl transition-all duration-300 hover:scale-105 bg-gradient-to-r from-[#FF7A00]/10 to-[#4DBFF0]/10 hover:from-[#FF7A00]/20 hover:to-[#4DBFF0]/20 border border-[#FF7A00]/20 hover:border-[#FF7A00]/40 flex items-center gap-2"
+                    suppressHydrationWarning
+                  >
+                    <FaUser className="text-[#FF7A00]" />
+                    <span className="relative z-10">{getUserDisplayName()}</span>
+                    <svg
+                      className={`w-4 h-4 text-[#FF7A00] transition-transform duration-200 ${
+                        showUserDropdown ? 'rotate-180' : ''
+                      }`}
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M19 9l-7 7-7-7"
+                      />
+                    </svg>
+                  </button>
+
+                  {showUserDropdown && (
+                    <div className="absolute left-0 mt-2 w-48 bg-white/95 backdrop-blur-sm border border-[#FF7A00]/20 rounded-xl shadow-2xl shadow-[#FF7A00]/10 overflow-hidden z-50">
+                      <Link
+                        href="/admin"
+                        onClick={() => setShowUserDropdown(false)}
+                        className="flex items-center gap-3 px-4 py-3 text-[#0A1D37] hover:bg-gradient-to-r hover:from-[#FF7A00]/5 hover:to-[#4DBFF0]/5 transition-all duration-200"
+                      >
+                        <FaTachometerAlt className="text-[#4DBFF0]" />
+                        <span>داشبورد</span>
+                      </Link>
+                      <button
+                        onClick={handleLogout}
+                        className="w-full flex items-center gap-3 px-4 py-3 text-red-600 hover:bg-red-50 transition-all duration-200"
+                      >
+                        <FaSignOutAlt className="text-red-500" />
+                        <span>خروج</span>
+                      </button>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <Link
+                  href="/auth/sms"
+                  className="group relative px-6 py-3 font-bold text-sm text-white overflow-hidden rounded-xl transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-[#FF7A00]/20"
+                  suppressHydrationWarning
+                >
+                  <span className="absolute inset-0 bg-gradient-to-r from-[#FF7A00] to-[#4DBFF0]" />
+                  <span className="absolute inset-0 bg-gradient-to-r from-[#4DBFF0] to-[#FF7A00] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  <span className="relative z-10">ورود / ثبت نام</span>
+                </Link>
+              )}
             </div>
 
             {/* Mobile Menu Button */}
@@ -639,15 +723,45 @@ export default function NewNavbar() {
 
             {/* Mobile Footer */}
             <div className="p-6 border-t border-gray-200 space-y-3">
-              <Link
-                href="/auth/sms"
-                onClick={toggleMobileMenu}
-                className="group relative w-full flex items-center justify-center p-4 font-bold text-white overflow-hidden rounded-xl transition-all duration-300 hover:scale-105 shadow-lg"
-              >
-                <span className="absolute inset-0 bg-gradient-to-r from-[#FF7A00] to-[#4DBFF0]" />
-                <span className="absolute inset-0 bg-gradient-to-r from-[#4DBFF0] to-[#FF7A00] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                <span className="relative z-10">ورود / ثبت نام</span>
-              </Link>
+              {user ? (
+                <div className="space-y-3">
+                  <div className="flex items-center gap-3 p-4 bg-gradient-to-r from-[#FF7A00]/10 to-[#4DBFF0]/10 rounded-xl">
+                    <FaUser className="text-[#FF7A00]" />
+                    <span className="font-bold text-[#0A1D37]">{getUserDisplayName()}</span>
+                  </div>
+                  <Link
+                    href="/admin"
+                    onClick={toggleMobileMenu}
+                    className="group relative w-full flex items-center justify-center gap-2 p-4 font-bold text-white overflow-hidden rounded-xl transition-all duration-300 hover:scale-105 shadow-lg"
+                  >
+                    <span className="absolute inset-0 bg-gradient-to-r from-[#4DBFF0] to-[#FF7A00]" />
+                    <span className="relative z-10 flex items-center gap-2">
+                      <FaTachometerAlt />
+                      داشبورد
+                    </span>
+                  </Link>
+                  <button
+                    onClick={() => {
+                      handleLogout();
+                      toggleMobileMenu();
+                    }}
+                    className="w-full flex items-center justify-center gap-2 p-4 font-bold text-red-600 bg-red-50 hover:bg-red-100 rounded-xl transition-all duration-300"
+                  >
+                    <FaSignOutAlt />
+                    خروج
+                  </button>
+                </div>
+              ) : (
+                <Link
+                  href="/auth/sms"
+                  onClick={toggleMobileMenu}
+                  className="group relative w-full flex items-center justify-center p-4 font-bold text-white overflow-hidden rounded-xl transition-all duration-300 hover:scale-105 shadow-lg"
+                >
+                  <span className="absolute inset-0 bg-gradient-to-r from-[#FF7A00] to-[#4DBFF0]" />
+                  <span className="absolute inset-0 bg-gradient-to-r from-[#4DBFF0] to-[#FF7A00] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  <span className="relative z-10">ورود / ثبت نام</span>
+                </Link>
+              )}
             </div>
           </div>
         </div>

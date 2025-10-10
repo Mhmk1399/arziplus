@@ -216,7 +216,7 @@ const PrometricPayment = () => {
         ]}
         media={{
           type: "image",
-          src: "/assets/images/pardakht azmon.png",
+          src: "/assets/images/prometric.png",
           alt: "پرداخت هزینه آزمون پرومتریک با ارزی پلاس",
           width: 1200,
           height: 800,
@@ -224,7 +224,7 @@ const PrometricPayment = () => {
         layout="default"
         theme={{
           headingColor: "text-white",
-          subheadingColor: "text-gray-200",
+          subheadingColor: "text-gray-500",
           descriptionColor: "text-gray-300",
           backgroundColor: "bg-emerald-700",
         }}

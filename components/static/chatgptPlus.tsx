@@ -244,8 +244,8 @@ const ChatGPTPlus = () => {
     <div>
       <HeroSection
         heading="خرید اکانت ChatGPT Plus — دستیار هوشمند شما"
-        subheading="با قدرت GPT-4 سریع‌تر و دقیق‌تر پاسخ بگیرید"
-        description="با ChatGPT Plus، به مدل پیشرفته GPT-4 دسترسی پیدا کنید و سوالات علمی، برنامه‌نویسی و محتوایی خود را حرفه‌ای پاسخ بگیرید."
+        subheading="با قدرت GPT-5 سریع‌تر و دقیق‌تر پاسخ بگیرید"
+        description="با ChatGPT Plus، به مدل پیشرفته GPT-5 دسترسی پیدا کنید و سوالات علمی، برنامه‌نویسی و محتوایی خود را حرفه‌ای پاسخ بگیرید."
         buttons={[
           {
             text: "ثبت سفارش ChatGPT Plus",
@@ -256,7 +256,7 @@ const ChatGPTPlus = () => {
         ]}
         media={{
           type: "image",
-          src: "/assets/images/chatgpt-plus.webp",
+          src: "/assets/images/chatgpt.png",
           alt: "خرید اکانت ChatGPT Plus",
           width: 1200,
           height: 800,
@@ -264,7 +264,7 @@ const ChatGPTPlus = () => {
         layout="default"
         theme={{
           headingColor: "text-gray-50",
-          subheadingColor: "text-gray-200",
+          subheadingColor: "text-gray-500",
           descriptionColor: "text-gray-300",
           backgroundColor: "bg-indigo-700",
         }}
