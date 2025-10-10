@@ -4,15 +4,30 @@ import { useState, useEffect } from "react";
 import { showToast } from "@/utilities/toast";
 import { estedadBold } from "@/next-persian-fonts/estedad";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
+import ServiceRenderer from "@/components/ServiceRenderer";
+
+interface ServiceField {
+  name: string;
+  label: string;
+  type: string;
+  required: boolean;
+  placeholder?: string;
+  description?: string;
+  options?: Array<{ key: string; value: string }>;
+  showIf?: { field: string; value: any };
+}
 
 interface Request {
   _id: string;
   requestNumber: string;
   service: {
+    _id: string;
     title: string;
     icon?: string;
     fee: number;
+    fields?: ServiceField[];
   };
+  data: Record<string, any>; // User submitted form data
   status: string;
   priority: string;
   paymentAmount: number;
@@ -25,6 +40,11 @@ interface Request {
     };
   };
   rejectedReason?: string;
+  rejectionHistory?: Array<{
+    reason: string;
+    rejectedBy: string;
+    rejectedAt: string;
+  }>;
   adminNotes: Array<{
     note: string;
     addedBy: {
@@ -82,6 +102,7 @@ export default function CustomerRequestsTable({ className = "" }: CustomerReques
   const [selectedRequest, setSelectedRequest] = useState<Request | null>(null);
   const [showDetailModal, setShowDetailModal] = useState(false);
   const [showResponseModal, setShowResponseModal] = useState(false);
+  const [showServiceRenderer, setShowServiceRenderer] = useState(false);
   const [customerResponse, setCustomerResponse] = useState("");
   const [submittingResponse, setSubmittingResponse] = useState(false);
 
@@ -175,6 +196,45 @@ export default function CustomerRequestsTable({ className = "" }: CustomerReques
     setSelectedRequest(request);
     setCustomerResponse("");
     setShowResponseModal(true);
+  };
+
+  const openUpdateModal = (request: Request) => {
+    setSelectedRequest(request);
+    setShowServiceRenderer(true);
+  };
+
+  const handleRequestUpdate = async (requestData: any) => {
+    if (!selectedRequest) return;
+
+    try {
+      const token = localStorage.getItem('authToken');
+      const response = await fetch(`/api/service-requests/${selectedRequest._id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          data: requestData.data,
+          // Reset status to pending when updated
+          status: 'pending'
+        })
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        showToast.success("درخواست با موفقیت به‌روزرسانی شد");
+        setShowServiceRenderer(false);
+        setSelectedRequest(null);
+        fetchRequests();
+      } else {
+        showToast.error(data.error || "خطا در به‌روزرسانی درخواست");
+      }
+    } catch (error) {
+      console.error("Update error:", error);
+      showToast.error("خطا در به‌روزرسانی درخواست");
+    }
   };
 
   const formatDate = (dateString: string) => {
@@ -335,11 +395,33 @@ export default function CustomerRequestsTable({ className = "" }: CustomerReques
                     )}
                   </div>
 
-                  {/* Rejection Reason */}
-                  {request.status === 'rejected' && request.rejectedReason && (
+                  {/* Rejection History */}
+                  {request.status === 'rejected' && (
                     <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-lg">
-                      <div className="text-sm font-medium text-red-800 mb-1">دلیل رد:</div>
-                      <div className="text-sm text-red-700">{request.rejectedReason}</div>
+                      <div className="text-sm font-medium text-red-800 mb-2">تاریخچه رد درخواست:</div>
+                      <div className="space-y-2 max-h-32 overflow-y-auto">
+                        {/* Current rejection reason */}
+                        {request.rejectedReason && (
+                          <div className="p-2 bg-red-100 border border-red-300 rounded text-sm text-red-700">
+                            <div className="font-medium mb-1">آخرین دلیل رد:</div>
+                            <div>{request.rejectedReason}</div>
+                          </div>
+                        )}
+                        
+                        {/* Historical rejections from admin notes */}
+                        {request.adminNotes
+                          .filter(note => note.isVisibleToCustomer && note.note.includes('رد'))
+                          .slice(-3)
+                          .map((note, index) => (
+                            <div key={index} className="p-2 bg-red-50 border border-red-200 rounded text-sm text-red-600">
+                              <div className="text-xs text-red-500 mb-1">
+                                {formatDate(note.addedAt)}
+                              </div>
+                              <div>{note.note}</div>
+                            </div>
+                          ))
+                        }
+                      </div>
                     </div>
                   )}
 
@@ -368,12 +450,20 @@ export default function CustomerRequestsTable({ className = "" }: CustomerReques
                   </button>
                   
                   {request.status === 'rejected' && (
-                    <button
-                      onClick={() => openResponseModal(request)}
-                      className="flex-1 px-3 py-2 text-sm bg-gradient-to-r from-[#4DBFF0] to-[#FF7A00] text-white rounded-lg hover:shadow-lg transition-all"
-                    >
-                      پاسخ
-                    </button>
+                    <>
+                      <button
+                        onClick={() => openUpdateModal(request)}
+                        className="flex-1 px-3 py-2 text-sm bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+                      >
+                        ویرایش درخواست
+                      </button>
+                      <button
+                        onClick={() => openResponseModal(request)}
+                        className="flex-1 px-3 py-2 text-sm bg-gradient-to-r from-[#4DBFF0] to-[#FF7A00] text-white rounded-lg hover:shadow-lg transition-all"
+                      >
+                        پاسخ
+                      </button>
+                    </>
                   )}
                 </div>
               </div>
@@ -529,6 +619,61 @@ export default function CustomerRequestsTable({ className = "" }: CustomerReques
               >
                 {submittingResponse ? "در حال ارسال..." : "ارسال پاسخ"}
               </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Service Renderer Modal for Updating Request */}
+      {showServiceRenderer && selectedRequest && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="p-6 border-b bg-gradient-to-r from-[#4DBFF0]/10 to-[#FF7A00]/10">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h2 className={`text-xl ${estedadBold.className} text-[#0A1D37]`}>
+                    ویرایش درخواست {selectedRequest.requestNumber}
+                  </h2>
+                  <p className="text-[#0A1D37]/70 text-sm mt-1">
+                    سرویس: {selectedRequest.service.title}
+                  </p>
+                </div>
+                <button
+                  onClick={() => {
+                    setShowServiceRenderer(false);
+                    setSelectedRequest(null);
+                  }}
+                  className="text-[#0A1D37]/60 hover:text-[#0A1D37] text-2xl"
+                >
+                  ×
+                </button>
+              </div>
+              
+              {/* Show rejection reason */}
+              {selectedRequest.rejectedReason && (
+                <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-lg">
+                  <div className="text-sm font-medium text-red-800 mb-1">
+                    دلیل رد قبلی:
+                  </div>
+                  <div className="text-sm text-red-700">
+                    {selectedRequest.rejectedReason}
+                  </div>
+                </div>
+              )}
+              
+              <div className="mt-3 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                <div className="text-sm text-blue-700">
+                  ℹ️ لطفاً اطلاعات درخواست خود را با توجه به دلیل رد مجدداً تکمیل کنید.
+                  پس از ثبت، وضعیت درخواست به "در انتظار بررسی" تغییر خواهد کرد.
+                </div>
+              </div>
+            </div>
+            
+            <div className="p-6">
+              <ServiceRenderer
+                serviceId={selectedRequest.service._id}
+                onRequestSubmit={handleRequestUpdate}
+              />
             </div>
           </div>
         </div>
