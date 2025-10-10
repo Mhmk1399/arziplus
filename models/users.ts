@@ -93,7 +93,6 @@ const userSchema = new mongoose.Schema({
   },
   password: {
     type: String,
-    required: true,
     minlength: 6
   },
   
@@ -220,13 +219,6 @@ const userSchema = new mongoose.Schema({
   toObject: { virtuals: true }
 });
 
-// Virtuals
-userSchema.virtual('fullName').get(function() {
-  if (this.nationalCredentials?.firstName && this.nationalCredentials?.lastName) {
-    return `${this.nationalCredentials.firstName} ${this.nationalCredentials.lastName}`;
-  }
-  return this.username;
-});
 
 
 export default mongoose.models.User || mongoose.model('User', userSchema);
