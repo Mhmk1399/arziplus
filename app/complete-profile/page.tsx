@@ -74,8 +74,8 @@ export default function CompleteProfilePage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex items-center justify-center p-4">
-      <div className="w-full max-w-md">
-        <div className="bg-white rounded-2xl shadow-2xl p-8 border border-gray-100">
+      <div className="w-full max-w-md" dir="rtl">
+        <div className="bg-white rounded-2xl shadow-2xl p-8 border border-gray-100 mt-20">
           {/* Header */}
           <div className="text-center mb-8">
             <div className="bg-gradient-to-r from-blue-600 to-purple-600 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
