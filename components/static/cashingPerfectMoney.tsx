@@ -16,8 +16,6 @@ import {
   FaPercent,
   FaMedal,
   FaEnvelope,
-  FaMoneyBillWave,
-  FaRegClipboard,
 } from "react-icons/fa6";
 import { FaShieldAlt } from "react-icons/fa";
 import HeroSection from "../global/heroSection";
@@ -100,75 +98,7 @@ const CashingPerfect = () => {
     },
   ];
 
-  const cashingStepsProcess = [
-    {
-      id: "step1",
-      title: "ثبت درخواست نقد کردن",
-      href: "/cashing-perfect",
-      description:
-        "درخواست نقد کردن موجودی پرفکت‌مانی خود را از طریق وب‌سایت ارزی پلاس ثبت کنید.",
-      icon: <FaRegClipboard size={28} />,
-      color: {
-        bg: "bg-white",
-        hover: "hover:bg-blue-100",
-        icon: "text-blue-600",
-        text: "text-blue-800",
-      },
-    },
-    {
-      id: "step2",
-      title: "ارسال شماره حساب یا ووچر",
-      href: "/cashing-perfect",
-      description:
-        "شماره حساب یا ووچر پرفکت‌مانی خود را برای ارزی پلاس ارسال کنید.",
-      icon: <FaEnvelope size={28} />,
-      color: {
-        bg: "bg-white",
-        hover: "hover:bg-blue-100",
-        icon: "text-blue-600",
-        text: "text-blue-800",
-      },
-    },
-    {
-      id: "step3",
-      title: "تایید نرخ تبدیل",
-      href: "/cashing-perfect",
-      description: "کاربر نرخ تبدیل پیشنهادی را تأیید می‌کند.",
-      icon: <FaDollarSign size={28} />,
-      color: {
-        bg: "bg-white",
-        hover: "hover:bg-blue-100",
-        icon: "text-blue-600",
-        text: "text-blue-800",
-      },
-    },
-    {
-      id: "step4",
-      title: "انتقال موجودی به ارزی پلاس",
-      href: "/cashing-perfect",
-      description: "موجودی به حساب ارزی پلاس منتقل می‌شود.",
-      icon: <FaMoneyBillWave size={28} />,
-      color: {
-        bg: "bg-white",
-        hover: "hover:bg-blue-100",
-        icon: "text-blue-600",
-        text: "text-blue-800",
-      },
-    },
-    {
-      id: "step5",
-      title: "دریافت معادل ریالی/ارزی",
-      href: "/cashing-perfect",
-      description: "معادل ریالی یا ارزی موجودی شما به حساب شما واریز می‌شود.",
-      icon: <FaRocket size={28} />,
-      color: {
-        bg: "bg-white",
-        hover: "hover:bg-blue-100",
-        icon: "text-blue-600",
-        text: "text-blue-800",
-      },
-    },
-  ];
+
 
   const cashingFaq = [
     {

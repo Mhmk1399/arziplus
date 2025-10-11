@@ -56,6 +56,7 @@ export default function SMSAuthPage() {
         showToast.error(data.error);
       }
     } catch (error) {
+      console.log(error)
       showToast.error("خطا در ارسال پیامک");
     } finally {
       setLoading(false);
@@ -95,6 +96,7 @@ export default function SMSAuthPage() {
         showToast.error(data.error);
       }
     } catch (error) {
+      console.log(error)
       showToast.error("خطا در تایید کد");
     } finally {
       setLoading(false);

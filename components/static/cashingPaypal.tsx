@@ -17,8 +17,6 @@ import {
   FaPercent,
   FaMedal,
   FaEnvelope,
-  FaMoneyBillWave,
-  FaRegClipboard,
 } from "react-icons/fa6";
 import { FaShieldAlt } from "react-icons/fa";
 import HeroSection from "../global/heroSection";

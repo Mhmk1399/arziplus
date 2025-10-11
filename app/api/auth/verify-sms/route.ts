@@ -81,6 +81,7 @@ export async function POST(request: NextRequest) {
     const isCompleteProfile = !!(user.nationalCredentials?.firstName);
     
     const { password: _, ...userWithoutPassword } = user.toObject();
+    console.log(_)
 
     return NextResponse.json({
       message: "شماره تلفن با موفقیت تایید شد",

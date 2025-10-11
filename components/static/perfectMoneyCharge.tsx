@@ -13,7 +13,6 @@ import {
   FaDollarSign,
   FaCartShopping,
   FaMoneyBillWave,
-  FaRegClipboard,
   FaEnvelope,
   FaRocket,
   FaCoins,

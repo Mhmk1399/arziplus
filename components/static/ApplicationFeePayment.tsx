@@ -20,8 +20,6 @@ import {
   FaRocket,
   FaPercentage,
   FaUniversity,
-  FaGraduationCap,
-  FaMapMarkerAlt,
 } from "react-icons/fa";
 import WhyUsSection from "../global/whyUs";
 import FAQSection from "../global/faqSection";

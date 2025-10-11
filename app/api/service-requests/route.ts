@@ -4,6 +4,44 @@ import connect from "@/lib/data";
 import Request from "@/models/request";
 import DynamicService from "@/models/services";
 
+// Type for MongoDB query filters
+interface RequestQueryFilter {
+  status?: string;
+  service?: string;
+}
+
+
+
+// Type for POST request body
+interface CreateRequestBody {
+  service: string;
+  data: Record<string, string>;
+  customer: string;
+  customerEmail?: string;
+  customerName?: string;
+  priority?: string;
+  assignedTo?: string;
+}
+
+// Type for PUT request body
+interface UpdateRequestBody {
+  id: string;
+  status?: string;
+  priority?: string;
+  assignedTo?: string;
+  rejectedReason?: string;
+  adminNote?: string;
+  isNoteVisibleToCustomer?: boolean;
+}
+
+// Type for pagination response
+interface PaginationInfo {
+  page: number;
+  limit: number;
+  total: number;
+  pages: number;
+}
+
 // GET - Retrieve service requests with filters and pagination
 export async function GET(request: NextRequest) {
   try {
@@ -35,7 +73,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Build query filters
-    const query: any = {};
+    const query: RequestQueryFilter = {};
     if (status) {
       query.status = status;
     }
@@ -66,7 +104,7 @@ export async function GET(request: NextRequest) {
         pages: Math.ceil(total / limit),
       },
     });
-  } catch (error) {
+  } catch (error: unknown) {
     console.error("GET Error:", error);
     return NextResponse.json(
       { success: false, message: "Internal server error" },
@@ -79,17 +117,26 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     await connect();
-    const body = await request.json();
+    const body: CreateRequestBody = await request.json();
 
     // Validate required fields
-    const requiredFields = ['service', 'data', 'customer'];
-    for (const field of requiredFields) {
-      if (!body[field]) {
-        return NextResponse.json(
-          { success: false, message: `${field} is required` },
-          { status: 400 }
-        );
-      }
+    if (!body.service) {
+      return NextResponse.json(
+        { success: false, message: "service is required" },
+        { status: 400 }
+      );
+    }
+    if (!body.data) {
+      return NextResponse.json(
+        { success: false, message: "data is required" },
+        { status: 400 }
+      );
+    }
+    if (!body.customer) {
+      return NextResponse.json(
+        { success: false, message: "customer is required" },
+        { status: 400 }
+      );
     }
 
     // Verify service exists and get its details
@@ -135,7 +182,7 @@ export async function POST(request: NextRequest) {
       },
       { status: 201 }
     );
-  } catch (error) {
+  } catch (error: unknown) {
     console.error("POST Error:", error);
     if (error instanceof mongoose.Error.ValidationError) {
       return NextResponse.json(
@@ -154,7 +201,7 @@ export async function POST(request: NextRequest) {
 export async function PUT(request: NextRequest) {
   try {
     await connect();
-    const body = await request.json();
+    const body: UpdateRequestBody = await request.json();
     const { id, ...updateData } = body;
 
     if (!id) {
@@ -191,7 +238,7 @@ export async function PUT(request: NextRequest) {
       message: "Service request updated successfully",
       data: updatedRequest,
     });
-  } catch (error) {
+  } catch (error: unknown) {
     console.error("PUT Error:", error);
     if (error instanceof mongoose.Error.ValidationError) {
       return NextResponse.json(
@@ -216,7 +263,7 @@ export async function DELETE(request: NextRequest) {
 
     if (!id) {
       try {
-        const body = await request.json();
+        const body: { id: string } = await request.json();
         id = body.id;
       } catch {
         // Continue with null id
@@ -251,7 +298,7 @@ export async function DELETE(request: NextRequest) {
       message: "Service request deleted successfully",
       data: deletedRequest,
     });
-  } catch (error) {
+  } catch (error: unknown) {
     console.error("DELETE Error:", error);
     return NextResponse.json(
       { success: false, message: "Internal server error" },

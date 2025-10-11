@@ -19,7 +19,7 @@ import {
   FaEnvelope,
   FaRocket,
   FaCreditCard,
-  FaPercentage,
+  
   FaTools,
 } from "react-icons/fa";
 import HeroSection from "../global/heroSection";

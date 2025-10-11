@@ -1,6 +1,9 @@
 "use client";
 import useSWR from 'swr';
-import { FilterValues } from '@/types/dynamicTypes/types';
+
+interface FilterValues {
+  [key: string]: string | string[] | [string, string] | null | undefined;
+}
 
 interface UseDynamicDataProps {
   endpoint: string;
@@ -60,12 +63,16 @@ export const useDynamicData = ({ endpoint, filters = {}, page = 1, limit = 10 }:
   const searchTerms: string[] = [];
   Object.entries(filters).forEach(([key, value]) => {
     if (key === 'name' || key === 'description') {
-      if (value) searchTerms.push(String(value));
+      if (value && typeof value === 'string') {
+        searchTerms.push(value);
+      }
     } else if (key === 'dateRange' && Array.isArray(value)) {
       // Handle dateRange as separate dateFrom and dateTo parameters
-      const [dateFrom, dateTo] = value as [string, string];
-      if (dateFrom) params.dateFrom = dateFrom;
-      if (dateTo) params.dateTo = dateTo;
+      if (value.length >= 2 && typeof value[0] === 'string' && typeof value[1] === 'string') {
+        const [dateFrom, dateTo] = value;
+        if (dateFrom) params.dateFrom = dateFrom;
+        if (dateTo) params.dateTo = dateTo;
+      }
     } else if (value !== null && value !== undefined && value !== '') {
       params[key] = String(value);
     }

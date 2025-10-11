@@ -11,7 +11,6 @@ import {
   FaHeadset,
   FaLock,
   FaDollarSign,
-  FaRegClipboard,
   FaEnvelope,
   FaRocket,
   FaMedal,
@@ -103,74 +102,7 @@ const RegisterInternationalExamsContainer = () => {
     },
   ];
 
-  // مراحل
-  const examSteps = [
-    {
-      id: "step1",
-      title: "ثبت درخواست",
-      href: "/exams",
-      description: "در وب‌سایت ارزی پلاس درخواست پرداخت خود را ثبت کنید.",
-      icon: <FaRegClipboard size={28} />,
-      color: {
-        bg: "bg-white",
-        hover: "hover:bg-blue-100",
-        icon: "text-blue-600",
-        text: "text-blue-800",
-      },
-    },
-    {
-      id: "step2",
-      title: "ارسال اطلاعات آزمون",
-      href: "/exams",
-      description: "اطلاعات آزمون و مرکز برگزارکننده را ارسال کنید.",
-      icon: <FaEnvelope size={28} />,
-      color: {
-        bg: "bg-white",
-        hover: "hover:bg-blue-100",
-        icon: "text-blue-600",
-        text: "text-blue-800",
-      },
-    },
-    {
-      id: "step3",
-      title: "اعلام مبلغ نهایی",
-      href: "/exams",
-      description: "مبلغ و نوع ارز پرداختی به شما اعلام خواهد شد.",
-      icon: <FaDollarSign size={28} />,
-      color: {
-        bg: "bg-white",
-        hover: "hover:bg-blue-100",
-        icon: "text-blue-600",
-        text: "text-blue-800",
-      },
-    },
-    {
-      id: "step4",
-      title: "پرداخت ریالی",
-      href: "/exams",
-      description: "هزینه را به‌صورت ریالی پرداخت کنید.",
-      icon: <FaDollarSign size={28} />,
-      color: {
-        bg: "bg-white",
-        hover: "hover:bg-blue-100",
-        icon: "text-blue-600",
-        text: "text-blue-800",
-      },
-    },
-    {
-      id: "step5",
-      title: "انجام تراکنش و دریافت رسید",
-      href: "/exams",
-      description: "پرداخت به مرکز آزمون انجام شده و رسید رسمی ارسال می‌شود.",
-      icon: <FaRocket size={28} />,
-      color: {
-        bg: "bg-white",
-        hover: "hover:bg-blue-100",
-        icon: "text-blue-600",
-        text: "text-blue-800",
-      },
-    },
-  ];
+
 
   // FAQ
   const examFaqData = [

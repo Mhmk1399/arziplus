@@ -20,8 +20,6 @@ import {
   FaRocket,
   FaPercentage,
   FaUniversity,
-  FaGraduationCap,
-  FaMapMarkerAlt,
 } from "react-icons/fa";
 import WhyUsSection from "../global/whyUs";
 import FAQSection from "../global/faqSection";
@@ -214,32 +212,7 @@ const DepositFeePayment = () => {
     },
   ];
 
-  const universityPayments = [
-    {
-      id: "canada",
-      title: "پرداخت دیپازیت فی دانشگاه کانادا",
-      icon: <FaMapMarkerAlt className="text-red-500" />,
-      href: "/canada-deposit",
-    },
-    {
-      id: "uk",
-      title: "پرداخت دیپازیت فی دانشگاه انگلیس",
-      icon: <FaMapMarkerAlt className="text-blue-500" />,
-      href: "/uk-deposit",
-    },
-    {
-      id: "us",
-      title: "پرداخت دیپازیت فی دانشگاه آمریکا",
-      icon: <FaMapMarkerAlt className="text-red-400" />,
-      href: "/us-deposit",
-    },
-    {
-      id: "germany",
-      title: "پرداخت دیپازیت فی دانشگاه آلمان",
-      icon: <FaGraduationCap className="text-yellow-500" />,
-      href: "/germany-deposit",
-    },
-  ];
+
 
   return (
     <div>

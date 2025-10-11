@@ -1,7 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { DynamicService } from "@/types/serviceBuilder/types";
-import { showToast } from "@/utilities/toast";
 
 interface ServiceListProps {
   onServiceSelect?: (service: DynamicService) => void;

@@ -8,13 +8,11 @@ import {
   textBoxThemes,
   textBoxTypography,
   themesWhyus,
-  splitSectionThemes,
+  
 } from "@/lib/theme";
 import {
-  FaClock,
   FaHeadset,
   FaDollarSign,
-  FaMoneyBillWave,
   FaRegClipboard,
   FaEnvelope,
   FaRocket,
@@ -27,7 +25,6 @@ import WhyUsSection from "../global/whyUs";
 import FAQSection from "../global/faqSection";
 import CTABanner from "../global/ctaBanner";
 import TextBox from "../global/textBox";
-import HeroSplitSection from "../global/heroSplitSection";
 
 const AboutPage = () => {
   const aboutSteps = [

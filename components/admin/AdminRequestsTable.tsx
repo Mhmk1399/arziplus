@@ -12,7 +12,7 @@ interface Request {
     icon?: string;
     fee: number;
   };
-  data: Record<string, any>; // User submitted form data
+  data: Record<string, string>; // User submitted form data
   customer: {
     nationalCredentials: {
       firstName?: string;
@@ -201,7 +201,8 @@ export default function AdminRequestsTable({ className = "mt-20" }: AdminRequest
     setShowDetailsModal(true);
   };
 
-  const renderFormData = (data: Record<string, any>, service: Request['service']) => {
+  const renderFormData = (data: Record<string,string>, service: Request['service']) => {
+    console.log(service)
     if (!data || Object.keys(data).length === 0) {
       return (
         <div className="text-center py-8">
@@ -754,7 +755,7 @@ export default function AdminRequestsTable({ className = "mt-20" }: AdminRequest
                     <div className="text-yellow-600 mt-0.5">ℹ️</div>
                     <div>
                       <div className="font-medium text-yellow-800 text-sm">
-                        درباره چک‌باکس "قابل مشاهده برای مشتری":
+                        درباره چک‌باکس قابل مشاهده برای مشتری:
                       </div>
                       <div className="text-yellow-700 text-xs mt-1 leading-relaxed">
                         • <strong>فعال:</strong> یادداشت برای مشتری نمایش داده می‌شود و او آن را در پنل خود خواهد دید

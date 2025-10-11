@@ -1,6 +1,5 @@
 // Service Builder Components
 export { default as ServiceBuilder } from './ServiceBuilder';
-export { default as ServiceRenderer } from './ServiceRenderer';
 export { default as ServiceList } from './ServiceList';
 export { default as ServiceManager } from './ServiceManager';
 export { default as FieldBuilder } from './FieldBuilder';

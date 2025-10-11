@@ -3,6 +3,44 @@ import DynamicService from "@/models/services";
 import connect from "@/lib/data";
 import mongoose from "mongoose";
 
+// Type for service field options
+interface FieldOption {
+  key: string;
+  value: string;
+}
+
+// Type for service field (with legacy support)
+interface ServiceField {
+  name: string;
+  label: string;
+  type: string;
+  required: boolean;
+  placeholder?: string;
+  description?: string;
+  options?: FieldOption[];
+  items?: FieldOption[]; // Legacy support
+  showIf?: {
+    field: string;
+    value: string;
+  };
+}
+
+// Type for service document
+interface ServiceDocument {
+  _id?: string;
+  title: string;
+  slug: string;
+  description?: string;
+  icon?: string;
+  image?: string;
+  fee: number;
+  wallet: boolean;
+  status: string;
+  fields?: ServiceField[];
+  createdAt?: Date;
+  updatedAt?: Date;
+}
+
 // Type for MongoDB query filters
 interface ServiceQueryFilter {
   status?: string;
@@ -10,6 +48,19 @@ interface ServiceQueryFilter {
     title?: { $regex: string; $options: string };
     description?: { $regex: string; $options: string };
   }>;
+}
+
+// Type for POST/PUT request body
+interface ServiceRequestBody extends Partial<ServiceDocument> {
+  id?: string; // For PUT requests
+}
+
+// Type for pagination response
+interface PaginationInfo {
+  page: number;
+  limit: number;
+  total: number;
+  pages: number;
 }
 
 // GET - Retrieve services with filters and pagination
@@ -41,7 +92,7 @@ export async function GET(request: NextRequest) {
 
       // Transform legacy data - map items to options for backwards compatibility
       if (services.fields) {
-        services.fields = services.fields.map((field: any) => {
+        services.fields = services.fields.map((field: ServiceField) => {
           if (field.items && !field.options) {
             field.options = field.items;
             delete field.items;
@@ -74,9 +125,9 @@ export async function GET(request: NextRequest) {
       .limit(limit);
 
     // Transform legacy data - map items to options for backwards compatibility
-    const transformedServices = services.map((service: any) => {
+    const transformedServices = services.map((service: ServiceDocument) => {
       if (service.fields) {
-        service.fields = service.fields.map((field: any) => {
+        service.fields = service.fields.map((field: ServiceField) => {
           if (field.items && !field.options) {
             field.options = field.items;
             delete field.items;
@@ -99,7 +150,7 @@ export async function GET(request: NextRequest) {
         pages: Math.ceil(total / limit),
       },
     });
-  } catch (error) {
+  } catch (error: unknown) {
     console.error("GET Error:", error);
     return NextResponse.json(
       { success: false, message: "Internal server error" },
@@ -112,13 +163,11 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     await connect();
-    const body = await request.json();
-
-
+    const body: ServiceRequestBody = await request.json();
 
     // Transform fields to ensure options are properly saved
     if (body.fields) {
-      body.fields = body.fields.map((field: any) => {
+      body.fields = body.fields.map((field: ServiceField) => {
         // Ensure select/multiselect fields have options, not items
         if (field.type === 'select' || field.type === 'multiselect') {
           return {
@@ -143,7 +192,7 @@ export async function POST(request: NextRequest) {
       },
       { status: 201 }
     );
-  } catch (error) {
+  } catch (error: unknown) {
     console.error("POST Error:", error);
     if (error instanceof mongoose.Error.ValidationError) {
       return NextResponse.json(
@@ -168,14 +217,12 @@ export async function POST(request: NextRequest) {
 export async function PUT(request: NextRequest) {
   try {
     await connect();
-    const body = await request.json();
+    const body: ServiceRequestBody = await request.json();
     const { id, ...updateData } = body;
-
-
 
     // Transform fields to ensure options are properly saved
     if (updateData.fields) {
-      updateData.fields = updateData.fields.map((field: any) => {
+      updateData.fields = updateData.fields.map((field: ServiceField) => {
         // Ensure select/multiselect fields have options, not items
         if (field.type === 'select' || field.type === 'multiselect') {
           return {
@@ -223,7 +270,7 @@ export async function PUT(request: NextRequest) {
       message: "service updated successfully",
       data: updatedservice,
     });
-  } catch (error) {
+  } catch (error: unknown) {
     console.error("PUT Error:", error);
     if (error instanceof mongoose.Error.ValidationError) {
       return NextResponse.json(
@@ -242,7 +289,7 @@ export async function PUT(request: NextRequest) {
 export async function PATCH(request: NextRequest) {
   try {
     await connect();
-    const body = await request.json();
+    const body: ServiceRequestBody = await request.json();
     const { id, ...updateData } = body;
 
 
@@ -279,7 +326,7 @@ export async function PATCH(request: NextRequest) {
       message: "service updated successfully",
       data: updatedservice,
     });
-  } catch (error) {
+  } catch (error: unknown) {
     console.error("PATCH Error:", error);
     return NextResponse.json(
       { success: false, message: "Internal server error" },
@@ -300,7 +347,7 @@ export async function DELETE(request: NextRequest) {
     // If not in query params, try to get from request body
     if (!id) {
       try {
-        const body = await request.json();
+        const body: { id: string } = await request.json();
         id = body.id;
       } catch {
         // If body parsing fails, continue with null id
@@ -335,7 +382,7 @@ export async function DELETE(request: NextRequest) {
       message: "service deleted successfully",
       data: deletedservice,
     });
-  } catch (error) {
+  } catch (error: unknown) {
     console.error("DELETE Error:", error);
     return NextResponse.json(
       { success: false, message: "Internal server error" },

@@ -13,7 +13,6 @@ import {
   FaDollarSign,
   FaCartShopping,
   FaMoneyBillWave,
-  FaRegClipboard,
   FaEnvelope,
   FaRocket,
   FaCoins,
@@ -108,73 +107,7 @@ const PayeerCharge = () => {
     },
   ];
 
-  const payeerSteps = [
-    {
-      id: "step1",
-      title: "ثبت سفارش شارژ",
-      href: "/payeer",
-      description: "ابتدا سفارش شارژ پایر خود را ثبت کنید.",
-      icon: <FaRegClipboard size={28} />,
-      color: {
-        bg: "bg-white",
-        hover: "hover:bg-blue-100",
-        icon: "text-blue-600",
-        text: "text-blue-800",
-      },
-    },
-    {
-      id: "step2",
-      title: "وارد کردن شماره کیف پول",
-      href: "/payeer",
-      description: "شماره کیف پول پایر خود را وارد کنید.",
-      icon: <FaCoins size={28} />,
-      color: {
-        bg: "bg-white",
-        hover: "hover:bg-blue-100",
-        icon: "text-blue-600",
-        text: "text-blue-800",
-      },
-    },
-    {
-      id: "step3",
-      title: "انتخاب مبلغ و ارز",
-      href: "/payeer",
-      description: "مبلغ و ارز موردنظر خود را انتخاب کنید.",
-      icon: <FaDollarSign size={28} />,
-      color: {
-        bg: "bg-white",
-        hover: "hover:bg-blue-100",
-        icon: "text-blue-600",
-        text: "text-blue-800",
-      },
-    },
-    {
-      id: "step4",
-      title: "پرداخت ریالی",
-      href: "/payeer",
-      description: "پرداخت هزینه سفارش به‌صورت ریالی.",
-      icon: <FaMoneyBillWave size={28} />,
-      color: {
-        bg: "bg-white",
-        hover: "hover:bg-blue-100",
-        icon: "text-blue-600",
-        text: "text-blue-800",
-      },
-    },
-    {
-      id: "step5",
-      title: "شارژ فوری حساب",
-      href: "/payeer",
-      description: "حساب پایر شما در کوتاه‌ترین زمان شارژ خواهد شد.",
-      icon: <FaRocket size={28} />,
-      color: {
-        bg: "bg-white",
-        hover: "hover:bg-blue-100",
-        icon: "text-blue-600",
-        text: "text-blue-800",
-      },
-    },
-  ];
+
 
   const payeerFaqData = [
     {

@@ -6,6 +6,22 @@ import { showToast } from "@/utilities/toast";
 import FileUploaderModal from "@/components/FileUploaderModal";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
 
+// Type for form field values
+type FormFieldValue = string | number | boolean | string[] | null | undefined;
+
+// Type for form data
+type FormData = Record<string, FormFieldValue>;
+
+// Type for request data
+interface RequestData {
+  service: string;
+  data: FormData;
+  customer: string;
+  customerName: string;
+  customerEmail: string;
+  customerPhone?: string;
+}
+
 // Extended ServiceField interface to handle both options and items (backward compatibility)
 interface ExtendedServiceField extends ServiceField {
   items?: Array<{
@@ -30,7 +46,7 @@ interface Service {
 interface ServiceRendererProps {
   serviceId?: string; // If provided, render only this service
   services?: Service[]; // If provided, render these services
-  onRequestSubmit?: (requestData: any) => void;
+  onRequestSubmit?: (requestData: RequestData) => void | Promise<void>;
   customerId?: string; // Current user ID
   customerEmail?: string;
   customerName?: string;
@@ -43,12 +59,12 @@ const ServiceRenderer: React.FC<ServiceRendererProps> = ({
 }) => {
   const [services, setServices] = useState<Service[]>([]);
   const [selectedService, setSelectedService] = useState<Service | null>(null);
-  const [formData, setFormData] = useState<Record<string, any>>({});
+  const [formData, setFormData] = useState<FormData>({});
   const [loading, setLoading] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [isFileModalOpen, setIsFileModalOpen] = useState(false);
   const [currentFileField, setCurrentFileField] = useState<string | null>(null);
-  const { user: currentUser, isLoggedIn, userDisplayName } = useCurrentUser();
+  const { user: currentUser } = useCurrentUser();
 
   useEffect(() => {
     if (propServices) {
@@ -64,15 +80,21 @@ const ServiceRenderer: React.FC<ServiceRendererProps> = ({
       const url = serviceId
         ? `/api/dynamicServices?id=${serviceId}`
         : "/api/dynamicServices?status=active";
+      interface ApiResponse {
+        success: boolean;
+        data: Service | Service[];
+        message?: string;
+      }
+
       const response = await fetch(url);
-      const data = await response.json();
+      const data: ApiResponse = await response.json();
 
       if (data.success) {
-        setServices(serviceId ? [data.data] : data.data);
+        setServices(serviceId ? [data.data as Service] : data.data as Service[]);
       } else {
         showToast.error("Failed to fetch services");
       }
-    } catch (error) {
+    } catch (error: unknown) {
       showToast.error("Error fetching services");
       console.error("Error:", error);
     } finally {
@@ -85,7 +107,7 @@ const ServiceRenderer: React.FC<ServiceRendererProps> = ({
     setFormData({});
   };
 
-  const handleInputChange = (fieldName: string, value: any) => {
+  const handleInputChange = (fieldName: string, value: FormFieldValue) => {
     setFormData((prev) => ({
       ...prev,
       [fieldName]: value,
@@ -167,13 +189,18 @@ const ServiceRenderer: React.FC<ServiceRendererProps> = ({
           headers.Authorization = `Bearer ${token}`;
         }
 
+        interface SubmitResponse {
+          success: boolean;
+          message?: string;
+        }
+
         const response = await fetch("/api/service-requests", {
           method: "POST",
           headers,
           body: JSON.stringify(requestData),
         });
 
-        const result = await response.json();
+        const result: SubmitResponse = await response.json();
 
         if (result.success) {
           showToast.service.requestSubmitted(selectedService.title);
@@ -183,7 +210,7 @@ const ServiceRenderer: React.FC<ServiceRendererProps> = ({
           showToast.error(result.message || "Failed to submit request");
         }
       }
-    } catch (error) {
+    } catch (error: unknown) {
       showToast.error("Error submitting request");
       console.error("Error:", error);
     } finally {
@@ -214,7 +241,7 @@ const ServiceRenderer: React.FC<ServiceRendererProps> = ({
           return (
             <input
               type={field.type === "string" ? "text" : field.type}
-              value={value}
+              value={String(value || "")}
               onChange={(e) => handleInputChange(field.name, e.target.value)}
               placeholder={field.placeholder}
               className={baseInputClasses}
@@ -226,7 +253,7 @@ const ServiceRenderer: React.FC<ServiceRendererProps> = ({
           return (
             <input
               type="number"
-              value={value}
+              value={typeof value === "number" ? value : ""}
               onChange={(e) =>
                 handleInputChange(field.name, parseFloat(e.target.value) || "")
               }
@@ -239,7 +266,7 @@ const ServiceRenderer: React.FC<ServiceRendererProps> = ({
         case "textarea":
           return (
             <textarea
-              value={value}
+              value={String(value || "")}
               onChange={(e) => handleInputChange(field.name, e.target.value)}
               placeholder={field.placeholder}
               rows={4}
@@ -251,7 +278,7 @@ const ServiceRenderer: React.FC<ServiceRendererProps> = ({
         case "select":
           return (
             <select
-              value={value}
+              value={String(value || "")}
               onChange={(e) => handleInputChange(field.name, e.target.value)}
               className={baseInputClasses}
               required={field.required}
@@ -328,7 +355,7 @@ const ServiceRenderer: React.FC<ServiceRendererProps> = ({
           return (
             <input
               type="date"
-              value={value}
+              value={String(value || "")}
               onChange={(e) => handleInputChange(field.name, e.target.value)}
               className={baseInputClasses}
               required={field.required}
@@ -341,7 +368,7 @@ const ServiceRenderer: React.FC<ServiceRendererProps> = ({
               <div className="flex gap-2">
                 <input
                   type="text"
-                  value={value || ""}
+                  value={String(value || "")}
                   placeholder="فایل انتخاب نشده - از دکمه آپلود استفاده کنید"
                   className={`${baseInputClasses} flex-1`}
                   readOnly
@@ -364,7 +391,7 @@ const ServiceRenderer: React.FC<ServiceRendererProps> = ({
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-reverse space-x-2">
                       <a
-                        href={value}
+                        href={typeof value === "string" ? value : undefined}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-[#0A1D37] border border-[#4DBFF0] p-2 rounded-md hover:text-[#4DBFF0]/80 text-sm "
@@ -382,7 +409,7 @@ const ServiceRenderer: React.FC<ServiceRendererProps> = ({
                   </div>
 
                   {/* Image Preview if it's an image */}
-                  {value &&
+                  {value && typeof value === "string" &&
                     (value.includes("image") ||
                       value.match(/\.(jpg|jpeg|png|gif|webp)$/i)) && (
                       <div className="mt-2">
@@ -406,7 +433,7 @@ const ServiceRenderer: React.FC<ServiceRendererProps> = ({
           return (
             <input
               type="text"
-              value={value}
+              value={String(value || "")}
               onChange={(e) => handleInputChange(field.name, e.target.value)}
               placeholder={field.placeholder}
               className={baseInputClasses}

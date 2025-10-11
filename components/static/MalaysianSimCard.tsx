@@ -11,7 +11,6 @@ import {
   themesWhyus,
 } from "@/lib/theme";
 import {
-  FaClock,
   FaHeadset,
   FaDollarSign,
   FaMoneyBillWave,
