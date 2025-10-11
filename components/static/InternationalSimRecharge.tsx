@@ -155,7 +155,7 @@ const InternationalSimRecharge = () => {
         ]}
         media={{
           type: "image",
-          src: "/assets/images/sim-recharge.webp",
+          src: "/assets/images/simbeynol.png",
           alt: "شارژ سیم‌کارت بین‌المللی با ارزی پلاس",
           width: 1200,
           height: 800,
@@ -163,7 +163,7 @@ const InternationalSimRecharge = () => {
         layout="default"
         theme={{
           headingColor: "text-gray-50",
-          subheadingColor: "text-gray-700",
+          subheadingColor: "text-gray-500",
           descriptionColor: "text-gray-200",
           backgroundColor: "bg-indigo-700",
           bgSubHeadingColor: "bg-fuchsia-50",

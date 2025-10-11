@@ -178,7 +178,7 @@ const UpworkAccountCreation = () => {
         ]}
         media={{
           type: "image",
-          src: "/assets/images/upwork-account.webp",
+          src: "/assets/images/upwork.png",
           alt: "افتتاح حساب آپورک با ارزی پلاس",
           width: 1200,
           height: 800,
@@ -186,7 +186,7 @@ const UpworkAccountCreation = () => {
         layout="default"
         theme={{
           headingColor: "text-gray-50",
-          subheadingColor: "text-gray-700",
+          subheadingColor: "text-gray-500",
           descriptionColor: "text-gray-200",
           backgroundColor: "bg-indigo-700",
           bgSubHeadingColor: "bg-fuchsia-50",

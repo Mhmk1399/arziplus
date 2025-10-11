@@ -136,7 +136,7 @@ const AddressVerificationDocuments = () => {
         ]}
         media={{
           type: "image",
-          src: "/assets/images/address-verification.webp",
+          src: "/assets/images/verify.png",
           alt: "مدارک تایید آدرس با ارزی پلاس",
           width: 1200,
           height: 800,
