@@ -257,7 +257,7 @@ const DepositFeePayment = () => {
         ]}
         media={{
           type: "image",
-          src: "/assets/images/deposit-fee-payment.webp",
+          src: "/assets/images/deposit.png",
           alt: "پرداخت دیپازیت فی با ارزی پلاس",
           width: 1200,
           height: 800,
@@ -265,7 +265,7 @@ const DepositFeePayment = () => {
         layout="default"
         theme={{
           headingColor: "text-gray-50",
-          subheadingColor: "text-gray-700",
+          subheadingColor: "text-gray-500",
           descriptionColor: "text-gray-200",
           backgroundColor: "bg-indigo-700",
           bgSubHeadingColor: "bg-fuchsia-50",

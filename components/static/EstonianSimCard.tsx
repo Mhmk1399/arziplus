@@ -154,7 +154,7 @@ const EstonianSimCard = () => {
   return (
     <div>
       <HeroSection
-        heading="سیم‌کارت‌ بین المللی استونی — میناپی نماینده فروش سیم‌کارت های بین المللی"
+        heading="سیم‌کارت‌ بین المللی استونی — ارزی پلاس نماینده فروش سیم‌کارت های بین المللی"
         subheading="شارژ سیم‌کارت بین‌المللی – ارزی پلاس"
         description="این سیمکارت در ایران آنتن دهی ندارد، اما برای verification SMS-based ایده‌آل است، با prepaid plans از Elisa/Tele2/Telia در 2025 از 5€، تمرکز روی international SMS/call برای Upwork و banking. هر سیم‌کارت با  پیش شماره رسمی آن کشور ارائه می‌شود:"
         buttons={[
@@ -167,7 +167,7 @@ const EstonianSimCard = () => {
         ]}
         media={{
           type: "image",
-          src: "/assets/images/estonian-sim.webp",
+          src: "/assets/images/estoni.png",
           alt: "سیمکارت استونی با ارزی پلاس",
           width: 1200,
           height: 800,
@@ -175,7 +175,7 @@ const EstonianSimCard = () => {
         layout="default"
         theme={{
           headingColor: "text-gray-50",
-          subheadingColor: "text-gray-700",
+          subheadingColor: "text-gray-500",
           descriptionColor: "text-gray-200",
           backgroundColor: "bg-indigo-700",
           bgSubHeadingColor: "bg-fuchsia-50",

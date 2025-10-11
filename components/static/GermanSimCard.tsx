@@ -170,7 +170,7 @@ const GermanSimCard = () => {
         ]}
         media={{
           type: "image",
-          src: "/assets/images/german-sim.webp",
+          src: "/assets/images/gremann.png",
           alt: "سیمکارت آلمان با ارزی پلاس",
           width: 1200,
           height: 800,
@@ -178,7 +178,7 @@ const GermanSimCard = () => {
         layout="default"
         theme={{
           headingColor: "text-gray-50",
-          subheadingColor: "text-gray-700",
+          subheadingColor: "text-gray-500",
           descriptionColor: "text-gray-200",
           backgroundColor: "bg-indigo-700",
           bgSubHeadingColor: "bg-fuchsia-50",

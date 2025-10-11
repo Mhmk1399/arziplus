@@ -222,7 +222,7 @@ export default function TextBox({
         >
           <div
             ref={contentRef}
-            className={`${textSize} ${textColor} ${lineHeight} ${fontWeight}  whitespace-pre-wrap`}
+            className={`${textSize} ${textColor} ${lineHeight} ${fontWeight} text-justify whitespace-pre-wrap`}
           >
             {content}
           </div>

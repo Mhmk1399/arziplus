@@ -138,7 +138,7 @@ const AirbnbPaymentPage = () => {
   return (
     <div>
       <HeroSection
-        heading="پرداخت هزینه Airbnb"
+        heading="پرداخت هزینه Airbnb با ارزی پلاس در ایران"
         subheading="رزرو آسان و سریع اقامتگاه با Airbnb"
         description="با ارزی پلاس، پرداخت هزینه Airbnb سریع، امن و آسان است."
         buttons={[
@@ -151,7 +151,7 @@ const AirbnbPaymentPage = () => {
         ]}
         media={{
           type: "image",
-          src: "/assets/images/airbnb.webp",
+          src: "/assets/images/Airbnb.png",
           alt: "پرداخت هزینه Airbnb",
           width: 1200,
           height: 800,
@@ -159,7 +159,7 @@ const AirbnbPaymentPage = () => {
         layout="default"
         theme={{
           headingColor: "text-gray-50",
-          subheadingColor: "text-gray-200",
+          subheadingColor: "text-gray-500",
           descriptionColor: "text-gray-300",
           backgroundColor: "bg-red-600",
         }}

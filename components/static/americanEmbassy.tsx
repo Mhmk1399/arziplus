@@ -53,28 +53,28 @@ const USVisaPaymentPage = () => {
       icon: <FaClock size={32} />,
       iconColor: "bg-indigo-700",
       title: "سرعت بالا",
-      description: "پرداخت شما در کوتاه‌ترین زمان ممکن انجام می‌شود.",
+      description: "پرداخت شما در کوتاه‌ترین زمان ممکن توسط کارشناسان ارزی پلاس انجام می‌شود.",
     },
     {
       id: 2,
       icon: <FaLock size={32} />,
       iconColor: "bg-indigo-700",
       title: "امنیت بالا",
-      description: "تمامی تراکنش‌ها با امنیت کامل از حساب مطمئن انجام می‌شود.",
+      description: "تمامی تراکنش‌ها با امنیت کاملا بالا و مطمئن انجام می‌شود.",
     },
     {
       id: 3,
       icon: <FaPercent size={32} />,
       iconColor: "bg-indigo-700",
       title: "قیمت مناسب",
-      description: "کمترین کارمزد و نرخ منصفانه برای پرداخت ارزیت.",
+      description: "کمترین کارمزد و نرخ منصفانه برای پرداخت ارزی شما انجام میشود..",
     },
     {
       id: 4,
       icon: <FaHeadset size={32} />,
       iconColor: "bg-indigo-700",
       title: "پشتیبانی حرفه‌ای",
-      description: "کارشناسان ما در تمام مراحل همراه شما هستند.",
+      description: "کارشناسان ارزی پلاس در تمام مراحل همراه شما تا آخرین مرحله هستند.",
     },
   ];
 
@@ -147,7 +147,7 @@ const USVisaPaymentPage = () => {
         ]}
         media={{
           type: "image",
-          src: "/assets/images/usa-visa.webp",
+          src: "/assets/images/america.png",
           alt: "پرداخت هزینه سفارت آمریکا",
           width: 1200,
           height: 800,
@@ -155,7 +155,7 @@ const USVisaPaymentPage = () => {
         layout="default"
         theme={{
           headingColor: "text-gray-50",
-          subheadingColor: "text-gray-200",
+          subheadingColor: "text-gray-500",
           descriptionColor: "text-gray-300",
           backgroundColor: "bg-indigo-700",
         }}

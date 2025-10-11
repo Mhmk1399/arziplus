@@ -249,7 +249,6 @@ export default function FAQSection({
       ref={containerRef}
       className={`relative min-h-screen py-12 md:py-24 overflow-hidden ${className}`}
       dir="rtl"
-    
     >
       {/* Floating Background Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -286,232 +285,133 @@ export default function FAQSection({
       <div className="absolute inset-0 bg-white/5 backdrop-blur-[2px]"></div>
 
       <div className={`relative z-10 ${layoutClasses[layout]}`}>
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center">
-          {/* Right Side - Header & Buttons */}
-          <div ref={headerRef} className="lg:order-1">
-            {/* Header with Glass Background */}
-            <div className="relative text-center lg:text-right mb-8 p-6 lg:p-8 rounded-3xl bg-gradient-to-br from-white/10 via-white/5 to-transparent backdrop-blur-xl border border-white/20 shadow-2xl">
-              {/* Subtle Pattern Overlay */}
-              <div
-                className="absolute inset-0 opacity-5 rounded-3xl"
-                style={{
-                  backgroundImage: `radial-gradient(circle at 1px 1px, rgba(255,122,0,0.15) 1px, transparent 0)`,
-                  backgroundSize: "20px 20px",
-                }}
-              ></div>
-
-              {/* SVG Icon */}
-              {svgIcon && (
-                <div className="relative z-10 animate-text mb-6">
-                  <div
-                    className={`inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-[#FF7A00]/20 to-[#4DBFF0]/20 ${iconColor} backdrop-blur-sm border border-[#FF7A00]/30 shadow-lg`}
-                  >
-                    {svgIcon}
-                  </div>
-                </div>
-              )}
-
-              <h2
-                className={`animate-text text-2xl md:text-3xl lg:text-4xl md:leading-12 ${estedadBold.className} ${headingColor} mb-6 relative z-10`}
-                style={{
-                  background:
-                    "linear-gradient(135deg, #FFFFFF 0%, #4DBFF0 50%, #FF7A00 100%)",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                  backgroundClip: "text",
-                  textShadow: "0 4px 20px rgba(255, 255, 255, 0.1)",
-                }}
-              >
-                {heading}
-              </h2>
-
-              {description && (
-                <p
-                  className={`animate-text text-gray-500 text-base md:text-lg   leading-relaxed relative z-10 max-w-2xl mx-auto lg:mx-0`}
-                >
-                  {description}
-                </p>
-              )}
-            </div>
-            {/* Enhanced Search Box */}
-            {searchable && (
-              <div className="animate-text mb-6">
-                <div className="relative">
-                  <input
-                    type="text"
-                    placeholder="جستجو در سوالات..."
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    className="w-full placeholder:text-[#A0A0A0] text-[#000] px-6 py-4 pr-14 bg-white/10 border border-[#FF7A00]/30 rounded-2xl focus:ring-2 focus:ring-[#4DBFF0] focus:border-[#4DBFF0] focus:outline-none backdrop-blur-sm transition-all duration-300 hover:bg-white/15"
-                  />
-                  <div className="absolute right-4 top-1/2 transform -translate-y-1/2">
-                    <svg
-                      className="w-5 h-5 text-[#FF7A00]"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                      />
-                    </svg>
-                  </div>
-                </div>
-              </div>
-            )}
-          </div>
-          {/* Left Side - Enhanced FAQ Items */}
-          <div ref={faqListRef} className="lg:order-2">
-            {/* Enhanced Categories */}
-            {showCategories && categories.length > 0 && (
-              <div className="animate-text mb-8">
-                <div className="flex flex-wrap gap-3 justify-center lg:justify-start">
-                  <button
-                    onClick={() => setSelectedCategory("all")}
-                    className={`px-6 py-3 rounded-full text-sm font-bold transition-all duration-300 transform hover:scale-105 ${
-                      selectedCategory === "all"
-                        ? `bg-gradient-to-r from-[#FF7A00] to-[#4DBFF0] text-[#FFFFFF] shadow-lg`
-                        : `bg-white/10 text-[#A0A0A0] hover:bg-white/20 hover:text-[#FFFFFF] border border-white/20`
-                    } backdrop-blur-sm`}
-                  >
-                    همه
-                  </button>
-                  {categories.map((category) => (
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 xl:gap-16">
+          {/* Left Side - FAQ Items (scrollable) */}
+          <div className="lg:col-span-7 lg:order-2">
+            <div ref={faqListRef}>
+              {/* Enhanced Categories */}
+              {showCategories && categories.length > 0 && (
+                <div className="animate-text mb-8">
+                  <div className="flex flex-wrap gap-3 justify-center lg:justify-start">
                     <button
-                      key={category}
-                      onClick={() => setSelectedCategory(category!)}
+                      onClick={() => setSelectedCategory("all")}
                       className={`px-6 py-3 rounded-full text-sm font-bold transition-all duration-300 transform hover:scale-105 ${
-                        selectedCategory === category
+                        selectedCategory === "all"
                           ? `bg-gradient-to-r from-[#FF7A00] to-[#4DBFF0] text-[#FFFFFF] shadow-lg`
-                          : `bg-white/10 text-[#A0A0A0] hover:bg-white/20 hover:text-[#0A1D37] border border-white/20`
+                          : `bg-white/10 text-[#A0A0A0] hover:bg-white/20 hover:text-[#FFFFFF] border border-white/20`
                       } backdrop-blur-sm`}
                     >
-                      {category}
+                      همه
                     </button>
-                  ))}
+                    {categories.map((category) => (
+                      <button
+                        key={category}
+                        onClick={() => setSelectedCategory(category!)}
+                        className={`px-6 py-3 rounded-full text-sm font-bold transition-all duration-300 transform hover:scale-105 ${
+                          selectedCategory === category
+                            ? `bg-gradient-to-r from-[#FF7A00] to-[#4DBFF0] text-[#FFFFFF] shadow-lg`
+                            : `bg-white/10 text-[#A0A0A0] hover:bg-white/20 hover:text-[#0A1D37] border border-white/20`
+                        } backdrop-blur-sm`}
+                      >
+                        {category}
+                      </button>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            )}
-            <div className="space-y-4 md:space-y-6">
-              {filteredItems.length > 0 ? (
-                filteredItems.map((item) => (
-                  <div
-                    key={item.id}
-                    className="group relative rounded-2xl md:rounded-3xl bg-gradient-to-br from-white/10 via-white/5 to-transparent backdrop-blur-xl border border-white/20 shadow-2xl hover:shadow-3xl hover:border-[#FF7A00]/30 transition-all duration-500"
-                  >
-                    {/* Subtle Pattern Overlay */}
+              )}
+
+              <div className="space-y-4 md:space-y-6">
+                {filteredItems.length > 0 ? (
+                  filteredItems.map((item) => (
                     <div
-                      className="absolute inset-0 opacity-5 rounded-2xl md:rounded-3xl"
-                      style={{
-                        backgroundImage: `radial-gradient(circle at 1px 1px, rgba(255,122,0,0.15) 1px, transparent 0)`,
-                        backgroundSize: "15px 15px",
-                      }}
-                    ></div>
-
-                    {/* Question */}
-                    <button
-                      onClick={() => toggleItem(item.id)}
-                      className="relative z-10 w-full p-4 md:p-6 text-right flex items-center justify-between hover:bg-white/5 rounded-2xl md:rounded-3xl transition-all duration-300 group-hover:scale-[1.02]"
+                      key={item.id}
+                      className="group relative rounded-2xl md:rounded-3xl bg-gradient-to-br from-white/10 via-white/5 to-transparent backdrop-blur-xl border border-white/20 shadow-2xl hover:shadow-3xl hover:border-[#FF7A00]/30 transition-all duration-500"
                     >
-                      <div className="flex-1 text-right">
-                        <h3
-                          className={`text-sm md:text-base lg:text-lg font-bold leading-relaxed ${
-                            openItems.has(item.id) ? activeColor : questionColor
-                          } transition-colors duration-300`}
-                        >
-                          {item.question}
-                        </h3>
-                        {item.category && (
-                          <span className="inline-block mt-2 px-3 py-1 bg-gradient-to-r from-[#FF7A00]/20 to-[#4DBFF0]/20 text-[#FF7A00] text-xs font-medium rounded-full border border-[#FF7A00]/30">
-                            {item.category}
-                          </span>
-                        )}
-                      </div>
+                      {/* Subtle Pattern Overlay */}
+                      <div
+                        className="absolute inset-0 opacity-5 rounded-2xl md:rounded-3xl"
+                        style={{
+                          backgroundImage: `radial-gradient(circle at 1px 1px, rgba(255,122,0,0.15) 1px, transparent 0)`,
+                          backgroundSize: "15px 15px",
+                        }}
+                      ></div>
 
-                      {/* Enhanced Toggle Icon */}
-                      <div className="mr-4 flex-shrink-0">
-                        <div
-                          className={`w-8 h-8 md:w-10 md:h-10 rounded-full bg-gradient-to-r from-[#FF7A00]/20 to-[#4DBFF0]/20 flex items-center justify-center border border-[#FF7A00]/30 transform transition-all duration-300 ${
-                            openItems.has(item.id)
-                              ? "rotate-180 bg-gradient-to-r from-[#FF7A00]/40 to-[#4DBFF0]/40"
-                              : ""
-                          } group-hover:scale-110`}
-                        >
-                          <svg
-                            className="w-4 h-4 md:w-5 md:h-5 text-[#FF7A00]"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
+                      {/* Question */}
+                      <button
+                        onClick={() => toggleItem(item.id)}
+                        className="relative z-10 w-full p-4 md:p-6 text-right flex items-center justify-between hover:bg-white/5 rounded-2xl md:rounded-3xl transition-all duration-300 group-hover:scale-[1.02]"
+                      >
+                        <div className="flex-1 text-right">
+                          <h3
+                            className={`text-sm md:text-base lg:text-lg font-bold leading-relaxed ${
+                              openItems.has(item.id)
+                                ? activeColor
+                                : questionColor
+                            } transition-colors duration-300`}
                           >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2.5}
-                              d="M19 9l-7 7-7-7"
-                            />
-                          </svg>
+                            {item.question}
+                          </h3>
+                          {item.category && (
+                            <span className="inline-block mt-2 px-3 py-1 bg-gradient-to-r from-[#FF7A00]/20 to-[#4DBFF0]/20 text-[#FF7A00] text-xs font-medium rounded-full border border-[#FF7A00]/30">
+                              {item.category}
+                            </span>
+                          )}
                         </div>
-                      </div>
-                    </button>
 
-                    {/* Enhanced Answer */}
-                    <div
-                      id={`faq-answer-${item.id}`}
-                      className="overflow-hidden transition-all duration-500"
-                      style={{
-                        height: openItems.has(item.id) ? "auto" : 0,
-                        opacity: openItems.has(item.id) ? 1 : 0,
-                      }}
-                    >
-                      <div className="px-4 md:px-6 pb-4 md:pb-6">
-                        <div
-                          className={`text-sm md:text-base ${answerColor} leading-relaxed pt-4 border-t border-[#FF7A00]/20 relative`}
-                        >
-                          {/* Answer content with better spacing */}
-                          <div className="space-y-3">{item.answer}</div>
+                        {/* Enhanced Toggle Icon */}
+                        <div className="mr-4 flex-shrink-0">
+                          <div
+                            className={`w-8 h-8 md:w-10 md:h-10 rounded-full bg-gradient-to-r from-[#FF7A00]/20 to-[#4DBFF0]/20 flex items-center justify-center border border-[#FF7A00]/30 transform transition-all duration-300 ${
+                              openItems.has(item.id)
+                                ? "rotate-180 bg-gradient-to-r from-[#FF7A00]/40 to-[#4DBFF0]/40"
+                                : ""
+                            } group-hover:scale-110`}
+                          >
+                            <svg
+                              className="w-4 h-4 md:w-5 md:h-5 text-[#FF7A00]"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2.5}
+                                d="M19 9l-7 7-7-7"
+                              />
+                            </svg>
+                          </div>
+                        </div>
+                      </button>
+
+                      {/* Enhanced Answer */}
+                      <div
+                        id={`faq-answer-${item.id}`}
+                        className="overflow-hidden transition-all duration-500"
+                        style={{
+                          height: openItems.has(item.id) ? "auto" : 0,
+                          opacity: openItems.has(item.id) ? 1 : 0,
+                        }}
+                      >
+                        <div className="px-4 md:px-6 pb-4 md:pb-6">
+                          <div
+                            className={`text-sm md:text-base ${answerColor} leading-relaxed pt-4 border-t border-[#FF7A00]/20 relative`}
+                          >
+                            {/* Answer content with better spacing */}
+                            <div className="space-y-3">{item.answer}</div>
+                          </div>
                         </div>
                       </div>
+
+                      {/* Glow Effect on Hover */}
+                      <div className="absolute -inset-1 rounded-2xl md:rounded-3xl bg-gradient-to-r from-[#FF7A00]/20 via-[#4DBFF0]/20 to-[#FF7A00]/20 blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10"></div>
                     </div>
-
-                    {/* Glow Effect on Hover */}
-                    <div className="absolute -inset-1 rounded-2xl md:rounded-3xl bg-gradient-to-r from-[#FF7A00]/20 via-[#4DBFF0]/20 to-[#FF7A00]/20 blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10"></div>
-                  </div>
-                ))
-              ) : (
-                <div className="text-center py-16 md:py-20">
-                  <div className="relative inline-flex items-center justify-center w-20 h-20 md:w-24 md:h-24 rounded-full bg-gradient-to-br from-[#FF7A00]/20 to-[#4DBFF0]/20 backdrop-blur-sm border border-[#FF7A00]/30 mb-6">
-                    <svg
-                      className="w-10 h-10 md:w-12 md:h-12 text-[#FF7A00]"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                      />
-                    </svg>
-                  </div>
-                  <h3 className="text-[#FFFFFF] text-xl md:text-2xl font-bold mb-3">
-                    {searchTerm ? "نتیجه‌ای یافت نشد" : "سوالی موجود نیست"}
-                  </h3>
-                  <p className="text-[#A0A0A0] text-base md:text-lg mb-6 max-w-md mx-auto">
-                    {searchTerm
-                      ? "هیچ سوالی با این جستجو پیدا نشد. کلمات کلیدی دیگری را امتحان کنید"
-                      : "در حال حاضر سوالی برای نمایش وجود ندارد"}
-                  </p>
-                  {searchTerm && (
-                    <button
-                      onClick={() => setSearchTerm("")}
-                      className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-[#FF7A00] to-[#4DBFF0] text-[#FFFFFF] rounded-full font-medium hover:scale-105 transition-transform duration-200"
-                    >
+                  ))
+                ) : (
+                  <div className="text-center py-16 md:py-20">
+                    <div className="relative inline-flex items-center justify-center w-20 h-20 md:w-24 md:h-24 rounded-full bg-gradient-to-br from-[#FF7A00]/20 to-[#4DBFF0]/20 backdrop-blur-sm border border-[#FF7A00]/30 mb-6">
                       <svg
-                        className="w-4 h-4"
+                        className="w-10 h-10 md:w-12 md:h-12 text-[#FF7A00]"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -520,39 +420,147 @@ export default function FAQSection({
                           strokeLinecap="round"
                           strokeLinejoin="round"
                           strokeWidth={2}
-                          d="M6 18L18 6M6 6l12 12"
+                          d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
                         />
                       </svg>
-                      پاک کردن جستجو
-                    </button>
-                  )}
+                    </div>
+                    <h3 className="text-[#FFFFFF] text-xl md:text-2xl font-bold mb-3">
+                      {searchTerm ? "نتیجه‌ای یافت نشد" : "سوالی موجود نیست"}
+                    </h3>
+                    <p className="text-[#A0A0A0] text-base md:text-lg mb-6 max-w-md mx-auto">
+                      {searchTerm
+                        ? "هیچ سوالی با این جستجو پیدا نشد. کلمات کلیدی دیگری را امتحان کنید"
+                        : "در حال حاضر سوالی برای نمایش وجود ندارد"}
+                    </p>
+                    {searchTerm && (
+                      <button
+                        onClick={() => setSearchTerm("")}
+                        className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-[#FF7A00] to-[#4DBFF0] text-[#FFFFFF] rounded-full font-medium hover:scale-105 transition-transform duration-200"
+                      >
+                        <svg
+                          className="w-4 h-4"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M6 18L18 6M6 6l12 12"
+                          />
+                        </svg>
+                        پاک کردن جستجو
+                      </button>
+                    )}
+                  </div>
+                )}
+              </div>
+
+              {/* Enhanced Results Count */}
+              {searchTerm && filteredItems.length > 0 && (
+                <div className="mt-8 text-center">
+                  <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-[#FF7A00]/20 to-[#4DBFF0]/20 backdrop-blur-sm border border-[#FF7A00]/30">
+                    <svg
+                      className="w-4 h-4 text-[#FF7A00]"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                      />
+                    </svg>
+                    <span className="text-sm font-medium text-[#FFFFFF]">
+                      {filteredItems.length} سوال پیدا شد
+                    </span>
+                  </div>
                 </div>
               )}
             </div>
+          </div>
 
-            {/* Enhanced Results Count */}
-            {searchTerm && filteredItems.length > 0 && (
-              <div className="mt-8 text-center">
-                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-[#FF7A00]/20 to-[#4DBFF0]/20 backdrop-blur-sm border border-[#FF7A00]/30">
-                  <svg
-                    className="w-4 h-4 text-[#FF7A00]"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
+          {/* Right Side - Header & Search (sticky on desktop) */}
+          <div className="lg:col-span-5 lg:order-1">
+            <div ref={headerRef} className="lg:sticky lg:top-10 lg:self-start">
+              {/* Header with Glass Background */}
+              <div className="relative text-center lg:text-right mb-8 p-6 lg:p-8 rounded-3xl bg-gradient-to-br from-white/10 via-white/5 to-transparent backdrop-blur-xl border border-white/20 shadow-2xl">
+                {/* Subtle Pattern Overlay */}
+                <div
+                  className="absolute inset-0 opacity-5 rounded-3xl"
+                  style={{
+                    backgroundImage: `radial-gradient(circle at 1px 1px, rgba(255,122,0,0.15) 1px, transparent 0)`,
+                    backgroundSize: "20px 20px",
+                  }}
+                ></div>
+
+                {/* SVG Icon */}
+                {svgIcon && (
+                  <div className="relative z-10 animate-text mb-6">
+                    <div
+                      className={`inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-[#FF7A00]/20 to-[#4DBFF0]/20 ${iconColor} backdrop-blur-sm border border-[#FF7A00]/30 shadow-lg`}
+                    >
+                      {svgIcon}
+                    </div>
+                  </div>
+                )}
+
+                <h2
+                  className={`animate-text text-2xl md:text-3xl lg:text-4xl md:leading-12 ${estedadBold.className} ${headingColor} mb-6 relative z-10`}
+                  style={{
+                    background:
+                      "linear-gradient(135deg, #FFFFFF 0%, #4DBFF0 50%, #FF7A00 100%)",
+                    WebkitBackgroundClip: "text",
+                    WebkitTextFillColor: "transparent",
+                    backgroundClip: "text",
+                    textShadow: "0 4px 20px rgba(255, 255, 255, 0.1)",
+                  }}
+                >
+                  {heading}
+                </h2>
+
+                {description && (
+                  <p
+                    className={`animate-text text-gray-500 text-base md:text-lg leading-relaxed relative z-10 max-w-2xl mx-auto lg:mx-0`}
                   >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                    />
-                  </svg>
-                  <span className="text-sm font-medium text-[#FFFFFF]">
-                    {filteredItems.length} سوال پیدا شد
-                  </span>
-                </div>
+                    {description}
+                  </p>
+                )}
               </div>
-            )}
+
+              {/* Enhanced Search Box */}
+              {searchable && (
+                <div className="animate-text mb-6">
+                  <div className="relative">
+                    <input
+                      type="text"
+                      placeholder="جستجو در سوالات..."
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                      className="w-full placeholder:text-[#A0A0A0] text-[#000] px-6 py-4 pr-14 bg-white/10 border border-[#FF7A00]/30 rounded-2xl focus:ring-2 focus:ring-[#4DBFF0] focus:border-[#4DBFF0] focus:outline-none backdrop-blur-sm transition-all duration-300 hover:bg-white/15"
+                    />
+                    <div className="absolute right-4 top-1/2 transform -translate-y-1/2">
+                      <svg
+                        className="w-5 h-5 text-[#FF7A00]"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                        />
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>

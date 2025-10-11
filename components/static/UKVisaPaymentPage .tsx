@@ -152,7 +152,7 @@ const UKVisaPaymentPage = () => {
         ]}
         media={{
           type: "image",
-          src: "/assets/images/uk-visa.webp",
+          src: "/assets/images/england.png",
           alt: "پرداخت هزینه سفارت انگلیس",
           width: 1200,
           height: 800,
@@ -160,7 +160,7 @@ const UKVisaPaymentPage = () => {
         layout="default"
         theme={{
           headingColor: "text-gray-50",
-          subheadingColor: "text-gray-200",
+          subheadingColor: "text-gray-500",
           descriptionColor: "text-gray-300",
           backgroundColor: "bg-indigo-700",
         }}

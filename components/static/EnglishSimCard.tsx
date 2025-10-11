@@ -156,7 +156,7 @@ const EnglishSimCard = () => {
   return (
     <div>
       <HeroSection
-        heading="سیم‌کارت‌ بین المللی انگلیس — میناپی نماینده فروش سیم‌کارت های بین المللی"
+        heading="سیم‌کارت‌ بین المللی انگلیس — ارزی پلاس نماینده فروش سیم‌کارت های بین المللی"
         subheading="سیم‌کارت‌ بین المللی انگلیس"
         description="با داشتن سیم کارت ودافون می توانید ارسال و دریافت پیامک به تمامی خطوط بین المللی داشته  و در اکثر سایت هایی که ایران را تحریم کرده اند ثبت نام کنید. این سیم کارت ها با پیش شماره کشور انگلستان ارائه می‌شوند: Vodafone و EE با پلن‌های 2025 prepaid، ایده‌آل برای verification و international roaming. با خرید سیم کارت های ودافون انگلیس به یک خط دائمی برای ایجاد ارتباط با کل جهان دست یابید."
         buttons={[
@@ -169,7 +169,7 @@ const EnglishSimCard = () => {
         ]}
         media={{
           type: "image",
-          src: "/assets/images/english-sim.webp",
+          src: "/assets/images/englandSim.png",
           alt: "سیمکارت Vodafone و EE انگلیس با ارزی پلاس",
           width: 1200,
           height: 800,
@@ -177,7 +177,7 @@ const EnglishSimCard = () => {
         layout="default"
         theme={{
           headingColor: "text-gray-50",
-          subheadingColor: "text-gray-700",
+          subheadingColor: "text-gray-500",
           descriptionColor: "text-gray-200",
           backgroundColor: "bg-indigo-700",
           bgSubHeadingColor: "bg-fuchsia-50",

@@ -244,26 +244,7 @@ const ApplicationFeePayment = () => {
     },
   ];
 
-  const countryPayments = [
-    {
-      id: "us",
-      title: "پرداخت اپلیکیشن فی دانشگاه آمریکا",
-      icon: <FaMapMarkerAlt className="text-red-400" />,
-      href: "/us-application",
-    },
-    {
-      id: "canada",
-      title: "پرداخت اپلیکیشن فی دانشگاه کانادا",
-      icon: <FaMapMarkerAlt className="text-red-500" />,
-      href: "/canada-application",
-    },
-    {
-      id: "europe",
-      title: "پرداخت اپلیکیشن فی دانشگاه اروپا",
-      icon: <FaGraduationCap className="text-yellow-500" />,
-      href: "/europe-application",
-    },
-  ];
+ 
 
   return (
     <div>
@@ -281,7 +262,7 @@ const ApplicationFeePayment = () => {
         ]}
         media={{
           type: "image",
-          src: "/assets/images/application-fee-payment.webp",
+          src: "/assets/images/fee.png",
           alt: "پرداخت اپلیکیشن فی با ارزی پلاس",
           width: 1200,
           height: 800,
@@ -289,7 +270,7 @@ const ApplicationFeePayment = () => {
         layout="default"
         theme={{
           headingColor: "text-gray-50",
-          subheadingColor: "text-gray-700",
+          subheadingColor: "text-gray-500",
           descriptionColor: "text-gray-200",
           backgroundColor: "bg-indigo-700",
           bgSubHeadingColor: "bg-fuchsia-50",

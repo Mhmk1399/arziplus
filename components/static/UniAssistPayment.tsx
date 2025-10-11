@@ -189,7 +189,7 @@ uni-assist واسطه‌ای ایده‌آل برای اپلای دانشگاه 
         ]}
         media={{
           type: "image",
-          src: "/assets/images/uni-assist-payment.webp",
+          src: "/assets/images/uni-assist.png",
           alt: "پرداخت هزینه uni-assist با ارزی پلاس",
           width: 1200,
           height: 800,
@@ -197,7 +197,7 @@ uni-assist واسطه‌ای ایده‌آل برای اپلای دانشگاه 
         layout="default"
         theme={{
           headingColor: "text-gray-50",
-          subheadingColor: "text-gray-700",
+          subheadingColor: "text-gray-500",
           descriptionColor: "text-gray-200",
           backgroundColor: "bg-indigo-700",
           bgSubHeadingColor: "bg-fuchsia-50",

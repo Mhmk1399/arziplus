@@ -276,7 +276,7 @@ const PaypalOpening = () => {
         heading="مزایای افتتاح حساب پی پال"
         description="با توجه به پراکندگی گسترده حساب‌های پی‌پال در سطح جهان و توانایی پشتیبانی از ارزهای متنوع، ایجاد یک حساب پی‌پال می‌تواند انتقالات مالی را برای صاحب حساب به سادگی تسهیل کند. از جمله مزایای بارز در افتتاح حساب پی‌پال می‌توان به امکانات زیر اشاره نمود:"
         steps={registrationSteps}
-        theme={stepThemes.dark}
+        theme={stepThemes.default}
         layout="vertical"
         boxShape="rounded"
         boxSize="sm"
@@ -284,7 +284,7 @@ const PaypalOpening = () => {
         animated={true}
         interactive={true}
         showIcons={true}
-      />
+       />
       <WhyUsSection
         heading="کاربردهای حساب پی‌پال"
         description="با افتتاح حساب پی‌پال از طریق ارزی پلاس، می‌توانید به امکانات گسترده‌ای دسترسی داشته باشید:"

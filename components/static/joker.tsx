@@ -202,7 +202,7 @@ Joker.com با تمرکز بر سادگی و کارایی، ویژگی‌های 
         ]}
         media={{
           type: "image",
-          src: "/assets/images/joker-domain.webp",
+          src: "/assets/images/joker.png",
           alt: "خرید دامنه از جوکر با ارزی پلاس",
           width: 1200,
           height: 800,
@@ -210,7 +210,7 @@ Joker.com با تمرکز بر سادگی و کارایی، ویژگی‌های 
         layout="default"
         theme={{
           headingColor: "text-gray-50",
-          subheadingColor: "text-gray-700",
+          subheadingColor: "text-gray-500",
           descriptionColor: "text-gray-200",
           backgroundColor: "bg-indigo-700",
           bgSubHeadingColor: "bg-fuchsia-50",

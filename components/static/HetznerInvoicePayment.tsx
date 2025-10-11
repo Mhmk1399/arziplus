@@ -312,7 +312,7 @@ const HetznerInvoicePayment = () => {
         ]}
         media={{
           type: "image",
-          src: "/assets/images/hetzner-invoice.webp",
+          src: "/assets/images/invoiceHost.png",
           alt: "پرداخت فاکتور هتزنر با ارزی پلاس",
           width: 1200,
           height: 800,
@@ -320,7 +320,7 @@ const HetznerInvoicePayment = () => {
         layout="default"
         theme={{
           headingColor: "text-gray-50",
-          subheadingColor: "text-gray-700",
+          subheadingColor: "text-gray-500",
           descriptionColor: "text-gray-200",
           backgroundColor: "bg-indigo-700",
           bgSubHeadingColor: "bg-fuchsia-50",

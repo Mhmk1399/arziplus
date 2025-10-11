@@ -206,7 +206,7 @@ const HostingerHostingPayment = () => {
         ]}
         media={{
           type: "image",
-          src: "/assets/images/hostinger-hosting.webp",
+          src: "/assets/images/Hostinger.png",
           alt: "خرید هاست از Hostinger با ارزی پلاس",
           width: 1200,
           height: 800,
@@ -214,7 +214,7 @@ const HostingerHostingPayment = () => {
         layout="default"
         theme={{
           headingColor: "text-gray-50",
-          subheadingColor: "text-gray-700",
+          subheadingColor: "text-gray-500",
           descriptionColor: "text-gray-200",
           backgroundColor: "bg-indigo-700",
           bgSubHeadingColor: "bg-fuchsia-50",
