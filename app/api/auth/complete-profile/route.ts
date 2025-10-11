@@ -92,8 +92,8 @@ export async function POST(request: NextRequest) {
 
     await user.save();
 
-    const { password: _, ...userWithoutPassword } = user.toObject();
-
+    const { password:_, ...userWithoutPassword } = user.toObject();
+console.log(_)
     return NextResponse.json({
       message: "پروفایل با موفقیت به‌روزرسانی شد",
       user: userWithoutPassword

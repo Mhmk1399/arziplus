@@ -68,6 +68,7 @@ export default function StepsSection({
   const [canScrollRight, setCanScrollRight] = useState(true);
   const [isDragging, setIsDragging] = useState(false);
 
+  console.log(visibleSteps);
   const stepsPerPage = 4;
   const showNavigation = isMounted && steps.length > stepsPerPage;
 
@@ -89,21 +90,14 @@ export default function StepsSection({
   };
 
   const {
-    backgroundColor = "bg-gray-50",
     stepDescriptionColor = "text-gray-400",
-    backgroundGradient,
     headingColor = "text-gray-900",
     descriptionColor = "text-gray-600",
     stepBoxColor = "bg-white",
     stepActiveColor = "bg-blue-50",
-    stepCompletedColor = "bg-green-50",
     stepTextColor = "text-gray-700",
     stepActiveTextColor = "text-blue-700",
-    stepCompletedTextColor = "text-green-700",
-    connectionLineColor = "border-gray-300",
-    numberColor = "bg-gray-200 text-gray-700",
     numberActiveColor = "bg-blue-500 text-white",
-    numberCompletedColor = "bg-green-500 text-white",
   } = theme;
 
   // Helper function to extract hex color and apply as inline style
@@ -409,10 +403,7 @@ export default function StepsSection({
   // Mobile simple layout (no sliding)
   if (!isDesktop && isMounted) {
     return (
-      <section
-        className={`py-16 md:py-20   ${className}`}
-        dir="rtl"
-      >
+      <section className={`py-16 md:py-20   ${className}`} dir="rtl">
         <div className="max-w-5xl mx-auto px-6 md:px-8">
           {/* Header */}
           <div className="text-center mb-12">

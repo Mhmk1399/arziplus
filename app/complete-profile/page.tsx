@@ -128,6 +128,7 @@ export default function CompleteProfilePage() {
         showToast.error(data.error);
       }
     } catch (error) {
+      console.log(error)
       showToast.error("خطا در تکمیل پروفایل");
     } finally {
       setLoading(false);

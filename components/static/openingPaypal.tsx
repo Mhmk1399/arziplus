@@ -20,7 +20,6 @@ import {
   FaPeopleArrows,
   FaShoppingCart,
   FaUniversity,
-  FaPhone,
   FaEnvelope,
   FaRocket,
 } from "react-icons/fa";
@@ -32,10 +31,8 @@ import SmoothTimeline from "../global/scrollTimeline";
 import ServicesGrid from "../global/ServicesGrid";
 import { FaSimCard } from "react-icons/fa6";
 import { FaPaypal } from "react-icons/fa6";
-import { FaDochub } from "react-icons/fa6";
 import { FaUserEdit } from "react-icons/fa";
 import { FaAddressBook } from "react-icons/fa6";
-import { FcDataBackup } from "react-icons/fc";
 import { MdOutlineSupportAgent } from "react-icons/md";
 
 interface TimelineStep {

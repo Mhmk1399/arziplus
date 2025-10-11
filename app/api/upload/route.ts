@@ -63,7 +63,6 @@ export async function POST(req: NextRequest) {
     // Generate unique filename
     const timestamp = Date.now();
     const randomId = Math.random().toString(36).substring(2);
-    const fileExtension = file.name.split('.').pop();
     const cleanFileName = file.name.replace(/[^a-zA-Z0-9.-]/g, '_');
     const uniqueFileName = `${timestamp}_${randomId}_${cleanFileName}`;
     const key = `uploads/${uniqueFileName}`;
@@ -84,7 +83,6 @@ export async function POST(req: NextRequest) {
       }
     });
 
-    const uploadResult = await s3.send(uploadCommand);
 
     // Generate CloudFront URL (permanent, no expiration)
     if (!process.env.AWS_CLOUDFRONT_DOMAIN) {
@@ -172,6 +170,7 @@ export async function GET() {
       }
     });
   } catch (error) {
+    console.log(error)
     return NextResponse.json({
       success: false,
       error: "Failed to check service status"

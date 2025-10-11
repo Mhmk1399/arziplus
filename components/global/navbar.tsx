@@ -5,6 +5,7 @@ import Link from "next/link";
 import { gsap } from "gsap";
 import { menuItems, IconComponent } from "@/lib/menuData";
 import { DropdownItem } from "@/types/menu";
+import { IconType } from "react-icons/lib";
 import { MdClose, MdMenu } from "react-icons/md";
 import { FaUser, FaSignOutAlt, FaTachometerAlt } from "react-icons/fa";
 import Image from "next/image";
@@ -521,12 +522,14 @@ export default function NewNavbar() {
 
                           {/* Category Header */}
                           <div className="flex items-center space-x-3 space-x-reverse pb-4 border-b-2 border-gradient-to-r from-[#FF7A00] to-[#4DBFF0]">
-                            <div className="flex-shrink-0 p-2.5 rounded-xl bg-gradient-to-br from-[#FF7A00]/10 to-[#4DBFF0]/10">
-                              <IconComponent
-                                icon={dropdown.icon}
-                                className="text-xl text-[#FF7A00]"
-                              />
-                            </div>
+                            {dropdown.icon && (
+                              <div className="flex-shrink-0 p-2.5 rounded-xl bg-gradient-to-br from-[#FF7A00]/10 to-[#4DBFF0]/10">
+                                <IconComponent
+                                  icon={dropdown.icon as IconType}
+                                  className="text-xl text-[#FF7A00]"
+                                />
+                              </div>
+                            )}
                             <h3 className="text-[#0A1D37] font-bold text-base">
                               {dropdown.name}
                             </h3>
@@ -544,10 +547,12 @@ export default function NewNavbar() {
                                   isMouseOverMenu.current = false;
                                 }}
                               >
-                                <IconComponent
-                                  icon={subItem.icon}
-                                  className="flex-shrink-0 text-base text-[#4DBFF0] group-hover:text-[#FF7A00] group-hover:scale-110 transition-all duration-300"
-                                />
+                                {subItem.icon && (
+                                  <IconComponent
+                                    icon={subItem.icon as IconType}
+                                    className="flex-shrink-0 text-base text-[#4DBFF0] group-hover:text-[#FF7A00] group-hover:scale-110 transition-all duration-300"
+                                  />
+                                )}
                                 <span className="flex-1 font-medium group-hover:translate-x-1 transition-transform duration-300">
                                   {subItem.name}
                                 </span>
@@ -664,10 +669,12 @@ export default function NewNavbar() {
                               className="w-full flex items-center justify-between p-3 bg-white rounded-lg hover:bg-gray-50 transition-all duration-200 border border-gray-200"
                             >
                               <div className="flex items-center space-x-2 space-x-reverse">
-                                <IconComponent
-                                  icon={dropdown.icon}
-                                  className="text-base text-[#FF7A00]"
-                                />
+                                {dropdown.icon && (
+                                  <IconComponent
+                                    icon={dropdown.icon as IconType}
+                                    className="text-base text-[#FF7A00]"
+                                  />
+                                )}
                                 <span className="text-sm font-semibold text-[#0A1D37]">
                                   {dropdown.name}
                                 </span>
@@ -701,10 +708,12 @@ export default function NewNavbar() {
                                     onClick={toggleMobileMenu}
                                     className="flex items-center space-x-2 space-x-reverse p-3 bg-gradient-to-r from-[#FF7A00]/5 to-[#4DBFF0]/5 hover:from-[#FF7A00]/10 hover:to-[#4DBFF0]/10 text-gray-700 hover:text-[#0A1D37] text-sm rounded-lg transition-all duration-200"
                                   >
-                                    <IconComponent
-                                      icon={subItem.icon}
-                                      className="text-sm text-[#4DBFF0]"
-                                    />
+                                    {subItem.icon && (
+                                      <IconComponent
+                                        icon={subItem.icon as IconType}
+                                        className="text-sm text-[#4DBFF0]"
+                                      />
+                                    )}
                                     <span className="font-medium">
                                       {subItem.name}
                                     </span>

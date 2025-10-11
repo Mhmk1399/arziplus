@@ -1,14 +1,15 @@
-import { IconType } from "react-icons";
+
+import { IconType } from "react-icons/lib";
 
 export interface SubMenuItem {
   name: string;
   href: string;
-  icon: IconType;
+  icon?: IconType;
 }
 
 export interface DropdownItem {
   name: string;
-  icon: IconType;
+  icon?: IconType;
   childrens: SubMenuItem[];
 }
 

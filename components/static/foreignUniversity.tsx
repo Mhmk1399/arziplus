@@ -1,5 +1,4 @@
 import HeroSection from "../global/heroSection";
-import { FaExplosion } from "react-icons/fa6";
 import StepsSection from "../global/stepsSection";
 import {
   ctaThemes,

@@ -15,10 +15,6 @@ import {
   FaShieldAlt,
   FaDollarSign,
   FaShoppingCart,
-  FaBook,
-  FaMoneyBillWave,
-  FaRegClipboard,
-  FaUserAlt,
   FaEnvelope,
   FaRocket,
   FaCoins,
@@ -126,78 +122,7 @@ const PerfectMoney = () => {
     },
   ];
 
-  const perfectMoneyVipSteps = [
-    {
-      id: "step1",
-      title: "ثبت درخواست آنلاین",
-      href: "/perfectmoney-register",
-      description:
-        "اولین مرحله، ثبت درخواست افتتاح حساب پرفکت‌مانی از طریق وب‌سایت ارزی پلاس می‌باشد.",
-      icon: <FaRegClipboard size={28} />,
-      color: {
-        bg: "bg-white",
-        hover: "hover:bg-red-100",
-        icon: "text-red-600",
-        text: "text-red-800",
-      },
-    },
-    {
-      id: "step2",
-      title: "ارسال اطلاعات اولیه",
-      href: "/perfectmoney-register",
-      description:
-        "ارسال اطلاعات اولیه شامل نام، ایمیل و شماره تماس برای شروع فرآیند افتتاح حساب.",
-      icon: <FaUserAlt size={28} />,
-      color: {
-        bg: "bg-white",
-        hover: "hover:bg-red-100",
-        icon: "text-red-600",
-        text: "text-red-800",
-      },
-    },
-    {
-      id: "step3",
-      title: "پرداخت هزینه افتتاح حساب",
-      href: "/perfectmoney-register",
-      description:
-        "پرداخت هزینه افتتاح حساب به‌صورت ریالی جهت تسریع در فرآیند و فعال‌سازی حساب.",
-      icon: <FaMoneyBillWave size={28} />,
-      color: {
-        bg: "bg-white",
-        hover: "hover:bg-red-100",
-        icon: "text-red-600",
-        text: "text-red-800",
-      },
-    },
-    {
-      id: "step4",
-      title: "ساخت و وریفای حساب",
-      href: "/perfectmoney-register",
-      description:
-        "حساب شما با مدارک معتبر بین‌المللی ساخته و وریفای می‌شود تا بدون محدودیت استفاده کنید.",
-      icon: <FaShieldAlt size={28} />,
-      color: {
-        bg: "bg-white",
-        hover: "hover:bg-red-100",
-        icon: "text-red-600",
-        text: "text-red-800",
-      },
-    },
-    {
-      id: "step5",
-      title: "آموزش استفاده امن",
-      href: "/perfectmoney-register",
-      description:
-        "آموزش کامل نحوه استفاده و انجام تراکنش‌ها به‌صورت ایمن برای مدیریت حساب شما.",
-      icon: <FaBook size={28} />,
-      color: {
-        bg: "bg-white",
-        hover: "hover:bg-red-100",
-        icon: "text-red-600",
-        text: "text-red-800",
-      },
-    },
-  ];
+
 
   const faqData = [
     {

@@ -176,7 +176,7 @@ const ServiceManager: React.FC<ServiceManagerProps> = ({
           isOpen={isFileUploaderOpen}
           onClose={() => setIsFileUploaderOpen(false)}
           onFileUploaded={handleFileUploaded}
-          acceptedTypes={['.jpg', '.jpeg', '.png', '.gif', '.webp']}
+          acceptedTypes={[".jpg", ".jpeg", ".png", ".gif", ".webp"]}
           title="آپلود تصویر سرویس"
         />
       </>
@@ -198,7 +198,7 @@ const ServiceManager: React.FC<ServiceManagerProps> = ({
           isOpen={isFileUploaderOpen}
           onClose={() => setIsFileUploaderOpen(false)}
           onFileUploaded={handleFileUploaded}
-          acceptedTypes={['.jpg', '.jpeg', '.png', '.gif', '.webp']}
+          acceptedTypes={[".jpg", ".jpeg", ".png", ".gif", ".webp"]}
           title="آپلود تصویر سرویس"
         />
       </>
@@ -233,7 +233,6 @@ const ServiceManager: React.FC<ServiceManagerProps> = ({
             <span className="relative flex items-center justify-center gap-3 z-10">
               <span className="tracking-wide">ایجاد سرویس جدید</span>
             </span>
-
           </button>
         </div>
 
@@ -261,6 +260,7 @@ const AdminServiceList: React.FC<{
     page: 1,
     limit: 50,
   });
+  console.log(setFilterStatus);
 
   const handleDelete = async (service: DynamicService) => {
     if (!confirm("آیا از حذف این سرویس اطمینان دارید؟")) {

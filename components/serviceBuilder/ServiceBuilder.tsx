@@ -57,7 +57,7 @@ const ServiceBuilder: React.FC<ServiceBuilderProps> = ({
       .trim();
   };
 
-  const handleInputChange = (key: keyof ServiceBuilderFormData, value: any) => {
+  const handleInputChange = (key: keyof ServiceBuilderFormData, value: string) => {
     setFormData((prev) => {
       const newData = { ...prev, [key]: value };
 
@@ -300,7 +300,7 @@ const ServiceBuilder: React.FC<ServiceBuilderProps> = ({
                     type="number"
                     value={formData.fee}
                     onChange={(e) =>
-                      handleInputChange("fee", parseInt(e.target.value) || 0)
+                      handleInputChange("fee", (parseInt(e.target.value) || 0).toString())
                     }
                     className="w-full px-4 py-3 bg-white/10 border border-[#4DBFF0] rounded-lg text-[#0A1D37] placeholder:text-[#0A1D37]/50"
                     placeholder="50000"
@@ -402,12 +402,13 @@ const ServiceBuilder: React.FC<ServiceBuilderProps> = ({
                     type="checkbox"
                     checked={formData.wallet}
                     onChange={(e) =>
-                      handleInputChange("wallet", e.target.checked)
+                      handleInputChange("wallet", e.target.checked.toString())
                     }
                     className="w-5 h-5 text-purple-600 bg-white/10 border-[#4DBFF0] rounded focus:ring-[#FF7A00] focus:ring-2"
                   />
                   <span className="text-[#0A1D37]">نیاز به کیف پول دارد</span>
                 </label>
+
               </div>
             </div>
 
@@ -456,7 +457,7 @@ const ServiceBuilder: React.FC<ServiceBuilderProps> = ({
                   <div className="text-center py-12 text-[#0A1D37]/50">
                     <p className="text-lg mb-2">هنوز فیلدی اضافه نشده</p>
                     <p className="text-sm">
-                      برای شروع، روی دکمه "افزودن فیلد" کلیک کنید
+                      برای شروع، روی دکمه افزودن فیلد کلیک کنید
                     </p>
                   </div>
                 ) : (

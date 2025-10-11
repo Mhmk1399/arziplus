@@ -40,7 +40,7 @@ const FieldBuilder: React.FC<FieldBuilderProps> = ({
     { value: "file", label: "فایل" },
   ];
 
-  const handleFieldChange = (key: keyof ServiceField, value: any) => {
+  const handleFieldChange = (key: keyof ServiceField, value:string|boolean|{ key: string; value: string; }[]|{ field: string; value: string | boolean; } ) => {
     let updatedField = { ...field, [key]: value };
     
     // Clear options when field type is changed to non-select type
@@ -76,7 +76,7 @@ const FieldBuilder: React.FC<FieldBuilderProps> = ({
     handleFieldChange("options", newOptions);
   };
 
-  const handleShowIfChange = (key: "field" | "value", value: any) => {
+  const handleShowIfChange = (key: "field" | "value", value: string|boolean) => {
     const currentShowIf = field.showIf || { field: "", value: "" };
     const newShowIf = { ...currentShowIf, [key]: value };
 
@@ -113,31 +113,7 @@ const FieldBuilder: React.FC<FieldBuilderProps> = ({
     }
   };
 
-  const getFieldIcon = () => {
-    switch (field.type) {
-      case "email":
-        return "📧";
-      case "password":
-        return "🔐";
-      case "number":
-        return "🔢";
-      case "select":
-      case "multiselect":
-        return "📋";
-      case "boolean":
-        return "✅";
-      case "file":
-        return "📁";
-      case "date":
-        return "📅";
-      case "textarea":
-        return "📄";
-      case "tel":
-        return "📞";
-      default:
-        return "📝";
-    }
-  };
+ 
 
   return (
     <div
@@ -480,13 +456,13 @@ const FieldBuilder: React.FC<FieldBuilderProps> = ({
                       <div className="flex items-center gap-2 text-[#0A1D37] text-xs">
                         <span className="text-sm">ℹ️</span>
                         <span>
-                          این فیلد فقط زمانی نمایش داده می‌شود که فیلد "
+                          این فیلد فقط زمانی نمایش داده می‌شود که فیلد 
                           {
                             allFields.find(
                               (f) => f.name === field.showIf?.field
                             )?.label
                           }
-                          " برابر با "
+                           برابر با 
                           {(() => {
                             const targetField = allFields.find(
                               (f) => f.name === field.showIf?.field
@@ -504,7 +480,7 @@ const FieldBuilder: React.FC<FieldBuilderProps> = ({
                               ? matchingOption.value
                               : field.showIf?.value;
                           })()}
-                          " باشد.
+                           باشد.
                         </span>
                       </div>
                     </div>

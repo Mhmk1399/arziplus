@@ -14,7 +14,14 @@ interface ServiceField {
   placeholder?: string;
   description?: string;
   options?: Array<{ key: string; value: string }>;
-  showIf?: { field: string; value: any };
+  showIf?: { field: string; value: string };
+}
+
+// Type for form field values (consistent with ServiceRenderer)
+type FormFieldValue = string | number | boolean | string[] | null | undefined;
+
+interface RequestData {
+  data: Record<string, FormFieldValue>;
 }
 
 interface Request {
@@ -27,7 +34,7 @@ interface Request {
     fee: number;
     fields?: ServiceField[];
   };
-  data: Record<string, any>; // User submitted form data
+  data: Record<string, FormFieldValue>; // User submitted form data
   status: string;
   priority: string;
   paymentAmount: number;
@@ -203,7 +210,7 @@ export default function CustomerRequestsTable({ className = "" }: CustomerReques
     setShowServiceRenderer(true);
   };
 
-  const handleRequestUpdate = async (requestData: any) => {
+  const handleRequestUpdate = async (requestData: RequestData) => {
     if (!selectedRequest) return;
 
     try {
@@ -664,7 +671,7 @@ export default function CustomerRequestsTable({ className = "" }: CustomerReques
               <div className="mt-3 p-3 bg-blue-50 border border-blue-200 rounded-lg">
                 <div className="text-sm text-blue-700">
                   ℹ️ لطفاً اطلاعات درخواست خود را با توجه به دلیل رد مجدداً تکمیل کنید.
-                  پس از ثبت، وضعیت درخواست به "در انتظار بررسی" تغییر خواهد کرد.
+                  پس از ثبت، وضعیت درخواست به در انتظار بررسی تغییر خواهد کرد.
                 </div>
               </div>
             </div>

@@ -20,7 +20,12 @@ export async function GET(request: NextRequest) {
     const status = searchParams.get("status");
 
     // Build query - only show user's own requests
-    const query: any = { customer: authUser.id };
+    interface QueryFilter {
+      customer: string;
+      status?: string;
+    }
+    
+    const query: QueryFilter = { customer: authUser.id };
     if (status) {
       query.status = status;
     }
@@ -36,9 +41,16 @@ export async function GET(request: NextRequest) {
       .limit(limit);
 
     // Filter admin notes to only show those visible to customers
+    interface AdminNote {
+      note: string;
+      addedBy: string;
+      addedAt: Date;
+      isVisibleToCustomer: boolean;
+    }
+    
     const filteredRequests = requests.map(req => {
       const requestObj = req.toObject();
-      requestObj.adminNotes = requestObj.adminNotes.filter((note: any) => note.isVisibleToCustomer);
+      requestObj.adminNotes = requestObj.adminNotes.filter((note: AdminNote) => note.isVisibleToCustomer);
       return requestObj;
     });
 
@@ -55,7 +67,7 @@ export async function GET(request: NextRequest) {
       },
     });
 
-  } catch (error) {
+  } catch (error: unknown) {
     console.error('Customer requests error:', error);
     return NextResponse.json(
       { error: "خطای سرور" },
@@ -76,7 +88,13 @@ export async function POST(request: NextRequest) {
     }
 
     await connect();
-    const body = await request.json();
+    
+    interface RequestBody {
+      requestId: string;
+      response: string;
+    }
+    
+    const body: RequestBody = await request.json();
     const { requestId, response } = body;
 
     if (!requestId || !response) {
@@ -118,7 +136,7 @@ export async function POST(request: NextRequest) {
       message: "پاسخ شما با موفقیت ثبت شد"
     });
 
-  } catch (error) {
+  } catch (error: unknown) {
     console.error('Customer response error:', error);
     return NextResponse.json(
       { error: "خطای سرور" },

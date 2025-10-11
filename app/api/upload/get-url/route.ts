@@ -133,6 +133,7 @@ export async function POST(req: NextRequest) {
     });
 
   } catch (error) {
+    console.log(error)
     return NextResponse.json(
       { success: false, error: "Failed to generate file URLs" },
       { status: 500 }

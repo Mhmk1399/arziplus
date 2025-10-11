@@ -11,7 +11,6 @@ import {
   themesWhyus,
 } from "@/lib/theme";
 import {
-  FaClock,
   FaHeadset,
   FaDollarSign,
   FaRegClipboard,
@@ -33,6 +32,8 @@ import {
 import WhyUsSection from "../global/whyUs";
 import FAQSection from "../global/faqSection";
 import CTABanner from "../global/ctaBanner";
+import TextBox from "../global/textBox";
+import { FaClock } from "react-icons/fa";
 
 const AboutPage = () => {
   const missionSteps = [

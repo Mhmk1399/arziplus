@@ -77,7 +77,7 @@ function CreateServicePage() {
 ### 4. نمایش یک سرویس خاص
 
 ```tsx
-import { ServiceRenderer } from '@/components/serviceBuilder';
+import ServiceRenderer from '@/components/ServiceRenderer';
 
 function ServicePage({ service }) {
   const handleSubmit = (data) => {
