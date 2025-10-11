@@ -64,7 +64,8 @@ export default function FAQSection({
   const faqListRef = useRef<HTMLDivElement>(null);
   const buttonsRef = useRef<HTMLDivElement>(null);
 
-  const [openItems, setOpenItems] = useState<Set<string>>(new Set());
+  // تغییر به string | null برای باز کردن فقط یک آیتم
+  const [openItem, setOpenItem] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [hasAnimated, setHasAnimated] = useState(false);
@@ -95,15 +96,13 @@ export default function FAQSection({
     new Set(faqItems.map((item) => item.category).filter(Boolean))
   );
 
-  // تغییر وضعیت باز/بسته بودن آیتم
+  // تغییر وضعیت باز/بسته بودن آیتم - فقط یک آیتم باز می‌ماند
   const toggleItem = (id: string) => {
-    const newOpenItems = new Set(openItems);
-    if (newOpenItems.has(id)) {
-      newOpenItems.delete(id);
+    if (openItem === id) {
+      setOpenItem(null); // بستن آیتم فعلی
     } else {
-      newOpenItems.add(id);
+      setOpenItem(id); // باز کردن آیتم جدید و بستن قبلی
     }
-    setOpenItems(newOpenItems);
   };
 
   // Enhanced entrance animations
@@ -208,35 +207,48 @@ export default function FAQSection({
     return () => ctx.revert();
   }, [animate, hasAnimated]);
 
-  // انیمیشن باز/بسته شدن FAQ items
+  // انیمیشن بهبود یافته برای باز/بسته شدن FAQ items
   useEffect(() => {
-    openItems.forEach((id) => {
-      const element = document.getElementById(`faq-answer-${id}`);
-      if (element) {
-        gsap.to(element, {
-          height: "auto",
-          opacity: 1,
-          duration: 0.3,
-          ease: "power2.out",
-        });
-      }
-    });
-
-    // بستن آیتم‌هایی که در openItems نیستند
     faqItems.forEach((item) => {
-      if (!openItems.has(item.id)) {
-        const element = document.getElementById(`faq-answer-${item.id}`);
-        if (element) {
-          gsap.to(element, {
-            height: 0,
-            opacity: 0,
-            duration: 0.3,
+      const answerElement = document.getElementById(`faq-answer-${item.id}`);
+      const contentElement = document.getElementById(`faq-content-${item.id}`);
+
+      if (answerElement && contentElement) {
+        if (openItem === item.id) {
+          // باز کردن با انیمیشن نرم
+          gsap.to(answerElement, {
+            height: contentElement.scrollHeight,
+            duration: 0.5,
+            ease: "power2.inOut",
+            onComplete: () => {
+              gsap.set(answerElement, { height: "auto" });
+            },
+          });
+          gsap.to(contentElement, {
+            opacity: 1,
+            y: 0,
+            duration: 0.4,
+            delay: 0.1,
             ease: "power2.out",
+          });
+        } else {
+          // بستن با انیمیشن نرم
+          gsap.to(contentElement, {
+            opacity: 0,
+            y: -10,
+            duration: 0.3,
+            ease: "power2.in",
+          });
+          gsap.to(answerElement, {
+            height: 0,
+            duration: 0.4,
+            delay: 0.1,
+            ease: "power2.inOut",
           });
         }
       }
     });
-  }, [openItems, faqItems]);
+  }, [openItem, faqItems]);
 
   const layoutClasses = {
     default: "max-w-7xl mx-auto px-4 md:px-8",
@@ -329,7 +341,7 @@ export default function FAQSection({
                     >
                       {/* Subtle Pattern Overlay */}
                       <div
-                        className="absolute inset-0 opacity-5 rounded-2xl md:rounded-3xl"
+                        className="absolute inset-0 opacity-5 rounded-2xl md:rounded-3xl pointer-events-none"
                         style={{
                           backgroundImage: `radial-gradient(circle at 1px 1px, rgba(255,122,0,0.15) 1px, transparent 0)`,
                           backgroundSize: "15px 15px",
@@ -339,14 +351,12 @@ export default function FAQSection({
                       {/* Question */}
                       <button
                         onClick={() => toggleItem(item.id)}
-                        className="relative z-10 w-full p-4 md:p-6 text-right flex items-center justify-between hover:bg-white/5 rounded-2xl md:rounded-3xl transition-all duration-300 group-hover:scale-[1.02]"
+                        className="relative z-10 w-full p-4 md:p-6 text-right flex items-center justify-between hover:bg-white/5 rounded-2xl md:rounded-3xl transition-all duration-300"
                       >
                         <div className="flex-1 text-right">
                           <h3
                             className={`text-sm md:text-base lg:text-lg font-bold leading-relaxed ${
-                              openItems.has(item.id)
-                                ? activeColor
-                                : questionColor
+                              openItem === item.id ? activeColor : questionColor
                             } transition-colors duration-300`}
                           >
                             {item.question}
@@ -361,14 +371,14 @@ export default function FAQSection({
                         {/* Enhanced Toggle Icon */}
                         <div className="mr-4 flex-shrink-0">
                           <div
-                            className={`w-8 h-8 md:w-10 md:h-10 rounded-full bg-gradient-to-r from-[#FF7A00]/20 to-[#4DBFF0]/20 flex items-center justify-center border border-[#FF7A00]/30 transform transition-all duration-300 ${
-                              openItems.has(item.id)
-                                ? "rotate-180 bg-gradient-to-r from-[#FF7A00]/40 to-[#4DBFF0]/40"
-                                : ""
+                            className={`w-8 h-8 md:w-10 md:h-10 rounded-full bg-gradient-to-r from-[#FF7A00]/20 to-[#4DBFF0]/20 flex items-center justify-center border border-[#FF7A00]/30 transform transition-all duration-500 ${
+                              openItem === item.id
+                                ? "rotate-180 bg-gradient-to-r from-[#FF7A00]/40 to-[#4DBFF0]/40 scale-110"
+                                : "rotate-0"
                             } group-hover:scale-110`}
                           >
                             <svg
-                              className="w-4 h-4 md:w-5 md:h-5 text-[#FF7A00]"
+                              className="w-4 h-4 md:w-5 md:h-5 text-[#FF7A00] transition-all duration-300"
                               fill="none"
                               stroke="currentColor"
                               viewBox="0 0 24 24"
@@ -384,16 +394,22 @@ export default function FAQSection({
                         </div>
                       </button>
 
-                      {/* Enhanced Answer */}
+                      {/* Enhanced Answer with smooth animation */}
                       <div
                         id={`faq-answer-${item.id}`}
-                        className="overflow-hidden transition-all duration-500"
+                        className="overflow-hidden"
                         style={{
-                          height: openItems.has(item.id) ? "auto" : 0,
-                          opacity: openItems.has(item.id) ? 1 : 0,
+                          height: 0,
                         }}
                       >
-                        <div className="px-4 md:px-6 pb-4 md:pb-6">
+                        <div
+                          id={`faq-content-${item.id}`}
+                          className="px-4 md:px-6 pb-4 md:pb-6"
+                          style={{
+                            opacity: 0,
+                            transform: "translateY(-10px)",
+                          }}
+                        >
                           <div
                             className={`text-sm md:text-base ${answerColor} leading-relaxed pt-4 border-t border-[#FF7A00]/20 relative`}
                           >
@@ -485,12 +501,12 @@ export default function FAQSection({
 
           {/* Right Side - Header & Search (sticky on desktop) */}
           <div className="lg:col-span-5 lg:order-1">
-            <div ref={headerRef} className="lg:sticky lg:top-10 lg:self-start">
+            <div ref={headerRef} className="lg:sticky lg:top-10">
               {/* Header with Glass Background */}
               <div className="relative text-center lg:text-right mb-8 p-6 lg:p-8 rounded-3xl bg-gradient-to-br from-white/10 via-white/5 to-transparent backdrop-blur-xl border border-white/20 shadow-2xl">
                 {/* Subtle Pattern Overlay */}
                 <div
-                  className="absolute inset-0 opacity-5 rounded-3xl"
+                  className="absolute inset-0 opacity-5 rounded-3xl pointer-events-none"
                   style={{
                     backgroundImage: `radial-gradient(circle at 1px 1px, rgba(255,122,0,0.15) 1px, transparent 0)`,
                     backgroundSize: "20px 20px",
@@ -533,7 +549,7 @@ export default function FAQSection({
 
               {/* Enhanced Search Box */}
               {searchable && (
-                <div className="animate-text mb-6">
+                <div className="animate-text">
                   <div className="relative">
                     <input
                       type="text"
