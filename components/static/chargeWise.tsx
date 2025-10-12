@@ -265,7 +265,7 @@ const WiseCharge = () => {
         ]}
         media={{
           type: "image",
-          src: "/assets/images/wise.webp",
+          src: "/assets/images/chargeWise.png",
           alt: "شارژ حساب وایز در ارزی پلاس",
           width: 1200,
           height: 1200,

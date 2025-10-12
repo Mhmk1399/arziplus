@@ -3,8 +3,8 @@ import React from "react";
 import { Metadata } from "next";
  
 export const metadata: Metadata = {
-  title: "صفحه ارتباط ما",
-  description: "صفحه ارتباط ما",
+  title: "  ارتباط ما",
+  description: "  ارتباط ما",
 };
 const page = () => {
   return (

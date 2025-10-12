@@ -6,7 +6,7 @@ import {
   FaInstagram,
   FaWhatsapp,
   FaEnvelope,
-   FaHeart,
+  FaHeart,
   FaCheckCircle,
 } from "react-icons/fa";
 import { gsap } from "gsap";
@@ -373,7 +373,10 @@ export default function Footer() {
 
                 {/* Description */}
                 <p className="text-[#A0A0A0] text-lg md:text-lg max-w-2xl mx-auto leading-relaxed">
-                  راهکار امن و سریع برای تراکنش‌های مالی بین‌المللی
+                  ارزی پلاس پلتفرم تخصصی پرداخت‌های بین‌المللی برای کاربران
+                  ایرانی است. از افتتاح حساب بانکی و پرداخت هزینه آزمون‌ها تا
+                  ثبت شرکت در خارج، همه با امنیت و سرعت بالا در ارزی پلاس انجام
+                  می‌شود.{" "}
                 </p>
 
                 {/* CTA Phone Button */}

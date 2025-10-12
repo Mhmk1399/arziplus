@@ -261,7 +261,7 @@ const WisePayout = () => {
         ]}
         media={{
           type: "image",
-          src: "/assets/images/wise-payout.webp",
+          src: "/assets/images/chargeWise.png",
           alt: "نقد درآمد وایز در ارزی پلاس",
           width: 1200,
           height: 1200,
