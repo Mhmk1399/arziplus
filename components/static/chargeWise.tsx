@@ -265,7 +265,7 @@ const WiseCharge = () => {
         ]}
         media={{
           type: "image",
-          src: "/assets/images/chargeWise.png",
+          src: "https://arziplus.s3.eu-north-1.amazonaws.com/Desktop/18-min.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=ASIAUQ73WRGQUUDOL5QN%2F20251012%2Feu-north-1%2Fs3%2Faws4_request&X-Amz-Date=20251012T095303Z&X-Amz-Expires=300&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEIL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCmV1LW5vcnRoLTEiRjBEAiBXtYOL4KzukItKW5cR06TECtEWmkaI3TidbrFQH86OXAIgKko%2FfYGv3y%2F9FnCTE8qnqOoB%2BlXOmAF%2FzAmZuVwGWz0q1gIIKxAAGgwzMTEzNzYxMjAyMjUiDB7Y3t%2Bar%2FCrii3AvSqzAnHLh6gk6p2Jez9yo%2F84PgH%2FWb9ZNf8PVjj72WI40Z1NNx7QfeywUw491EK56YJXmyyaWw1%2FlYLoI3GmmqVRcj%2BaBh5C%2FOWIkqul7vr4XkTksVLT4zkSXjhUK1mxRYi9%2BdZ3Qv5p1%2F1mlsgV2X%2FoYpYLjEMypFKfRYpJhZPbSQEhot28za3HCQZn0JZk8Ltf9uL6I1v%2BerRG%2Fsxh7NN7DbqXEEsjc%2BoiTbbq8m7xErr9z4u0y7%2BW4RixvFpE3qcMxPH5pPusGQuGDRHkilS%2FUo06dVDPnUFWJwRCIzgCUL6VleL3vZ5wopEKYEKKGyjOyZEzBRF%2BBxg7zq4FPxtXKWCew00a99w3HL%2BiHpANrdFGE7rkO58nr1R994Mpbok2a5tcUgjaVlb5wZNKI95w2OtwupMwkvKtxwY6rgKHUBs7LkdPKSSMrgcPgR%2B4pCCGtyONHpe5L4bq7JbROknolB%2BEwUtjNxTotEafRFRUwUrUQ7hEU0TCqHC64eOCl1DDw2MfmSIEUMEJmL7I8s%2Fr633kXmNzNGGL9V2n6bAnzt%2Bau4WLk7HjmQdrZ7UcvlWh6HHkGijd%2FcMgxA7fItq0DmkJJwNskemAFkXyuV2yfiGNtz0M8EY51KgHK4wM5jwEs6Q5Vex1cSeK1Zl%2B6UMGtWC7WKvfwOXToZmIe6qbk85rWVzUBudeRjgxnjhUss%2BCEe35uiU3CpB7Mt150hvn3QAYyq7bGZ1kVNHpWpRoIe3oauIBFyw9da0T0D0S9boJxFgrciFDI3aenGwAT7aCs9C1gbm7dZNSPCNLB3JOmx0pb47%2BLul%2BppYQjQ%3D%3D&X-Amz-Signature=74daed03c24e9dbc9ef422f2aea7f06802c5eadadf970fa8aeb2d23a479a92f2&X-Amz-SignedHeaders=host&response-content-disposition=inline",
           alt: "شارژ حساب وایز در ارزی پلاس",
           width: 1200,
           height: 1200,

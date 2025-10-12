@@ -192,7 +192,7 @@ const CashingPaypal = () => {
         ]}
         media={{
           type: "image",
-          src: "/assets/images/cashingpaypal.png",
+          src: "https://arziplus.s3.eu-north-1.amazonaws.com/Desktop/16-min.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=ASIAUQ73WRGQ5EELYY2J%2F20251012%2Feu-north-1%2Fs3%2Faws4_request&X-Amz-Date=20251012T095202Z&X-Amz-Expires=300&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEIL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCmV1LW5vcnRoLTEiRjBEAiByDo%2Br8MnXopjescgmieb9NBtPIPMq1BRLBn6YkJhjzgIgUbhr%2BAeHkW3Ra9RpWLR1h9KL%2BasevF92M9VrYIPHArgq1gIIKxAAGgwzMTEzNzYxMjAyMjUiDFGVAq9zVaxAgy2bEyqzAmncKDbdw69dT8tVE9jDgPaHfW2ayuLlsJ4mQp77mk74w8Fzxws0pIiFNSrB6qBV7sYtlxI3TkarD5IG2OPXubiAjeR6lDi6I4Xq0wSRlJ64lz%2BfFhwQv5kIGg%2FI%2FFjhqvkFrYWmqiRrm7ZbRH4yWXYcs5Jiu9lGs2lCKzATEIUT6ia1BQAOPHJS7t0FwGumm61HMqe9sZBMPbJPVN4w90QveZ9vDwFLBNv2FgIKpWsdovrSELeqbRGwR6h1priqzMGFq1P8s64%2Fl8ucp6f9mgJa%2FrT7MXgEkahsV%2Bc54UoHw7glFkBxJLCIfNXGLKiyrXaaiGXfvUCa8XqsipdS6G5FDWOyb0nuQ3lyAhhLYoQMIGZv3Edm1BaPQY%2B0kgsUN4MzDA2ktQVWvZxEPDWwH93xOGQwkvKtxwY6rgLbxHcmWh8w5PYbTIFEnmldYC2G7PlytUMhR5gBZRyY3O%2B%2BM20kfPVF%2FSR8m0nhZFy4eZAJzVDZKQHTpPE2ptPznODMqzizUha8RSrkmiDVD09H%2BOtMUYsnHaMx5hN8%2FVRi7nI4sOGZLCT12G7gwDcxhRaf%2Bn27RI1EcWXTmugnYUoFBSVm%2F1ugRfn06UO9BqV%2B5nB5jDrWfUJuf2D2TKFrsdxL%2FeRzYyu1ChYJ9PcKPu0c0lW3P4Meul5potNG9G8WBa4JRdvUAvkiwUreAvYzAoghOveZTGilHdz0gxhWQOyVF%2FOdHeMrfuqPmwaDqGlDnJvqb6B4maWgeEGgxx%2FKBkMTpxrEdoKr%2FGwzC7Zg4uEggGzkp3CMza10iHcyVVvDgzfHwe0igBaatCNudw%3D%3D&X-Amz-Signature=333705f2c51177d87dc72489633c1be6d3e55a96b0f069e4e59d4a7eeb15eb89&X-Amz-SignedHeaders=host&response-content-disposition=inline",
           alt: "نقد کردن موجودی پی‌پال",
           width: 1200,
           height: 800,

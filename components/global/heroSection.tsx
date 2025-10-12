@@ -547,9 +547,9 @@ export default function HeroSection({
                   {features.map((item, idx) => (
                     <li
                       key={idx}
-                      className="group flex items-center gap-4 p-4 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 transition-all duration-300 hover:scale-105"
+                      className="group flex items-center gap-4 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 transition-all duration-300 hover:scale-105"
                     >
-                      <div className="flex-shrink-0 w-10 h-10 rounded-xl bg-gradient-to-br from-green-400 to-emerald-500 flex items-center justify-center shadow-lg group-hover:shadow-green-500/25 transition-all duration-300">
+                      <div className="flex-shrink-0 w-10 h-10 rounded-xl bg-[#FF7A00] flex items-center justify-center shadow-lg group-hover:shadow-[#0A1D37] transition-all duration-300">
                         {item.icon ? (
                           <span className="text-[#FFFFFF] text-lg">
                             {item.icon}

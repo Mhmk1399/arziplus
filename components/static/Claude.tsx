@@ -153,7 +153,7 @@ const ClaudeAIPage = () => {
         ]}
         media={{
           type: "image",
-          src: "/assets/images/claude.png",
+          src: "https://arziplus.s3.eu-north-1.amazonaws.com/Desktop/22-min.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=ASIAUQ73WRGQ4ERZTHGL%2F20251012%2Feu-north-1%2Fs3%2Faws4_request&X-Amz-Date=20251012T104751Z&X-Amz-Expires=300&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEIP%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCmV1LW5vcnRoLTEiRjBEAiA5IJnghFybjsRigiHdBwD173iHQ%2Bk3SgSjsy1GJp1yYAIgXSeD22TMxfJ9i4EiKhOkp334ZdMfPj8%2Fb7QoXINSkFYq1gIILBAAGgwzMTEzNzYxMjAyMjUiDMzbd7ibgTHpOlXByCqzAiIM8UWMksjkHEbG9SV0%2Bp8fBNE1Ktzsk3mI49UwFalJ995nRuQG7WB%2BTkVkfHFcUxHRL6OVYtOkjut2%2BuxZdPVF8bZhd1fn5bN4lXt54CtwwFIylhdbbM7qIEtL1t7ZoRnOCOtvn6OZekSMHZxzwBSGJnjvVFifphIGkPaUTtu0ipMl8s8AHAt%2B4JWCYL2GQEUI%2BzNnVN3rI4xmbjhdlm4dXEkxab95Hwhjfqwuo%2FfQ0k1HXEejKMDUOYkuA%2F3NULbNHeIUqvi3NbSfNxO4X1z6m%2BsuX%2BFnJZbls5c3xQyszw4RlQtXOoWGVBXHE09IjROSuCUgZYcBEt5TYq9n0WasEZhWxC8%2FOS51L72FcAlXbOR5KKwjD9zPe%2BjAVhPTkiiCpU%2BTOKYY77rHLv%2F3qTDM%2FH4wkvKtxwY6rgK7qpkHam%2BonVN75l6TZaRtkeazIxkMKufE3XUYSP1%2BmG0Hm2NuVd%2FYfIYXYTVvy0PBN0cTZP2gVdGaH4rn13prQsBXI29MBvNgE%2BKsoXFwsqirxFZ7KRMLaeDFcelV3x1WxojS8Hk9h%2BWbpJKlgrJgLoUxuWhCVcIsxbKhVbIXAOUzV6hVLVLBH4KuL3uIzisI9rmGk%2B1x%2BofKKvn5KnHnQ7m1wF7L6uLoeK83uly%2F2qlZ7ICU0CrBZDNUXzv2jCy58zBWl3tI48XMKrEQ0vFXEy1OqeJNn4Fv6XjdpgkELDXSRumEjtLnKLURH1%2FNi27FMgUEckC6%2F06NE%2FveSqmkcIDX8ZHUzKob94qHHk5pmp7mp5IKOeZ23l7GANpIvuqs%2BzG40jqBc0rDDB5kRA%3D%3D&X-Amz-Signature=6e85436b6a7eedafac0d2173c233800bacd9da5203d6f879efef6a98b85ba8e2&X-Amz-SignedHeaders=host&response-content-disposition=inline",
           alt: "خرید اکانت Claude AI",
           width: 1200,
           height: 800,

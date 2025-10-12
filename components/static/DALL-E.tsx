@@ -158,7 +158,7 @@ const DALLEPage = () => {
         ]}
         media={{
           type: "image",
-          src: "/assets/images/dalle.webp",
+          src: "https://arziplus.s3.eu-north-1.amazonaws.com/Desktop/25-min.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=ASIAUQ73WRGQ2CKVNDEY%2F20251012%2Feu-north-1%2Fs3%2Faws4_request&X-Amz-Date=20251012T104923Z&X-Amz-Expires=300&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEIP%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCmV1LW5vcnRoLTEiSDBGAiEAroahCXaVYk22b8MRRjyD90bYDmYNnZ2PUWY0mk6%2BviQCIQC%2FeqQfmHQdNzD2%2BiddHkRYY65fg%2B9CSKea6FDiOYJfhyrWAggsEAAaDDMxMTM3NjEyMDIyNSIMOFOz6l7nN%2B05MdYRKrMCQOBDkN%2FtvrvNnG8hvz%2FeJnqJq7yaIdT8gQ%2FfUAiJbfZ%2FqRD8jACx8F%2BrZlQ5HTktHpBNNtzoJMRsq0EqEoSUCsuq%2FWdCsFzqbT6biwT2dipHTfU3%2B%2Fanhpz4gtFJXzAtOC3Hh9jt1KDOz0pzjWO3qdxDo6URdMSlNZnjhW9h3nrFfX%2B8YxgNGymG32bYs5UEwJ3tnmBc%2BT7lowM6axEr6QNyjnQRe336wD7NoKyZHahs1a56gQTjgPjNlZvAh6vASOqvZkhdJsqFubWn%2FKGJPgCg0EKcyXqWyFIcIAFGJmWpNBEBZJESucCSU3OXy3IoeyKQSn0JDKaLRdNP88C2AlTD0Ib2Fjez839JpQ0k8HOiBBKCRpPogV3qjmUZVVUYnEQdkEye%2Fj3iWoXJEZLJiejGHjCS8q3HBjqsAhfGESqf5%2BMKuY3sqcBvImReQCb9XAmDtSJ2e9uJBU0Q8o9QRaotnGfDAmEbUem6b9BHLODjQuY6T9HePfDuu70sLU9eukf%2B8sFreaxzk79NkK5Flujz%2BP49AY8rRHeCdRi38zeavlTc0iko7YtfAyXYgXfdpbT3oEW076zMwBtNRmbnPUL5ggAbyHRKkEiAuBRAKjuWWFwPGqzhkiMlWRtfGUr9KWySZrPNsi5HwMCriMlocw8D4fFPKdZjIr2MeuN7%2FrQAvnYPy7Q4krHJO37L4Thg1JGeGpbB1zGI0FJj5%2F1Nip%2FJrjeFkofrSSGeRZbm%2BYYzfRZoj5dtRj%2Fvrc78Jve70v%2FNz02f0J49G5PKOZ%2Bf9lO8PrA4YJfxOePwO7YHpGbUdG2leCO%2FXQ%3D%3D&X-Amz-Signature=d8b419b4fe2fec91da9b0387727631897dc09f3cc46f7bc31fbfb143a48cc6c0&X-Amz-SignedHeaders=host&response-content-disposition=inline",
           alt: "خرید اکانت DALL-E",
           width: 1200,
           height: 800,

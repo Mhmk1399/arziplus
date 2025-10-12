@@ -170,7 +170,7 @@ const GermanSimCard = () => {
         ]}
         media={{
           type: "image",
-          src: "/assets/images/gremann.png",
+          src: "https://arziplus.s3.eu-north-1.amazonaws.com/Desktop/46-min.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=ASIAUQ73WRGQ3U76EU2X%2F20251012%2Feu-north-1%2Fs3%2Faws4_request&X-Amz-Date=20251012T110312Z&X-Amz-Expires=300&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEIP%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCmV1LW5vcnRoLTEiRzBFAiAGf%2B9WkHSG4AXvuAvDV5%2F6V1j1cSK9ZgmpxcMUnw1dfQIhALHAMp4YflKopO9mVge90XHQ4%2B4z%2BTzd87T1qS7jAGNJKtYCCCwQABoMMzExMzc2MTIwMjI1Igzto4mTsPKN%2FB6JmbkqswKPPVQhRvK%2BXVf7CtVH%2FkccR9AenCDe4Zpog4uqMXgEPZXxV8WQHvv7y6R4TGr7IEZIXOU7M%2FaYN32CP%2FqDCHUq3DI3qovSOezKwmTWDno8WPOxXVh4%2BF0Wmw6tkChSqISJYnYDPz1kaglRuR8KBcDd4cnCfENa%2BbZR0ppxycjccDwg41KseqpW4QNUEOT2jX46PNR8bbLSMBtRvBwX0tsuizcN%2F1Z%2BhAaE7uNminGZxhapfHoM6wYyHauHVlBvb60G6EFKsQ9I9kO5rTXvWbW7IapsZ6nL5kVw7CKkB%2BC6NayJ6xXGrecDYwX7sL6%2FjVoLdHhwKXjdrVScDuSpHt3yw9A2GNMhtzCdinljhrsIyv4afP8sjOXlagQBLmGBR1gDSWcigJSmDqRjjt1aixUMAZr9MJLyrccGOq0CBFbpsXgLluWbYYV%2BURB5O3JXoQEptvEknwbrH%2B%2FnrIUj3lVAQXhT%2FfYiXXoMQntGGYmHqt3CEdG5aKHLLKQb63McI09lhFc8miAsYu1yXPWpfFTppJTZOSGUBNQYFGiazfe%2FYphFcd7mTCAXGNb3tVqgA6cNaTOG3QgWwoYu6QngRk6ZO5oENEiGTzARhlAn0lYrJGIAQxix%2BfQA7Vh2qZM0Vhs70n6lDjsyu31%2BiI9ceIwXb82ft94y9W5LI6sLs79XuWu%2FCuc1fRpdg8jltU1lgYhJhiuXQSEz%2FG2w0oTY59xsv8gUyOvrLp5RKrSH%2BsfxUhJGMhcmbTjAFjCHJpaV%2BtI%2FyjzdQkWTncV7EyF1Dxm2VxxxLtq0In7yBwO%2Bvr18kphpCIAEeyyRTQ%3D%3D&X-Amz-Signature=70e06f9e8974603ffcbaa5451cad8d8af7979178f2186b8b13cdeef788e5de89&X-Amz-SignedHeaders=host&response-content-disposition=inline",
           alt: "سیمکارت آلمان با ارزی پلاس",
           width: 1200,
           height: 800,

@@ -528,7 +528,7 @@ export default function StepsSection({
           >
             <div
               ref={contentRef}
-              className="flex flex-row-reverse p-4 w-full"
+              className="flex flex-row-reverse   w-full"
               style={{
                 gap: `${gap}px`,
                 willChange: "transform",
@@ -542,7 +542,7 @@ export default function StepsSection({
                   <div
                     key={step.id}
                     data-step-id={step.id}
-                    className={`flex-shrink-0   transition-all duration-500 ${
+                    className={`flex-shrink-0 py-3  transition-all duration-500 ${
                       isActive ? "opacity-100 scale-100" : "opacity-40 scale-95"
                     } ${isDragging ? "pointer-events-none" : ""}`}
                     style={{
@@ -559,10 +559,10 @@ export default function StepsSection({
                     <div
                       className={`${
                         stepBoxColor.includes("bg-[#") ? "" : stepBoxColor
-                      } shadow-xl backdrop-blur-lg rounded-xl border p-6 md:p-8 transition-all duration-500 h-64 ${
+                      }   backdrop-blur-lg rounded-xl   p-6 md:p-8 transition-all duration-500 h-64 ${
                         isActive
-                          ? `${stepActiveColor} hover:shadow-2xl hover:scale-105`
-                          : "border-gray-400/10 hover:border-gray-200 hover:opacity-60"
+                          ? `${stepActiveColor} hover:shadow-md hover:scale-105`
+                          : "    hover:opacity-60"
                       }`}
                       style={getBoxStyle(stepBoxColor)}
                     >
@@ -621,17 +621,6 @@ export default function StepsSection({
             </div>
           )}
         </div>
-
-        {/* Active Steps Indicator */}
-        {showNavigation && (
-          <div className="text-center mt-6">
-            <p className={`text-sm ${descriptionColor}`}>
-              نمایش مراحل {currentIndex + 1} تا{" "}
-              {Math.min(currentIndex + stepsPerPage, steps.length)} از{" "}
-              {steps.length}
-            </p>
-          </div>
-        )}
       </div>
 
       <style jsx>{`

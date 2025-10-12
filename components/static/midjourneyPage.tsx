@@ -148,7 +148,7 @@ const MidjourneyPage = () => {
         ]}
         media={{
           type: "image",
-          src: "/assets/images/Midjourney.png",
+          src: "https://arziplus.s3.eu-north-1.amazonaws.com/Desktop/23-min.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=ASIAUQ73WRGQ6QZTBCLJ%2F20251012%2Feu-north-1%2Fs3%2Faws4_request&X-Amz-Date=20251012T104824Z&X-Amz-Expires=300&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEIP%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCmV1LW5vcnRoLTEiRjBEAiB0tJwI67pxblFlprDhkwiZfuotiOYir5M3jUh%2FFT6oqAIgToRK9YX7076QHFF5u6CCEjjhl%2BLViqQc%2FDksV166dzkq1gIILBAAGgwzMTEzNzYxMjAyMjUiDNjKFGSXJ3zROvgvTCqzAuwB0VHMMFhpoQ8sog6oVSXhlj%2BJJ6Az73r7LL1%2FtmdXKfBrl%2B5cQAOhoBM2iK992S9KPOXyisgGREksoYGD9ZYDCAiLbZminsCPcQhgb3I66akmpOEbwuBEgJY8O8nD%2B5eGG30Czo9EX4UHWLvDzx1D3PSBsHZn2kgs6mn38BMBNPt8NPGNUmQhz8k0zM1KkvlGqiO%2BP4MAdoDcFZ%2FuHKbNI%2FEQU%2Bzu9i7dbwx%2BE%2BL%2Bvpc2yYe56yCoghtYNPnCrzxNH7rHiQiBJMjOXSty5ccXWuKYiSLBycY4wkrnvpX8%2FaIMaWi2nSjIlIKXtBxYvHvaHnU0h54LTgvdVIScYr7FHPe9LLLI4IWEEzm%2BEaG7jmRBfv3dcTWuSk9Qi5HatnuH2FqmDAaauUvHBWUTHTOOih0wkvKtxwY6rgKFjwjYrJ251zso%2FCxqFU%2FvdpNxN%2FVVUnAkwHZsvNxkz6ECNwQSNIUnZcQrmHGPhLTzaJ0UbYMOEPXLqeFKHNOX4NuoP3eDVenF2tmNEAt5k%2BMV55Pj3dNEtUW59xxKkdUx4KxyixMg6Cmw1xElkyGuADN%2FVIEPDLMJ9lfQIQW2OGg7eZNVoPv69bcYgHlSN58fgBSYNUEqlNkTFF1GCMvZsCVtUkC47KlDdiFPNzXMXjAF%2BGyhgxPu15HybESGRsBdi%2B5bKNwuPxMdzNNJQFLA5aIxmjz4EaxlswGtQowBTnkDgiqst9nhN%2FCy8DK1hgTQyeUfT3EygBikk%2F7qKNyuIO1Eqh4QarDvaCcP16XXOXmAxeuEzKePdcL1f%2F0EkjoCWOifiezUX3vYPjVIRQ%3D%3D&X-Amz-Signature=069bdaa52b95e5f4f93c294ece9b24c93cd89e49c9666faa0a26d336a8490ba1&X-Amz-SignedHeaders=host&response-content-disposition=inline",
           alt: "خرید اکانت Midjourney",
           width: 1200,
           height: 800,
