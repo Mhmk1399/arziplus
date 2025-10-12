@@ -83,6 +83,7 @@ export async function POST(req: NextRequest) {
       }
     });
 
+    const uploadResult = await s3.send(uploadCommand);
 
     // Generate CloudFront URL (permanent, no expiration)
     if (!process.env.AWS_CLOUDFRONT_DOMAIN) {
