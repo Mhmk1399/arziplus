@@ -30,6 +30,10 @@ import { FaMedal, FaLock } from "react-icons/fa";
 import HeroSplitSection from "../global/heroSplitSection";
 
 const AddressVerificationDocuments = () => {
+
+
+
+  
   const longText = `افراد ساکن ایران برای فعالیت در سایت هایی که کشور ایران را تحت تحریم قرار داده اند باید آدرس محل سکونت خود را کشوری به جز ایران اعلام کنند تا اجازه فعالیت داشته باشند. به همین جهت ارزی پلاس جهت وریفای آدرس قبض و پرینت حساب بانکی از کشور مالزی و اسپانیا به نام فرد متقاضی صادر می کند. توجه داشته باشید در این روش هیچ گونه آدرس و هویت غیرواقعی (فیک) ایجاد نمی شود و تمامی مدارک با هویت واقعی فرد درخواست کننده و مطابق با مشخصات پاسپورت فرد متقاضی می باشد. با خدمات مدارک تایید آدرس ارزی پلاس، فرآیند وریفای آدرس برای پلتفرم‌های تحریم‌شده مانند Upwork، PayPal، Binance و حساب‌های بانکی بین‌المللی را بدون چالش‌های تحریم‌ها مدیریت کنید — همه چیز با جزئیات واقعی و قانونی، مطابق با استانداردهای GDPR و KYC در سال 2025. ارزی پلاس با همکاری شرکای معتبر در مالزی (مانند Maybank برای پرینت حساب بانکی) و اسپانیا (مانند BBVA برای قبض‌های رسمی)، مدارک را در کمتر از 24 ساعت صادر می‌کند، با تمرکز بر حفظ حریم خصوصی و جلوگیری از ریسک‌های احراز هویت مجدد. تصور کنید بدون نگرانی از رد شدن مدارک فیک، فقط روی فعالیت دلاری‌تان تمرکز کنید — ارزی پلاس دقیقاً این امنیت و سرعت را برای هزاران کاربر ایرانی فراهم کرده است. علاوه بر این، خدمات شامل مشاوره رایگان برای انتخاب کشور مناسب (مالزی برای fintech آسیایی، اسپانیا برای EU banking) و پشتیبانی پس از صدور برای تمدید یا به‌روزرسانی است.`;
 
   const verificationSteps = [
@@ -136,7 +140,7 @@ const AddressVerificationDocuments = () => {
         ]}
         media={{
           type: "image",
-          src: "/assets/images/verify.png",
+          src: "https://arziplus.s3.eu-north-1.amazonaws.com/Desktop/49-min.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=ASIAUQ73WRGQYFLQHJ5D%2F20251012%2Feu-north-1%2Fs3%2Faws4_request&X-Amz-Date=20251012T110656Z&X-Amz-Expires=300&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEIP%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCmV1LW5vcnRoLTEiRzBFAiEA%2FUABvA5plHk8vNWnUP0p97hbjqx0cVwR43qPwyqOXVECIAv6qfPKymQocp15dm5SGmT6xwMwh1pZlOIpNq5IYxuoKtYCCCwQABoMMzExMzc2MTIwMjI1IgwT6KoWGvgpRS%2BUrxkqswL%2FhEKQDOh3trY02Q4d3gc3UQa4eAwKX2xiYDefYIKC5117GWiKcFRTWaL1%2BEdpfqqTyH4JOXYfmpV%2FauAD9TNDJz8Zt4kBZyqZP8xldBwmgRLJUyEIc7zvurh%2BZj9eozgK1dIRsbXFpxEloxnHheiCMg%2B5IcWjh93keISV1gfijR1uEtr%2Fg9urvlbncRP2sBq1d%2FmGN5BtUNifRTQvlSr3Cbu8LeLSAAjdKuCoHTdKYmNt6rpVfo1ZwMxjDSkkMYaatWjMoYyFiK5iJXL6Q7Ti0BoXJKD5R3X91p95G2MCjUzVnsDEiQz7HpEq43rLtGdbu0s3Pj9exN9m%2BHEGOmaxDZZVmvUMMbbUWJOBEE7p%2FkuNAPbqJLUkxcjYAIH%2Bg0eRVskg9tNHWx%2Fc8kdYv0SDo2PDMJLyrccGOq0CUNx3Ac0JKX4IO1h0P%2B5b5qCLRADj6QMAxOk5bcg2%2BnQRoFSaiSaZmNavtRvJf59Ai3y9TZHNVf8Os05%2B2MyxzmiqeA1Ipo%2Bz0f0b7RqDQFi4jkSBMmTDhI%2FJzQPO0%2FWO5UJxNUUtx6e4VL5YKuGpCzPcDbdhOjhWfUKUGcGTnO7hiiyHN587kcWmY3CkqRI2PQAoQ%2BRpt7j%2B7%2FL1k8wK8tlecUAHDaXVTKPFH2RoCbFDumRWio4fnm222XfeQw8xyZE11%2FrFwpFaKbVyQy5S7vfYqR77hxdW0z7IMkH9TsL1vBmZAwv06GzDudAvWDaTLGLFiYFG19DQiq1vas%2Bx8ZWNQnDcGZofG9tMF0gS5EC5keCEkbWUc9J2rYVAn5wv8nk485j%2F5Oy5p6%2FSGw%3D%3D&X-Amz-Signature=5e59b8f3beba902fce71501758bfa2e488f553f40a2bfb8d07f0db69aee832b7&X-Amz-SignedHeaders=host&response-content-disposition=inline",
           alt: "مدارک تایید آدرس با ارزی پلاس",
           width: 1200,
           height: 800,

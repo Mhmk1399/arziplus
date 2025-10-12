@@ -259,7 +259,7 @@ export default function FAQSection({
   return (
     <section
       ref={containerRef}
-      className={`relative min-h-screen py-12 md:py-24 overflow-hidden ${className}`}
+      className={`relative min-h-screen py-12 md:py-2 overflow-hidden ${className}`}
       dir="rtl"
     >
       {/* Floating Background Elements */}
@@ -297,17 +297,17 @@ export default function FAQSection({
       <div className="absolute inset-0 bg-white/5 backdrop-blur-[2px]"></div>
 
       <div className={`relative z-10 ${layoutClasses[layout]}`}>
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 xl:gap-16">
+        <div className="max-w-7xl mx-auto grid md:grid-cols-1 gap-12 items-start">
           {/* Left Side - FAQ Items (scrollable) */}
-          <div className="lg:col-span-7 lg:order-2">
+          <div className="md:order-2">
             <div ref={faqListRef}>
               {/* Enhanced Categories */}
               {showCategories && categories.length > 0 && (
-                <div className="animate-text mb-8">
-                  <div className="flex flex-wrap gap-3 justify-center lg:justify-start">
+                <div className="animate-text md:mt-16 mb-8">
+                  <div className="grid grid-cols-3 md:grid-cols-6 gap-3 justify-center lg:justify-center">
                     <button
                       onClick={() => setSelectedCategory("all")}
-                      className={`px-6 py-3 rounded-full text-sm font-bold transition-all duration-300 transform hover:scale-105 ${
+                      className={`md:px-6 px-3 py-1 md:py-3 cursor-pointer rounded-full text-sm font-bold transition-all duration-300 transform hover:scale-105 ${
                         selectedCategory === "all"
                           ? `bg-gradient-to-r from-[#FF7A00] to-[#4DBFF0] text-[#FFFFFF] shadow-lg`
                           : `bg-white/10 text-[#A0A0A0] hover:bg-white/20 hover:text-[#FFFFFF] border border-white/20`
@@ -319,7 +319,7 @@ export default function FAQSection({
                       <button
                         key={category}
                         onClick={() => setSelectedCategory(category!)}
-                        className={`px-6 py-3 rounded-full text-sm font-bold transition-all duration-300 transform hover:scale-105 ${
+                        className={`md:px-6 px-3 py-1 md:py-3 cursor-pointer rounded-full text-[10px] md:text-sm text-nowrap font-bold transition-all duration-300 transform hover:scale-105 ${
                           selectedCategory === category
                             ? `bg-gradient-to-r from-[#FF7A00] to-[#4DBFF0] text-[#FFFFFF] shadow-lg`
                             : `bg-white/10 text-[#A0A0A0] hover:bg-white/20 hover:text-[#0A1D37] border border-white/20`
@@ -337,7 +337,7 @@ export default function FAQSection({
                   filteredItems.map((item) => (
                     <div
                       key={item.id}
-                      className="group relative rounded-2xl md:rounded-3xl bg-gradient-to-br from-white/10 via-white/5 to-transparent backdrop-blur-xl border border-white/20 shadow-2xl hover:shadow-3xl hover:border-[#FF7A00]/30 transition-all duration-500"
+                      className="group relative rounded-2xl md:rounded-3xl bg-gradient-to-br from-white/10 via-white/5 to-transparent backdrop-blur-xl border border-white/20 shadow-sm hover:shadow-3xl hover:border-[#FF7A00]/30 transition-all duration-500"
                     >
                       {/* Subtle Pattern Overlay */}
                       <div
@@ -351,9 +351,9 @@ export default function FAQSection({
                       {/* Question */}
                       <button
                         onClick={() => toggleItem(item.id)}
-                        className="relative z-10 w-full p-4 md:p-6 text-right flex items-center justify-between hover:bg-white/5 rounded-2xl md:rounded-3xl transition-all duration-300"
+                        className="relative z-10 w-full p-4 md:p-6 cursor-pointer text-right flex items-center justify-between hover:bg-white/5 rounded-2xl md:rounded-3xl transition-all duration-300"
                       >
-                        <div className="flex-1 text-right">
+                        <div className="flex-1 md:flex text-right">
                           <h3
                             className={`text-sm md:text-base lg:text-lg font-bold leading-relaxed ${
                               openItem === item.id ? activeColor : questionColor
@@ -362,7 +362,7 @@ export default function FAQSection({
                             {item.question}
                           </h3>
                           {item.category && (
-                            <span className="inline-block mt-2 px-3 py-1 bg-gradient-to-r from-[#FF7A00]/20 to-[#4DBFF0]/20 text-[#FF7A00] text-xs font-medium rounded-full border border-[#FF7A00]/30">
+                            <span className="inline-block mr-2  px-3 py-1 bg-gradient-to-r from-[#FF7A00]/20 to-[#4DBFF0]/20 text-[#FF7A00] text-xs font-medium rounded-full border border-[#FF7A00]/30">
                               {item.category}
                             </span>
                           )}
@@ -500,83 +500,84 @@ export default function FAQSection({
           </div>
 
           {/* Right Side - Header & Search (sticky on desktop) */}
-          <div className="lg:col-span-5 lg:order-1">
-            <div ref={headerRef} className="lg:sticky lg:top-10">
-              {/* Header with Glass Background */}
-              <div className="relative text-center lg:text-right mb-8 p-6 lg:p-8 rounded-3xl bg-gradient-to-br from-white/10 via-white/5 to-transparent backdrop-blur-xl border border-white/20 shadow-2xl">
-                {/* Subtle Pattern Overlay */}
-                <div
-                  className="absolute inset-0 opacity-5 rounded-3xl pointer-events-none"
-                  style={{
-                    backgroundImage: `radial-gradient(circle at 1px 1px, rgba(255,122,0,0.15) 1px, transparent 0)`,
-                    backgroundSize: "20px 20px",
-                  }}
-                ></div>
+          <div
+            ref={headerRef}
+            className="p-6 lg:p-8 rounded-3xl shadow-sm border border-white/20 backdrop-blur-sm bg-gradient-to-br from-white/10 via-white/5 to-transparent self-start md:sticky top-24 transition-all duration-300 hover:shadow-2xl hover:border-white/30 md:order-1"
+          >
+            {/* Header Content */}
+            <div className="relative text-center lg:text-right mb-8">
+              {/* Subtle Pattern Overlay */}
+              <div
+                className="absolute inset-0 opacity-5 rounded-3xl pointer-events-none"
+                style={{
+                  backgroundImage: `radial-gradient(circle at 1px 1px, rgba(255,122,0,0.15) 1px, transparent 0)`,
+                  backgroundSize: "20px 20px",
+                }}
+              ></div>
 
-                {/* SVG Icon */}
-                {svgIcon && (
-                  <div className="relative z-10 animate-text mb-6">
-                    <div
-                      className={`inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-[#FF7A00]/20 to-[#4DBFF0]/20 ${iconColor} backdrop-blur-sm border border-[#FF7A00]/30 shadow-lg`}
-                    >
-                      {svgIcon}
-                    </div>
-                  </div>
-                )}
-
-                <h2
-                  className={`animate-text text-2xl md:text-3xl lg:text-4xl md:leading-12 ${estedadBold.className} ${headingColor} mb-6 relative z-10`}
-                  style={{
-                    background:
-                      "linear-gradient(135deg, #FFFFFF 0%, #4DBFF0 50%, #FF7A00 100%)",
-                    WebkitBackgroundClip: "text",
-                    WebkitTextFillColor: "transparent",
-                    backgroundClip: "text",
-                    textShadow: "0 4px 20px rgba(255, 255, 255, 0.1)",
-                  }}
-                >
-                  {heading}
-                </h2>
-
-                {description && (
-                  <p
-                    className={`animate-text text-gray-500 text-base md:text-lg leading-relaxed relative z-10 max-w-2xl mx-auto lg:mx-0`}
+              {/* SVG Icon */}
+              {svgIcon && (
+                <div className="relative z-10 animate-text mb-6">
+                  <div
+                    className={`inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-[#FF7A00]/20 to-[#4DBFF0]/20 ${iconColor} backdrop-blur-sm border border-[#FF7A00]/30 shadow-lg`}
                   >
-                    {description}
-                  </p>
-                )}
-              </div>
-
-              {/* Enhanced Search Box */}
-              {searchable && (
-                <div className="animate-text">
-                  <div className="relative">
-                    <input
-                      type="text"
-                      placeholder="جستجو در سوالات..."
-                      value={searchTerm}
-                      onChange={(e) => setSearchTerm(e.target.value)}
-                      className="w-full placeholder:text-[#A0A0A0] text-[#000] px-6 py-4 pr-14 bg-white/10 border border-[#FF7A00]/30 rounded-2xl focus:ring-2 focus:ring-[#4DBFF0] focus:border-[#4DBFF0] focus:outline-none backdrop-blur-sm transition-all duration-300 hover:bg-white/15"
-                    />
-                    <div className="absolute right-4 top-1/2 transform -translate-y-1/2">
-                      <svg
-                        className="w-5 h-5 text-[#FF7A00]"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                        />
-                      </svg>
-                    </div>
+                    {svgIcon}
                   </div>
                 </div>
               )}
+
+              <h2
+                className={`animate-text text-2xl md:text-3xl lg:text-4xl md:leading-12 ${estedadBold.className} ${headingColor} mb-6 relative z-10`}
+                style={{
+                  background:
+                    "linear-gradient(135deg, #FFFFFF 0%, #4DBFF0 50%, #FF7A00 100%)",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                  backgroundClip: "text",
+                  textShadow: "0 4px 20px rgba(255, 255, 255, 0.1)",
+                }}
+              >
+                {heading}
+              </h2>
+
+              {description && (
+                <p
+                  className={`animate-text text-gray-500 text-base md:text-lg leading-relaxed relative z-10 max-w-2xl mx-auto lg:mx-0`}
+                >
+                  {description}
+                </p>
+              )}
             </div>
+
+            {/* Enhanced Search Box */}
+            {searchable && (
+              <div className="animate-text">
+                <div className="relative">
+                  <input
+                    type="text"
+                    placeholder="جستجو در سوالات..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="w-full placeholder:text-[#A0A0A0] text-[#000] px-6 py-4 pr-14 bg-white/10 border border-[#FF7A00]/30 rounded-2xl focus:ring-2 focus:ring-[#4DBFF0] focus:border-[#4DBFF0] focus:outline-none backdrop-blur-sm transition-all duration-300 hover:bg-white/15"
+                  />
+                  <div className="absolute right-4 top-1/2 transform -translate-y-1/2">
+                    <svg
+                      className="w-5 h-5 text-[#FF7A00]"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                      />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>

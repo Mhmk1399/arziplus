@@ -151,7 +151,7 @@ const BookingPaymentPage = () => {
         ]}
         media={{
           type: "image",
-          src: "/assets/images/booking.png",
+          src: "https://arziplus.s3.eu-north-1.amazonaws.com/Desktop/34-min.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=ASIAUQ73WRGQUSCHXCII%2F20251012%2Feu-north-1%2Fs3%2Faws4_request&X-Amz-Date=20251012T105547Z&X-Amz-Expires=300&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEIP%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCmV1LW5vcnRoLTEiSDBGAiEAggPRzhQuf4NgI1r0b9Hh%2BOvHsp8v1HjPhrNiv5ZOFCYCIQCwNh8AiHck%2BQKdT2GW1QBK11yF%2BYLsTaGR8dGW%2BzgyDirWAggsEAAaDDMxMTM3NjEyMDIyNSIM9qfZkt6Q7QUU0V0nKrMCZ0KhzQrqCcsH%2FoKkpF%2F1HDbrW45sBeH9o1H%2BmEI%2Ba17IxIl0EZE1%2F3ngHE5TVI7zvHUeH27TBb060edYIW2%2BtCvZLNZxNR8cKRQt6OQoSuF7QfNZArkXet7RR16tmOks5NrK5EERON71CJ3nNuPqfnDqsIjvSQAhIphOAtgqVI6CRbMPEOzy6IdbZEdYSTFiw3hMb8wcVaqntNFln0wXi0BTGsm9wQcMtsIpz0lU9bdSIUKyVado%2B7SG%2Fk1X5kdzdzlHeIjcLcilTaFWSXmxmOoTAmTjdu%2FlMud2X%2FuXq93Tdl6fS3eiTW69JvElcIDAWIuRVdGtUgrqnSBPBkG6oXn3gz7y4ce1YSFFTEAjNvbovnntQVBlMNdO7QRyeXf8bGaB5M8W7NaBqx1OUlTfUPv2zTCS8q3HBjqsAtwRrz1nkU3ZLhs7UWAL2eYgsUcu2GvvH7x11e%2Bih%2Fb4mIAfl3UrnDpjfIKyUIv7mJ5Nbnqo7kpjp9e1vWlhkLVHs1lEa1FE%2Bn4G48SaztXjyER9tOCUxIwQ9WmCtSKRe1i6phGLU%2FlPtpy3GK%2BgdZJE2rFhLHfilyhue0x71ELioAX3itP6lKOCaGasjQykhies%2FCjxGw0i2Mkxh1FeyOfexfQ462xxJN2mFSuXOX9WTzj26RmEBAM2kr%2FfmuVJS290O6wkk50uI0vl3iWlVsUdPAk8MyCjux1PfMIHUppa9cxGHllWyw5EnZRqUw5r4HnEiChLdgP%2FqCndBoYFr%2BAG80ESYjQfPbUzmPHnmJk1QHFxZPvWM1lqGdP8XdfTvvUhkbpmEDPBWigm5w%3D%3D&X-Amz-Signature=ed302765b324c65607fe310b9d50bd86de6fc85e541d902f3b77c43e904cb864&X-Amz-SignedHeaders=host&response-content-disposition=inline",
           alt: "پرداخت هزینه Booking.com",
           width: 1200,
           height: 800,
