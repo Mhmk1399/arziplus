@@ -3,7 +3,6 @@ import { NextRequest } from "next/server";
 
 export interface AuthUser {
   id: string;
-  email: string;
   roles: string[];
   firstName?: string;
   lastName?: string;
