@@ -1,10 +1,11 @@
-import UserValidationWrapper from "@/components/customerAdmins/credintials/credintialWrapper";
+import CustomerRequestsTable from "@/components/customerAdmins/ordersandservices/orderHistory";
+import ServiceWrapper from "@/components/customerAdmins/ordersandservices/serviceWrapper";
 import React from "react";
 
 const page = () => {
   return (
     <div>
-      <UserValidationWrapper />
+      <ServiceWrapper />
     </div>
   );
 };
