@@ -14,6 +14,7 @@ import {
 import { estedadBold } from "@/next-persian-fonts/estedad/index";
 import Image from "next/image";
 import { showToast } from "@/utilities/toast";
+import FileUploaderModal from "@/components/FileUploaderModal";
 
 interface NationalCredentialsData {
   firstName: string;
@@ -45,11 +46,11 @@ const NationalCredentials = ({ initialData, onSave, onValidationChange }: Nation
   const [errors, setErrors] = useState<Partial<NationalCredentialsData>>({});
   const [isLoading, setIsLoading] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
-  const [uploadingField, setUploadingField] = useState<string | null>(null);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
-
-  const nationalCardRef = useRef<HTMLInputElement>(null);
-  const verificationRef = useRef<HTMLInputElement>(null);
+  
+  // Modal states
+  const [showUploadModal, setShowUploadModal] = useState(false);
+  const [currentUploadField, setCurrentUploadField] = useState<"nationalCardImageUrl" | "verificationImageUrl" | null>(null);
 
   // Validation functions
   const validateNationalNumber = (nationalNumber: string): boolean => {
@@ -124,39 +125,27 @@ const NationalCredentials = ({ initialData, onSave, onValidationChange }: Nation
     }
   };
 
-  const handleFileUpload = async (field: "nationalCardImageUrl" | "verificationImageUrl", file: File) => {
-    if (!file) return;
+  const handleUploadClick = (field: "nationalCardImageUrl" | "verificationImageUrl") => {
+    setCurrentUploadField(field);
+    setShowUploadModal(true);
+  };
 
-    // Validate file type
-    if (!file.type.startsWith('image/')) {
-      setErrors(prev => ({ ...prev, [field]: "فقط فایل‌های تصویری مجاز هستند" }));
-      return;
-    }
-
-    // Validate file size (5MB limit)
-    if (file.size > 5 * 1024 * 1024) {
-      setErrors(prev => ({ ...prev, [field]: "حجم فایل نباید بیش از 5 مگابایت باشد" }));
-      return;
-    }
-
-    setUploadingField(field);
-    try {
-      // Simulate file upload
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
-      // Create a fake URL for demonstration
-      const fakeUrl = URL.createObjectURL(file);
-      setFormData(prev => ({ ...prev, [field]: fakeUrl }));
+  const handleFileUploaded = (fileUrl: string) => {
+    if (currentUploadField) {
+      setFormData(prev => ({ ...prev, [currentUploadField]: fileUrl }));
       
       // Clear error for this field
-      if (errors[field]) {
-        setErrors(prev => ({ ...prev, [field]: undefined }));
+      if (errors[currentUploadField]) {
+        setErrors(prev => ({ ...prev, [currentUploadField]: undefined }));
       }
-    } catch (error) {
-      setErrors(prev => ({ ...prev, [field]: "خطا در آپلود فایل" }));
-    } finally {
-      setUploadingField(null);
     }
+    setShowUploadModal(false);
+    setCurrentUploadField(null);
+  };
+
+  const handleModalClose = () => {
+    setShowUploadModal(false);
+    setCurrentUploadField(null);
   };
 
   const handleSave = async () => {
@@ -202,14 +191,12 @@ const NationalCredentials = ({ initialData, onSave, onValidationChange }: Nation
     field, 
     label, 
     icon, 
-    description,
-    inputRef 
+    description
   }: { 
     field: "nationalCardImageUrl" | "verificationImageUrl";
     label: string;
     icon: React.ReactNode;
     description: string;
-    inputRef: React.RefObject<HTMLInputElement | null>;
   }) => (
     <div className="space-y-2">
       <label className="flex items-center gap-2 text-sm font-medium text-gray-700">
@@ -249,44 +236,24 @@ const NationalCredentials = ({ initialData, onSave, onValidationChange }: Nation
         </div>
       ) : (
         <div
-          onClick={() => inputRef.current?.click()}
+          onClick={() => handleUploadClick(field)}
           className={`border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-all duration-200 ${
-            uploadingField === field
-              ? "border-indigo-300 bg-indigo-50"
-              : errors[field]
+            errors[field]
               ? "border-red-300 bg-red-50 hover:border-red-400"
               : "border-gray-300 bg-gray-50 hover:border-indigo-400 hover:bg-indigo-50"
           }`}
         >
-          {uploadingField === field ? (
-            <div className="space-y-3">
-              <div className="w-8 h-8 border-3 border-indigo-600 border-t-transparent rounded-full animate-spin mx-auto" />
-              <p className="text-indigo-600 font-medium">در حال آپلود...</p>
+          <div className="space-y-3">
+            <div className="p-3 bg-gray-200 rounded-full w-fit mx-auto">
+              <FaUpload className="text-gray-600 text-xl" />
             </div>
-          ) : (
-            <div className="space-y-3">
-              <div className="p-3 bg-gray-200 rounded-full w-fit mx-auto">
-                <FaUpload className="text-gray-600 text-xl" />
-              </div>
-              <div>
-                <p className="font-medium text-gray-700">{description}</p>
-                <p className="text-sm text-gray-500 mt-1">فرمت‌های مجاز: JPG, PNG, PDF (حداکثر 5MB)</p>
-              </div>
+            <div>
+              <p className="font-medium text-gray-700">{description}</p>
+              <p className="text-sm text-gray-500 mt-1">فرمت‌های مجاز: JPG, PNG, GIF, WebP (حداکثر 10MB)</p>
             </div>
-          )}
+          </div>
         </div>
       )}
-
-      <input
-        ref={inputRef}
-        type="file"
-        accept="image/*,.pdf"
-        onChange={(e) => {
-          const file = e.target.files?.[0];
-          if (file) handleFileUpload(field, file);
-        }}
-        className="hidden"
-      />
 
       {errors[field] && (
         <div className="flex items-center gap-2 text-red-600 text-sm">
@@ -452,7 +419,6 @@ const NationalCredentials = ({ initialData, onSave, onValidationChange }: Nation
               label="تصویر کارت ملی"
               icon={<FaIdCard className="text-emerald-600" />}
               description="تصویر واضح از کارت ملی خود آپلود کنید"
-              inputRef={nationalCardRef}
             />
 
             <FileUploadBox
@@ -460,7 +426,6 @@ const NationalCredentials = ({ initialData, onSave, onValidationChange }: Nation
               label="تصویر احراز هویت"
               icon={<FaFileImage className="text-emerald-600" />}
               description="سلفی با کارت ملی در کنار صورت"
-              inputRef={verificationRef}
             />
           </div>
         </div>
@@ -529,9 +494,23 @@ const NationalCredentials = ({ initialData, onSave, onValidationChange }: Nation
           <li>• کد ملی باید معتبر و 10 رقمی باشد</li>
           <li>• تصویر کارت ملی باید واضح و خوانا باشد</li>
           <li>• برای تصویر احراز هویت، سلفی با کارت ملی در کنار صورت بگیرید</li>
-          <li>• حجم فایل‌ها نباید بیش از 5 مگابایت باشد</li>
+          <li>• حجم فایل‌ها نباید بیش از 10 مگابایت باشد</li>
         </ul>
       </div>
+
+      {/* File Upload Modal */}
+      <FileUploaderModal
+        isOpen={showUploadModal}
+        onClose={handleModalClose}
+        onFileUploaded={handleFileUploaded}
+        acceptedTypes={[".jpg", ".jpeg", ".png", ".gif", ".webp"]}
+        maxFileSize={10 * 1024 * 1024} // 10MB
+        title={
+          currentUploadField === "nationalCardImageUrl" 
+            ? "آپلود تصویر کارت ملی" 
+            : "آپلود تصویر احراز هویت"
+        }
+      />
     </div>
   );
 };
