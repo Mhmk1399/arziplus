@@ -11,6 +11,7 @@ export async function GET(request: NextRequest) {
     if (!authUser) {
       return NextResponse.json({ error: "غیر مجاز" }, { status: 401 });
     }
+    console.log(authUser)
 
     const { searchParams } = new URL(request.url);
     const page = parseInt(searchParams.get("page") || "1");
@@ -177,6 +178,7 @@ export async function POST(request: NextRequest) {
       cardNumber: cleanCardNumber,
       shebaNumber: shebaNumber.toUpperCase(),
       accountHolderName: accountHolderName.trim(),
+      status: "pending_verification", // Default status for new submissions
     };
 
     // Add to user's banking info array
@@ -217,6 +219,8 @@ export async function PATCH(request: NextRequest) {
       cardNumber,
       shebaNumber,
       accountHolderName,
+      status,
+      rejectionNotes,
     } = await request.json();
 
     if (!bankingInfoId) {
@@ -260,6 +264,25 @@ export async function PATCH(request: NextRequest) {
 
     if (bankName) updateData[`bankingInfo.${bankingInfoIndex}.bankName`] = bankName.trim();
     if (accountHolderName) updateData[`bankingInfo.${bankingInfoIndex}.accountHolderName`] = accountHolderName.trim();
+    
+    // Admin-only status updates
+    if (status && isAdmin) {
+      if (!["accepted", "rejected", "pending_verification"].includes(status)) {
+        return NextResponse.json(
+          { error: "وضعیت نامعتبر است" },
+          { status: 400 }
+        );
+      }
+      updateData[`bankingInfo.${bankingInfoIndex}.status`] = status;
+      
+      // Add rejection notes if status is rejected
+      if (status === "rejected" && rejectionNotes) {
+        updateData[`bankingInfo.${bankingInfoIndex}.rejectionNotes`] = rejectionNotes.trim();
+      } else if (status !== "rejected") {
+        // Clear rejection notes if status is not rejected
+        updateData[`bankingInfo.${bankingInfoIndex}.rejectionNotes`] = "";
+      }
+    }
 
     if (cardNumber) {
       const cleanCardNumber = cardNumber.replace(/\s/g, "");

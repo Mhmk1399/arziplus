@@ -20,6 +20,13 @@ const bankingInfoSchema = new mongoose.Schema(
       type: String,
       trim: true,
     },
+    status: {
+      type: String,
+      enum: ["accepted", "rejected", "pending_verification"],
+    },
+    rejectionNotes:{
+      type: String,
+    }
   },
   { _id: true }
 );
@@ -49,7 +56,13 @@ const nationalCredentialsSchema = new mongoose.Schema(
     verificationImageUrl: {
       type: String,
       trim: true,
+    },   status: {
+      type: String,
+      enum: ["accepted", "rejected", "pending_verification"],
     },
+    rejectionNotes:{
+      type: String,
+    }
   },
   { _id: true }
 );
@@ -86,7 +99,13 @@ const contactInfoSchema = new mongoose.Schema(
       type: String,
       trim: true,
       match: [/^\d{10}$/, "Postal code must be 10 digits"],
+    },   status: {
+      type: String,
+      enum: ["accepted", "rejected", "pending_verification"],
     },
+    rejectionNotes:{
+      type: String,
+    }
   },
   { _id: false }
 );
@@ -123,7 +142,6 @@ const userSchema = new mongoose.Schema(
 
     // System Data & Verification
     verifications: {
-     
       phone: {
         isVerified: {
           type: Boolean,

@@ -169,6 +169,7 @@ export async function POST(request: NextRequest) {
       nationalNumber,
       nationalCardImageUrl: nationalCardImageUrl || user.nationalCredentials?.nationalCardImageUrl || "",
       verificationImageUrl: verificationImageUrl || user.nationalCredentials?.verificationImageUrl || "",
+      status: "pending_verification", // Default status for new/updated credentials
     };
 
     // Update verification status
@@ -255,12 +256,17 @@ export async function PATCH(request: NextRequest) {
       "verifications.identity.status": status,
       "verifications.identity.reviewedAt": new Date(),
       "verifications.identity.reviewedBy": authUser.id,
+      "nationalCredentials.status": status === "approved" ? "accepted" : status === "rejected" ? "rejected" : "pending_verification",
     };
 
     if (status === "rejected") {
       updateData["verifications.identity.rejectionReason"] = rejectionReason;
+      updateData["nationalCredentials.rejectionNotes"] = rejectionReason;
     } else {
-      updateData["$unset"] = { "verifications.identity.rejectionReason": "" };
+      updateData["$unset"] = { 
+        "verifications.identity.rejectionReason": "",
+        "nationalCredentials.rejectionNotes": ""
+      };
     }
 
     // Update user status based on verification

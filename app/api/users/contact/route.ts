@@ -195,6 +195,7 @@ export async function POST(request: NextRequest) {
       email: email.toLowerCase().trim(),
       address: address?.trim() || "",
       postalCode: postalCode?.trim() || "",
+      status: "pending_verification", // Default status for new/updated contact info
     };
 
     // Check if email or phone changed to reset verification
@@ -312,3 +313,5 @@ export async function PATCH(request: NextRequest) {
     return NextResponse.json({ error: "خطای سرور" }, { status: 500 });
   }
 }
+
+// PATCH - Update contact info status (Admin only)

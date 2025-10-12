@@ -73,10 +73,10 @@ const UserValidationWrapper = ({
             status: result.user.status,
             roles: result.user.roles,
           },
-          nationalCredentials: result.user.nationalCredentials,
-          contactInfo: result.user.contactInfo,
-          bankingInfo: result.user.bankingInfo?.[0], // Get first banking info
-          verificationStatus: result.user.verifications,
+          nationalCredentials: result.user.nationalCredentials || {},
+          contactInfo: result.user.contactInfo || {},
+          bankingInfo: result.user.bankingInfo || [], // Keep as array for proper checking
+          verificationStatus: result.user.verifications || {},
         });
       }
     } catch (error) {
@@ -90,6 +90,109 @@ const UserValidationWrapper = ({
   useEffect(() => {
     loadUserData();
   }, []);
+
+  // Check data completeness based on actual user data
+  const checkDataCompleteness = (data: any) => {
+    const status: ValidationStatus = {
+      security: false,
+      nationalCredentials: false,
+      contactInfo: false,
+      bankingInfo: false,
+    };
+
+    // Check Security (username and basic setup)
+    if (data.security?.username && data.security.username.trim() !== "") {
+      status.security = true;
+    }
+
+    // Check National Credentials (name, national number, and documents)
+    if (
+      data.nationalCredentials?.firstName &&
+      data.nationalCredentials?.lastName &&
+      data.nationalCredentials?.nationalNumber &&
+      data.nationalCredentials.firstName.trim() !== "" &&
+      data.nationalCredentials.lastName.trim() !== "" &&
+      data.nationalCredentials.nationalNumber.trim() !== ""
+    ) {
+      // Validate national number format
+      const nationalValid = /^\d{10}$/.test(data.nationalCredentials.nationalNumber);
+      
+      // Complete if format is valid AND status is accepted
+      const statusAccepted = data.nationalCredentials.status === "accepted";
+      status.nationalCredentials = nationalValid && statusAccepted;
+    }
+
+    // Check Contact Info (required fields: email and mobilePhone)
+    if (
+      data.contactInfo?.email &&
+      data.contactInfo?.mobilePhone &&
+      data.contactInfo.email.trim() !== "" &&
+      data.contactInfo.mobilePhone.trim() !== ""
+    ) {
+      // Validate required field formats
+      const emailValid = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(data.contactInfo.email);
+      const mobileValid = /^09\d{9}$/.test(data.contactInfo.mobilePhone);
+      
+      // Validate optional fields if they exist
+      let homePhoneValid = true;
+      let postalCodeValid = true;
+      let addressValid = true;
+      
+      if (data.contactInfo.homePhone && data.contactInfo.homePhone.trim() !== "") {
+        homePhoneValid = /^0\d{2,3}-?\d{7,8}$/.test(data.contactInfo.homePhone);
+      }
+      
+      if (data.contactInfo.postalCode && data.contactInfo.postalCode.trim() !== "") {
+        postalCodeValid = /^\d{10}$/.test(data.contactInfo.postalCode);
+      }
+      
+      if (data.contactInfo.address && data.contactInfo.address.trim() !== "") {
+        addressValid = data.contactInfo.address.trim().length >= 10;
+      }
+      
+      // Complete if all filled fields are valid AND status is accepted
+      const fieldsValid = emailValid && mobileValid && homePhoneValid && postalCodeValid && addressValid;
+      const statusAccepted = data.contactInfo.status === "accepted";
+      status.contactInfo = fieldsValid && statusAccepted;
+    }
+
+    // Check Banking Info (at least one complete bank account)
+    if (data.bankingInfo && Array.isArray(data.bankingInfo) && data.bankingInfo.length > 0) {
+      const firstBank = data.bankingInfo[0];
+      if (
+        firstBank?.bankName &&
+        firstBank?.cardNumber &&
+        firstBank?.shebaNumber &&
+        firstBank?.accountHolderName &&
+        firstBank.bankName.trim() !== "" &&
+        firstBank.cardNumber.trim() !== "" &&
+        firstBank.shebaNumber.trim() !== "" &&
+        firstBank.accountHolderName.trim() !== ""
+      ) {
+        // Complete if banking info is filled AND status is accepted
+        const statusAccepted = firstBank.status === "accepted";
+        status.bankingInfo = statusAccepted;
+      }
+    } else if (
+      data.bankingInfo?.bankName &&
+      data.bankingInfo?.cardNumber &&
+      data.bankingInfo?.shebaNumber &&
+      data.bankingInfo?.accountHolderName
+    ) {
+      // Single banking info object
+      status.bankingInfo = true;
+    }
+
+    return status;
+  };
+
+  // Update validation status when user data changes
+  useEffect(() => {
+    if (userData && Object.keys(userData).length > 0) {
+      const newStatus = checkDataCompleteness(userData);
+      setValidationStatus(newStatus);
+    }
+  }, [userData]);
 
   // Calculate completion percentage
   useEffect(() => {
@@ -135,15 +238,23 @@ const UserValidationWrapper = ({
     },
   ];
 
-  const handleValidationChange = (
-    section: keyof ValidationStatus,
-    isValid: boolean
-  ) => {
-    setValidationStatus((prev) => ({ ...prev, [section]: isValid }));
+  const handleSectionSave = async (section: string, data: any) => {
+    onSave?.(section, data);
+    
+    // Refresh user data to update status indicators
+    await loadUserData();
   };
 
-  const handleSectionSave = (section: string, data: any) => {
-    onSave?.(section, data);
+  // Get initial data for the active component
+  const getInitialDataForTab = (tabId: string) => {
+    if (!userData) return undefined;
+    
+    if (tabId === "bankingInfo") {
+      // For banking info, pass the first item if it exists
+      return userData.bankingInfo?.[0] || undefined;
+    }
+    
+    return userData[tabId as keyof typeof userData];
   };
 
   const getTabStatus = (tabId: string) => {
@@ -330,15 +441,9 @@ const UserValidationWrapper = ({
             </div>
           ) : (
             <ActiveComponent
-              initialData={userData?.[activeTab as keyof typeof userData]}
+              initialData={getInitialDataForTab(activeTab)}
               verificationStatus={userData?.verificationStatus}
               onSave={(data: any) => handleSectionSave(activeTab, data)}
-              onValidationChange={(isValid: boolean) =>
-                handleValidationChange(
-                  activeTab as keyof ValidationStatus,
-                  isValid
-                )
-              }
             />
           )}
         </div>

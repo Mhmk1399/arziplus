@@ -8,10 +8,12 @@ import {
   FaCheck,
   FaExclamationTriangle,
   FaEye,
-  FaTimes
+  FaTimes,
+  FaClock
 } from "react-icons/fa";
 import { estedadBold } from "@/next-persian-fonts/estedad/index";
 import Image from "next/image";
+import { showToast } from "@/utilities/toast";
 
 interface NationalCredentialsData {
   firstName: string;
@@ -19,6 +21,8 @@ interface NationalCredentialsData {
   nationalNumber: string;
   nationalCardImageUrl: string;
   verificationImageUrl: string;
+  status?: "accepted" | "rejected" | "pending_verification";
+  rejectionNotes?: string;
 }
 
 interface NationalCredentialsProps {
@@ -34,6 +38,8 @@ const NationalCredentials = ({ initialData, onSave, onValidationChange }: Nation
     nationalNumber: initialData?.nationalNumber || "",
     nationalCardImageUrl: initialData?.nationalCardImageUrl || "",
     verificationImageUrl: initialData?.verificationImageUrl || "",
+    status: initialData?.status || "pending_verification",
+    rejectionNotes: initialData?.rejectionNotes || "",
   });
 
   const [errors, setErrors] = useState<Partial<NationalCredentialsData>>({});
@@ -182,10 +188,11 @@ const NationalCredentials = ({ initialData, onSave, onValidationChange }: Nation
       const result = await response.json();
       onSave?.(formData);
       setIsSaved(true);
+      showToast.success("اطلاعات هویتی با موفقیت ذخیره شد");
       setTimeout(() => setIsSaved(false), 3000);
     } catch (error) {
       console.error("Error saving national credentials:", error);
-      alert(error instanceof Error ? error.message : "خطا در ذخیره اطلاعات هویتی");
+      showToast.error(error instanceof Error ? error.message : "خطا در ذخیره اطلاعات هویتی");
     } finally {
       setIsLoading(false);
     }
@@ -308,6 +315,50 @@ const NationalCredentials = ({ initialData, onSave, onValidationChange }: Nation
           </div>
         </div>
       </div>
+
+      {/* Status Display */}
+      {formData.status && (
+        <div className={`mb-6 p-6 rounded-xl border ${
+          formData.status === "accepted" 
+            ? "bg-green-50 border-green-200" 
+            : formData.status === "rejected" 
+            ? "bg-red-50 border-red-200" 
+            : "bg-yellow-50 border-yellow-200"
+        }`}>
+          <div className="flex items-center gap-2 mb-2">
+            {formData.status === "accepted" && (
+              <>
+                <FaCheck className="text-green-600" />
+                <h3 className="font-medium text-green-900">تایید شده</h3>
+              </>
+            )}
+            {formData.status === "rejected" && (
+              <>
+                <FaExclamationTriangle className="text-red-600" />
+                <h3 className="font-medium text-red-900">رد شده</h3>
+              </>
+            )}
+            {formData.status === "pending_verification" && (
+              <>
+                <FaClock className="text-yellow-600" />
+                <h3 className="font-medium text-yellow-900">در انتظار بررسی</h3>
+              </>
+            )}
+          </div>
+          {formData.status === "accepted" && (
+            <p className="text-sm text-green-800">مدارک هویتی شما توسط ادمین تایید شده است.</p>
+          )}
+          {formData.status === "pending_verification" && (
+            <p className="text-sm text-yellow-800">مدارک هویتی شما در انتظار بررسی توسط ادمین است.</p>
+          )}
+          {formData.status === "rejected" && formData.rejectionNotes && (
+            <div className="text-sm text-red-800">
+              <p className="mb-1">دلیل رد:</p>
+              <p className="bg-red-100 p-2 rounded">{formData.rejectionNotes}</p>
+            </div>
+          )}
+        </div>
+      )}
 
       {/* Form */}
       <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-8">

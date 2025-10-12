@@ -287,7 +287,7 @@ export async function GET(request: NextRequest) {
       .select("verifications.phone contactInfo.mobilePhone")
       .lean();
 
-    if (!user) {
+    if (!user || Array.isArray(user)) {
       return NextResponse.json({ error: "کاربر یافت نشد" }, { status: 404 });
     }
 

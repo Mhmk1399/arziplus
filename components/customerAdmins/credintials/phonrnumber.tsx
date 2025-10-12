@@ -12,6 +12,7 @@ import {
   FaPaperPlane,
   FaClock,
 } from "react-icons/fa";
+import { showToast } from "@/utilities/toast";
 
 interface ContactInfoData {
   homePhone: string;
@@ -19,6 +20,8 @@ interface ContactInfoData {
   email: string;
   address: string;
   postalCode: string;
+  status?: "accepted" | "rejected" | "pending_verification";
+  rejectionNotes?: string;
 }
 
 interface ContactInfoProps {
@@ -38,6 +41,8 @@ const ContactInfo = ({
     email: initialData?.email || "",
     address: initialData?.address || "",
     postalCode: initialData?.postalCode || "",
+    status: initialData?.status || "pending_verification",
+    rejectionNotes: initialData?.rejectionNotes || "",
   });
 
   const [errors, setErrors] = useState<Partial<ContactInfoData>>({});
@@ -156,33 +161,41 @@ const ContactInfo = ({
     setIsLoading(true);
     try {
       const token = localStorage.getItem("authToken");
+      
+      // Clean and format data before sending
+      const requestData = {
+        homePhone: formData.homePhone.trim(),
+        mobilePhone: formData.mobilePhone.trim(),
+        email: formData.email.toLowerCase().trim(),
+        address: formData.address.trim(),
+        postalCode: formData.postalCode.trim(),
+      };
+
+      console.log("Sending contact data:", requestData); // Debug log
+      
       const response = await fetch("/api/users/contact", {
         method: "POST",
         headers: {
           "Authorization": `Bearer ${token}`,
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          homePhone: formData.homePhone,
-          mobilePhone: formData.mobilePhone,
-          email: formData.email,
-          address: formData.address,
-          postalCode: formData.postalCode,
-        }),
+        body: JSON.stringify(requestData),
       });
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.error || "خطا در ذخیره اطلاعات تماس");
+        console.error("Contact API Error Response:", errorData); // Debug log
+        throw new Error(errorData.error || `خطا در ذخیره اطلاعات تماس (${response.status})`);
       }
 
       const result = await response.json();
       onSave?.(formData);
       setIsSaved(true);
+      showToast.success("اطلاعات تماس با موفقیت ذخیره شد");
       setTimeout(() => setIsSaved(false), 3000);
     } catch (error) {
       console.error("Error saving contact info:", error);
-      alert(error instanceof Error ? error.message : "خطا در ذخیره اطلاعات تماس");
+      showToast.error(error instanceof Error ? error.message : "خطا در ذخیره اطلاعات تماس");
     } finally {
       setIsLoading(false);
     }
@@ -198,15 +211,20 @@ const ContactInfo = ({
     setSendingCode(true);
     try {
       const token = localStorage.getItem("authToken");
+      
+      const requestData = {
+        email: formData.email.toLowerCase().trim(),
+      };
+
+      console.log("Sending email verification request:", requestData); // Debug log
+      
       const response = await fetch("/api/users/email", {
         method: "POST",
         headers: {
           "Authorization": `Bearer ${token}`,
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          email: formData.email,
-        }),
+        body: JSON.stringify(requestData),
       });
 
       if (!response.ok) {
@@ -215,9 +233,10 @@ const ContactInfo = ({
       }
 
       setEmailVerificationModal(true);
+      showToast.success("کد تایید ایمیل ارسال شد");
     } catch (error) {
       console.error("Error sending email code:", error);
-      alert(error instanceof Error ? error.message : "خطا در ارسال کد تایید ایمیل");
+      showToast.error(error instanceof Error ? error.message : "خطا در ارسال کد تایید ایمیل");
     } finally {
       setSendingCode(false);
     }
@@ -235,15 +254,20 @@ const ContactInfo = ({
     setSendingCode(true);
     try {
       const token = localStorage.getItem("authToken");
+      
+      const requestData = {
+        phone: formData.mobilePhone.trim(),
+      };
+
+      console.log("Sending phone verification request:", requestData); // Debug log
+      
       const response = await fetch("/api/users/phoneVerification", {
         method: "POST",
         headers: {
           "Authorization": `Bearer ${token}`,
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          phone: formData.mobilePhone,
-        }),
+        body: JSON.stringify(requestData),
       });
 
       if (!response.ok) {
@@ -252,9 +276,10 @@ const ContactInfo = ({
       }
 
       setPhoneVerificationModal(true);
+      showToast.success("کد تایید پیامک ارسال شد");
     } catch (error) {
       console.error("Error sending phone code:", error);
-      alert(error instanceof Error ? error.message : "خطا در ارسال کد تایید پیامک");
+      showToast.error(error instanceof Error ? error.message : "خطا در ارسال کد تایید پیامک");
     } finally {
       setSendingCode(false);
     }
@@ -268,16 +293,21 @@ const ContactInfo = ({
     setVerifyingCode(true);
     try {
       const token = localStorage.getItem("authToken");
+      
+      const requestData = {
+        email: formData.email.toLowerCase().trim(),
+        code: emailVerificationCode.trim(),
+      };
+
+      console.log("Sending email verification:", requestData); // Debug log
+      
       const response = await fetch("/api/users/email", {
         method: "PATCH",
         headers: {
           "Authorization": `Bearer ${token}`,
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          email: formData.email,
-          code: emailVerificationCode,
-        }),
+        body: JSON.stringify(requestData),
       });
 
       if (!response.ok) {
@@ -288,9 +318,10 @@ const ContactInfo = ({
       setEmailVerified(true);
       setEmailVerificationModal(false);
       setEmailVerificationCode("");
+      showToast.success("ایمیل با موفقیت تایید شد");
     } catch (error) {
       console.error("Error verifying email:", error);
-      alert(error instanceof Error ? error.message : "خطا در تایید ایمیل");
+      showToast.error(error instanceof Error ? error.message : "خطا در تایید ایمیل");
     } finally {
       setVerifyingCode(false);
     }
@@ -304,16 +335,21 @@ const ContactInfo = ({
     setVerifyingCode(true);
     try {
       const token = localStorage.getItem("authToken");
+      
+      const requestData = {
+        phone: formData.mobilePhone.trim(),
+        code: phoneVerificationCode.trim(),
+      };
+
+      console.log("Sending phone verification:", requestData); // Debug log
+      
       const response = await fetch("/api/users/phoneVerification", {
         method: "PATCH",
         headers: {
           "Authorization": `Bearer ${token}`,
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          phone: formData.mobilePhone,
-          code: phoneVerificationCode,
-        }),
+        body: JSON.stringify(requestData),
       });
 
       if (!response.ok) {
@@ -324,9 +360,10 @@ const ContactInfo = ({
       setPhoneVerified(true);
       setPhoneVerificationModal(false);
       setPhoneVerificationCode("");
+      showToast.success("شماره تلفن با موفقیت تایید شد");
     } catch (error) {
       console.error("Error verifying phone:", error);
-      alert(error instanceof Error ? error.message : "خطا در تایید شماره تلفن");
+      showToast.error(error instanceof Error ? error.message : "خطا در تایید شماره تلفن");
     } finally {
       setVerifyingCode(false);
     }
@@ -347,6 +384,50 @@ const ContactInfo = ({
           </div>
         </div>
       </div>
+      {/* Status Display */}
+      {formData.status && (
+        <div className={`mb-4 p-6 rounded-xl border ${
+          formData.status === "accepted" 
+            ? "bg-green-50 border-green-200" 
+            : formData.status === "rejected" 
+            ? "bg-red-50 border-red-200" 
+            : "bg-yellow-50 border-yellow-200"
+        }`}>
+          <div className="flex items-center gap-2 mb-2">
+            {formData.status === "accepted" && (
+              <>
+                <FaCheck className="text-green-600" />
+                <h3 className="font-medium text-green-900">تایید شده</h3>
+              </>
+            )}
+            {formData.status === "rejected" && (
+              <>
+                <FaExclamationTriangle className="text-red-600" />
+                <h3 className="font-medium text-red-900">رد شده</h3>
+              </>
+            )}
+            {formData.status === "pending_verification" && (
+              <>
+                <FaClock className="text-yellow-600" />
+                <h3 className="font-medium text-yellow-900">در انتظار بررسی</h3>
+              </>
+            )}
+          </div>
+          {formData.status === "accepted" && (
+            <p className="text-sm text-green-800">اطلاعات تماس شما توسط ادمین تایید شده است.</p>
+          )}
+          {formData.status === "pending_verification" && (
+            <p className="text-sm text-yellow-800">اطلاعات تماس شما در انتظار بررسی توسط ادمین است.</p>
+          )}
+          {formData.status === "rejected" && formData.rejectionNotes && (
+            <div className="text-sm text-red-800">
+              <p className="mb-1">دلیل رد:</p>
+              <p className="bg-red-100 p-2 rounded">{formData.rejectionNotes}</p>
+            </div>
+          )}
+        </div>
+      )}
+
       {/* Help Text */}
       <div className=" mb-4 p-6 bg-blue-50 rounded-xl border border-blue-200">
         <h3 className="font-medium text-blue-900 mb-2">راهنمای تکمیل:</h3>
@@ -506,151 +587,7 @@ const ContactInfo = ({
             )}
           </div>
         </div>
-        <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
-          {/* Email Verification */}
-          <div
-            className={`p-4 border rounded-xl transition-all duration-200 ${
-              emailVerified
-                ? "bg-green-50 border-green-200"
-                : " border[0A1D37]"
-            }`}
-          >
-            <div className="flex items-center gap-3 mb-3">
-              <div
-                className={`p-2 rounded-lg ${
-                  emailVerified ? "bg-green-200" : " bg-blue-500"
-                }`}
-              >
-                <FaEnvelope
-                  className={`text-sm ${
-                    emailVerified ? "text-green-700" : "text-[#fff]"
-                  }`}
-                />
-              </div>
-              <div className="flex-1">
-                <h4
-                  className={`font-medium ${
-                    emailVerified ? "text-green-900" : "text-[#0A1D37]"
-                  }`}
-                >
-                  تأیید ایمیل
-                </h4>
-                <p
-                  className={`text-sm ${
-                    emailVerified ? "text-green-700" : "text-[#0A1D37]"
-                  }`}
-                >
-                  {emailVerified
-                    ? "ایمیل شما تأیید شده است"
-                    : "ایمیل شما هنوز تأیید نشده است"}
-                </p>
-              </div>
-              <div
-                className={`text-lg ${
-                  emailVerified ? "text-green-600" : "text-blue-500"
-                }`}
-              >
-                {emailVerified ? <FaCheck /> : <FaClock />}
-              </div>
-            </div>
-
-            {!emailVerified && (
-              <button
-                onClick={handleSendEmailCode}
-                disabled={sendingCode || !formData.email}
-                className={`w-full flex items-center justify-center gap-2 px-4 py-2 rounded-lg font-medium transition-all duration-200 ${
-                  sendingCode
-                    ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-                    : " bg-blue-500  text-[#fff]"
-                }`}
-              >
-                {sendingCode ? (
-                  <>
-                    <div className="w-4 h-4 border-2 border-gray-400 border-t-transparent rounded-full animate-spin" />
-                    در حال ارسال...
-                  </>
-                ) : (
-                  <>
-                    <FaPaperPlane />
-                    ارسال کد تأیید
-                  </>
-                )}
-              </button>
-            )}
-          </div>
-
-          {/* Phone Verification */}
-          <div
-            className={`p-4 border rounded-xl transition-all duration-200 ${
-              phoneVerified
-                ? "bg-green-50 border-green-200"
-                : "border-[#0A1D37]"
-            }`}
-          >
-            <div className="flex items-center gap-3 mb-3">
-              <div
-                className={`p-2 rounded-lg ${
-                  phoneVerified ? "bg-green-200" : " bg-blue-500 "
-                }`}
-              >
-                <FaMobile
-                  className={`text-sm ${
-                    phoneVerified ? "text-green-700" : "text-[#fff]"
-                  }`}
-                />
-              </div>
-              <div className="flex-1">
-                <h4
-                  className={`font-medium ${
-                    phoneVerified ? "text-green-900" : "text-[#0A1D37]"
-                  }`}
-                >
-                  تأیید شماره موبایل
-                </h4>
-                <p
-                  className={`text-sm ${
-                    phoneVerified ? "text-green-700" : "text-[#0A1D37]"
-                  }`}
-                >
-                  {phoneVerified
-                    ? "شماره موبایل شما تأیید شده است"
-                    : "شماره موبایل شما هنوز تأیید نشده است"}
-                </p>
-              </div>
-              <div
-                className={`text-lg ${
-                  phoneVerified ? "text-green-600" : "text-blue-500"
-                }`}
-              >
-                {phoneVerified ? <FaCheck /> : <FaClock />}
-              </div>
-            </div>
-
-            {!phoneVerified && (
-              <button
-                onClick={handleSendPhoneCode}
-                disabled={sendingCode || !formData.mobilePhone}
-                className={`w-full flex items-center justify-center gap-2 px-4 py-2 rounded-lg font-medium transition-all duration-200 ${
-                  sendingCode
-                    ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-                    : " bg-blue-500  text-[#fff]"
-                }`}
-              >
-                {sendingCode ? (
-                  <>
-                    <div className="w-4 h-4 border-2 border-gray-400 border-t-transparent rounded-full animate-spin" />
-                    در حال ارسال...
-                  </>
-                ) : (
-                  <>
-                    <FaPaperPlane />
-                    ارسال کد تأیید
-                  </>
-                )}
-              </button>
-            )}
-          </div>
-        </div>
+        
 
         {/* Action Buttons */}
         <div className="flex justify-end gap-4 mt-8 pt-6 border-t border-gray-100">
@@ -682,143 +619,7 @@ const ContactInfo = ({
         </div>
       </div>
 
-      {/* Enhanced Verification Status */}
-      {/* Email Verification Modal */}
-      {emailVerificationModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-2xl max-w-md w-full p-6">
-            <div className="flex justify-between items-center mb-6">
-              <h3 className="text-lg font-bold text-gray-900">تأیید ایمیل</h3>
-              <button
-                onClick={() => setEmailVerificationModal(false)}
-                className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
-              >
-                <FaTimes className="text-gray-600" />
-              </button>
-            </div>
-
-            <div className="mb-6">
-              <p className="text-gray-600 mb-4">
-                کد 6 رقمی ارسال شده به ایمیل{" "}
-                <span className="font-mono text-blue-600">
-                  {formData.email}
-                </span>{" "}
-                را وارد کنید:
-              </p>
-
-              <input
-                type="text"
-                value={emailVerificationCode}
-                onChange={(e) =>
-                  setEmailVerificationCode(
-                    e.target.value.replace(/\D/g, "").slice(0, 6)
-                  )
-                }
-                placeholder="123456"
-                maxLength={6}
-                className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 focus:ring-2 focus:ring-blue-500 focus:border-transparent font-mono text-center text-lg"
-                dir="ltr"
-              />
-            </div>
-
-            <div className="flex gap-3">
-              <button
-                onClick={() => setEmailVerificationModal(false)}
-                className="flex-1 px-4 py-3 rounded-xl border border-gray-300 text-gray-700 hover:bg-gray-50 transition-colors"
-              >
-                انصراف
-              </button>
-              <button
-                onClick={handleVerifyEmail}
-                disabled={verifyingCode || emailVerificationCode.length !== 6}
-                className={`flex-1 px-4 py-3 rounded-xl font-medium transition-all duration-200 ${
-                  verifyingCode || emailVerificationCode.length !== 6
-                    ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-                    : "bg-blue-600 hover:bg-blue-700 text-white"
-                }`}
-              >
-                {verifyingCode ? (
-                  <div className="flex items-center justify-center gap-2">
-                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                    در حال تأیید...
-                  </div>
-                ) : (
-                  "تأیید کد"
-                )}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-      {/* Phone Verification Modal */}
-      {phoneVerificationModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-2xl max-w-md w-full p-6">
-            <div className="flex justify-between items-center mb-6">
-              <h3 className="text-lg font-bold text-gray-900">
-                تأیید شماره موبایل
-              </h3>
-              <button
-                onClick={() => setPhoneVerificationModal(false)}
-                className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
-              >
-                <FaTimes className="text-gray-600" />
-              </button>
-            </div>
-
-            <div className="mb-6">
-              <p className="text-gray-600 mb-4">
-                کد 5 رقمی ارسال شده به شماره{" "}
-                <span className="font-mono text-blue-600">
-                  {formData.mobilePhone}
-                </span>{" "}
-                را وارد کنید:
-              </p>
-
-              <input
-                type="text"
-                value={phoneVerificationCode}
-                onChange={(e) =>
-                  setPhoneVerificationCode(
-                    e.target.value.replace(/\D/g, "").slice(0, 5)
-                  )
-                }
-                placeholder="12345"
-                maxLength={5}
-                className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 focus:ring-2 focus:ring-blue-500 focus:border-transparent font-mono text-center text-lg"
-                dir="ltr"
-              />
-            </div>
-
-            <div className="flex gap-3">
-              <button
-                onClick={() => setPhoneVerificationModal(false)}
-                className="flex-1 px-4 py-3 rounded-xl border border-gray-300 text-gray-700 hover:bg-gray-50 transition-colors"
-              >
-                انصراف
-              </button>
-              <button
-                onClick={handleVerifyPhone}
-                disabled={verifyingCode || phoneVerificationCode.length !== 5}
-                className={`flex-1 px-4 py-3 rounded-xl font-medium transition-all duration-200 ${
-                  verifyingCode || phoneVerificationCode.length !== 5
-                    ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-                    : "bg-blue-600 hover:bg-blue-700 text-white"
-                }`}
-              >
-                {verifyingCode ? (
-                  <div className="flex items-center justify-center gap-2">
-                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                    در حال تأیید...
-                  </div>
-                ) : (
-                  "تأیید کد"
-                )}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+    
     </div>
   );
 };

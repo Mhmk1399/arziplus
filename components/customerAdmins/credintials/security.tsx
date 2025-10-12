@@ -15,6 +15,7 @@ import {
   FaKey,
 } from "react-icons/fa";
 import { estedadBold } from "@/next-persian-fonts/estedad/index";
+import { showToast } from "@/utilities/toast";
 
 interface SecurityData {
   username: string;
@@ -45,7 +46,7 @@ interface SecurityProps {
   initialData?: Partial<SecurityData>;
   verificationStatus?: VerificationStatus;
   onSave?: (data: SecurityData) => void;
-  onValidationChange?: (isValid: boolean) => void;
+  onValidationChange?: (isValid: boolean) => void; // Optional for backward compatibility
 }
 
 const Security = ({
@@ -183,32 +184,53 @@ const Security = ({
     setIsLoading(true);
     try {
       const token = localStorage.getItem("authToken");
+      
+      // Get current user info to determine userId
+      const currentUserResponse = await fetch("/api/auth/me", {
+        headers: {
+          "Authorization": `Bearer ${token}`,
+        },
+      });
+      
+      if (!currentUserResponse.ok) {
+        throw new Error("خطا در دریافت اطلاعات کاربری");
+      }
+      
+      const currentUser = await currentUserResponse.json();
+      
+      const requestData = {
+        userId: currentUser.user.id, // Add the required userId field
+        username: formData.username,
+        password: formData.password || undefined,
+        roles: formData.roles,
+        status: formData.status,
+      };
+
+      console.log("Sending security data:", requestData); // Debug log
+      
       const response = await fetch("/api/users", {
         method: "PATCH",
         headers: {
           "Authorization": `Bearer ${token}`,
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          username: formData.username,
-          password: formData.password || undefined,
-          roles: formData.roles,
-          status: formData.status,
-        }),
+        body: JSON.stringify(requestData),
       });
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.error || "خطا در ذخیره اطلاعات");
+        console.error("Security API Error Response:", errorData); // Debug log
+        throw new Error(errorData.error || `خطا در ذخیره اطلاعات (${response.status})`);
       }
 
       const result = await response.json();
       onSave?.(formData);
       setIsSaved(true);
+      showToast.success("تنظیمات امنیتی با موفقیت ذخیره شد");
       setTimeout(() => setIsSaved(false), 3000);
     } catch (error) {
       console.error("Error saving security settings:", error);
-      alert(error instanceof Error ? error.message : "خطا در ذخیره اطلاعات");
+      showToast.error(error instanceof Error ? error.message : "خطا در ذخیره اطلاعات");
     } finally {
       setIsLoading(false);
     }
