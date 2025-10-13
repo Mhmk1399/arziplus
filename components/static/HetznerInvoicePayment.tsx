@@ -127,19 +127,10 @@ const HetznerInvoicePayment = () => {
 
   const hetznerSteps = [
     {
-      id: "register",
-      title: "ثبت نام رو انجام بده.",
-      description:
-        "به آسونی در ارزی پلاس ثبت نام کن و حساب کاربری بساز تا فرآیند بدون وقفه شروع شود.",
-      icon: <FaRegClipboard />,
-      isActive: true,
-    },
-    {
-      id: "select",
-      title: "به بخش پرداخت هاست و دامنه سر بزن.",
-      description:
-        "روی هتزنر کلیک کن و جزئیات فاکتور را وارد کن تا تیم ما فوراً بررسی کند.",
-      icon: <FaDollarSign />,
+      id: "complete",
+      title: "پرداختت نهایی شد!",
+      description: "از خریدت لذت ببر! فاکتور هتزنر پرداخت شد و سرویس فعال است.",
+      icon: <FaRocket />,
     },
     {
       id: "pay",
@@ -150,10 +141,19 @@ const HetznerInvoicePayment = () => {
       isActive: true,
     },
     {
-      id: "complete",
-      title: "پرداختت نهایی شد!",
-      description: "از خریدت لذت ببر! فاکتور هتزنر پرداخت شد و سرویس فعال است.",
-      icon: <FaRocket />,
+      id: "select",
+      title: "  بخش پرداخت هاست و دامنه    .",
+      description:
+        "روی هتزنر کلیک کن و جزئیات فاکتور را وارد کن تا تیم ما فوراً بررسی کند.",
+      icon: <FaDollarSign />,
+    },
+    {
+      id: "register",
+      title: "ثبت نام رو انجام بده.",
+      description:
+        "به آسونی در ارزی پلاس ثبت نام کن و حساب کاربری بساز تا فرآیند بدون وقفه شروع شود.",
+      icon: <FaRegClipboard />,
+      isActive: true,
     },
   ];
 
@@ -161,7 +161,6 @@ const HetznerInvoicePayment = () => {
     {
       id: 1,
       icon: <FaShieldAlt size={32} />,
-      iconColor: "bg-emerald-700",
       title: "امنیت بالا",
       description:
         "تمامی پرداخت‌هات از یه حساب امن و مطمئن انجام میشه، با رمزنگاری پیشرفته و حفاظت DDoS هتزنر.",
@@ -169,7 +168,6 @@ const HetznerInvoicePayment = () => {
     {
       id: 2,
       icon: <FaHeadset size={32} />,
-      iconColor: "bg-emerald-700",
       title: "پشتیبانی حرفه‌ای",
       description:
         "کارشناسان ارزی پلاس، همه سوالاتت رو پاسخ میدن، همراه با پشتیبانی 24/7 هتزنر از طریق چت و تیکت.",
@@ -177,7 +175,6 @@ const HetznerInvoicePayment = () => {
     {
       id: 3,
       icon: <FaClock size={32} />,
-      iconColor: "bg-emerald-700",
       title: "کمترین زمان ممکن",
       description:
         "توی یه چشم بهم زدن سفارشت انجام میشه، با پردازش در کمتر از 1 ساعت برای رعایت مهلت فاکتورها.",
@@ -185,7 +182,6 @@ const HetznerInvoicePayment = () => {
     {
       id: 4,
       icon: <FaDollarSign size={32} />,
-      iconColor: "bg-emerald-700",
       title: "قیمت مناسب",
       description:
         "هزینه رو با کم‌ترین کارمزد پرداخت می‌کنی، با نرخ‌های رقابتی ارزی پلاس و تخفیف‌های هتزنر.",
@@ -193,7 +189,6 @@ const HetznerInvoicePayment = () => {
     {
       id: 5,
       icon: <FaGlobe size={32} />,
-      iconColor: "bg-emerald-700",
       title: "پوشش سرویس‌های هتزنر",
       description:
         "پرداخت فاکتور برای سرورهای اختصاصی، VPS، هاست وب و کلود هتزنر، با تمرکز روی کاربران ایرانی.",
@@ -299,7 +294,7 @@ const HetznerInvoicePayment = () => {
   return (
     <div>
       <HeroSection
-        heading="پرداخت فاکتور هتزنر — با هتزنر، زیربنای سایتت رو مستحکم کن"
+        heading="پرداخت فاکتور هتزنر،       زیربنای سایتت رو مستحکم کن"
         subheading="پرداخت فاکتور هتزنر"
         description="پرداخت فاکتور هتزنر ویدییو آموزشی پرداخت فاکتور هتزنر Decorative background texture عملکرد بهتر عملکرد بهتر و سرعت بالاتر هزینه کمتر با پرداخت کمترین هزینه امنیت بالا سرورهای امن بین المللی تخفیف ها امکان استفاده از تخفیفات با ارزی پلاس، پرداخت فاکتور هتزنر را سریع و امن انجام دهید. خدمات تخصصی برای هاستینگ بدون محدودیت بانکی."
         buttons={[
@@ -347,8 +342,7 @@ const HetznerInvoicePayment = () => {
         buttonText="پرداخت کن"
         buttonLink="/hetzner-payment"
         items={hetznerWhyUs}
-        buttonColor="bg-indigo-700 hover:bg-indigo-800 text-white"
-        theme={themesWhyus.default}
+         theme={themesWhyus.default}
       />
 
       <TextBox
@@ -434,7 +428,7 @@ const HetznerInvoicePayment = () => {
 
       <CTABanner
         heading="پرداخت فاکتور هتزنر و فعال‌سازی سرویس"
-        description="پرداخت کن و از سرورهای قدرتمند هتزنر بهره ببر. ارزی پلاس با سرعت، امنیت و کارمزد کم، فاکتور هتزنر را مدیریت می‌کند."
+        description="   ارزی پلاس با سرعت، امنیت و کارمزد کم، فاکتور هتزنر را مدیریت می‌کند."
         button={{
           text: "پرداخت کن",
           href: "/hetzner-payment",

@@ -52,7 +52,6 @@ const MidjourneyPage = () => {
     {
       id: 1,
       icon: <FaClock size={32} />,
-      iconColor: "bg-indigo-700",
       title: "نیاز به دانش فنی ندارد",
       description:
         "استفاده از Midjourney ساده است و هر کسی می‌تواند تصاویر خلاقانه بسازد.",
@@ -60,7 +59,6 @@ const MidjourneyPage = () => {
     {
       id: 2,
       icon: <FaLock size={32} />,
-      iconColor: "bg-indigo-700",
       title: "کیفیت خروجی بالا",
       description:
         "تصاویر تولید شده توسط Midjourney از کیفیت و جذابیت بالایی برخوردارند.",
@@ -68,14 +66,12 @@ const MidjourneyPage = () => {
     {
       id: 3,
       icon: <FaPercent size={32} />,
-      iconColor: "bg-indigo-700",
       title: "کارمزد منصفانه",
       description: "تمامی پرداخت‌ها با کارمزد شفاف و بدون واسطه انجام می‌شوند.",
     },
     {
       id: 4,
       icon: <FaHeadset size={32} />,
-      iconColor: "bg-indigo-700",
       title: "پشتیبانی حرفه‌ای",
       description:
         "کارشناسان ما در تمام مراحل خرید و فعال‌سازی اشتراک همراه شما هستند.",
@@ -102,7 +98,7 @@ const MidjourneyPage = () => {
       id: "3",
       question: "چقدر طول می‌کشد تا اکانت Midjourney شارژ شود؟",
       answer:
-        "با خدمات پرداخت ارزی پلاس، اکانت شما معمولاً در کمتر از 1 ساعت کاری شارژ می‌شود.",
+        "با خدمات پرداخت ارزی پلاس، اکانت شما معمولاً در کمتر از 3 ساعت کاری شارژ می‌شود.",
       category: "پرداخت",
     },
     {
@@ -188,8 +184,7 @@ const MidjourneyPage = () => {
         buttonText="ثبت سفارش Midjourney"
         buttonLink="/midjourney"
         items={whyUsItems}
-        buttonColor="bg-indigo-800 hover:bg-indigo-900 text-white"
-        theme={themesWhyus.dark}
+         theme={themesWhyus.default}
       />
 
       <HeroSplitSection

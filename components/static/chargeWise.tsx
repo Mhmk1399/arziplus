@@ -70,7 +70,7 @@ const WiseCharge = () => {
       id: "instantTopup",
       title: "شارژ آنی و اتوماتیک",
       description:
-        "پس از تأیید پرداخت، حساب وایز شما به‌صورت آنی یا در بازهٔ ۱ تا ۳ ساعت شارژ خواهد شد.",
+        "پس از تأیید پرداخت، حساب وایز شما به‌صورت آنی یا در بازهٔ 3 تا 8 ساعت شارژ خواهد شد.",
       icon: <FaBolt />,
       isActive: true,
     },
@@ -94,40 +94,35 @@ const WiseCharge = () => {
     {
       id: 1,
       icon: <FaGlobeAmericas size={32} />,
-      iconColor: "bg-blue-700",
-      title: "ارسال و دریافت بین‌المللی با وایز",
+       title: "ارسال و دریافت بین‌المللی با وایز",
       description:
         "وایز (Wise) بستری امن و ارزان برای انتقال پول بین‌المللی است؛ با شارژ حساب در ارزی پلاس می‌توانید پرداخت‌های برون‌مرزی خود را سریع انجام دهید.",
     },
     {
       id: 2,
       icon: <FaPercentage size={32} />,
-      iconColor: "bg-blue-700",
-      title: "کارمزد پایین و نرخ رقابتی",
+       title: "کارمزد پایین و نرخ رقابتی",
       description:
         "نرخ تبدیل و کارمزد خدمات در ارزی پلاس شفاف و اقتصادی است؛ هزینه‌ها پیش از انجام تراکنش به‌صورت کامل نمایش داده می‌شوند.",
     },
     {
       id: 3,
       icon: <FaClock size={32} />,
-      iconColor: "bg-blue-700",
-      title: "سرعت انجام تراکنش",
+       title: "سرعت انجام تراکنش",
       description:
         "اغلب تراکنش‌ها ظرف ۱ تا ۳ ساعت انجام می‌شود و در موارد معمولاً کمتر از چند ساعت تکمیل می‌گردد.",
     },
     {
       id: 4,
       icon: <FaLock size={32} />,
-      iconColor: "bg-blue-700",
-      title: "امنیت و محرمانگی اطلاعات",
+       title: "امنیت و محرمانگی اطلاعات",
       description:
         "اطلاعات حساب و تراکنش‌ها در ارزی پلاس با استانداردهای امنیتی مدیریت می‌شود و محرمانگی کامل رعایت می‌شود.",
     },
     {
       id: 5,
       icon: <FaHeadset size={32} />,
-      iconColor: "bg-blue-700",
-      title: "پشتیبانی و مشاوره اختصاصی",
+       title: "پشتیبانی و مشاوره اختصاصی",
       description:
         "قبل از انتقال مبالغ بالا می‌توانید از مشاورهٔ رایگان کارشناسان ما برای کاهش ریسک و انتخاب بهترین روش استفاده کنید.",
     },
@@ -300,8 +295,7 @@ const WiseCharge = () => {
         buttonText="شارژ حساب وایز"
         buttonLink="/wise-topup"
         items={wiseItemsWhyus}
-        buttonColor="bg-emerald-700 hover:bg-emerald-800 text-white"
-        theme={themesWhyus.default}
+         theme={themesWhyus.default}
       />
       <TextBox
         heading="شارژ حساب وایز"

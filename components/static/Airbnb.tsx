@@ -25,10 +25,11 @@ import CTABanner from "../global/ctaBanner";
 const AirbnbPaymentPage = () => {
   const steps = [
     {
-      id: "register",
-      title: "ثبت نام در ارزی پلاس",
-      description: "با چند کلیک ساده حساب کاربری بساز و آماده پرداخت شو.",
-      icon: <FaDollarSign />,
+      id: "payment",
+      title: "پرداخت معادل ریالی",
+      description:
+        "معادل ریالی هزینه رزرو اقامتگاه را پرداخت کن و سفارشت نهایی شود.",
+      icon: <FaPercent />,
       isActive: true,
     },
     {
@@ -38,11 +39,10 @@ const AirbnbPaymentPage = () => {
       icon: <FaCoins />,
     },
     {
-      id: "payment",
-      title: "پرداخت معادل ریالی",
-      description:
-        "معادل ریالی هزینه رزرو اقامتگاه را پرداخت کن و سفارشت نهایی شود.",
-      icon: <FaPercent />,
+      id: "register",
+      title: "ثبت نام در ارزی پلاس",
+      description: "با چند کلیک ساده حساب کاربری بساز و آماده پرداخت شو.",
+      icon: <FaDollarSign />,
       isActive: true,
     },
   ];
@@ -51,28 +51,24 @@ const AirbnbPaymentPage = () => {
     {
       id: 1,
       icon: <FaClock size={32} />,
-      iconColor: "bg-indigo-700",
       title: "پرداخت سریع",
       description: "پرداخت رزرو اقامتگاه شما در کوتاه‌ترین زمان انجام می‌شود.",
     },
     {
       id: 2,
       icon: <FaLock size={32} />,
-      iconColor: "bg-indigo-700",
       title: "امنیت بالا",
       description: "تمامی تراکنش‌ها از طریق حساب امن و مطمئن انجام می‌شود.",
     },
     {
       id: 3,
       icon: <FaPercent size={32} />,
-      iconColor: "bg-indigo-700",
       title: "بدون کارمزد و قیمت مناسب",
       description: "بهترین نرخ و کمترین کارمزد برای پرداخت‌های Airbnb.",
     },
     {
       id: 4,
       icon: <FaHeadset size={32} />,
-      iconColor: "bg-indigo-700",
       title: "پشتیبانی تخصصی",
       description: "کارشناسان ما تمام مراحل رزرو و پرداخت را راهنمایی می‌کنند.",
     },
@@ -184,8 +180,7 @@ const AirbnbPaymentPage = () => {
         buttonText="رزرو اقامتگاه"
         buttonLink="/airbnb-payment"
         items={whyUsItems}
-        buttonColor="bg-red-700 hover:bg-red-800 text-white"
-        theme={themesWhyus.dark}
+         theme={themesWhyus.default}
       />
 
       <HeroSplitSection

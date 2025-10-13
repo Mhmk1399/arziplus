@@ -40,27 +40,18 @@ const WisePayout = () => {
 
   const cashoutSteps = [
     {
-      id: "register",
-      title: "ثبت‌نام در ارزی پلاس",
+      id: "support",
+      title: "پشتیبانی و پیگیری",
       description:
-        "ابتدا یک حساب کاربری ایجاد کنید تا به پنل فروش و خدمات نقد دسترسی پیدا کنید.",
-      icon: <FaRegClipboard />,
-      isActive: true,
+        "در صورت نیاز به راهنمایی یا پیگیری، تیم پشتیبانی ارزی پلاس در دسترس است.",
+      icon: <FaHeadset />,
     },
     {
-      id: "createOrder",
-      title: "ثبت سفارش نقد کردن",
+      id: "receive",
+      title: "دریافت ریال در کارت بانکی",
       description:
-        "مقدار ارز (دلار، یورو یا پوند) را که می‌خواهید نقد شود وارد کنید و سفارش را ثبت نمایید.",
-      icon: <FaDollarSign />,
-    },
-    {
-      id: "transferToWise",
-      title: "انتقال موجودی به حساب اعلام‌شده",
-      description:
-        "پس از ثبت سفارش، اطلاعات حساب و آدرس ایمیل مقصد برای انتقال اعلام می‌شود؛ مبلغ را به حساب وایز اعلام‌شده واریز کنید.",
-      icon: <FaExchangeAlt />,
-      isActive: true,
+        "معادل ریالی مبلغ به‌صورت سریع به شماره کارت اعلام‌شده واریز خواهد شد؛ پیامک و رسید در پنل ارسال می‌شود.",
+      icon: <FaMoneyBillWave />,
     },
     {
       id: "processing",
@@ -71,18 +62,27 @@ const WisePayout = () => {
       isActive: true,
     },
     {
-      id: "receive",
-      title: "دریافت ریال در کارت بانکی",
+      id: "transferToWise",
+      title: "انتقال موجودی به حساب اعلام‌شده",
       description:
-        "معادل ریالی مبلغ به‌صورت سریع به شماره کارت اعلام‌شده واریز خواهد شد؛ پیامک و رسید در پنل ارسال می‌شود.",
-      icon: <FaMoneyBillWave />,
+        "پس از ثبت سفارش، اطلاعات حساب و آدرس ایمیل مقصد برای انتقال اعلام می‌شود؛ مبلغ را به حساب وایز اعلام‌شده واریز کنید.",
+      icon: <FaExchangeAlt />,
+      isActive: true,
     },
     {
-      id: "support",
-      title: "پشتیبانی و پیگیری",
+      id: "createOrder",
+      title: "ثبت سفارش نقد کردن",
       description:
-        "در صورت نیاز به راهنمایی یا پیگیری، تیم پشتیبانی ارزی پلاس در دسترس است.",
-      icon: <FaHeadset />,
+        "مقدار ارز (دلار، یورو یا پوند) را که می‌خواهید نقد شود وارد کنید و سفارش را ثبت نمایید.",
+      icon: <FaDollarSign />,
+    },
+    {
+      id: "register",
+      title: "ثبت‌نام در ارزی پلاس",
+      description:
+        "ابتدا یک حساب کاربری ایجاد کنید تا به پنل فروش و خدمات نقد دسترسی پیدا کنید.",
+      icon: <FaRegClipboard />,
+      isActive: true,
     },
   ];
 
@@ -90,7 +90,6 @@ const WisePayout = () => {
     {
       id: 1,
       icon: <FaGlobeAmericas size={32} />,
-      iconColor: "bg-emerald-700",
       title: "تبدیل سریع درآمد ارزی",
       description:
         "موجودی وایز شما در کمترین زمان به معادل ریالی تبدیل و به حساب بانکی‌تان واریز می‌شود.",
@@ -98,7 +97,6 @@ const WisePayout = () => {
     {
       id: 2,
       icon: <FaPercentage size={32} />,
-      iconColor: "bg-emerald-700",
       title: "کارمزد منصفانه و شفاف",
       description:
         "نرخ کارمزد قبل از ثبت نهایی نمایش داده می‌شود و هیچ هزینهٔ مخفی وجود ندارد.",
@@ -106,7 +104,6 @@ const WisePayout = () => {
     {
       id: 3,
       icon: <FaLock size={32} />,
-      iconColor: "bg-emerald-700",
       title: "بدون نیاز به سفته یا چک",
       description:
         "فرایند اعتماد دوطرفه و بدون نیاز به ضمانت‌های غیرضروری طراحی شده است.",
@@ -114,7 +111,6 @@ const WisePayout = () => {
     {
       id: 4,
       icon: <FaClock size={32} />,
-      iconColor: "bg-emerald-700",
       title: "پیگیری سریع و اطلاع‌رسانی",
       description:
         "وضعیت سفارش شما از طریق پنل و پیامک به‌صورت لحظه‌ای اطلاع‌رسانی می‌شود.",
@@ -122,7 +118,6 @@ const WisePayout = () => {
     {
       id: 5,
       icon: <FaHeadset size={32} />,
-      iconColor: "bg-emerald-700",
       title: "مشاوره برای مبالغ بالا",
       description:
         "برای برداشت‌های بزرگ، کارشناسان ما راهکارهای کاهش ریسک و بهبود نرخی را پیشنهاد می‌دهند.",
@@ -296,8 +291,7 @@ const WisePayout = () => {
         buttonText="نقد درآمد وایز"
         buttonLink="/wise-payout"
         items={whyUsItems}
-        buttonColor="bg-emerald-700 hover:bg-emerald-800 text-white"
-        theme={themesWhyus.default}
+         theme={themesWhyus.default}
       />
       <TextBox
         heading="نقد کردن درآمد وایز"

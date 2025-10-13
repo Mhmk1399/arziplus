@@ -52,7 +52,6 @@ const ClaudeAIPage = () => {
     {
       id: 1,
       icon: <FaClock size={32} />,
-      iconColor: "bg-indigo-700",
       title: "سرعت بالا",
       description:
         "پرداخت و فعال‌سازی اشتراک Claude AI در کوتاه‌ترین زمان ممکن انجام می‌شود.",
@@ -60,7 +59,6 @@ const ClaudeAIPage = () => {
     {
       id: 2,
       icon: <FaLock size={32} />,
-      iconColor: "bg-indigo-700",
       title: "امنیت کامل",
       description:
         "تمامی تراکنش‌ها با امنیت کامل انجام می‌شوند و حساب شما محفوظ است.",
@@ -68,14 +66,12 @@ const ClaudeAIPage = () => {
     {
       id: 3,
       icon: <FaPercent size={32} />,
-      iconColor: "bg-indigo-700",
       title: "کارمزد منصفانه",
       description: "کارمزد و نرخ پرداخت در ارزی پلاس کاملاً شفاف و بدون واسطه است.",
     },
     {
       id: 4,
       icon: <FaHeadset size={32} />,
-      iconColor: "bg-indigo-700",
       title: "پشتیبانی حرفه‌ای",
       description:
         "کارشناسان ما در تمام مراحل خرید و فعال‌سازی همراه شما هستند.",
@@ -193,8 +189,7 @@ const ClaudeAIPage = () => {
         buttonText="ثبت سفارش Claude AI"
         buttonLink="/claude-ai"
         items={whyUsItems}
-        buttonColor="bg-indigo-800 hover:bg-indigo-900 text-white"
-        theme={themesWhyus.dark}
+         theme={themesWhyus.dark}
       />
 
       <HeroSplitSection

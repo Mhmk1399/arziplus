@@ -208,7 +208,7 @@ export default function CTABanner({
             className="flex flex-col text-center lg:text-right flex-1 max-w-2xl"
           >
             <h3
-              className={`animate-text text-xl md:text-2xl lg:text-3xl xl:text-4xl mb-4 lg:mb-6 ${estedadBold.className} font-extrabold leading-tight`}
+              className={`animate-text text-xl md:text-2xl lg:text-3xl  mb-4 lg:mb-6 ${estedadBold.className} font-extrabold leading-tight`}
               style={{
                 background:
                   "linear-gradient(135deg, #FFFFFF 0%, #4DBFF0 50%, #FF7A00 100%)",

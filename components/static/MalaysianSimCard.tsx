@@ -30,23 +30,15 @@ import { FaMedal, FaLock } from "react-icons/fa";
 import HeroSplitSection from "../global/heroSplitSection";
 
 const MalaysianSimCard = () => {
-  const longText = `مجموعه ارزی پلاس با بیش از 10 سال فعالیت در کشور مالزی با توافقات صورت گرفته توانسته است به عنوان نماینده اپراتورهای سلکام و XOX مالزی در این کشور فعالیت کند. سیمکارت های مالزی آنتن دهی مناسبی در ایران داشته و گزینه مناسبی برای افرادی که به شماره تماس بین المللی جهت وریفای حساب های بانکی و وریفای اکانت ها در سایر وب سایت ها نیاز دارند می‌باشد. در سال 2025، با گسترش خدمات دیجیتال و نیاز به verification جهانی، سیمکارت‌های Celcom و XOX به عنوان گزینه‌های ایده‌آل برای فریلنسرها، تریدرها و کاربران پلتفرم‌های بین‌المللی برجسته شده‌اند این سیمکارت‌ها با پوشش گسترده 5G در مالزی و roaming مناسب برای SMS/call بین‌المللی، از شبکه رایتل در ایران برای آنتن‌دهی استفاده می‌کنند، و با پلن‌های prepaid انعطاف‌پذیر مانند CelcomDigi Prepaid 5G Biru (500MB basic + 3GB high-speed برای 7 روز) یا ONE-X Prepaid 2025 XOX (unlimited data/calls از RM18/ماه)، بدون تاریخ انقضا (فقط نیاز به recharge منظم) ارائه می‌شوند ارزی پلاس با صدور فیزیکی به نام متقاضی و ارسال به ایران، فرآیند را ایمن و قانونی نگه می‌دارد، و با مشاوره برای رعایت validity periods (recharge هر 4-100 روز)، از غیرفعال شدن جلوگیری می‌کند.`;
+   
 
   const simSteps = [
     {
-      id: "membership",
-      title: "قدم اول: عضویت در سایت",
+      id: "activation",
+      title: "قدم چهارم: فعال سازی سیمکارت",
       description:
-        "حساب کاربری خود را درسایت ارزی پلاس ایجاد کنید و اطلاعات اولیه را برای سفارشی‌سازی سیمکارت وارد نمایید.",
-      icon: <FaRegClipboard />,
-      isActive: true,
-    },
-    {
-      id: "request",
-      title: "قدم دوم: ثبت درخواست",
-      description:
-        "درخواست خود را از طریق فرم ثبت سفارش ارسال کنید، با انتخاب اپراتور Celcom یا XOX و جزئیات پلن مورد نظر.",
-      icon: <FaDollarSign />,
+        "ظرف چند ساعت سیمکارت شما فعال و کمتر از یک هفته به آدرس شما در ایران تحویل داده میشود، همراه با راهنمایی برای recharge اولیه.",
+      icon: <FaRocket />,
     },
     {
       id: "payment",
@@ -57,11 +49,19 @@ const MalaysianSimCard = () => {
       isActive: true,
     },
     {
-      id: "activation",
-      title: "قدم چهارم: فعال سازی سیمکارت",
+      id: "request",
+      title: "قدم دوم: ثبت درخواست",
       description:
-        "ظرف چند ساعت سیمکارت شما فعال و کمتر از یک هفته به آدرس شما در ایران تحویل داده میشود، همراه با راهنمایی برای recharge اولیه.",
-      icon: <FaRocket />,
+        "درخواست خود را از طریق فرم ثبت سفارش ارسال کنید، با انتخاب اپراتور Celcom یا XOX و جزئیات پلن مورد نظر.",
+      icon: <FaDollarSign />,
+    },
+    {
+      id: "membership",
+      title: "قدم اول: عضویت در سایت",
+      description:
+        "حساب کاربری خود را درسایت ارزی پلاس ایجاد کنید و اطلاعات اولیه را برای سفارشی‌سازی سیمکارت وارد نمایید.",
+      icon: <FaRegClipboard />,
+      isActive: true,
     },
   ];
 
@@ -69,39 +69,34 @@ const MalaysianSimCard = () => {
     {
       id: 1,
       icon: <FaGlobe size={32} />,
-      iconColor: "bg-emerald-700",
       title: "سیمکارت های مالزی",
       description:
-        "سیمکارت های اپراتور Celcom و XOX مالزی دارای آنتن دهی مناسب در مراکز استان‌های ایران می‌باشند. این سیمکارت ها برای وریفای حساب های بانکی و وریفای اکانت به عنوان شهروند مالزی استفاده ویژه ای دارند. سیمکارت های مالزی به صورت فیزیکی و به نام متقاضی صادر می‌شود و به به آدرس متقاضی در ایران ارسال می شود. قابلیت ارسال و دریافت پیام‌های بین المللی با roaming passes از Sep 2025",
+        "سیمکارت‌های Celcom و XOX با آنتن‌دهی قوی در ایران، ویژه وریفای حساب‌های بانکی و اکانت‌های بین‌المللی. به‌صورت فیزیکی و به نام متقاضی صادر شده و با قابلیت پیام‌رسانی بین‌المللی از سپتامبر ۲۰۲۵ فعال هستند.",
     },
     {
       id: 2,
       icon: <FaPhone size={32} />,
-      iconColor: "bg-emerald-700",
       title: "سیمکارت های Celcom",
       description:
-        "سیمکارت های سلکام مالزی از نوع اعتباری بوده و تاریخ انقضا ندارند اما ضروری است هر 4 هفته یکبار شارژ شده تا غیرفعال نشوند. در صورت غیرفعال شدن، امکان بازیابی وجود ندارد. این سیم کارت از شبکه رایتل در ایران برای آنتن دهی استفاده می‌کند. به کمک این سیمکارت می‌توانید در تمامی اپلیکیشن ها، وبسایت ها و پلتفرم‌هایی که برای ثبت نام نیازمند شماره بین المللی هستند، ثبت نام کنید و به راحتی از خدمات آن‌ها استفاده نمائید. پلن 5G Biru: 3GB high-speed + unlimited 1Mbps برای 7 days",
+        "سیمکارت اعتباری بدون تاریخ انقضا، با الزام شارژ هر ۴ هفته. فعال در ایران از طریق شبکه رایتل برای پیام و تماس بین‌المللی. پلن Biru: ‌۳GB پرسرعت + اینترنت نامحدود ۱Mbps برای ۷ روز.",
     },
     {
       id: 3,
       icon: <FaPhone size={32} />,
-      iconColor: "bg-emerald-700",
       title: "سیمکارت های XOX",
       description:
-        "سیمکارت های XOX مالزی از نوع دائمی بوده و هر ۱۰۰ روز حداقل ۱ بار باید شارژ شوند. در این مدت زمان تنها در صورت صفر شدن شارژ، برای استفاده مجدد باید آن را شارژ کنید. این سیم کارت نیز از شبکه رایتل در ایران برای آنتن دهی استفاده می‌کند. پلن ONE-X 2025: unlimited data/calls از RM18/ماه، validity 1 year با topup",
+        "سیمکارت دائمی با نیاز به شارژ هر ۱۰۰ روز، متصل به شبکه رایتل در ایران. مناسب برای ثبت‌نام پلتفرم‌های بین‌المللی با طرح ONE-X: تماس و دیتای نامحدود از RM18 در ماه و اعتبار یک‌ساله.",
     },
     {
       id: 4,
       icon: <FaMapMarkerAlt size={32} />,
-      iconColor: "bg-emerald-700",
-      title: "مقایسه سیمکارت های Celcom و XOX",
+      title: "مقایسه     Celcom و XOX",
       description:
-        "سیمکارت سلکام مالزی اعتباری میباشد و هر سی روز باید شارژ شود در صورت عدم شارژ شدن، سیمکارت غیر فعال شده و مجددا نمی توان آن را فعال کرد. سیمکارت XOX هر ۱۰۰ روز باید شارژ شود. هر دو سیم کارت در ایران قابلیت دریافت و ارسال پیامک و تماس را دارند و می توانید ثبت‌نام های پلتفرم های اینترنتی را که نیازمند داشتن شماره همراه بین المللی هستند را انجام دهید. Celcom: recharge هر 4 weeks, XOX: هر 100 days",
+        "Celcom اعتباری و نیازمند شارژ هر ۴ هفته، XOX دائمی با دوره ۱۰۰ روزه. هر دو مناسب برای ثبت‌نام و وریفای بین‌المللی با قابلیت تماس و پیام در ایران از طریق شبکه رایتل.",
     },
     {
       id: 5,
       icon: <FaShieldAlt size={32} />,
-      iconColor: "bg-emerald-700",
       title: "نمایندگی ارزی پلاس",
       description:
         "ارزی پلاس با بیش از 10 سال فعالیت در مالزی، نماینده رسمی Celcom و XOX است، با صدور فیزیکی به نام متقاضی و ارسال ایمن به ایران.",
@@ -135,7 +130,7 @@ const MalaysianSimCard = () => {
   return (
     <div>
       <HeroSection
-        heading="سیمکارت مالزی — ارزی پلاس نماینده اپراتور سلکام و XOX مالزی"
+        heading="سیمکارت مالزی   ارزی پلاس نماینده اپراتور سلکام و XOX مالزی"
         subheading="سیمکارت مالزی"
         description="مجموعه ارزی پلاس با بیش از 10 سال فعالیت در کشور مالزی با توافقات صورت گرفته توانسته است به عنوان نماینده اپراتورهای سلکام و XOX مالزی در این کشور فعالیت کند. سیمکارت‌های Celcom و XOX با پوشش 5G و roaming international، ایده‌آل برای verification در 2025. سیمکارت های مالزی آنتن دهی مناسبی در ایران داشته و گزینه مناسبی برای افرادی که به شماره تماس بین المللی جهت وریفای حساب های بانکی و وریفای اکانت ها در سایر وب سایت ها نیاز دارند می‌باشد."
         buttons={[
@@ -148,7 +143,7 @@ const MalaysianSimCard = () => {
         ]}
         media={{
           type: "image",
-          src: "https://arziPlus.s3.eu-north-1.amazonaws.com/Desktop/42-min.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=ASIAUQ73WRGQYCWD7YPE%2F20251012%2Feu-north-1%2Fs3%2Faws4_request&X-Amz-Date=20251012T110019Z&X-Amz-Expires=300&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEIP%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCmV1LW5vcnRoLTEiRzBFAiEA0TpciGNG2tq2Y9yih%2FrRNpdT0TQ4MFTjniBtEnNv5uoCICAaqhKHe%2Fku3aen%2BvIUrRuF%2BScz0ksLkz9FVzesQTjxKtYCCCwQABoMMzExMzc2MTIwMjI1Igyq%2BygfxGpD4ignPN4qswI1MwKGfrt8DVsTGfeVCHXAHSjmOPKILG4d0jVR%2FdzSqo5SH2r9%2FLxEEJ2qLcf0DybSup%2FAEH7%2FNXR0ksWuwysKg3p%2BM4xHokibV7TYZb8FLnVUCJdvHS9j%2FxW8D%2BfYfGzO5TQS7vR3PLWpDAxWXOicTtutQiiju2HBpiJ6eeo2zR1S7k4%2FrmHBHHhBGWjckZJxiR0HIQh3TyrDvrjt1a4NI8707bRBusmWId8FNVclCc%2FcvxY3FraEOKRYzmC53QQz92cPJN2gXTHSUfwxKkfuNxfTN78aDskPmlcNisYbpPJQj8Y5KF%2F9dAHy6gySQ%2FxCDLg4ePqn%2FmtjkbOrkGF1iRaMhSwiPMMXfj8FciWjWHrn7nrYR%2B%2Fvv4zypzAmcjnX2eGGdNpLmzHpoYwCHskOjsMZMJLyrccGOq0CPYLpLUye96CO6N0vxOdO0j%2Fb1wOQFHxtQ2s2G%2Fj6hmSuRgiqY8KgsjBYxS7sC5GV5P6Xt87LQk4WmUdKSYuVwfzwPM%2BfptbWjfByxlpEmMdUisD4ELeX8qJ%2Bc3MZPafwedw2jIF6ay2Flwmh%2Bw6gE0R7DVBfIwssRxmBlPyTOg7Rt0XQlforG6j%2BLlfoCdzsJRQ6g0%2F3F%2B7DIkqc3jthszaGr%2Brv457HFZQaAW564XEixS2X4bJLpl6fG8oklaiC9AMHvidfn6Uun9uMVXYwF2KIKszbphTJRAtVHL7VlGq4tHlRFOF%2BR1b%2B63xaRHA6sYE%2BF1Udzwf4WKMgc25XClCQkiLJv21yNByY%2BQLpbKHM6V3Th1gqUQ0mvDZW5NWIQkBn5PVAhd7nTDINeA%3D%3D&X-Amz-Signature=fb1b38835bc432d6a7b21dea0841882d61c63fe5bc2d463a53a5eb78f897c9d7&X-Amz-SignedHeaders=host&response-content-disposition=inline",
+          src: "https://arziplus.s3.eu-north-1.amazonaws.com/Desktop/42-min.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=ASIAUQ73WRGQWYPYJQ3D%2F20251013%2Feu-north-1%2Fs3%2Faws4_request&X-Amz-Date=20251013T150915Z&X-Amz-Expires=300&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEJ%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCmV1LW5vcnRoLTEiRjBEAiBExKUN2jgRauhVTrv5YPheevlP8si2e0KfWxI%2FOuDM%2BgIgdEuxRZg1soB2l0CgIKi6yzCX81JvL6ZimpL%2Bczx5KoQq1gIISBAAGgwzMTEzNzYxMjAyMjUiDNqV9E%2FkGZ%2BQRDL8BiqzAr3%2F57Glb0Z2VA4VUjc5PQBEez76nO1e0SPmFMy1pdaI%2F0ffG4uoR0keBeGBYpKFh8xU9kMgFbJlDl%2FORzqG9gfZL6Fdk0TRWxNcbQ6xculWs7QiEZtsxpqMffjCUEij00MtTPXLzZeHs%2FJoPmDtCQUNTDHuX672U3Dp0SXMP4HBkSCr4wefr1Bj%2F6avlajhgScpg%2B3FAYtshwIhxbYCWhxO1%2F5oJL60Qm4jNI84%2BRUM4bpWWXmspg%2FDsTQJQjv0%2B4x4y5JqWPg0kxPgJ9Oe%2BIytZ16hBLHMiVxXK1EaYY73UCuVZvFWF23mKTJ8gcmCW1QBxREW0G7dVVHx3ynN5RF9RC3Ju9wZ0qKSBG1QnZbSmVUp09zSrYLDsU63sBD6Qw4LIVB4hWrEekEYgpzFamTQ0hIwn%2FezxwY6rgLFYH8HDhb3HEjpzHF9KUAnGBw4ArczJXjwyI5aPkKXl2S8wNDEZpoX9L2S8NkABvkh1hDXNrzfQbSUJugfE5zMnAGl9ulRws5d2UaQmbwSz4hur89ve8brUHKZlM1GX0G%2BapJlQu1%2FLfDOLXjVxX2lqxO4Yqsii8wlQ8vEvs7qhONGQgVFx0ZzAwe%2F%2FSjUEZkO6ek%2F4SApjVN4hV8dbKg4PNXyXP93o3%2FqbvQXW%2F8pzWlzfiK3BgayVTOUEDH4Cg8kdFcTT3Dd8AFicpunuK95vdcek67EQFiCY3DuXhDOMW1z4cO5dn1un3qn48Bz2uag0ogImtb9IkRQDOoM28i%2FNXsgQQOr%2FyJZ1x%2FmL60y7bDIjgnnrS5D%2FDDeck3O%2FY21AXI3hnCXiI2K8TS%2BvQ%3D%3D&X-Amz-Signature=35d32b040095896af267f7a1853dfa0774028b353c236530405f7290aee0ac35&X-Amz-SignedHeaders=host&response-content-disposition=inline",
           alt: "سیمکارت مالزی Celcom و XOX با ارزی پلاس",
           width: 1200,
           height: 800,
@@ -187,22 +182,7 @@ const MalaysianSimCard = () => {
         theme={themesWhyus.default}
       />
 
-      <TextBox
-        heading="مقایسه سیمکارت های Celcom و XOX"
-        content={longText}
-        height={300}
-        theme={textBoxThemes.default}
-        typography={textBoxTypography.medium}
-        spacing={{
-          padding: "p-8",
-          gap: "space-y-6",
-        }}
-        style={{
-          rounded: true,
-          shadow: true,
-          border: true,
-        }}
-      />
+  
 
       <HeroSplitSection
         heading="چرا ارزی پلاس؟"
@@ -265,8 +245,8 @@ const MalaysianSimCard = () => {
       />
 
       <CTABanner
-        heading="خرید هاست و دامنه دلخواه و مورد نیازت رو بسپار به ارزی پلاس..."
-        description="همین الان سفارش خریدت رو ثبت کن. ارزی پلاس با سرعت، امنیت و کارمزد کم، سیمکارت مالزی را مدیریت می‌کند."
+        heading="خرید سیم کارت فیزیکی مالزی با ارزی پلاس"
+        description="  ارزی پلاس با سرعت، امنیت و کارمزد کم، سیمکارت مالزی را مدیریت می‌کند."
         button={{
           text: "خرید سیمکارت مالزی",
           href: "/malaysian-sim",

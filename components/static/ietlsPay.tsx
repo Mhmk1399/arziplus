@@ -4,7 +4,7 @@ import StepsSection from "../global/stepsSection";
 import {
   ctaThemes,
   faqThemes,
-   stepThemes,
+  stepThemes,
   textBoxThemes,
   textBoxTypography,
   themesWhyus,
@@ -161,17 +161,11 @@ Terms & Conditions را مطالعه و تأیید کنید
 
   const ieltsSteps = [
     {
-      id: "register",
-      title: "ثبت‌نام اولیه در ارزی پلاس",
-      description: "به راحتی در ارزی پلاس ثبت نام کن",
-      icon: <FaRegClipboard />,
+      id: "calculate",
+      title: "محاسبه و پرداخت معادل ریالی",
+      description: "معادل ریالی هزینه رو پرداخت کن",
+      icon: <FaMoneyBillWave />,
       isActive: true,
-    },
-    {
-      id: "selectService",
-      title: "انتخاب پرداخت آزمون بین‌المللی",
-      description: "روی قسمت ثبت سفارش کلیک کن",
-      icon: <FaDollarSign />,
     },
     {
       id: "chooseExam",
@@ -180,10 +174,16 @@ Terms & Conditions را مطالعه و تأیید کنید
       icon: <FaEnvelope />,
     },
     {
-      id: "calculate",
-      title: "محاسبه و پرداخت معادل ریالی",
-      description: "معادل ریالی هزینه رو پرداخت کن",
-      icon: <FaMoneyBillWave />,
+      id: "selectService",
+      title: "انتخاب پرداخت آزمون بین‌المللی",
+      description: "روی قسمت ثبت سفارش کلیک کن",
+      icon: <FaDollarSign />,
+    },
+    {
+      id: "register",
+      title: "ثبت‌نام اولیه در ارزی پلاس",
+      description: "به راحتی در ارزی پلاس ثبت نام کن",
+      icon: <FaRegClipboard />,
       isActive: true,
     },
   ];
@@ -192,39 +192,35 @@ Terms & Conditions را مطالعه و تأیید کنید
     {
       id: 1,
       icon: <FaGlobeAmericas size={32} />,
-      iconColor: "bg-emerald-700",
-      title: "پرداخت بین‌المللی بدون دردسر",
+       title: "پرداخت بین‌المللی بدون دردسر",
       description:
         "پرداخت‌های بین‌المللی IELTS را بدون نیاز به کارت خارجی انجام می‌دهیم.",
     },
     {
       id: 2,
       icon: <FaClock size={32} />,
-      iconColor: "bg-emerald-700",
-      title: "سرعت در انجام فرایند",
+       title: "سرعت در انجام فرایند",
       description:
         "پرداخت‌ها سریع انجام می‌شوند و رسید تایید فوری ارسال می‌شود.",
     },
     {
       id: 3,
       icon: <FaPercentage size={32} />,
-      iconColor: "bg-emerald-700",
-      title: "کارمزد شفاف و منصفانه",
-      description: "نرخ و کارمزد پرداخت هزینه پیش از پرداخت در ارزی پلاس  مشخص می‌شود.",
+       title: "کارمزد شفاف و منصفانه",
+      description:
+        "نرخ و کارمزد پرداخت هزینه پیش از پرداخت در ارزی پلاس  مشخص می‌شود.",
     },
     {
       id: 4,
       icon: <FaLock size={32} />,
-      iconColor: "bg-emerald-700",
-      title: "امنیت کامل تراکنش‌ها",
+       title: "امنیت کامل تراکنش‌ها",
       description:
         "پرداخت‌ها از طریق حساب‌های امن و مطابق استاندارد انجام می‌شوند.",
     },
     {
       id: 5,
       icon: <FaHeadset size={32} />,
-      iconColor: "bg-emerald-700",
-      title: "پشتیبانی و مشاوره",
+       title: "پشتیبانی و مشاوره",
       description: "در تمام مراحل ثبت‌نام آیلتس در کنار شما و همراهتان هستیم.",
     },
   ];
@@ -270,7 +266,7 @@ Terms & Conditions را مطالعه و تأیید کنید
   return (
     <div>
       <HeroSection
-        heading="پرداخت هزینه آزمون آیلتس در ایران — سریع و مطمئن"
+        heading="پرداخت هزینه آزمون آیلتس در ایران  سریع و مطمئن"
         subheading="همین حالا بخر"
         description="اگر قصد داری برای ادامه تحصیل یا مهاجرت نمره آیلتس را کسب کنی، حتماً می‌دانی که پرداخت هزینه آزمون آیلتس به صورت آنلاین و ارزی انجام می‌شود. ارزی پلاس اینجاست تا این فرآیند را برایت خیلی راحت‌تر کند.
 
@@ -322,8 +318,7 @@ Terms & Conditions را مطالعه و تأیید کنید
         buttonText="ثبت سفارش پرداخت آیلتس"
         buttonLink="/ielts-payment"
         items={ieltsWhyUs}
-        buttonColor="bg-indigo-700 hover:bg-indigo-800 text-white"
-        theme={themesWhyus.default}
+         theme={themesWhyus.default}
       />
 
       <TextBox

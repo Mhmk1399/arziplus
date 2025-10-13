@@ -30,7 +30,7 @@ const longText = `خرید اکانت ChatGPT Plus | پرداخت ChatGPT زیر
 
 امروزه با معرفی ChatGPT، بسیاری از افراد در زمینه‌های کاری مختلف به دنبال استفاده از این ربات هوش مصنوعی برای بهبود کسب‌وکار خود هستند. کار با این ابزار رایگان نیست و برای دسترسی کامل به ChatGPT، نیاز به پرداخت ارزی دارید. بهترین گزینه، خرید اکانت ChatGPT Plus یا انجام پرداخت ChatGPT از یک صرافی معتبر است. با ارزی پلاس می‌توانید پرداخت ChatGPT را به ساده‌ترین و سریع‌ترین شکل انجام دهید و بدون هیچ محدودیتی از این هوش مصنوعی استفاده کنید.
 
-برای ارتباط مستقیم با کارشناسان و راهنمایی، می‌توانید با شماره 02191014920 تماس بگیرید. تیم پشتیبانی ارزی پلاس به صورت 24 ساعته آماده ارائه خدمات به کاربران است.
+برای ارتباط مستقیم با کارشناسان و راهنمایی، می‌توانید با شماره 09122191549 تماس بگیرید. تیم پشتیبانی ارزی پلاس به صورت 24 ساعته آماده ارائه خدمات به کاربران است.
 
 ChatGPT چیست؟
 
@@ -161,7 +161,6 @@ const ChatGPTPlus = () => {
     {
       id: 1,
       icon: <FaClock size={32} />,
-      iconColor: "bg-indigo-700",
       title: "پرداخت سریع و مطمئن",
       description:
         "پرداخت اشتراک ChatGPT Plus در کوتاه‌ترین زمان ممکن انجام می‌شود.",
@@ -169,21 +168,18 @@ const ChatGPTPlus = () => {
     {
       id: 2,
       icon: <FaShieldAlt size={32} />,
-      iconColor: "bg-indigo-700",
       title: "امنیت کامل تراکنش‌ها",
       description: "تمامی پرداخت‌ها از طریق حساب‌های امن و معتبر انجام می‌شود.",
     },
     {
       id: 3,
       icon: <FaPercent size={32} />,
-      iconColor: "bg-indigo-700",
       title: "کارمزد منصفانه",
-      description: "کارمزد پرداخت قبل از انجام تراکنش مشخص و شفاف است.",
+      description: "کارمزد پرداخت در ارزی پلاس قبل از انجام تراکنش مشخص و شفاف است.",
     },
     {
       id: 4,
       icon: <FaHeadset size={32} />,
-      iconColor: "bg-indigo-700",
       title: "پشتیبانی حرفه‌ای",
       description:
         "کارشناسان ما در تمام مراحل خرید و فعال‌سازی اشتراک همراه شما هستند.",
@@ -196,7 +192,7 @@ const ChatGPTPlus = () => {
       question:
         "آیا نسخه رایگان ChatGPT برای نیازهای من کافی است یا باید ChatGPT Plus بخرم؟",
       answer:
-        "نسخه رایگان محدودیت‌هایی دارد. برای پاسخ سریع‌تر و دسترسی به مدل پیشرفته GPT-4، اشتراک ChatGPT Plus گزینه بهتری است.",
+        "نسخه رایگان محدودیت‌هایی دارد. برای پاسخ سریع‌تر و دسترسی به مدل پیشرفته GPT-5، اشتراک ChatGPT Plus گزینه بهتری است.",
       category: "اشتراک",
     },
     {
@@ -297,11 +293,10 @@ const ChatGPTPlus = () => {
         buttonText="ثبت سفارش ChatGPT Plus"
         buttonLink="/chatgpt-plus"
         items={whyUsItems}
-        buttonColor="bg-indigo-800 hover:bg-indigo-900 text-white"
-        theme={themesWhyus.dark}
+         theme={themesWhyus.dark}
       />
       <TextBox
-        heading="نکات کاربردی قبل از پرداخت آیلتس"
+        heading="نکات کاربردی قبل از پرداخت ChatGPT Plus"
         content={longText}
         height={300}
         theme={textBoxThemes.default}
@@ -379,8 +374,8 @@ const ChatGPTPlus = () => {
       />
 
       <CTABanner
-        heading="همین حالا اشتراک ChatGPT Plus خود را خریداری کنید!"
-        description="با ارزی پلاس، به مدل پیشرفته GPT-4 دسترسی داشته باشید و تجربه‌ای حرفه‌ای از هوش مصنوعی داشته باشید."
+        heading="    اشتراک ChatGPT Plus خود را خریداری کنید!"
+        description="      به مدل پیشرفته GPT-5 دسترسی داشته باشید و تجربه‌ای حرفه‌ای     داشته باشید."
         button={{
           text: "ثبت سفارش ChatGPT Plus",
           href: "/chatgpt-plus",

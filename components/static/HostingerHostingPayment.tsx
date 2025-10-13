@@ -72,19 +72,11 @@ const HostingerHostingPayment = () => {
 
   const hostingSteps = [
     {
-      id: "register",
-      title: "ثبت نام کن",
+      id: "complete",
+      title: "پرداختت انجام شد!",
       description:
-        "با چند کلیک ساده در ارزی پلاس ثبت نام کن و حساب کاربری بساز تا فرآیند بدون وقفه شروع شود.",
-      icon: <FaRegClipboard />,
-      isActive: true,
-    },
-    {
-      id: "select",
-      title: "گزینه پرداخت هاست و دامنه رو انتخاب کن",
-      description:
-        "روی هاستینگر کلیک کن و جزئیات پلن مورد نظرت را وارد کن تا تیم ما فوراً بررسی کند.",
-      icon: <FaDollarSign />,
+        "سفارشت آمادست — هاستینگر: راه‌اندازی سریع و آسان! همین الان سفارشت رو ثبت کن!",
+      icon: <FaRocket />,
     },
     {
       id: "pay",
@@ -94,11 +86,19 @@ const HostingerHostingPayment = () => {
       isActive: true,
     },
     {
-      id: "complete",
-      title: "پرداختت انجام شد!",
+      id: "select",
+      title: "  انتخاب هاست و دامنه     ",
       description:
-        "سفارشت آمادست — هاستینگر: راه‌اندازی سریع و آسان! همین الان سفارشت رو ثبت کن!",
-      icon: <FaRocket />,
+        "روی هاستینگر کلیک کن و جزئیات پلن مورد نظرت را وارد کن تا تیم ما فوراً بررسی کند.",
+      icon: <FaDollarSign />,
+    },
+    {
+      id: "register",
+      title: "ثبت نام کن",
+      description:
+        "با چند کلیک ساده در ارزی پلاس ثبت نام کن و حساب کاربری بساز تا فرآیند بدون وقفه شروع شود.",
+      icon: <FaRegClipboard />,
+      isActive: true,
     },
   ];
 
@@ -106,7 +106,6 @@ const HostingerHostingPayment = () => {
     {
       id: 1,
       icon: <FaDollarSign size={32} />,
-      iconColor: "bg-emerald-700",
       title: "بهترین قیمت",
       description:
         "با بهترین قیمت میشه هزینه هاست و دامنه رو پرداخت کرد، با نرخ‌های ارزی رقابتی و بدون هزینه‌های پنهان.",
@@ -114,7 +113,6 @@ const HostingerHostingPayment = () => {
     {
       id: 2,
       icon: <FaHeadset size={32} />,
-      iconColor: "bg-emerald-700",
       title: "پشتیبانی حرفه‌ای",
       description:
         "پشتیبان‌های ما با کمال میل سوالات تو رو پاسخ میدن، از چت آنلاین تا مشاوره تلفنی 24/7.",
@@ -122,7 +120,6 @@ const HostingerHostingPayment = () => {
     {
       id: 3,
       icon: <FaShieldAlt size={32} />,
-      iconColor: "bg-emerald-700",
       title: "امنیت بالا",
       description:
         "تمامی پرداخت‌هات از یه حساب امن و مطمئن انجام میشه، با رمزنگاری پیشرفته و تایید دو مرحله‌ای.",
@@ -130,7 +127,6 @@ const HostingerHostingPayment = () => {
     {
       id: 4,
       icon: <FaClock size={32} />,
-      iconColor: "bg-emerald-700",
       title: "کمترین زمان ممکن",
       description:
         "توی یه چشم بهم زدن سفارشت انجام میشه، با پردازش در کمتر از 2 ساعت کاری.",
@@ -138,7 +134,6 @@ const HostingerHostingPayment = () => {
     {
       id: 5,
       icon: <FaGlobe size={32} />,
-      iconColor: "bg-emerald-700",
       title: "پوشش هاستینگ‌های جهانی",
       description:
         "فرقی نمی‌کنه هتزنر، بلوهاست یا هاستینگر باشه، ما پرداختش می‌کنیم، با تمرکز روی ارائه‌دهندگان معتبر.",
@@ -193,7 +188,7 @@ const HostingerHostingPayment = () => {
   return (
     <div>
       <HeroSection
-        heading="خرید هاست از Hostinger — وب‌سایتتو بساز، کسب‌وکارتو رونق بده"
+        heading="خرید هاست از Hostinger   وب‌سایتتو بساز، کسب‌وکارتو رونق بده"
         subheading="همین حالا بخر"
         description="همین حالا بخر و با ارزی پلاس، پرداخت هزینه هاست Hostinger را سریع و امن انجام دهید. خدمات تخصصی برای راه‌اندازی وب‌سایت بدون محدودیت بانکی."
         buttons={[
@@ -241,8 +236,7 @@ const HostingerHostingPayment = () => {
         buttonText="ثبت سفارش"
         buttonLink="/hosting-payment"
         items={hostingWhyUs}
-        buttonColor="bg-indigo-700 hover:bg-indigo-800 text-white"
-        theme={themesWhyus.default}
+         theme={themesWhyus.default}
       />
 
       <TextBox
@@ -328,7 +322,7 @@ const HostingerHostingPayment = () => {
 
       <CTABanner
         heading="هاستینگر: راه‌اندازی سریع و آسان!"
-        description="همین الان سفارشت رو ثبت کن! ارزی پلاس با سرعت، امنیت و کارمزد کم، هزینه هاست Hostinger را مدیریت می‌کند."
+        description="   ارزی پلاس با سرعت، امنیت و کارمزد کم، هزینه هاست Hostinger را مدیریت می‌کند."
         button={{
           text: "ثبت سفارش",
           href: "/hosting-payment",

@@ -1,3 +1,4 @@
+import Image from "next/image";
 import React from "react";
 
 const COLORS = {
@@ -12,13 +13,21 @@ export const modalContents = {
   step1: {
     title: "  راهنمای کامل شرایط ثبت‌نام لاتاری آمریکا 1404",
     content: (
-      <div className="space-y-6 text-right" dir="rtl">
+      <div className="space-y-6 text-center" dir="rtl">
         <h2
           className="md:text-3xl text-xl font-bold mb-6"
           style={{ color: COLORS.primary }}
         >
           شرایط ثبت نام لاتاری آمریکا 1404 با ارزی پلاس
         </h2>
+
+        <Image
+          className="mx-auto my-4 w-1/3 h-1/3"
+          alt="شرایط ثبت نام لاتاری آمریکا 1404 با ارزی پلاس"
+          width={500}
+          height={500}
+          src="https://arziplus.s3.eu-north-1.amazonaws.com/lottery/55-min.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=ASIAUQ73WRGQ5L43YOUM%2F20251013%2Feu-north-1%2Fs3%2Faws4_request&X-Amz-Date=20251013T131637Z&X-Amz-Expires=300&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEJ3%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCmV1LW5vcnRoLTEiSDBGAiEAhcZgf3myvEwNNEQHx3%2BSYfAYQQdVFBQjDC4c%2FIdXy9QCIQCkPFry0%2FXviX8jHPUnzSNc8V1hfNRjWbS9QDVA20C15CrWAghGEAAaDDMxMTM3NjEyMDIyNSIMdRrtdwD3nR0TkS5EKrMCAkUvNm3%2F3fheiYZjMZjCzMaStCXQ%2F2i442t5Gya4yGT5%2Fp3PveMywPYALY8AnEuKRd1ZGd%2BMPs4C%2BHli6DkRVQ8%2BGeGoIp%2BDu7Hl1GtkiJ3B2sB%2BcThUrczjWzX5gI%2FeEpDTxouHrUH2tcop6r7LsiL9%2B1QQBaNsE6CWIv1%2BVgif55I17iIyr81Mg4bLSGOg3Gf5JfMRh1AzLIq6TT8OACdPMdPtRTBJxGWHWZt6YQuypDWyNOjT0NFvbONuTpszS5MFBrNdIgfwaJBH7D0YYtnJHWXtV6Xrg%2FDf6RN6z0o%2BhH0jHhN0HFZiBHGppjvsIEWa%2BDpkgwtg15tDj13WHZBMGLSY5QPTP02zAptnGUAofGqzaLkvWMBVVzy39dPT7bC8Rw9Aqgb1i%2FyJH1MTfeFhyjCf97PHBjqsAgmbtBCeKR9oHQ2jtU7Tq5sUxRHrTG7Mg0Pr2JIasfj1tMg%2BU9xKa2li9TTUeEryjQ5QXpsV4GE47bgop4DIkiW%2BESXL3Qv%2FzseEcD9ABF92NSJHV9narkELSwVcmOIDt7avYUqou3Eh%2FyOWh5GPR1qADzsJUpqta7M%2BL2Av4Jnqn8B9wttPtCM1Myt9lRKXnDaT9odjCWmA4sv2TGFqSpm6WHnvbAg%2FmYmwNIsHt%2FAuP1oGcs1l9MXNvwNPA0UIqCUoPzgOelWqD7lwUrpK0ur4ryvaHpj%2Fmbdyf9lU3rIXRzKW%2B1rwGKdWvhw3uBUfhhhl5nfL2TnyL6bzoQIcfhzksjj9bZSwGjCZdlC0WXejxgQXiu29swaOEbfEQ0ij6FWDsRk1ZPJIhI1%2F2Q%3D%3D&X-Amz-Signature=7e41db5f404981824a5222fef1cbb8c305ddbaf4654e62a0563f46b1105ed21c&X-Amz-SignedHeaders=host&response-content-disposition=inline"
+        />
 
         <p
           className="leading-relaxed md:text-lg"
@@ -36,6 +45,7 @@ export const modalContents = {
           >
             1️⃣ متولد کشور مجاز باشید
           </h3>
+
           <p className="leading-relaxed mb-4" style={{ color: COLORS.gray }}>
             هر سال، دولت آمریکا لیستی از کشورهایی که مجاز به شرکت در لاتاری
             هستند منتشر می‌کند. ایران، افغانستان و اکثر کشورهای همسایه مجاز به
@@ -309,7 +319,7 @@ export const modalContents = {
     title:
       "📸 عکس لاتاری 1404 (2027) – راهنمای کامل ثبت عکس گرین کارت با ارزی پلاس",
     content: (
-      <div className="space-y-6 text-right" dir="rtl">
+      <div className="space-y-6 text-center" dir="rtl">
         <h2
           className="md:text-3xl text-xl font-bold mb-6"
           style={{ color: COLORS.secondary }}
@@ -324,6 +334,13 @@ export const modalContents = {
           >
             عکس مناسب برای ثبت‌نام لاتاری گرین کارت آمریکا
           </h3>
+          <Image
+            className="mx-auto my-4 "
+            alt="شرایط ثبت نام لاتاری آمریکا 1404 با ارزی پلاس"
+            width={300}
+            height={300}
+            src="https://arziplus.s3.eu-north-1.amazonaws.com/lottery/58-min.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=ASIAUQ73WRGQQBONR24W%2F20251013%2Feu-north-1%2Fs3%2Faws4_request&X-Amz-Date=20251013T132138Z&X-Amz-Expires=300&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEJ3%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCmV1LW5vcnRoLTEiRjBEAiEAs9UQz3tIfFb%2FLTVYWo%2BvR1f2IAk7KmgPTCeFDC1UMJcCHyHnpp2u05YqRPqxn01CZzaK5Tyw3%2BRFpQOqtzOHeA8q1gIIRhAAGgwzMTEzNzYxMjAyMjUiDE45wHkwdDO7qzEX2iqzAiZOVZfJy%2BWCcyNcSfSkGsCGcGfcc2EH8H2Rs%2B3ZcimHQRx8MYWXavSyYcyCoQkXSpN7aRqNII6XvtZhOH0LHbjqH3WHFY4JeN5zysL%2B9AYrzzBMGuqrUVE2zmWW7pDTPV8kTE5xBRiL5X5b%2BvgzXNoScR0CGduiB0pcC0fPEPyEXr2SMMuhlnmRv5yNRWV5mXPyCA8s2HLMLMKsI7KBY6Kqz%2BBZwqMC9Nm5Z7AFu2AX1Mbc912PLAeahKPbFIIlR6oXCWuKVyvgn4PZ9V9bdLz%2FJlZpsnMItIgLYnthF2KjUpS02DRazKKWyWuj2d16RsyP%2FNRcuvneapjCTeebfYo7CJPNtVlqt%2FE5yv%2FlvtJOJGuig3GC6ieZP2%2FN26mqCAFJ72kkNuVj03s5o2%2Fa74gdbhMwn%2FezxwY6rgKoKhe7Zpb14t90vXnoJt3SOuPFzF0dXM9lDm5BTFbQ0Fftg9HpsfFEd4vRMQxfRWLe0NdyZ4tqsOgbgK1mfXdYOVlyhnlXMm%2BSQWkNKChyTonwV5IW6w8MArET%2Fu8P6uR%2F%2FNxOFIkiBqLxHKEJped6r%2BVXWqUJrZl6bGv7rqzj11O4WBmm8sVNQhUJt40bk7FeVhG3hpngT5W5rFruvKe2qMuNQGZMMybDGInbvp54wZN1leyPI5Q0cir5BErcYEENheJ19jQN7P49tHfHqk1J0u%2BA%2BM%2FzM%2FCWV38BKSICMGgxHbJMIVjwJZJnGNQ%2FS7lIzAOFpwaDYw5gQyjwVjyLcYNarMGh5MrShv9uVgBOhHj5O6rMFyZEFugk8766cx%2FBRbQjxjUhmOY39%2FhmSQ%3D%3D&X-Amz-Signature=da2f664f64f8a8bab9256eebe054e5f7dede326f90146074d466482f715e2697&X-Amz-SignedHeaders=host&response-content-disposition=inline"
+          />
           <p className="leading-relaxed mb-4" style={{ color: COLORS.gray }}>
             برای بسیاری از متقاضیان، تهیه عکس استاندارد لاتاری از دشوارترین
             مراحل ثبت نام است. اگر قصد شرکت در لاتاری 1404 (لاتاری 2027) را
@@ -400,6 +417,13 @@ export const modalContents = {
           >
             شرایط عکس لاتاری برای آقایان
           </h3>
+           <Image
+            className="mx-auto my-4 "
+            alt="شرایط ثبت نام لاتاری آمریکا 1404 با ارزی پلاس"
+            width={300}
+            height={300}
+            src="https://arziplus.s3.eu-north-1.amazonaws.com/lottery/%D8%B4%D8%B1%D8%A7%DB%8C%D8%B7%20%D8%AB%D8%A8%D8%AA%20%D9%86%D8%A7%D9%85%20%D9%84%D8%A7%D8%AA%D8%A7%D8%B1%DB%8C.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=ASIAUQ73WRGQS6U5WNQ6%2F20251013%2Feu-north-1%2Fs3%2Faws4_request&X-Amz-Date=20251013T133155Z&X-Amz-Expires=300&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEJ3%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCmV1LW5vcnRoLTEiRTBDAiBk0lvUlA2rizYLGz6KJ%2B8JA2CUWx%2BJ3Xa%2FmVY9I2O5SQIfJ8z%2FmM%2FbhSv%2B5%2BDGSWx9NrQK5arYMq7pi5IK28P%2BkSrWAghHEAAaDDMxMTM3NjEyMDIyNSIMELy8H9naBHGz08SQKrMCE0z12N6injMg0KBnW%2FHwBmmo8GqWltTTzvZxP1pKY31quPDf9e6MUoJ8UYjTzpSfmbx8%2BTOMu%2FZT3kZZhHSoRSKQUHH8rs1bQaDgwTyR42xInJOL6lEOn83WlmymbdtNaKEuLWGkiJKZyc3wEQ2UcZBS4auDW2X0OK8Cxfe%2FWPhwKORsu8Wu7lUBUiwj6xc8DwaKFYwmwOK5GuIQ7LaX19UO4d6ja1uJoxXQE78Ni1rMF14rmL%2FaedMecsm7bwZwyUyrGzthWzT9eqSWH2gEr3sYEjyL9kh0qVveIPpUQisk2clqBZYOUtd9QqVlRaPm0NN3lBE49ncGpx6lQVcMg9b93mCA%2BW9o1GPmrkRw0dPspY3mdcaylVevZO403jX66sRUyOhNUpB4WaggEmTA%2FPwmmTCf97PHBjqvAsT4NTIQ8NN5NPOdk52fhpkUs%2BXUyWgqU42FLSyvCtfD2NscVigU4uB6kq60%2BSWWorKq9ifdNUWlFfYuqqkd6Hk3Tt6ICAS2mGb07hyO3ksJ8uTZZnoSdo3H%2BbDD8mb8jg83xymF6ITRBdf9W1o8019JQ7dG2DFJbO1aDs5d8%2F2%2Bo21HvG2gx%2Bxyghtr7GwR1P0g%2BheQix3SluyXgNulG%2Ffo138nqNDJcDJRkY1yAfR%2BDySmiOJRz865KJ9HzzJAM8LqKYu9dw5cysMshF3OS%2BIio75MFZLYpnZ%2BR2AxFLWFdjzeNb5L6TcMFykUTfsdDBhfakYtTGI9wJ78VDmVt1VoP2Z0%2B1Mi%2FFE78%2BrutKmjVahNdb7pqNLZhezF14ZnFslOCipH4%2BxzEiBRk8XqHg%3D%3D&X-Amz-Signature=0efb716d4cbc2faadcb72cb5bc5fbfb91f5db427dbd21bc379ccd2eca10ae19c&X-Amz-SignedHeaders=host&response-content-disposition=inline"
+          />
           <ul
             className="space-y-2 list-disc list-inside mr-4"
             style={{ color: COLORS.gray }}
@@ -427,6 +451,13 @@ export const modalContents = {
           >
             شرایط عکس لاتاری برای بانوان
           </h3>
+          <Image
+            className="mx-auto my-4 "
+            alt="شرایط ثبت نام لاتاری آمریکا 1404 با ارزی پلاس"
+            width={300}
+            height={300}
+            src="https://arziplus.s3.eu-north-1.amazonaws.com/lottery/61-min.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=ASIAUQ73WRGQ5PLEHC7Z%2F20251013%2Feu-north-1%2Fs3%2Faws4_request&X-Amz-Date=20251013T132511Z&X-Amz-Expires=300&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEJ3%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCmV1LW5vcnRoLTEiRjBEAiBu23x%2FpfXF5NRuvZCp3WESxS%2FPi7eqPnM7k6eKaB9dTAIgcxzjPFHAfj4LNIU3g5tYlrxe%2BWdp4u2OEw7EEhgPyVsq1gIIRxAAGgwzMTEzNzYxMjAyMjUiDIpmTy4DqXszZNANwyqzAq82UoMxPKUPG%2BuKXsxV2OBqNp3CuA2z5m5CjmPtL%2FVGj7b70HSruOjzdCBZVUu%2B2%2BolSEyevEHR3nSMJkiYcos3J%2BM4dozVzP6g9F1NFXGSDCGjQM6AEgY6iGFzVpavKiRE1KfwUIg5B8A83ctfFiNN6EjD8Iz%2BU6WqW5SW6gIh21lPmVso%2FW8%2B8dh3nSNB%2FexRkRrp7dbVWiTwM57bfDsJN9U4gHvocZ9cyevaDLqE1KpBW6ZEt3Tzg9Fs1FsGMHyg5lUkGNYJv9g74joyQ%2BsO7jarbzKbDyURJIAfMlDBwzcH5jrAjZiSiDqHicLaeVqJW3B8cViHsWDIEkoK1zkxkHwhX3uL7aXYgBkpZD%2ByBz4p8cGUIYh1JbxIxOddNTMoMvOTCVLZC5aWX0xHtvQAi5Uwn%2FezxwY6rgLX%2FoZCwlWQe0oSk6HJAng1LcP7%2B6mGz1qzoEOF77uxPjx5p7tlck9Kdhz2TH0deNMnhW9YFigg14ZA%2FmSsz2ZmSx%2FJcSuX3GHZRgtZtbu7486Zv4Px06mxFrLHg7wzQnLBNT9ExnaknSelrbO8DWPebmSCHFqR71ZMBMpYKSD3QotTCE%2FFoUy3cVL7yqwBlrEYUgJP%2FjKzWDZHYtVcn91072fYT9U2slCNKCUns1vyiwhyZ3VAfv8o2IfUP86f0pLfh5k5OipfINhHsH71tL%2B%2Brhi9Vr6ISPA5scqfYetpRJedn66BRWElRwme8PgBrGlF12m%2B%2F87eGokg8UXRuXfacSpAdw7jTQ8%2F3UOLIG8VEm2%2BQOLulgjATnnliWnxdL0Love%2B5ZLRjhND%2BZLGow%3D%3D&X-Amz-Signature=bc9934367ff79ef3c23af9d76122e5f93c16c2493c6a6b471f22304a7a1c3e48&X-Amz-SignedHeaders=host&response-content-disposition=inline"
+          />
           <p className="mb-4" style={{ color: COLORS.gray }}>
             بانوان می‌توانند عکس خود را با یا بدون حجاب اسلامی ارسال کنند، تنها
             کافی است گردی صورت مشخص باشد.
@@ -451,6 +482,13 @@ export const modalContents = {
           >
             شرایط عکس لاتاری برای نوزادان و کودکان
           </h3>
+          <Image
+            className="mx-auto my-4 "
+            alt="شرایط ثبت نام لاتاری آمریکا 1404 با ارزی پلاس"
+            width={300}
+            height={300}
+            src="https://arziplus.s3.eu-north-1.amazonaws.com/lottery/60-min.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=ASIAUQ73WRGQ5HULZKQH%2F20251013%2Feu-north-1%2Fs3%2Faws4_request&X-Amz-Date=20251013T132426Z&X-Amz-Expires=300&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEJ3%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCmV1LW5vcnRoLTEiRzBFAiBfcfNHieUIT2cUU3%2F8rv%2FcLZ%2FkvbKoFu8K9LyNOe7rWgIhAMuQA6LpusBU025q2Dfz1tuTfT5t7XZvXgU5cv9j3zmeKtYCCEcQABoMMzExMzc2MTIwMjI1Igzh9nSxIAPqGJgPUZoqswJYxEPdNCEkgHG6oTpUzof6ngDeEa6t48ii2KsPfRQ5PqF%2Bcj3lhqwS%2BnacerlseMYdnYcbM0UC5TNRn9uOynWfyplaI%2Fbz2UJ31M0v4zoYr%2B%2BLlKRI8kvqo98hiC275il7CuBynwHW7Q9ZaDd4Nbg1945OryvYWWBpjr7wwelaJFSh%2BBTR%2B4zIdu8Fw2kSNtkGzdXbn0Ehbs2%2BFr%2Bo8IeKPDdtmhCFDlcsWLQ%2Fqf87G2RqJ5jm603iPB%2FnOThpXdYWtsCdOV1nA9hsE9wa54AQje7CM7eQ133a9UmqPmcB8nkvreHvrzxusMhrNffMkpI%2Bc3sXH4QwaTORh8Q%2BbxaFSuTd2O4qXBl9zq7mSb5CppIXQTT8Z7T6%2FOaXjHxkmNklZNS%2FfZmEDeHSy1MtD5S38UqDMJ%2F3s8cGOq0CTrg3Dh3%2FCzG1EdEZx1d8sfVCWnx%2Bdk70yx7SkI7Xy1ETxFF0lEd8y4%2B%2FcIGgLMSeD3x91B%2FiqOORyWEB%2BUBVDPhvNf%2FB1FIVjD7iYF8eeDPprPcBehTyCwa6mjmDyNUd7rAGXmFpHJ0RdgCJPE3R12eXaOZKZfA5272w8vr9AJOtMkSKhUc%2FtiRWzRCtkJKFFk6H21MmcjgEDDg88IHavIwWftzaKtBGMjvqICy2S5SGZU0G1zwjMV5WfG%2B2Gdx0SMl8C77OJP5WYkY%2FcsN1VNzGA8hxaemLkg0jlI9ovXMD0sESmK2%2Beg4fAWASbDUpnOKZiRWM2MLeuODOnq6coCVCQa7aY5tDVz52pl4viU9bKaN%2FdhflG7C8eGNSaek9TKUdDnmTQaa62tEsjA%3D%3D&X-Amz-Signature=ecfe73d4897a079ef7a5ebb73e85ca420250149584d68ceb25a5f30b6c597588&X-Amz-SignedHeaders=host&response-content-disposition=inline"
+          />
           <p className="mb-4" style={{ color: COLORS.gray }}>
             حتی نوزادان یک‌روزه نیز باید عکس جداگانه داشته باشند. اما چون گرفتن
             عکس از کودکان دشوار است، قوانین کمی آسان‌تر است:
@@ -558,7 +596,7 @@ export const modalContents = {
               <thead>
                 <tr style={{ backgroundColor: `${COLORS.primary}20` }}>
                   <th
-                    className="border p-3 text-right"
+                    className="border p-3 text-center"
                     style={{
                       borderColor: COLORS.primary,
                       color: COLORS.primary,
@@ -567,7 +605,7 @@ export const modalContents = {
                     ویژگی
                   </th>
                   <th
-                    className="border p-3 text-right"
+                    className="border p-3 text-center"
                     style={{
                       borderColor: COLORS.primary,
                       color: COLORS.primary,
@@ -719,7 +757,7 @@ export const modalContents = {
   step3: {
     title: "💰 راهنمای پرداخت هزینه ثبت‌نام لاتاری",
     content: (
-      <div className="space-y-6 text-right" dir="rtl">
+      <div className="space-y-6 text-center" dir="rtl">
         <h2
           className="md:text-3xl text-xl font-bold"
           style={{ color: COLORS.primary }}

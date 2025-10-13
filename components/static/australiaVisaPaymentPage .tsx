@@ -349,7 +349,7 @@ Subclass 600
           {
             text: "پرداخت هزینه سفارت",
             href: "/australia-visa-payment",
-            variant: "green",
+            variant: "red",
             icon: <FaShieldAlt />,
           },
         ]}

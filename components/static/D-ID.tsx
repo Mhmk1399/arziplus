@@ -53,7 +53,6 @@ const DIDPage = () => {
     {
       id: 1,
       icon: <FaClock size={32} />,
-      iconColor: "bg-indigo-700",
       title: "رابط کاربری آسان و جذاب",
       description:
         "استفاده از D-ID ساده است و همه می‌توانند ویدیوهای حرفه‌ای بسازند.",
@@ -61,7 +60,6 @@ const DIDPage = () => {
     {
       id: 2,
       icon: <FaLock size={32} />,
-      iconColor: "bg-indigo-700",
       title: "پشتیبانی از بیش از 100 زبان",
       description:
         "می‌توانید ویدیوهای خود را با صدا و متن در بیش از 100 زبان بسازید.",
@@ -69,14 +67,12 @@ const DIDPage = () => {
     {
       id: 3,
       icon: <FaPercent size={32} />,
-      iconColor: "bg-indigo-700",
       title: "سرعت بالا",
       description: "ویدیوهای شما در کوتاه‌ترین زمان ممکن ساخته می‌شوند.",
     },
     {
       id: 4,
       icon: <FaHeadset size={32} />,
-      iconColor: "bg-indigo-700",
       title: "پشتیبانی حرفه‌ای",
       description:
         "کارشناسان ما در تمام مراحل خرید و فعال‌سازی همراه شما هستند.",
@@ -195,8 +191,7 @@ const DIDPage = () => {
         buttonText="ثبت سفارش D-ID"
         buttonLink="/d-id"
         items={whyUsItems}
-        buttonColor="bg-indigo-800 hover:bg-indigo-900 text-white"
-        theme={themesWhyus.dark}
+         theme={themesWhyus.default}
       />
 
       <HeroSplitSection

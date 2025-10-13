@@ -127,19 +127,11 @@ const ApplicationFeePayment = () => {
 
   const appSteps = [
     {
-      id: "register",
-      title: "تو سایت ثبت نام کن",
+      id: "complete",
+      title: "سفارشت انجام شد!",
       description:
-        "به سادگی توی ارزی پلاس ثبت نام کن و حساب کاربری سریع بساز تا فرآیند بدون وقفه شروع شود.",
-      icon: <FaRegClipboard />,
-      isActive: true,
-    },
-    {
-      id: "order",
-      title: "سفارشت رو ثبت کن",
-      description:
-        "لینک پرداخت رو برامون بفرست و جزئیات اپلیکیشن فی را وارد کن تا تیم ما فوراً بررسی کند.",
-      icon: <FaDollarSign />,
+        "خب این هدف هم تیک خورد ",
+      icon: <FaRocket />,
     },
     {
       id: "pay",
@@ -150,11 +142,19 @@ const ApplicationFeePayment = () => {
       isActive: true,
     },
     {
-      id: "complete",
-      title: "سفارشت انجام شد!",
+      id: "order",
+      title: "سفارشت رو ثبت کن",
       description:
-        "خب این هدف هم تیک خورد. بریم بعدی….. می‌دونستی با پرداخت هزینه اپلیکیشن فی، انگیزه‌ات رو به دانشگاه نشون میدی؟ فرصت درس خوندن توی بهترین دانشگاه‌های دنیا رو الکی از دست نده!",
-      icon: <FaRocket />,
+        "لینک پرداخت رو برامون بفرست و جزئیات اپلیکیشن فی را وارد کن تا تیم ما فوراً بررسی کند.",
+      icon: <FaDollarSign />,
+    },
+    {
+      id: "register",
+      title: "تو سایت ثبت نام کن",
+      description:
+        "به سادگی توی ارزی پلاس ثبت نام کن و حساب کاربری سریع بساز تا فرآیند بدون وقفه شروع شود.",
+      icon: <FaRegClipboard />,
+      isActive: true,
     },
   ];
 
@@ -162,7 +162,6 @@ const ApplicationFeePayment = () => {
     {
       id: 1,
       icon: <FaDollarSign size={32} />,
-      iconColor: "bg-emerald-700",
       title: "مناسب‌ترین قیمت",
       description:
         "هزینه اپلیکیشن فی رو با بهترین قیمت‌پرداخت می‌کنی و از نرخ‌های رقابتی ارزی پلاس بهره‌مند می‌شوی.",
@@ -170,7 +169,6 @@ const ApplicationFeePayment = () => {
     {
       id: 2,
       icon: <FaPercentage size={32} />,
-      iconColor: "bg-emerald-700",
       title: "کم‌ترین کارمزد",
       description:
         "هزینه اپلیکیشن فی دانشگاهت با کمترین کارمزد پرداخت می‌شه، بدون هزینه‌های پنهان اضافی.",
@@ -178,7 +176,6 @@ const ApplicationFeePayment = () => {
     {
       id: 3,
       icon: <FaClock size={32} />,
-      iconColor: "bg-emerald-700",
       title: "سرعت بالا",
       description:
         "سرعت انجام سفارشات توی ارزی پلاس بالاست و معطل نمی‌شی، با پردازش در کمتر از 2 ساعت کاری.",
@@ -186,7 +183,6 @@ const ApplicationFeePayment = () => {
     {
       id: 4,
       icon: <FaHeadset size={32} />,
-      iconColor: "bg-emerald-700",
       title: "پشتیبانی سریع",
       description:
         "کارشناسان ما توی سریع‌ترین زمان بهتون پاسخ می‌دن، حتی در ساعات غیراداری با چت آنلاین.",
@@ -194,7 +190,6 @@ const ApplicationFeePayment = () => {
     {
       id: 5,
       icon: <FaUniversity size={32} />,
-      iconColor: "bg-emerald-700",
       title: "پوشش دانشگاه‌های برتر",
       description:
         "پرداخت اپلیکیشن فی برای دانشگاه‌های آمریکا، کانادا، اروپا و بیش از 100 کشور دیگر.",
@@ -242,12 +237,10 @@ const ApplicationFeePayment = () => {
     },
   ];
 
- 
-
   return (
     <div>
       <HeroSection
-        heading="پرداخت اپلیکیشن فی — کوتاه‌تر کردن مسیر پذیرش دانشگاه خارجی"
+        heading="پرداخت اپلیکیشن فی  کوتاه‌تر کردن مسیر پذیرش دانشگاه خارجی"
         subheading="مسیـر پذیرشتـو با ارزی پلاس کوتاه تر کن"
         description="همین حالا بخر و با ارزی پلاس، پرداخت اپلیکیشن فی دانشگاه‌های آمریکا، کانادا و اروپا را سریع و امن انجام دهید. خدمات تخصصی برای شروع اپلای تحصیلی بدون محدودیت."
         buttons={[
@@ -295,8 +288,7 @@ const ApplicationFeePayment = () => {
         buttonText="پرداخت کن"
         buttonLink="/application-payment"
         items={appWhyUs}
-        buttonColor="bg-indigo-700 hover:bg-indigo-800 text-white"
-        theme={themesWhyus.default}
+         theme={themesWhyus.default}
       />
 
       <TextBox
@@ -381,8 +373,8 @@ const ApplicationFeePayment = () => {
       />
 
       <CTABanner
-        heading="پرداخت اپلیکیشن فی و شروع اپلای دانشگاه مورد علاقه‌ات"
-        description="پرداخت کن و مسیر پذیرش‌ات را هموار کن. ارزی پلاس با سرعت، امنیت و کارمزد کم، اپلیکیشن فی دانشگاه خارجی‌ات را مدیریت می‌کند."
+        heading="پرداخت اپلیکیشن فی و شروع اپلای دانشگاه    "
+        description="  ارزی پلاس با سرعت، امنیت و کارمزد کم، اپلیکیشن فی دانشگاه خارجی‌ات را مدیریت می‌کند."
         button={{
           text: "پرداخت کن",
           href: "/application-payment",

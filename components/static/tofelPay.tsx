@@ -58,26 +58,11 @@ const ToeflPayment = () => {
 
   const toeflSteps = [
     {
-      id: "register",
-      title: "ثبت‌نام اولیه در ارزی پلاس",
+      id: "confirm",
+      title: "دریافت رسید و تأیید ثبت‌نام",
       description:
-        "با چند کلیک در ارزی پلاس حساب کاربری بسازید تا به پنل پرداخت آزمون‌ها دسترسی پیدا کنید.",
-      icon: <FaRegClipboard />,
-      isActive: true,
-    },
-    {
-      id: "selectService",
-      title: "انتخاب پرداخت TOEFL",
-      description:
-        "در بخش خدمات بین‌المللی، گزینه پرداخت هزینه آزمون TOEFL را انتخاب کنید.",
-      icon: <FaDollarSign />,
-    },
-    {
-      id: "enterDetails",
-      title: "وارد کردن مشخصات آزمون",
-      description:
-        "اطلاعات موردنیاز شامل تاریخ آزمون و شناسه ثبت‌نام (در صورت وجود) را وارد کنید.",
-      icon: <FaEnvelope />,
+        "پس از پرداخت، رسید الکترونیکی و تأیید ثبت‌نام آزمون برای شما ارسال می‌شود.",
+      icon: <FaRocket />,
     },
     {
       id: "pay",
@@ -88,11 +73,26 @@ const ToeflPayment = () => {
       isActive: true,
     },
     {
-      id: "confirm",
-      title: "دریافت رسید و تأیید ثبت‌نام",
+      id: "enterDetails",
+      title: "وارد کردن مشخصات آزمون",
       description:
-        "پس از پرداخت، رسید الکترونیکی و تأیید ثبت‌نام آزمون برای شما ارسال می‌شود.",
-      icon: <FaRocket />,
+        "اطلاعات موردنیاز شامل تاریخ آزمون و شناسه ثبت‌نام (در صورت وجود) را وارد کنید.",
+      icon: <FaEnvelope />,
+    },
+    {
+      id: "selectService",
+      title: "انتخاب پرداخت TOEFL",
+      description:
+        "در بخش خدمات بین‌المللی، گزینه پرداخت هزینه آزمون TOEFL را انتخاب کنید.",
+      icon: <FaDollarSign />,
+    },
+    {
+      id: "register",
+      title: "ثبت‌نام اولیه در ارزی پلاس",
+      description:
+        "با چند کلیک در ارزی پلاس حساب کاربری بسازید تا به پنل پرداخت آزمون‌ها دسترسی پیدا کنید.",
+      icon: <FaRegClipboard />,
+      isActive: true,
     },
   ];
 
@@ -100,7 +100,6 @@ const ToeflPayment = () => {
     {
       id: 1,
       icon: <FaGlobeAmericas size={32} />,
-      iconColor: "bg-emerald-700",
       title: "پرداخت بین‌المللی بی‌دردسر",
       description:
         "ما پرداخت‌های بین‌المللی TOEFL را از طرف شما انجام می‌دهیم تا نیازی به کارت بین‌المللی نداشته باشید.",
@@ -108,7 +107,6 @@ const ToeflPayment = () => {
     {
       id: 2,
       icon: <FaClock size={32} />,
-      iconColor: "bg-emerald-700",
       title: "سرعت در انجام فرایند",
       description:
         "پرداخت‌ها معمولاً سریع پردازش می‌شوند و رسید تایید در کوتاه‌ترین زمان ارسال می‌گردد.",
@@ -116,7 +114,6 @@ const ToeflPayment = () => {
     {
       id: 3,
       icon: <FaPercentage size={32} />,
-      iconColor: "bg-emerald-700",
       title: "کارمزد شفاف و منصفانه",
       description:
         "نرخ و کارمزد پرداخت پیش از تأیید نمایش داده می‌شود تا تصمیم‌گیری آگاهانه داشته باشید.",
@@ -124,7 +121,6 @@ const ToeflPayment = () => {
     {
       id: 4,
       icon: <FaLock size={32} />,
-      iconColor: "bg-emerald-700",
       title: "امنیت کامل تراکنش‌ها",
       description:
         "پرداخت‌ها از طریق حساب‌های امن و مطابق استانداردهای بین‌المللی انجام می‌شوند.",
@@ -132,7 +128,6 @@ const ToeflPayment = () => {
     {
       id: 5,
       icon: <FaHeadset size={32} />,
-      iconColor: "bg-emerald-700",
       title: "پشتیبانی و مشاوره ثبت‌نام",
       description:
         "در تمام مراحل ثبت‌نام TOEFL همراهتان هستیم و در صورت نیاز راهنمایی می‌کنیم.",
@@ -258,7 +253,7 @@ const ToeflPayment = () => {
   return (
     <div>
       <HeroSection
-        heading="پرداخت هزینه آزمون TOEFL در ایران — سریع، امن و مطمئن"
+        heading="پرداخت هزینه آزمون TOEFL در ایران  سریع، امن و مطمئن"
         subheading="نمره با تو، پرداخت هزینه با ارزی پلاس"
         description={`در ارزی پلاس پرداخت هزینه آزمون TOEFL به‌سادگی و بدون نیاز به کارت بین‌المللی انجام می‌شود. با بیش از ۷ سال تجربه در خدمات پرداخت بین‌المللی، ما پرداخت ثبت‌نام TOEFL را با کمترین پیچیدگی و نرخ شفاف برای شما انجام می‌دهیم.`}
         buttons={[
@@ -306,8 +301,7 @@ const ToeflPayment = () => {
         buttonText="ثبت سفارش پرداخت TOEFL"
         buttonLink="/toefl-payment"
         items={toeflWhyUs}
-        buttonColor="bg-indigo-700 hover:bg-indigo-800 text-white"
-        theme={themesWhyus.default}
+         theme={themesWhyus.default}
       />
 
       <TextBox

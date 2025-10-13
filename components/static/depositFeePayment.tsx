@@ -97,19 +97,11 @@ const DepositFeePayment = () => {
 
   const depositSteps = [
     {
-      id: "register",
-      title: "ثبت نام کن",
+      id: "complete",
+      title: "پرداختت انجام شد!",
       description:
-        "به سادگی توی ارزی پلاس ثبت نام کن و حساب کاربری سریع بساز تا فرآیند بدون وقفه شروع شود.",
-      icon: <FaRegClipboard />,
-      isActive: true,
-    },
-    {
-      id: "select",
-      title: "خدمت مورد نظرت رو انتخاب کن",
-      description:
-        "روی پرداخت هزینه دانشگاه کلیک کن و جزئیات دیپازیت فی را وارد کن تا تیم ما فوراً بررسی کند.",
-      icon: <FaDollarSign />,
+        "توی دانشگاه بهت خوش بگذره — صندلیت رزرو شد و پذیرش نهایی تأیید گردید. حالا وقت جشن گرفتنه!",
+      icon: <FaRocket />,
     },
     {
       id: "pay",
@@ -120,11 +112,19 @@ const DepositFeePayment = () => {
       isActive: true,
     },
     {
-      id: "complete",
-      title: "پرداختت انجام شد!",
+      id: "select",
+      title: "خدمت مورد نظرت رو انتخاب کن",
       description:
-        "توی دانشگاه بهت خوش بگذره — صندلیت رزرو شد و پذیرش نهایی تأیید گردید. حالا وقت جشن گرفتنه!",
-      icon: <FaRocket />,
+        "روی پرداخت هزینه دانشگاه کلیک کن و جزئیات دیپازیت فی را وارد کن تا تیم ما فوراً بررسی کند.",
+      icon: <FaDollarSign />,
+    },
+    {
+      id: "register",
+      title: "ثبت نام کن",
+      description:
+        "به سادگی توی ارزی پلاس ثبت نام کن و حساب کاربری سریع بساز تا فرآیند بدون وقفه شروع شود.",
+      icon: <FaRegClipboard />,
+      isActive: true,
     },
   ];
 
@@ -132,7 +132,6 @@ const DepositFeePayment = () => {
     {
       id: 1,
       icon: <FaDollarSign size={32} />,
-      iconColor: "bg-emerald-700",
       title: "بهترین قیمت",
       description:
         "با بهترین قیمت میشه هزینه دیپازیت فی رو پرداخت کرد، با نرخ‌های ارزی رقابتی و بدون هزینه‌های پنهان.",
@@ -140,7 +139,6 @@ const DepositFeePayment = () => {
     {
       id: 2,
       icon: <FaClock size={32} />,
-      iconColor: "bg-emerald-700",
       title: "سریع‌ترین پرداخت",
       description:
         "برای انجام سفارشت پشت هیچ دری معطل نمی‌مونی، با پردازش در کمتر از 2 ساعت کاری.",
@@ -148,7 +146,6 @@ const DepositFeePayment = () => {
     {
       id: 3,
       icon: <FaHeadset size={32} />,
-      iconColor: "bg-emerald-700",
       title: "پشتیبانی حرفه‌ای",
       description:
         "پشتیبان‌های ما با کمال میل سوالات تو رو پاسخ میدن، از چت آنلاین تا مشاوره تلفنی 24/7.",
@@ -156,7 +153,6 @@ const DepositFeePayment = () => {
     {
       id: 4,
       icon: <FaPercentage size={32} />,
-      iconColor: "bg-emerald-700",
       title: "کم‌ترین کارمزد",
       description:
         "هزینه دیپازیت فی دانشگاهت با کارمزد کمی پرداخت می‌شه، معمولاً کمتر از 1.5 درصد کل مبلغ.",
@@ -164,7 +160,6 @@ const DepositFeePayment = () => {
     {
       id: 5,
       icon: <FaUniversity size={32} />,
-      iconColor: "bg-emerald-700",
       title: "پوشش دانشگاه‌های برتر",
       description:
         "پرداخت دیپازیت فی برای دانشگاه‌های کانادا، آلمان، انگلیس، آمریکا و بیش از 50 کشور دیگر.",
@@ -212,12 +207,10 @@ const DepositFeePayment = () => {
     },
   ];
 
-
-
   return (
     <div>
       <HeroSection
-        heading="پرداخت دیپازیت فی — رزرو صندلی دانشگاه خارجی بدون دغدغه"
+        heading="پرداخت دیپازیت فی   رزرو صندلی دانشگاه خارجی بدون دغدغه"
         subheading="صندلیت رو توی دانشگاه محبوبـت رزرو کن"
         description="همین حالا بخر و با ارزی پلاس، پرداخت دیپازیت فی دانشگاه‌های کانادا، آلمان، انگلیس و سایر کشورها را سریع و امن انجام دهید. خدمات تخصصی برای نهایی کردن پذیرش تحصیلی."
         buttons={[
@@ -265,8 +258,7 @@ const DepositFeePayment = () => {
         buttonText="پرداخت کن"
         buttonLink="/deposit-payment"
         items={depositWhyUs}
-        buttonColor="bg-indigo-700 hover:bg-indigo-800 text-white"
-        theme={themesWhyus.default}
+         theme={themesWhyus.default}
       />
 
       <TextBox
@@ -351,8 +343,8 @@ const DepositFeePayment = () => {
       />
 
       <CTABanner
-        heading="پرداخت دیپازیت فی و رزرو صندلی دانشگاه مورد علاقه‌ات"
-        description="پرداخت کن و پذیرش نهایی‌ات را تضمین کن. ارزی پلاس با سرعت، امنیت و کارمزد کم، دیپازیت فی دانشگاه خارجی‌ات را مدیریت می‌کند."
+        heading="پرداخت دیپازیت فی و رزرو صندلی دانشگاه   علاقه‌ات"
+        description="   ارزی پلاس با سرعت، امنیت و کارمزد کم، دیپازیت فی دانشگاه خارجی‌ات را مدیریت می‌کند."
         button={{
           text: "پرداخت کن",
           href: "/deposit-payment",

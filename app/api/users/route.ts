@@ -14,7 +14,10 @@ export async function GET(request: NextRequest) {
     }
 
     // Only admins can view all users
-    if (!authUser.roles.includes("admin") && !authUser.roles.includes("super_admin")) {
+    if (
+      !authUser.roles.includes("admin") &&
+      !authUser.roles.includes("super_admin")
+    ) {
       return NextResponse.json({ error: "دسترسی غیر مجاز" }, { status: 403 });
     }
 
@@ -102,7 +105,10 @@ export async function PATCH(request: NextRequest) {
     const { userId, username, password, roles, status } = await request.json();
 
     if (!userId) {
-      return NextResponse.json({ error: "شناسه کاربر الزامی است" }, { status: 400 });
+      return NextResponse.json(
+        { error: "شناسه کاربر الزامی است" },
+        { status: 400 }
+      );
     }
 
     await connect();
@@ -115,7 +121,9 @@ export async function PATCH(request: NextRequest) {
 
     // Check permissions - users can only update their own data, admins can update others
     const isOwnProfile = authUser.id === userId;
-    const isAdmin = authUser.roles.includes("admin") || authUser.roles.includes("super_admin");
+    const isAdmin =
+      authUser.roles.includes("admin") ||
+      authUser.roles.includes("super_admin");
 
     if (!isOwnProfile && !isAdmin) {
       return NextResponse.json({ error: "دسترسی غیر مجاز" }, { status: 403 });
@@ -134,9 +142,9 @@ export async function PATCH(request: NextRequest) {
       }
 
       // Check if username already exists
-      const existingUser = await User.findOne({ 
-        username, 
-        _id: { $ne: userId } 
+      const existingUser = await User.findOne({
+        username,
+        _id: { $ne: userId },
       });
       if (existingUser) {
         return NextResponse.json(
@@ -170,9 +178,17 @@ export async function PATCH(request: NextRequest) {
 
     // Roles update (only admins can change roles)
     if (roles && isAdmin) {
-      const validRoles = ["user", "admin", "super_admin", "moderator", "support"];
-      const invalidRoles = roles.filter((role: string) => !validRoles.includes(role));
-      
+      const validRoles = [
+        "user",
+        "admin",
+        "super_admin",
+        "moderator",
+        "support",
+      ];
+      const invalidRoles = roles.filter(
+        (role: string) => !validRoles.includes(role)
+      );
+
       if (invalidRoles.length > 0) {
         return NextResponse.json(
           { error: `نقش‌های نامعتبر: ${invalidRoles.join(", ")}` },
@@ -192,12 +208,14 @@ export async function PATCH(request: NextRequest) {
 
     // Status update (only admins can change status)
     if (status && isAdmin) {
-      const validStatuses = ["active", "suspended", "banned", "pending_verification"];
+      const validStatuses = [
+        "active",
+        "suspended",
+        "banned",
+        "pending_verification",
+      ];
       if (!validStatuses.includes(status)) {
-        return NextResponse.json(
-          { error: "وضعیت نامعتبر" },
-          { status: 400 }
-        );
+        return NextResponse.json({ error: "وضعیت نامعتبر" }, { status: 400 });
       }
 
       updateData.status = status;
@@ -235,7 +253,10 @@ export async function DELETE(request: NextRequest) {
     }
 
     // Only admins can delete users
-    if (!authUser.roles.includes("admin") && !authUser.roles.includes("super_admin")) {
+    if (
+      !authUser.roles.includes("admin") &&
+      !authUser.roles.includes("super_admin")
+    ) {
       return NextResponse.json({ error: "دسترسی غیر مجاز" }, { status: 403 });
     }
 
@@ -243,7 +264,10 @@ export async function DELETE(request: NextRequest) {
     const userId = searchParams.get("userId");
 
     if (!userId) {
-      return NextResponse.json({ error: "شناسه کاربر الزامی است" }, { status: 400 });
+      return NextResponse.json(
+        { error: "شناسه کاربر الزامی است" },
+        { status: 400 }
+      );
     }
 
     await connect();

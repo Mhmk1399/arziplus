@@ -5,7 +5,6 @@ import {
   faqThemes,
   splitSectionThemes,
   stepThemes,
-  textBoxThemes,
   textBoxTypography,
   themesWhyus,
 } from "@/lib/theme";
@@ -133,19 +132,11 @@ const UniversityTuitionPayment = () => {
 
   const tuitionSteps = [
     {
-      id: "register",
-      title: "ثبت نام در ارزی پلاس",
+      id: "complete",
+      title: "سفارش انجام شد!",
       description:
-        "به سادگی توی ارزی پلاس ثبت نام کن و حساب کاربری بساز تا فرآیند سریع‌تر شود.",
-      icon: <FaRegClipboard />,
-      isActive: true,
-    },
-    {
-      id: "order",
-      title: "سفارش رو ثبت کن",
-      description:
-        "از قسمت سفارشت رو ثبت کن و جزئیات فاکتور دانشگاهی‌ات را وارد کن تا تیم ما بررسی کند.",
-      icon: <FaDollarSign />,
+        "خب این هدف هم تیک خورد. بریم بعدی….. یک پرداخت تا دانشگاه مورد علاقه‌ات فاصله داری...",
+      icon: <FaRocket />,
     },
     {
       id: "pay",
@@ -155,12 +146,21 @@ const UniversityTuitionPayment = () => {
       icon: <FaMoneyBillWave />,
       isActive: true,
     },
+
     {
-      id: "complete",
-      title: "سفارش انجام شد!",
+      id: "order",
+      title: "سفارش رو ثبت کن",
       description:
-        "خب این هدف هم تیک خورد. بریم بعدی….. یک پرداخت تا دانشگاه مورد علاقه‌ات فاصله داری...",
-      icon: <FaRocket />,
+        "از قسمت سفارشت رو ثبت کن و جزئیات فاکتور دانشگاهی‌ات را وارد کن تا تیم ما بررسی کند.",
+      icon: <FaDollarSign />,
+    },
+    {
+      id: "register",
+      title: "ثبت نام در ارزی پلاس",
+      description:
+        "به سادگی توی ارزی پلاس ثبت نام کن و حساب کاربری بساز تا فرآیند سریع‌تر شود.",
+      icon: <FaRegClipboard />,
+      isActive: true,
     },
   ];
 
@@ -168,7 +168,6 @@ const UniversityTuitionPayment = () => {
     {
       id: 1,
       icon: <FaDollarSign size={32} />,
-      iconColor: "bg-emerald-700",
       title: "قیمت مناسب",
       description:
         "شهریه دانشگاهت رو با بهترین قیمت‌پرداخت می‌کنی و از نرخ‌های رقابتی ارزی پلاس بهره‌مند می‌شوی.",
@@ -176,7 +175,6 @@ const UniversityTuitionPayment = () => {
     {
       id: 2,
       icon: <FaPercentage size={32} />,
-      iconColor: "bg-emerald-700",
       title: "کارمزد کم",
       description:
         "هزینه شهریه دانشگاهت با کمترین کارمزد حساب می‌شه، بدون هزینه‌های پنهان اضافی.",
@@ -184,7 +182,6 @@ const UniversityTuitionPayment = () => {
     {
       id: 3,
       icon: <FaLock size={32} />,
-      iconColor: "bg-emerald-700",
       title: "امنیت بالا",
       description:
         "تمامی پرداخت‌هات از یه حساب امن و مطمئن انجام می‌شه، با رمزنگاری پیشرفته و تایید دو مرحله‌ای.",
@@ -192,7 +189,6 @@ const UniversityTuitionPayment = () => {
     {
       id: 4,
       icon: <FaHeadset size={32} />,
-      iconColor: "bg-emerald-700",
       title: "پشتیبانی سریع",
       description:
         "کارشناسان ما توی کوتاه‌ترین زمان بهت پاسخ می‌دن، حتی در ساعات غیراداری با چت آنلاین.",
@@ -200,7 +196,6 @@ const UniversityTuitionPayment = () => {
     {
       id: 5,
       icon: <FaUniversity size={32} />,
-      iconColor: "bg-emerald-700",
       title: "پوشش جهانی دانشگاه‌ها",
       description:
         "پرداخت برای دانشگاه‌های کانادا، آلمان، سوئد، آمریکا، انگلیس و بیش از ۱۰۰ کشور دیگر.",
@@ -279,9 +274,9 @@ const UniversityTuitionPayment = () => {
   return (
     <div>
       <HeroSection
-        heading="پرداخت شهریه دانشگاه خارجی — حل مشکل پرداخت از ایران"
+        heading="پرداخت شهریه دانشگاه خارجی   حل مشکل پرداخت از ایران"
         subheading="مشکل پرداخت شهریه دانشگاهت رو داری؟ راه حلش اینجاست"
-        description="همین حالا بخر و با ارزی پلاس، پرداخت شهریه دانشگاه خارجی کانادا، آلمان، سوئد و سایر کشورها را در کمتر از 3 ساعت انجام دهید. خدمات پرداخت بین‌المللی امن و سریع برای مهاجرت تحصیلی."
+        description="مهاجرت تحصیلی به مقاصد برتر مانند کانادا  ، آلمان   و سوئد   رو به افزایش است، اما تحریم‌ها پرداخت بین‌المللی را پیچیده می‌کند. ارزی پلاس (ArziPlus.com) خدمات پرداخت امن و سریع ارائه می‌دهد – بدون نیاز به کارت اعتباری خارجی، با روش‌های داخلی مانند کارت شتاب یا رمزارز، و تأیید در کمتر از ۳ ساعت."
         buttons={[
           {
             text: "همین حالا پرداخت کن",
@@ -296,6 +291,11 @@ const UniversityTuitionPayment = () => {
           width: 1200,
           height: 800,
         }}
+        features={[
+          { text: "سریع و کارآمد" },
+          { text: "امن و مطمئن" },
+          { text: "آسان برای همه کشورها" },
+        ]}
         layout="default"
         theme={{
           headingColor: "text-gray-50",
@@ -303,6 +303,7 @@ const UniversityTuitionPayment = () => {
           descriptionColor: "text-gray-200",
           backgroundColor: "bg-indigo-700",
           bgSubHeadingColor: "bg-fuchsia-50",
+          featuresColor: "text-gray-600",
         }}
       />
 
@@ -326,7 +327,6 @@ const UniversityTuitionPayment = () => {
         buttonText="پرداخت کن"
         buttonLink="/tuition-payment"
         items={tuitionWhyUs}
-        buttonColor="bg-indigo-700 hover:bg-indigo-800 text-white"
         theme={themesWhyus.default}
       />
 
@@ -334,12 +334,12 @@ const UniversityTuitionPayment = () => {
         heading="راهنمایی جامع برای پرداخت شهریه دانشگاه خارجی"
         content={longText}
         height={300}
-        theme={textBoxThemes.default}
         typography={textBoxTypography.medium}
         spacing={{
           padding: "p-8",
           gap: "space-y-6",
         }}
+        className="bg-transparent"
         style={{
           rounded: true,
           shadow: true,
@@ -411,8 +411,8 @@ const UniversityTuitionPayment = () => {
       />
 
       <CTABanner
-        heading="یک پرداخت تا دانشگاه مورد علاقه‌ات فاصله داری..."
-        description="پرداخت کن و به هدف‌های تحصیلی‌ات برس. ارزی پلاس با سرعت و امنیت، شهریه دانشگاه خارجی‌ات را مدیریت می‌کند."
+        heading="یک پرداخت تا دانشگاه مورد علاقه‌ات فاصله داری"
+        description="پرداخت کن و به هدف‌های تحصیلی‌ات برس. ارزی پلاس با سرعت و امنیت."
         button={{
           text: "پرداخت کن",
           href: "/tuition-payment",

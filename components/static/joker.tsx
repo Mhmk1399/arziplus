@@ -69,19 +69,10 @@ Joker.com با تمرکز بر سادگی و کارایی، ویژگی‌های 
 
   const jokerSteps = [
     {
-      id: "register",
-      title: "ثبت نام کن",
-      description:
-        "با چند کلیک ساده در ارزی پلاس ثبت نام کن و حساب کاربری بساز تا فرآیند بدون وقفه شروع شود.",
-      icon: <FaRegClipboard />,
-      isActive: true,
-    },
-    {
-      id: "select",
-      title: "به بخش پرداخت هاست و دامنه سر بزن",
-      description:
-        "روی جوکر کلیک کن و جزئیات دامنه مورد نظرت را وارد کن تا تیم ما فوراً بررسی کند.",
-      icon: <FaDollarSign />,
+      id: "complete",
+      title: "پرداختت نهایی شد!",
+      description: "از خریدت لذت ببر! دامنه جوکر ثبت شد و آماده استفاده است.",
+      icon: <FaRocket />,
     },
     {
       id: "pay",
@@ -92,10 +83,19 @@ Joker.com با تمرکز بر سادگی و کارایی، ویژگی‌های 
       isActive: true,
     },
     {
-      id: "complete",
-      title: "پرداختت نهایی شد!",
-      description: "از خریدت لذت ببر! دامنه جوکر ثبت شد و آماده استفاده است.",
-      icon: <FaRocket />,
+      id: "select",
+      title: "  بخش پرداخت هاست و دامنه  ",
+      description:
+        "روی جوکر کلیک کن و جزئیات دامنه مورد نظرت را وارد کن تا تیم ما فوراً بررسی کند.",
+      icon: <FaDollarSign />,
+    },
+    {
+      id: "register",
+      title: "ثبت نام کن",
+      description:
+        "با چند کلیک ساده در ارزی پلاس ثبت نام کن و حساب کاربری بساز تا فرآیند بدون وقفه شروع شود.",
+      icon: <FaRegClipboard />,
+      isActive: true,
     },
   ];
 
@@ -103,7 +103,6 @@ Joker.com با تمرکز بر سادگی و کارایی، ویژگی‌های 
     {
       id: 1,
       icon: <FaShieldAlt size={32} />,
-      iconColor: "bg-emerald-700",
       title: "امنیت بالا",
       description:
         "تمامی پرداخت‌هات از یه حساب امن و مطمئن انجام میشه، با 2FA و trustee service جوکر.",
@@ -111,7 +110,6 @@ Joker.com با تمرکز بر سادگی و کارایی، ویژگی‌های 
     {
       id: 2,
       icon: <FaHeadset size={32} />,
-      iconColor: "bg-emerald-700",
       title: "پشتیبانی حرفه‌ای",
       description:
         "کارشناسان ارزی پلاس، همه سوالاتت رو پاسخ میدن، همراه با پشتیبانی 24/7 جوکر.",
@@ -119,7 +117,6 @@ Joker.com با تمرکز بر سادگی و کارایی، ویژگی‌های 
     {
       id: 3,
       icon: <FaClock size={32} />,
-      iconColor: "bg-emerald-700",
       title: "کمترین زمان ممکن",
       description:
         "توی یه چشم بهم زدن سفارشت انجام میشه، با پردازش در کمتر از 1 ساعت.",
@@ -127,7 +124,6 @@ Joker.com با تمرکز بر سادگی و کارایی، ویژگی‌های 
     {
       id: 4,
       icon: <FaDollarSign size={32} />,
-      iconColor: "bg-emerald-700",
       title: "قیمت مناسب",
       description:
         "هزینه رو با کم‌ترین کارمزد پرداخت می‌کنی، با تخفیف‌های جوکر تا 94%.",
@@ -135,7 +131,6 @@ Joker.com با تمرکز بر سادگی و کارایی، ویژگی‌های 
     {
       id: 5,
       icon: <FaGlobe size={32} />,
-      iconColor: "bg-emerald-700",
       title: "پوشش TLDهای متنوع",
       description: "ثبت دامنه .com، .net، .org و بیش از 1000 TLD دیگر از جوکر.",
     },
@@ -189,7 +184,7 @@ Joker.com با تمرکز بر سادگی و کارایی، ویژگی‌های 
   return (
     <div>
       <HeroSection
-        heading="خرید دامنه از جوکر — انتخاب حرفــه‌ای ها برای ثبــت دامــنه..."
+        heading="خرید دامنه از جوکر  انتخاب حرفــه‌ای ها برای ثبــت دامــنه..."
         subheading="همین حالا بخر"
         description="همین حالا بخر و با ارزی پلاس، پرداخت هزینه ثبت دامنه از Joker.com را سریع و امن انجام دهید. خدمات تخصصی برای خرید دامنه خارجی بدون محدودیت بانکی."
         buttons={[
@@ -237,8 +232,7 @@ Joker.com با تمرکز بر سادگی و کارایی، ویژگی‌های 
         buttonText="پرداخت کن"
         buttonLink="/joker-payment"
         items={jokerWhyUs}
-        buttonColor="bg-indigo-700 hover:bg-indigo-800 text-white"
-        theme={themesWhyus.default}
+         theme={themesWhyus.default}
       />
 
       <TextBox

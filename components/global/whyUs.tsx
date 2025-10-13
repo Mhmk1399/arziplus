@@ -194,7 +194,7 @@ export default function WhyUsSection({
                     {item.title}
                   </h3>{" "}
                   <p
-                    className={`text-[10px] text-right sm:leading-0.5  md:leading-relaxed transition-colors duration-300 ${theme.description}`}
+                    className={`text-xs text-right sm:leading-0.5  md:leading-relaxed transition-colors duration-300 ${theme.description}`}
                   >
                     {item.description}
                   </p>

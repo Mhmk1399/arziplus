@@ -51,7 +51,6 @@ const DALLEPage = () => {
     {
       id: 1,
       icon: <FaClock size={32} />,
-      iconColor: "bg-indigo-700",
       title: "تولید تصاویر سفارشی و دلخواه",
       description:
         "با DALL-E می‌توانید هر تصویری که در ذهن دارید را به تصویر واقعی و جذاب تبدیل کنید.",
@@ -59,7 +58,6 @@ const DALLEPage = () => {
     {
       id: 2,
       icon: <FaLock size={32} />,
-      iconColor: "bg-indigo-700",
       title: "بالا رفتن خلاقیت و نوآوری",
       description:
         "ایده‌های خود را با کمک این هوش مصنوعی به بهترین شکل ممکن بصری کنید.",
@@ -67,7 +65,6 @@ const DALLEPage = () => {
     {
       id: 3,
       icon: <FaPercent size={32} />,
-      iconColor: "bg-indigo-700",
       title: "صرفه‌جویی در زمان و هزینه",
       description:
         "دیگر نیاز به نقاشی دستی یا تجهیزات گران‌قیمت ندارید، همه چیز با DALL-E انجام می‌شود.",
@@ -75,7 +72,6 @@ const DALLEPage = () => {
     {
       id: 4,
       icon: <FaHeadset size={32} />,
-      iconColor: "bg-indigo-700",
       title: "امنیت بالا",
       description:
         "تمامی تراکنش‌ها و اشتراک‌های شما با امنیت کامل انجام می‌شود.",
@@ -197,8 +193,7 @@ const DALLEPage = () => {
         buttonText="ثبت سفارش DALL-E"
         buttonLink="/dalle"
         items={whyUsItems}
-        buttonColor="bg-indigo-800 hover:bg-indigo-900 text-white"
-        theme={themesWhyus.dark}
+         theme={themesWhyus.default}
       />
 
       <HeroSplitSection

@@ -88,7 +88,7 @@ const ProcessSteps = () => {
             {steps.map((step, index) => (
               <div
                 key={index}
-                className="rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all"
+                className="rounded-2xl  p-8 shadow-lg hover:shadow-2xl transition-all"
                 style={{
                   backgroundColor: COLORS.white,
                   border: `2px solid ${
@@ -130,7 +130,7 @@ const ProcessSteps = () => {
                 </div>
 
                 <p
-                  className="leading-relaxed mb-6"
+                  className="leading-relaxed text-center mb-6"
                   style={{ color: COLORS.gray }}
                 >
                   {step.description}
@@ -138,7 +138,7 @@ const ProcessSteps = () => {
 
                 <button
                   onClick={() => handleOpenModal(step.modalKey)}
-                  className="inline-flex items-center p-2 rounded-xl gap-2 font-medium hover:gap-3 transition-all cursor-pointer border-0"
+                  className="flex items-center justify-center p-2 rounded-xl gap-2 font-medium hover:gap-3 transition-all cursor-pointer border-0"
                   style={{
                     color:
                       index === 0

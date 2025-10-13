@@ -182,7 +182,7 @@ const UKVisaPaymentPage = () => {
         buttonText="پرداخت هزینه سفارت"
         buttonLink="/uk-visa-payment"
         items={whyUsItems}
-        theme={themesWhyus.minimal}
+        theme={themesWhyus.default}
       />
 
       <HeroSplitSection

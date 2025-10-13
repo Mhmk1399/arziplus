@@ -51,7 +51,6 @@ const USVisaPaymentPage = () => {
     {
       id: 1,
       icon: <FaClock size={32} />,
-      iconColor: "bg-indigo-700",
       title: "سرعت بالا",
       description:
         "پرداخت شما در کوتاه‌ترین زمان ممکن توسط کارشناسان ارزی پلاس انجام می‌شود.",
@@ -59,14 +58,12 @@ const USVisaPaymentPage = () => {
     {
       id: 2,
       icon: <FaLock size={32} />,
-      iconColor: "bg-indigo-700",
       title: "امنیت بالا",
       description: "تمامی تراکنش‌ها با امنیت کاملا بالا و مطمئن انجام می‌شود.",
     },
     {
       id: 3,
       icon: <FaPercent size={32} />,
-      iconColor: "bg-indigo-700",
       title: "قیمت مناسب",
       description:
         "کمترین کارمزد و نرخ منصفانه برای پرداخت ارزی شما انجام میشود..",
@@ -74,7 +71,6 @@ const USVisaPaymentPage = () => {
     {
       id: 4,
       icon: <FaHeadset size={32} />,
-      iconColor: "bg-indigo-700",
       title: "پشتیبانی حرفه‌ای",
       description:
         "کارشناسان ارزی پلاس در تمام مراحل همراه شما تا آخرین مرحله هستند.",
@@ -183,8 +179,7 @@ const USVisaPaymentPage = () => {
         buttonText="پرداخت هزینه سفارت"
         buttonLink="/visa-payment"
         items={whyUsItems}
-        buttonColor="bg-indigo-800 hover:bg-indigo-900 text-white"
-        theme={themesWhyus.dark}
+         theme={themesWhyus.dark}
       />
 
       <HeroSplitSection
