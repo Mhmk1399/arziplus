@@ -18,7 +18,6 @@ interface RequestData {
   data: FormData;
   customer: string;
   customerName: string;
-  customerEmail: string;
   customerPhone?: string;
 }
 
@@ -90,7 +89,9 @@ const ServiceRenderer: React.FC<ServiceRendererProps> = ({
       const data: ApiResponse = await response.json();
 
       if (data.success) {
-        setServices(serviceId ? [data.data as Service] : data.data as Service[]);
+        setServices(
+          serviceId ? [data.data as Service] : (data.data as Service[])
+        );
       } else {
         showToast.error("Failed to fetch services");
       }
@@ -163,16 +164,16 @@ const ServiceRenderer: React.FC<ServiceRendererProps> = ({
 
     setSubmitting(true);
     try {
-      const customerName = currentUser.firstName && currentUser.lastName 
-        ? `${currentUser.firstName} ${currentUser.lastName}`
-        : currentUser.firstName || 'نام مشتری';
+      const customerName =
+        currentUser.firstName && currentUser.lastName
+          ? `${currentUser.firstName} ${currentUser.lastName}`
+          : currentUser.firstName || "نام مشتری";
 
       const requestData = {
         service: selectedService._id,
         data: formData,
         customer: currentUser.id,
         customerName,
-        customerEmail: currentUser.email,
         customerPhone: currentUser.phone,
       };
 
@@ -180,11 +181,11 @@ const ServiceRenderer: React.FC<ServiceRendererProps> = ({
         await onRequestSubmit(requestData);
       } else {
         // Default API call with authentication
-        const token = localStorage.getItem('authToken');
+        const token = localStorage.getItem("authToken");
         const headers: Record<string, string> = {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         };
-        
+
         if (token) {
           headers.Authorization = `Bearer ${token}`;
         }
@@ -409,7 +410,8 @@ const ServiceRenderer: React.FC<ServiceRendererProps> = ({
                   </div>
 
                   {/* Image Preview if it's an image */}
-                  {value && typeof value === "string" &&
+                  {value &&
+                    typeof value === "string" &&
                     (value.includes("image") ||
                       value.match(/\.(jpg|jpeg|png|gif|webp)$/i)) && (
                       <div className="mt-2">
@@ -470,9 +472,18 @@ const ServiceRenderer: React.FC<ServiceRendererProps> = ({
       className="min-h-screen py-32 bg-gradient-to-br from-white via-[#E8F4FD] to-[#F0F9FF] p-6"
       dir="rtl"
     >
+      <style jsx>{`
+        .scrollbar-hide {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
+        .scrollbar-hide::-webkit-scrollbar {
+          display: none;
+        }
+      `}</style>
       <div className="max-w-6xl mx-auto">
         {/* User Info Display */}
-       
+
         {!selectedService ? (
           // Services Grid
           <div>
@@ -485,9 +496,9 @@ const ServiceRenderer: React.FC<ServiceRendererProps> = ({
               </p>
             </div>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="relative">
               {services.length === 0 ? (
-                <div className="col-span-full text-center py-16">
+                <div className="text-center py-16">
                   <div className="text-6xl mb-4">📋</div>
                   <h3 className="text-2xl font-bold text-[#0A1D37] mb-2">
                     هیچ خدمتی موجود نیست
@@ -497,46 +508,146 @@ const ServiceRenderer: React.FC<ServiceRendererProps> = ({
                   </p>
                 </div>
               ) : (
-                services.map((service) => (
-                  <div
-                    key={service._id}
-                    className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-white/15 via-white/8 to-white/5 backdrop-blur-xl border border-[#4DBFF0] shadow-2xl hover:shadow-[#FF7A00]/20 transition-all duration-500 cursor-pointer p-6"
-                    onClick={() => handleServiceSelect(service)}
-                  >
-                    <div className="relative z-10">
-                      {service.image && (
-                        <img
-                          src={service.image}
-                          alt={service.title}
-                          className="w-full h-48 object-cover rounded-xl mb-4"
-                        />
-                      )}
+                <>
+                  {/* Mobile: Horizontal Scroll */}
+                  <div className="md:hidden">
+                    <div
+                      className="flex gap-4 overflow-x-auto pb-4 px-4 scrollbar-hide"
+                      style={{
+                        scrollbarWidth: "none",
+                        msOverflowStyle: "none",
+                      }}
+                    >
+                      {services.map((service) => (
+                        <div
+                          key={service._id}
+                          className="group flex-shrink-0 w-48 bg-white/90 backdrop-blur-sm border border-white/20 rounded-2xl p-4 hover:bg-white hover:border-[#FF7A00]/50 transition-all duration-300 hover:scale-105 hover:shadow-xl cursor-pointer"
+                          onClick={() => handleServiceSelect(service)}
+                        >
+                          <div className="relative mb-3">
+                            {service.image ? (
+                              <img
+                                src={service.image}
+                                alt={service.title}
+                                className="w-1/2 h-1/2 object-cover group-hover:scale-110 transition-transform duration-300"
+                              />
+                            ) : (
+                              <div className="w-1/2 h-16 mx-auto bg-gradient-to-br from-[#4DBFF0]/20 to-[#FF7A00]/20 rounded-xl flex items-center justify-center">
+                                {service.icon ? (
+                                  <span className="text-2xl">{service.icon}</span>
+                                ) : (
+                                  <div className="w-6 h-6 bg-gradient-to-r from-[#4DBFF0] to-[#FF7A00] rounded-lg"></div>
+                                )}
+                              </div>
+                            )}
+                          </div>
 
-                      <div className="space-y-4">
-                        <div className="flex items-center justify-between">
-                          <h3 className="text-xl font-semibold text-[#0A1D37] group-hover:text-[#4DBFF0] transition-colors">
+                          <h5 className="text-[#0A1D37] font-bold text-center text-sm mb-2 group-hover:text-[#FF7A00] transition-colors duration-300 line-clamp-2">
                             {service.title}
-                          </h3>
-                          {service.icon && (
-                            <span className="text-2xl">{service.icon}</span>
+                          </h5>
+
+                          {service.description && (
+                            <p className="text-[#A0A0A0] text-xs text-center leading-relaxed group-hover:text-[#0A1D37]/80 transition-colors duration-300 line-clamp-3">
+                              {service.description}
+                            </p>
+                          )}
+
+                          <div className="mt-3 flex items-center text-[#4DBFF0] text-xs font-medium group-hover:text-[#FF7A00] transition-colors duration-300">
+                            <span>مشاهده</span>
+                            <svg
+                              className="w-3 h-3 mr-1 rotate-180 group-hover:translate-x-1 transition-transform duration-300"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M13 7l5 5m0 0l-5 5m5-5H6"
+                              />
+                            </svg>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                    {/* Scroll Indicator */}
+                    <div className="flex justify-center mt-2">
+                      <div className="flex items-center gap-1 text-[#A0A0A0] text-xs">
+                        <svg
+                          className="w-4 h-4"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M7 16l4-4m0 0l4-4m-4 4H3m18 0a9 9 0 11-18 0 9 9 0 0118 0z"
+                          />
+                        </svg>
+                        <span>برای مشاهده بیشتر کشیده کنید</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Desktop: Grid Layout */}
+                  <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6 rounded-2xl p-5">
+                    {services.map((service) => (
+                      <div
+                        key={service._id}
+                        className="group bg-white/90 shadow-xl backdrop-blur-sm border border-white/20 rounded-2xl p-6 hover:bg-white hover:border-[#FF7A00]/50 transition-all duration-300 hover:scale-105 hover:shadow-xl cursor-pointer"
+                        onClick={() => handleServiceSelect(service)}
+                      >
+                        <div className="relative mb-4 overflow-hidden rounded-xl">
+                          {service.image ? (
+                            <img
+                              src={service.image}
+                              alt={service.title}
+                              className="w-1/2 h-1/2 mx-auto object-cover group-hover:scale-110 transition-transform duration-300"
+                            />
+                          ) : (
+                            <div className="w-1/2 h-24 mx-auto bg-gradient-to-br from-[#4DBFF0]/20 to-[#FF7A00]/20 rounded-xl flex items-center justify-center">
+                              {service.icon ? (
+                                <span className="text-3xl">{service.icon}</span>
+                              ) : (
+                                <div className="w-8 h-8 bg-gradient-to-r from-[#4DBFF0] to-[#FF7A00] rounded-lg"></div>
+                              )}
+                            </div>
                           )}
                         </div>
 
+                        <h5 className="text-[#0A1D37] text-center font-bold text-sm mb-2 group-hover:text-[#FF7A00] transition-colors duration-300">
+                          {service.title}
+                        </h5>
+
                         {service.description && (
-                          <p className="text-[#0A1D37]/70 text-sm line-clamp-3">
+                          <p className="text-[#A0A0A0] text-center text-[10px] leading-relaxed group-hover:text-[#0A1D37]/80 transition-colors duration-300 mb-4 line-clamp-3">
                             {service.description}
                           </p>
                         )}
 
-                        <div className="flex items-center justify-between pt-4 border-t border-[#4DBFF0]/20"></div>
-
-                        <button className="w-full text-[#0A1D37] border border-[#FF7A00] hover:bg-[#4DBFF0]/10 hover:border-[#4DBFF] py-3 rounded-xl font-medium hover:from-[#4DBFF0]/80 hover:to-[#FF7A00]/80 transition-all duration-300 transform group-hover:scale-105">
-                          درخواست خدمت
-                        </button>
+                        <div className="flex items-center justify-center text-[#4DBFF0] text-center text-xs font-medium group-hover:text-[#FF7A00] transition-colors duration-300">
+                          <span>فرم سفارش</span>
+                          <svg
+                            className="w-4 h-4 mr-2 rotate-180 group-hover:translate-x-1 transition-transform duration-300"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M13 7l5 5m0 0l-5 5m5-5H6"
+                            />
+                          </svg>
+                        </div>
                       </div>
-                    </div>
+                    ))}
                   </div>
-                ))
+                </>
               )}
             </div>
           </div>
