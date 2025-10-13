@@ -73,9 +73,6 @@ RequestSchema.pre('save', async function(next) {
   next();
 });
 
-// Index for better query performance
-RequestSchema.index({ customer: 1, status: 1 });
-RequestSchema.index({ assignedTo: 1, status: 1 });
-RequestSchema.index({ requestNumber: 1 });
+
 
 export default mongoose.models.Request || mongoose.model('Request', RequestSchema);

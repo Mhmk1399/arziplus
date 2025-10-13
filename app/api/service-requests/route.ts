@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import connect from "@/lib/data";
 import Request from "@/models/request";
 import DynamicService from "@/models/services";
+import "@/models/users"; // Import User model for populate to work
 
 // Type for MongoDB query filters
 interface RequestQueryFilter {

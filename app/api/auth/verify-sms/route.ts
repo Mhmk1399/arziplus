@@ -88,7 +88,7 @@ export async function POST(request: NextRequest) {
       token,
       user: userWithoutPassword,
       isCompleteProfile,
-      redirectTo: isCompleteProfile ? '/admin' : '/complete-profile'
+      redirectTo: isCompleteProfile ? '/dashboard' : '/dashboard'
     });
 
   } catch (error) {
