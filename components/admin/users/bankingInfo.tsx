@@ -228,41 +228,7 @@ const BankingInfoAdmin = () => {
           </div>
 
           {/* Stats */}
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-            {[
-              { label: "کل درخواست‌ها", value: pagination.totalUsers, color: "blue" },
-              { 
-                label: "در انتظار بررسی", 
-                value: users.reduce((acc, user) => 
-                  acc + user.bankingInfo.filter(b => b.status === "pending_verification").length, 0
-                ), 
-                color: "yellow" 
-              },
-              { 
-                label: "تایید شده", 
-                value: users.reduce((acc, user) => 
-                  acc + user.bankingInfo.filter(b => b.status === "accepted").length, 0
-                ), 
-                color: "green" 
-              },
-              { 
-                label: "رد شده", 
-                value: users.reduce((acc, user) => 
-                  acc + user.bankingInfo.filter(b => b.status === "rejected").length, 0
-                ), 
-                color: "red" 
-              },
-            ].map((stat, index) => (
-              <div key={index} className="bg-white rounded-lg p-6 shadow-sm border">
-                <div className="flex items-center">
-                  <div className={`text-2xl font-bold text-${stat.color}-600`}>
-                    {stat.value}
-                  </div>
-                </div>
-                <div className="text-sm text-gray-600 mt-1">{stat.label}</div>
-              </div>
-            ))}
-          </div>
+       
         </div>
 
         {/* Filters */}
