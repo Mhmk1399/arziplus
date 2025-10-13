@@ -153,7 +153,7 @@ export default function CTABanner({
       ref={containerRef}
       className={`
         relative
-        min-h-[300px] md:min-h-[400px]
+        min-h-[100px] md:min-h-[200px]
         overflow-hidden 
         py-8 md:py-12
         ${rounded ? "rounded-3xl md:rounded-[2rem]" : ""}

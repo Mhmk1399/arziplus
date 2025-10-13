@@ -20,7 +20,7 @@ npm run validate-sitemap
 ```typescript
 // در lib/sitemap-config.ts
 export const sitemapConfig = {
-  baseUrl: 'https://arziplus.com', // آدرس واقعی سایت شما
+  baseUrl: 'https://arziPlus.com', // آدرس واقعی سایت شما
   // ...
 }
 ```
@@ -45,19 +45,19 @@ curl http://localhost:3000/robots.txt
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://arziplus.com/</loc>
+    <loc>https://arziPlus.com/</loc>
     <lastmod>2024-01-15T10:30:00.000Z</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://arziplus.com/buy-chatgpt-plus</loc>
+    <loc>https://arziPlus.com/buy-chatgpt-plus</loc>
     <lastmod>2024-01-15T10:30:00.000Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://arziplus.com/HetznerInvoicePayment</loc>
+    <loc>https://arziPlus.com/HetznerInvoicePayment</loc>
     <lastmod>2024-01-15T10:30:00.000Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -198,7 +198,7 @@ curl http://localhost:3000/robots.txt
 # Allow: /
 # Disallow: /admin/
 # Disallow: /api/
-# Sitemap: https://arziplus.com/sitemap.xml
+# Sitemap: https://arziPlus.com/sitemap.xml
 ```
 
 ## 🚨 عیبیابی رایج

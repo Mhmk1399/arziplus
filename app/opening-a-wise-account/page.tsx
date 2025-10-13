@@ -17,11 +17,11 @@ export const metadata: Metadata = {
     title: "افتتاح حساب وایز (Wise) در ایران | وریفای و کارت | ارزی پلاس",
     description:
       "با ارزی پلاس، حساب وایز وریفای‌شده و امن در انگلستان/اروپا افتتاح کنید. کارت فیزیکی و مجازی، اتصال به PayPal/Stripe و پشتیبانی ۲۴ ساعته.",
-    url: "https://arziplus.com/opening-wise",
+    url: "https://arziPlus.com/opening-wise",
     type: "website",
     images: [
       {
-        url: "https://arziplus.com/assets/images/wise-opening.webp",
+        url: "https://arziPlus.com/assets/images/wise-opening.webp",
         width: 1200,
         height: 630,
         alt: "افتتاح حساب وایز در ایران",
@@ -33,10 +33,10 @@ export const metadata: Metadata = {
     title: "افتتاح حساب وایز (Wise) در ایران | وریفای و کارت | ارزی پلاس",
     description:
       "با ارزی پلاس، حساب وایز وریفای‌شده و امن در انگلستان/اروپا افتتاح کنید. کارت فیزیکی/مجازی، کارمزد پایین و پشتیبانی ۲۴ ساعته.",
-    images: ["https://arziplus.com/assets/images/wise-opening.webp"],
+    images: ["https://arziPlus.com/assets/images/wise-opening.webp"],
   },
   alternates: {
-    canonical: "https://arziplus.com/opening-wise",
+    canonical: "https://arziPlus.com/opening-wise",
   },
 };
 

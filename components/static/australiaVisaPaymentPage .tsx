@@ -165,10 +165,10 @@ Subclass 600
 اگر قصد مهاجرت، تحصیل یا سرمایه‌گذاری در استرالیا را دارید، پرداخت هزینه ویزای استرالیا اولین گام شماست. با خدمات ارزی پلاس، پرداخت‌ها امن، سریع و بدون نیاز به کارت بین‌المللی انجام می‌شود.`;
   const steps = [
     {
-      id: "register",
-      title: "ثبت نام در ارزی پلاس",
-      description: "به سادگی حساب کاربری بساز و آماده پرداخت شو.",
-      icon: <FaDollarSign />,
+      id: "payment",
+      title: "پرداخت معادل ریالی",
+      description: "معادل ریالی هزینه مورد نظر را پرداخت کن و سفارش نهایی شود.",
+      icon: <FaPercent />,
       isActive: true,
     },
     {
@@ -178,10 +178,10 @@ Subclass 600
       icon: <FaCoins />,
     },
     {
-      id: "payment",
-      title: "پرداخت معادل ریالی",
-      description: "معادل ریالی هزینه مورد نظر را پرداخت کن و سفارش نهایی شود.",
-      icon: <FaPercent />,
+      id: "register",
+      title: "ثبت نام در ارزی پلاس",
+      description: "به سادگی حساب کاربری بساز و آماده پرداخت شو.",
+      icon: <FaDollarSign />,
       isActive: true,
     },
   ];
@@ -190,30 +190,29 @@ Subclass 600
     {
       id: 1,
       icon: <FaClock size={32} />,
-      iconColor: "bg-indigo-700",
       title: "پرداخت سریع",
       description: "هزینه سفارت شما در کوتاه‌ترین زمان ممکن پرداخت می‌شود.",
     },
     {
       id: 2,
       icon: <FaLock size={32} />,
-      iconColor: "bg-indigo-700",
       title: "امنیت بالا",
-      description: "تمامی تراکنش‌ها از یک حساب امن و مطمئن انجام می‌شود.",
+      description:
+        "تمامی تراکنش‌ها از یک حساب امن و مطمئن توسط لرزی پلاس انجام می‌شود.",
     },
     {
       id: 3,
       icon: <FaPercent size={32} />,
-      iconColor: "bg-indigo-700",
       title: "قیمت مناسب",
-      description: "بهترین نرخ و کمترین کارمزد برای پرداخت‌های ارزی شما.",
+      description:
+        "بهترین نرخ و کمترین کارمزد برای پرداخت‌های ارزی شما با ارزی پلاس.",
     },
     {
       id: 4,
       icon: <FaHeadset size={32} />,
-      iconColor: "bg-indigo-700",
       title: "پشتیبانی تخصصی",
-      description: "کارشناسان ما در تمام مراحل همراه شما هستند.",
+      description:
+        "کارشناسان ارزی پلاس در تمام مراحل همراه   و کنار  شما هستند.",
     },
   ];
 
@@ -281,7 +280,7 @@ Subclass 600
       <HeroSection
         heading="پرداخت هزینه سفارت استرالیا"
         subheading="برای تجربه زندگی در استرالیا آماده‌ای؟"
-        description="با ارزی پلاس، پرداخت هزینه تعیین وقت سفارت استرالیا را سریع، امن و آسان انجام بده."
+        description="با تعلیق موقت عملیات سفارت استرالیا در تهران، فرآیند تعیین وقت ویزای توریستی، تحصیلی یا کاری از طریق VFS Global ادامه دارد و پردازش ویزاها تحت تأثیر قرار نگرفته است. متقاضیان ایرانی می‌توانند از سایت VFS برای رزرو وقت استفاده کنند، اما تحریم‌ها پرداخت آنلاین را با چالش‌هایی مثل محدودیت کارت‌های اعتباری بین‌المللی روبرو می‌کند. ارزی پلاس (arziPlus.com) این مشکل را حل می‌کند و پرداخت هزینه تعیین وقت را بدون نیاز به ابزارهای خارجی، با روش‌های داخلی امن، در عرض چند دقیقه انجام می‌دهد."
         buttons={[
           {
             text: "پرداخت هزینه سفارت",
@@ -292,7 +291,7 @@ Subclass 600
         ]}
         media={{
           type: "image",
-          src: "https://arziplus.s3.eu-north-1.amazonaws.com/Desktop/33-min.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=ASIAUQ73WRGQX4VNFDQW%2F20251012%2Feu-north-1%2Fs3%2Faws4_request&X-Amz-Date=20251012T105507Z&X-Amz-Expires=300&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEIP%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCmV1LW5vcnRoLTEiRjBEAiAffPKt7EMHQ7bwc2Vly7aGVPfvwV0rOdr6lBgsZBgLGwIgLHzmcBKke2WXZ%2F3LAdhkZltY3u8LXyTGyr%2B8pqbJYw8q1gIILBAAGgwzMTEzNzYxMjAyMjUiDEylVoXYzYkz69%2Bx2iqzAn%2BVjwDl7W3JzVW1D0GJrbOpGQ3AxQ65S5CSK6auAj%2Flw5WbiDQEQF%2FKHCi0DGe7pab61FLVw7hVnRQKyqvNhHtTiXIr%2FSauy0JXr0psEnbuO3rJ8XDTrtOec2BeBhRgrp%2FsToOtiJgb9PrGb25JaV1dytNDrIVe8LsyfQgXTJvFr8UiK7fJ%2Frz44ZChs9CiXexRbi6bkL2F5Td7cLdtAp6T2JpprYTaPDgTHKU3ylK3gjZejJO7qamlQgslOfJm6WIbRzVFBdvTAbP6u2wUHDuvFh9FCDN97Rx9LC8VqqfcI0gYXRBqWfNDka1gs%2B7rtKyDq7rK4WTHzUKJDWO0rL0PSpTrllR6gaIhsj6EGjMKilUHXfKx6eCxEcIIR8%2F8uU5ux%2FuLL%2FWmOv2onFx1RceKbFswkvKtxwY6rgI5fTOo2Po%2BMOH4i7K6Unh3TLUu8EyW2whAa6dxKKFNCR5%2BO5%2FYv56nebbkuIAZsl%2FJ7K9nTQftshiGFSpd9g6kxCAl2Q5DyEl2adIDXDpt5Zf9qjM1ANGoCX6JPDGUMKnQAIL%2Bjic6XaXy8HHlAJWvcszTM8wJT2SkJkKHt%2FlkukT6z1p52WUyoXCvEw1gAQFYn3IgjYRJ59HBqUx4PpQUYkCSs7B7EL0TtYu4c3sfoJYSs5HyBR7GZLz1FUiHVptIKNzso6CpBDUvP2cam0ysJYCu3XijefB1WQKoIUuWmGwFnZeG5N3HykvVgcT1sPMcPmwnXqvlLLNPEfMGPUaQjxcm2r3nwDMl59XMGW%2BvGjCwgpGL95V4QTpm8wHYp9gOgn6niMPOYL18MwuB4A%3D%3D&X-Amz-Signature=606a5bba375a58bc2dea8b1b3976d65ca8cd2bb36051e531e4cf664567cc7579&X-Amz-SignedHeaders=host&response-content-disposition=inline",
+          src: "https://arziPlus.s3.eu-north-1.amazonaws.com/Desktop/33-min.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=ASIAUQ73WRGQX4VNFDQW%2F20251012%2Feu-north-1%2Fs3%2Faws4_request&X-Amz-Date=20251012T105507Z&X-Amz-Expires=300&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEIP%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCmV1LW5vcnRoLTEiRjBEAiAffPKt7EMHQ7bwc2Vly7aGVPfvwV0rOdr6lBgsZBgLGwIgLHzmcBKke2WXZ%2F3LAdhkZltY3u8LXyTGyr%2B8pqbJYw8q1gIILBAAGgwzMTEzNzYxMjAyMjUiDEylVoXYzYkz69%2Bx2iqzAn%2BVjwDl7W3JzVW1D0GJrbOpGQ3AxQ65S5CSK6auAj%2Flw5WbiDQEQF%2FKHCi0DGe7pab61FLVw7hVnRQKyqvNhHtTiXIr%2FSauy0JXr0psEnbuO3rJ8XDTrtOec2BeBhRgrp%2FsToOtiJgb9PrGb25JaV1dytNDrIVe8LsyfQgXTJvFr8UiK7fJ%2Frz44ZChs9CiXexRbi6bkL2F5Td7cLdtAp6T2JpprYTaPDgTHKU3ylK3gjZejJO7qamlQgslOfJm6WIbRzVFBdvTAbP6u2wUHDuvFh9FCDN97Rx9LC8VqqfcI0gYXRBqWfNDka1gs%2B7rtKyDq7rK4WTHzUKJDWO0rL0PSpTrllR6gaIhsj6EGjMKilUHXfKx6eCxEcIIR8%2F8uU5ux%2FuLL%2FWmOv2onFx1RceKbFswkvKtxwY6rgI5fTOo2Po%2BMOH4i7K6Unh3TLUu8EyW2whAa6dxKKFNCR5%2BO5%2FYv56nebbkuIAZsl%2FJ7K9nTQftshiGFSpd9g6kxCAl2Q5DyEl2adIDXDpt5Zf9qjM1ANGoCX6JPDGUMKnQAIL%2Bjic6XaXy8HHlAJWvcszTM8wJT2SkJkKHt%2FlkukT6z1p52WUyoXCvEw1gAQFYn3IgjYRJ59HBqUx4PpQUYkCSs7B7EL0TtYu4c3sfoJYSs5HyBR7GZLz1FUiHVptIKNzso6CpBDUvP2cam0ysJYCu3XijefB1WQKoIUuWmGwFnZeG5N3HykvVgcT1sPMcPmwnXqvlLLNPEfMGPUaQjxcm2r3nwDMl59XMGW%2BvGjCwgpGL95V4QTpm8wHYp9gOgn6niMPOYL18MwuB4A%3D%3D&X-Amz-Signature=606a5bba375a58bc2dea8b1b3976d65ca8cd2bb36051e531e4cf664567cc7579&X-Amz-SignedHeaders=host&response-content-disposition=inline",
           alt: "پرداخت هزینه سفارت استرالیا",
           width: 1200,
           height: 800,
@@ -323,8 +322,7 @@ Subclass 600
         buttonText="پرداخت هزینه سفارت"
         buttonLink="/australia-visa-payment"
         items={whyUsItems}
-        buttonColor="bg-indigo-800 hover:bg-indigo-900 text-white"
-        theme={themesWhyus.dark}
+        theme={themesWhyus.default}
       />
       <TextBox
         heading="نکات کاربردی قبل از پرداخت آیلتس"

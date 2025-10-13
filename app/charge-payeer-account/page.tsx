@@ -18,11 +18,11 @@ export const metadata: Metadata = {
     title: "شارژ فوری پایر در ایران با بهترین نرخ | ارزی پلاس",
     description:
       "خدمات سریع و امن شارژ پایر به دلار، یورو و روبل با پشتیبانی ۲۴ ساعته. بدون نیاز به کارت بین‌المللی و با کارمزد شفاف.",
-    url: "https://arziplus.com/payeer",
+    url: "https://arziPlus.com/payeer",
     type: "website",
     images: [
       {
-        url: "https://arziplus.com/assets/images/payeer.webp",
+        url: "https://arziPlus.com/assets/images/payeer.webp",
         width: 1200,
         height: 630,
         alt: "شارژ سریع پایر در ایران",
@@ -34,10 +34,10 @@ export const metadata: Metadata = {
     title: "شارژ فوری پایر با بهترین نرخ | ارزی پلاس",
     description:
       "با ارزی پلاس حساب پایر خود را در کمتر از ۳۰ دقیقه شارژ کنید. امن، سریع و با بهترین نرخ.",
-    images: ["https://arziplus.com/assets/images/payeer.webp"],
+    images: ["https://arziPlus.com/assets/images/payeer.webp"],
   },
   alternates: {
-    canonical: "https://arziplus.com/payeer",
+    canonical: "https://arziPlus.com/payeer",
   },
 };
 

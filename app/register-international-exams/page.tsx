@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     title: "پرداخت هزینه آزمون‌های بین‌المللی در ایران | ارزی پلاس",
     description:
       "پرداخت هزینه آزمون‌های بین‌المللی مانند IELTS، TOEFL، GRE، GMAT و PTE به‌سادگی و در کوتاه‌ترین زمان با ارزی پلاس. کارمزد رقابتی و پشتیبانی ۲۴ ساعته.",
-    url: "https://arziplus.com/exam-payment",
+    url: "https://arziPlus.com/exam-payment",
     siteName: "ارزی پلاس",
     images: [
       {
@@ -36,7 +36,7 @@ export const metadata: Metadata = {
     type: "website",
   },
   alternates: {
-    canonical: "https://arziplus.com/exam-payment",
+    canonical: "https://arziPlus.com/exam-payment",
   },
 };
 

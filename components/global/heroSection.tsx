@@ -481,7 +481,7 @@ export default function HeroSection({
           {/* Enhanced Content Section */}
           <div dir="rtl" className="w-full relative">
             {/* Elegant Badge */}
-            <div className="mb-4 md:mb-8 flex justify-center md:justify-start">
+            <div className="mb-4 md:mb-8 md:mt-4 flex justify-center md:justify-start">
               {subheading && (
                 <div className="relative group/badge">
                   <span
@@ -525,7 +525,7 @@ export default function HeroSection({
             {/* Enhanced Description */}
             <p
               ref={descriptionRef}
-              className={`md:mb-10 mb-4 text-center md:text-justify text-sm md:text-lg lg:text-base text-[#A0A0A0] leading-relaxed font-medium `}
+              className={`md:mb-8 mb-4 text-center md:text-justify text-sm md:text-lg lg:text-base text-[#A0A0A0] leading-relaxed font-medium `}
               style={{
                 textShadow: "0 2px 10px rgba(0,0,0,0.1)",
               }}
@@ -535,21 +535,21 @@ export default function HeroSection({
 
             {features && features.length > 0 && (
               <div
-                className={`mb-12 ${
+                className={`mb-8 ${
                   layout === "centered" ? "flex justify-center" : ""
                 }`}
               >
                 <ul
-                  className={`grid gap-4 ${
+                  className={`grid gap-2 ${
                     layout === "centered" ? "max-w-md" : "max-w-lg"
                   }`}
                 >
                   {features.map((item, idx) => (
                     <li
                       key={idx}
-                      className="group flex items-center gap-4 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 transition-all duration-300 hover:scale-105"
+                      className="group flex items-center justify-center md:justify-start gap-2 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 transition-all duration-300 hover:scale-105"
                     >
-                      <div className="flex-shrink-0 w-10 h-10 rounded-xl bg-[#FF7A00] flex items-center justify-center shadow-lg group-hover:shadow-[#0A1D37] transition-all duration-300">
+                      <div className="flex-shrink-0 md:w-10 md:h-10 rounded-xl bg-[#FF7A00] flex items-center justify-center shadow-lg group-hover:shadow-[#0A1D37] transition-all duration-300">
                         {item.icon ? (
                           <span className="text-[#FFFFFF] text-lg">
                             {item.icon}

@@ -19,11 +19,11 @@ export const metadata: Metadata = {
     title: "شارژ سریع پرفکت‌مانی و خرید ووچر پرفکت‌مانی در ایران | ارزی پلاس",
     description:
       "با ارزی پلاس حساب پرفکت‌مانی خود را شارژ یا ووچر خریداری کنید. خدمات سریع، امن و با پشتیبانی ۲۴ ساعته.",
-    url: "https://arziplus.com/perfect-money",
+    url: "https://arziPlus.com/perfect-money",
     type: "website",
     images: [
       {
-        url: "https://arziplus.com/assets/images/perfectmoney.webp",
+        url: "https://arziPlus.com/assets/images/perfectmoney.webp",
         width: 1200,
         height: 630,
         alt: "شارژ و خرید ووچر پرفکت‌مانی",
@@ -35,10 +35,10 @@ export const metadata: Metadata = {
     title: "شارژ سریع پرفکت‌مانی و خرید ووچر در ایران | ارزی پلاس",
     description:
       "با ارزی پلاس، حساب پرفکت‌مانی خود را شارژ یا ووچر خریداری کنید. امن، سریع و با نرخ رقابتی.",
-    images: ["https://arziplus.com/assets/images/perfectmoney.webp"],
+    images: ["https://arziPlus.com/assets/images/perfectmoney.webp"],
   },
   alternates: {
-    canonical: "https://arziplus.com/perfect-money",
+    canonical: "https://arziPlus.com/perfect-money",
   },
 };
 

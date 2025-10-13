@@ -21,11 +21,11 @@ export const metadata: Metadata = {
     title: "افتتاح حساب پایر (Payeer) در ایران | وریفای، تبدیل ارز، رمزارز | ارزی پلاس",
     description:
       "با ارزی پلاس، حساب پایر وریفای‌شده و امن در کمتر از ۲۴ ساعت افتتاح کنید. کارمزد پایین، تبدیل سریع ارزها، خرید و فروش رمزارز و پشتیبانی ۲۴ ساعته.",
-    url: "https://arziplus.com/opening-payeer",
+    url: "https://arziPlus.com/opening-payeer",
     type: "website",
     images: [
       {
-        url: "https://arziplus.com/assets/images/payeer-opening.webp",
+        url: "https://arziPlus.com/assets/images/payeer-opening.webp",
         width: 1200,
         height: 630,
         alt: "افتتاح حساب پایر در ایران",
@@ -37,10 +37,10 @@ export const metadata: Metadata = {
     title: "افتتاح حساب پایر (Payeer) در ایران | وریفای، تبدیل ارز، رمزارز | ارزی پلاس",
     description:
       "با ارزی پلاس، حساب پایر وریفای‌شده و امن در کمتر از ۲۴ ساعت افتتاح کنید. کارمزد پایین، تبدیل سریع ارزها، خرید و فروش رمزارز و پشتیبانی ۲۴ ساعته.",
-    images: ["https://arziplus.com/assets/images/payeer-opening.webp"],
+    images: ["https://arziPlus.com/assets/images/payeer-opening.webp"],
   },
   alternates: {
-    canonical: "https://arziplus.com/opening-payeer",
+    canonical: "https://arziPlus.com/opening-payeer",
   },
 };
 
