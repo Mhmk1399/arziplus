@@ -22,7 +22,7 @@ import {
   FaRocket,
   FaPercentage,
   FaExchangeAlt,
-   FaGlobeAmericas,
+  FaGlobeAmericas,
 } from "react-icons/fa";
 import HeroSplitSection from "../global/heroSplitSection";
 import WhyUsSection from "../global/whyUs";
@@ -411,10 +411,10 @@ const WisePayout = () => {
       />
 
       <CTABanner
-        heading="همین حالا درآمد وایز خود را در ارزی پلاس نقد کنید — سریع، امن و شفاف"
+        heading="    درآمد وایز خود را در ارزی پلاس نقد کنید "
         description="ثبت سفارش نقد درآمد وایز با نرخ رقابتی و پشتیبانی تخصصی. هم‌اکنون سفارش دهید."
         button={{
-          text: "ثبت سفارش نقد درآمد",
+          text: "ثبت سفارش نقد درآمد وایز",
           href: "/wise-payout",
           variant: "primary",
           icon: <FaRocket />,

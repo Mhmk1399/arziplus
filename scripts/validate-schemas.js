@@ -44,7 +44,7 @@ const sampleSchemaConfig = {
 
 // تولید Schema ساده
 function generateSimpleSchema(route, config) {
-  const baseUrl = 'https://arziplus.com'
+  const baseUrl = 'https://arziPlus.com'
   
   const schema = {
     '@context': 'https://schema.org',

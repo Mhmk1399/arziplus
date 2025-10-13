@@ -17,11 +17,11 @@ export const metadata: Metadata = {
     title: "شارژ فوری وایز در ایران | کمترین کارمزد، امن و سریع – ارزی پلاس",
     description:
       "با ارزی پلاس، حساب وایز خود را سریع، امن و با کمترین کارمزد شارژ کنید. بدون نیاز به کارت بین‌المللی و با پشتیبانی ۲۴ ساعته.",
-    url: "https://arziplus.com/paypal-topup",
+    url: "https://arziPlus.com/paypal-topup",
     type: "website",
     images: [
       {
-        url: "https://arziplus.com/assets/images/paypal-topup.webp",
+        url: "https://arziPlus.com/assets/images/paypal-topup.webp",
         width: 1200,
         height: 630,
         alt: "شارژ وایز در ایران با ارزی پلاس",
@@ -33,10 +33,10 @@ export const metadata: Metadata = {
     title: "شارژ فوری وایز در ایران | کمترین کارمزد، امن و سریع – ارزی پلاس",
     description:
       "شارژ سریع و امن وایز بدون نیاز به کارت بین‌المللی با ارزی پلاس. مناسب برای کاربران ایرانی.",
-    images: ["https://arziplus.com/assets/images/paypal-topup.webp"],
+    images: ["https://arziPlus.com/assets/images/paypal-topup.webp"],
   },
   alternates: {
-    canonical: "https://arziplus.com/paypal-topup",
+    canonical: "https://arziPlus.com/paypal-topup",
   },
 };
 

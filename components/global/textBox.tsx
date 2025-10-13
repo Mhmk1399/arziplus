@@ -58,7 +58,7 @@ export default function TextBox({
 
   const [isScrollable, setIsScrollable] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
-  console.log(scrollProgress)
+  console.log(scrollProgress);
 
   const {
     backgroundColor = "bg-white",
@@ -166,43 +166,34 @@ export default function TextBox({
     return () => ctx.revert();
   }, [animate]);
 
-  const containerClasses = [
-    backgroundColor,
-    padding,
-    margin,
-    gap,
-    rounded ? "" : "",
-    shadow ? "shadow-lg hover:shadow-xl" : "",
-    border ? `border ${borderColor}` : "",
-    "transition-all duration-300",
-    "relative",
-    className,
-  ]
-    .filter(Boolean)
-    .join(" ");
+  // const containerClasses = [
+  //   backgroundColor,
+  //   padding,
+  //   margin,
+  //   gap,
+  //   rounded ? "" : "",
+  //   shadow ? "shadow-lg hover:shadow-xl" : "",
+  //   border ? `border ${borderColor}` : "",
+  //   "transition-all duration-300",
+  //   "relative",
+  //   className,
+  // ]
+  //   .filter(Boolean)
+  //   .join(" ");
 
   const textBoxClasses = [
     "relative",
     "overflow-y-auto",
-    "scrollbar-thin",
-    scrollbarColor,
-    scrollbarTrackColor,
-    "scrollbar-corner-transparent",
-    border ? `border ${borderColor}` : "",
-    rounded ? "rounded-lg" : "",
-     "p-4",
+    "custom-scrollbar",
+    "rounded-xl",
+    "p-4",
     "transition-all duration-200",
-    "hover:bg-gray-50/90",
   ]
     .filter(Boolean)
     .join(" ");
 
   return (
-    <div
-      ref={containerRef}
-      className={` sm:px-30 py-12  `}
-      dir="rtl"
-    >
+    <div ref={containerRef} className={` sm:px-30 py-12  `} dir="rtl">
       {/* Heading */}
       <h3
         ref={headingRef}
@@ -222,71 +213,43 @@ export default function TextBox({
         >
           <div
             ref={contentRef}
-            className={`${textSize} ${textColor} ${lineHeight} ${fontWeight} text-justify whitespace-pre-wrap`}
+            className={`${textSize} ${textColor}   ${fontWeight} text-justify whitespace-pre-wrap`}
           >
             {content}
           </div>
-
-          {/* Scroll Hint */}
-          {isScrollable && (
-            <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 opacity-50 animate-bounce">
-              <svg
-                className="w-4 h-4 text-gray-400"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M19 14l-7 7m0 0l-7-7m7 7V3"
-                />
-              </svg>
-            </div>
-          )}
         </div>
-
-        {/* Fade Gradients */}
-        {isScrollable && (
-          <>
-            <div className="absolute top-0 left-0 right-0 h-4 bg-gradient-to-b from-gray-50/80 to-transparent pointer-events-none z-5" />
-            <div className="absolute bottom-0 left-0 right-0 h-4 bg-gradient-to-t from-gray-50/80 to-transparent pointer-events-none z-5" />
-          </>
-        )}
       </div>
 
       <style jsx>{`
         /* Custom Scrollbar Styles */
-        .scrollbar-thin {
+        .custom-scrollbar {
           scrollbar-width: thin;
-        }
-
-        .scrollbar-thin::-webkit-scrollbar {
-          width: 6px;
-        }
-
-        .scrollbar-thumb-blue-500::-webkit-scrollbar-thumb {
-          background-color: #3b82f6;
-          border-radius: 3px;
-        }
-
-        .scrollbar-thumb-blue-500::-webkit-scrollbar-thumb:hover {
-          background-color: #2563eb;
-        }
-
-        .scrollbar-track-gray-100::-webkit-scrollbar-track {
-          background-color: #f3f4f6;
-          border-radius: 3px;
-        }
-
-        .scrollbar-corner-transparent::-webkit-scrollbar-corner {
-          background-color: transparent;
-        }
-
-        /* Smooth scrolling */
-        .overflow-y-auto {
+          scrollbar-color: #ff7a00 transparent;
           scroll-behavior: smooth;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+          width: 8px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+          background: transparent;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+          background: linear-gradient(135deg, #ff7a00, #4dbff0);
+          border-radius: 20px;
+          border: 2px solid transparent;
+          background-clip: content-box;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+          background: linear-gradient(135deg, #e56a00, #3da8d9);
+          background-clip: content-box;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-corner {
+          background: transparent;
         }
       `}</style>
     </div>

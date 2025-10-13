@@ -1,6 +1,6 @@
 // Sitemap configuration for different route types
 export const sitemapConfig = {
-  baseUrl: 'https://arziplus.com', // Update this with your actual domain
+  baseUrl: 'https://arziPlus.com', // Update this with your actual domain
   
   // Route priorities and change frequencies
   routeConfig: {
@@ -39,6 +39,9 @@ export const sitemapConfig = {
     '/about': { priority: 0.5, changeFreq: 'yearly' as const },
     '/contact': { priority: 0.8, changeFreq: 'monthly' as const },
     '/services-client': { priority: 0.6, changeFreq: 'weekly' as const },
+    
+    // Lottery page - high priority
+    '/lottery': { priority: 0.9, changeFreq: 'weekly' as const },
     
     // Default for other routes
     default: { priority: 0.6, changeFreq: 'monthly' as const }

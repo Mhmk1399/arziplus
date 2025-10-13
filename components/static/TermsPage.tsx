@@ -46,7 +46,7 @@ const TermsPage = () => {
 
             <p className="text-justify">
               <strong>۳.</strong> این توافقنامه میان برند ارزی پلاس
-              (ArziPlus.com) از یک سو و کاربر (شخص حقیقی یا حقوقی) از سوی دیگر
+              (arziPlus.com) از یک سو و کاربر (شخص حقیقی یا حقوقی) از سوی دیگر
               منعقد شده و از لحظه تأیید آن در وبسایت، قابل استناد قانونی است.
             </p>
           </div>
@@ -84,7 +84,7 @@ const TermsPage = () => {
           <div className="space-y-4 text-lg leading-relaxed">
             <div className="bg-[#4DBFF0] bg-opacity-10 p-4 rounded-lg text-justify">
               <strong className="text-[#FF7A00]">سایت ارزی پلاس:</strong>{" "}
-              پلتفرمی به نشانی اینترنتی ArziPlus.com که به عنوان رابط میان
+              پلتفرمی به نشانی اینترنتی arziPlus.com که به عنوان رابط میان
               کاربران و خدمات پرداخت ارزی فعالیت میکند و تابع تمامی قوانین
               جمهوری اسلامی ایران است.
             </div>

@@ -33,7 +33,7 @@ export async function POST(request: NextRequest) {
     } else {
       // Create new user with phone number only
       const username = `user_${phone.slice(-8)}`;
-      const tempEmail = `${phone}@temp.arziplus.com`;
+      const tempEmail = `${phone}@temp.arziPlus.com`;
       
       user = await User.create({
         username,

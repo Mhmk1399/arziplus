@@ -22,11 +22,11 @@ export const metadata: Metadata = {
     title: "افتتاح حساب پی پال بین‌المللی و وریفای‌شده در ایران | ارزی پلاس",
     description:
       "ارزی پلاس خدمات افتتاح حساب پی‌پال وریفای‌شده و بدون محدودیت را برای ایرانیان فراهم می‌کند. نقد کردن موجودی پی‌پال و پرداخت‌های بین‌المللی با امنیت کامل.",
-    url: "https://arziplus.com/opening-paypal",
+    url: "https://arziPlus.com/opening-paypal",
     type: "website",
     images: [
       {
-        url: "https://arziplus.com/assets/images/paypal-opening.webp",
+        url: "https://arziPlus.com/assets/images/paypal-opening.webp",
         width: 1200,
         height: 630,
         alt: "افتتاح حساب پی‌پال در ایران",
@@ -38,10 +38,10 @@ export const metadata: Metadata = {
     title: "افتتاح حساب پی پال بین‌المللی در ایران | ارزی پلاس",
     description:
       "با ارزی پلاس، حساب پی‌پال وریفای‌شده خود را در ایران افتتاح کنید. خرید خارجی، انتقال پول و نقد کردن موجودی پی‌پال بدون محدودیت.",
-    images: ["https://arziplus.com/assets/images/paypal-opening.webp"],
+    images: ["https://arziPlus.com/assets/images/paypal-opening.webp"],
   },
   alternates: {
-    canonical: "https://arziplus.com/opening-paypal",
+    canonical: "https://arziPlus.com/opening-paypal",
   },
 };
 

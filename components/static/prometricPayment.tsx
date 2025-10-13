@@ -115,17 +115,11 @@ const PrometricPayment = () => {
 پس اگر قصد شرکت در آزمون‌های بین‌المللی مانند Prometric، TOEFL، IELTS، GRE یا Pearson را دارید، دیگر نگران پرداخت ارزی نباشید — ارزی پلاس این مسیر را برای شما ساده کرده است.`;
   const prometricSteps = [
     {
-      id: "register",
-      title: "ثبت‌نام در ارزی پلاس",
-      description: "در سایت ارزی پلاس حساب کاربری ایجاد کن.",
-      icon: <FaRegClipboard />,
-      isActive: true,
-    },
-    {
-      id: "selectExam",
-      title: "انتخاب پرداخت آزمون بین‌المللی",
-      description: "گزینه پرداخت آزمون پرومتریک را انتخاب کن.",
-      icon: <FaDollarSign />,
+      id: "complete",
+      title: "تکمیل پرداخت و تایید سفارش",
+      description:
+        "تیم پشتیبانی پرداخت تو را انجام می‌دهد و تاییدیه ارسال می‌کند.",
+      icon: <FaHeadset />,
     },
     {
       id: "calculate",
@@ -135,11 +129,17 @@ const PrometricPayment = () => {
       isActive: true,
     },
     {
-      id: "complete",
-      title: "تکمیل پرداخت و تایید سفارش",
-      description:
-        "تیم پشتیبانی پرداخت تو را انجام می‌دهد و تاییدیه ارسال می‌کند.",
-      icon: <FaHeadset />,
+      id: "selectExam",
+      title: "انتخاب پرداخت آزمون بین‌المللی",
+      description: "گزینه پرداخت آزمون پرومتریک را انتخاب کن.",
+      icon: <FaDollarSign />,
+    },
+    {
+      id: "register",
+      title: "ثبت‌نام در ارزی پلاس",
+      description: "در سایت ارزی پلاس حساب کاربری ایجاد کن.",
+      icon: <FaRegClipboard />,
+      isActive: true,
     },
   ];
 
@@ -149,7 +149,8 @@ const PrometricPayment = () => {
       icon: <FaClock size={32} />,
       iconColor: "bg-emerald-700",
       title: "پرداخت سریع و مطمئن",
-      description: "در کوتاه‌ترین زمان ممکن پرداختت انجام می‌شود.",
+      description:
+        "در کوتاه‌ترین زمان ممکن پرداختت توسط کارشناسان ارزی پلاس انجام می‌شود.",
     },
     {
       id: 2,
@@ -164,14 +165,16 @@ const PrometricPayment = () => {
       icon: <FaGlobeAmericas size={32} />,
       iconColor: "bg-emerald-700",
       title: "بدون نیاز به کارت ارزی",
-      description: "نیازی به حساب بین‌المللی یا مسترکارت نداری.",
+      description:
+        "با ارزی پلاس نیازی به حساب بین‌المللی یا مسترکارت برای این کار نداری.",
     },
     {
       id: 4,
       icon: <FaHeadset size={32} />,
       iconColor: "bg-emerald-700",
       title: "پشتیبانی ۲۴ ساعته",
-      description: "تیم ما همیشه آماده پاسخ‌گویی به سوالات توست.",
+      description:
+        "تیم ما همیشه آماده پاسخ‌گویی به سوالات شما در کوتاهترین زمان ممکن هستند.",
     },
   ];
 
@@ -181,20 +184,26 @@ const PrometricPayment = () => {
       question: "هزینه آزمون پرومتریک چقدر است و چگونه پرداخت می‌شود؟",
       answer:
         "هزینه آزمون بسته به کشور مقصد و رشته متفاوت است. پرداخت آن از طریق کارت‌های بین‌المللی یا به کمک ارزی پلاس به‌صورت ریالی انجام می‌شود.",
+      category: "هزینه",
     },
     {
       id: "2",
       question: "آیا می‌توان هزینه آزمون پرومتریک را قسطی پرداخت کرد؟",
       answer: "خیر، هزینه آزمون باید به‌صورت کامل و یک‌مرحله‌ای پرداخت شود.",
+      category: "هزینه",
     },
     {
       id: "3",
+      category: "هزینه",
+
       question: "آیا می‌توانم هزینه آزمون را به ریال پرداخت کنم؟",
       answer:
         "بله، کاربران ایرانی می‌توانند با ثبت سفارش در ارزی پلاس، هزینه آزمون را به ریال پرداخت کنند تا معادل دلاری آن واریز شود.",
     },
     {
       id: "4",
+      category: "پشتیبانی",
+
       question: "در صورت بروز خطا در پرداخت، چه باید کرد؟",
       answer:
         "در صورت خطا با پشتیبانی ارزی پلاس تماس بگیر تا وضعیت تراکنش بررسی و در صورت نیاز اصلاح شود.",
@@ -206,7 +215,7 @@ const PrometricPayment = () => {
       <HeroSection
         heading="پرداخت هزینه آزمون پرومتریک — ویژه کادر درمان"
         subheading="مدرک بین‌المللی برای مهاجرت کاری و استخدام در خارج از کشور"
-        description="پرداخت هزینه آزمون پرومتریک با ارزی پلاس سریع، امن و بدون نیاز به کارت بین‌المللی انجام می‌شود."
+        description="آزمون پرومتریک به عنوان یکی از معتبرترین آزمون‌های حرفه‌ای در زمینه‌های پزشکی، پرستاری و IT، گذرنامه‌ای برای ورود به بازار کار جهانی است. این آزمون‌ها، از USMLE و NCLEX گرفته تا گواهینامه‌های IT، توسط ETS و سازمان‌های بین‌المللی برگزار می‌شود و هزینه آن‌ها بسته به نوع، از ۲۵۰ دلار (برای آزمون‌های IT) تا ۶۹۵ دلار (برای ECFMG/USMLE) متغیر است، به علاوه surcharge بین‌المللی ۲۰۵-۲۳۰ دلار برای داوطلبان خارج از آمریکا. برای کاربران ایرانی، تحریم‌ها پرداخت را چالش‌برانگیز می‌کند، اما ارزی پلاس (arziPlus.com) راه‌حلی ایده‌آل ارائه می‌دهد."
         buttons={[
           {
             text: "ثبت سفارش پرداخت آزمون پرومتریک",
@@ -216,7 +225,7 @@ const PrometricPayment = () => {
         ]}
         media={{
           type: "image",
-          src: "https://arziplus.s3.eu-north-1.amazonaws.com/Desktop/30-min.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=ASIAUQ73WRGQYHU7NOIQ%2F20251012%2Feu-north-1%2Fs3%2Faws4_request&X-Amz-Date=20251012T105251Z&X-Amz-Expires=300&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEIP%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCmV1LW5vcnRoLTEiRjBEAiApZI0zu1onLtBtbjAslqw8FqEBv82Ftfnp5IWcTqOUoAIgdmSvQfFPSyHDc%2Bi8nYzC1JR6Ii2hEXgtI7zL4Aam6ucq1gIILBAAGgwzMTEzNzYxMjAyMjUiDOqAbWHJCVjuN4F8miqzAsd7ywP9NBmgcWBY9E%2F0YzLKlfYqeCtsj4vASYNThdijPTc1EypJaEhUNBtgh6xO6ttjqEyj8uX%2FaBm9xhIUjDRuHtXAgeeQ8%2B3sLUjVSAzMxmBODfPtCwvMbdgV5nzQqFUE391cmE%2F%2FhJ2tyoxv9NPEwQp%2BPh3KHD3C%2Fu%2FeE%2FEsMfy9xwlcnh3x3MIF90g0Sy%2FniyOnw4Ow1bWTEXrXAjR85jSmaNWShfsSBMnXGyzqTYSmKKwduTLtbU4qMtVa55fmB7dd%2FGpWztpN0J7zCls659J%2Fp8ZUA9b6%2BBEKFZaaYZ%2FuVsieyfHSxh9TpWOFpM2TlCW7q79LOla%2BwOxGhcpTicDxMFYTYcRGgqVB5JWIDBXiiqmh7t6yjNaEdJ6aTzjg41yPdCLZuctt6HcIhyZb7bAwkvKtxwY6rgIN1qAPLXJmCQ0GTT2PhIGhg8Bv%2F7aPwWaC0PVYT22Aq6fdnRsQTj2fyPbM%2B8vpDiZtjHvAwxpZ8%2Bu34v54e2fKQWZzAZNvH9F8hH4otFre1Z1%2B1VvPQLsOoIOjDAQEAUujxQ5%2BCs3sn6hOdK7DNi%2BKYzu%2FYROsup82g9PBEOFZ0kNIqtNQBkqTqi3e9L7jAwGKYS5nwh7arWxx37FNGpNromzJ%2BZRscOQK%2Fl%2FP7Cv%2BIb15Hkehtt%2B6aOvGO9v1Dqah5UKdwnIMYXj5tWHnXFqOdFHHjmXMAXCjEkCal42SxQwlIoUXyRZnoy9B5h%2BJNChLpq8zs8bSUkTV%2BG5hxp1l%2BoZ%2FPnMsYo9QAPYcnii%2FCQcLWubT5nCv4hflcDAqOUoYcQGVZnxZ%2Btp1HpZ6CQ%3D%3D&X-Amz-Signature=4d7d294bfa757d34ab015c711208057a2d04bd621c0125889fecd1e7afba396c&X-Amz-SignedHeaders=host&response-content-disposition=inline",
+          src: "https://arziPlus.s3.eu-north-1.amazonaws.com/Desktop/30-min.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=ASIAUQ73WRGQYHU7NOIQ%2F20251012%2Feu-north-1%2Fs3%2Faws4_request&X-Amz-Date=20251012T105251Z&X-Amz-Expires=300&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEIP%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCmV1LW5vcnRoLTEiRjBEAiApZI0zu1onLtBtbjAslqw8FqEBv82Ftfnp5IWcTqOUoAIgdmSvQfFPSyHDc%2Bi8nYzC1JR6Ii2hEXgtI7zL4Aam6ucq1gIILBAAGgwzMTEzNzYxMjAyMjUiDOqAbWHJCVjuN4F8miqzAsd7ywP9NBmgcWBY9E%2F0YzLKlfYqeCtsj4vASYNThdijPTc1EypJaEhUNBtgh6xO6ttjqEyj8uX%2FaBm9xhIUjDRuHtXAgeeQ8%2B3sLUjVSAzMxmBODfPtCwvMbdgV5nzQqFUE391cmE%2F%2FhJ2tyoxv9NPEwQp%2BPh3KHD3C%2Fu%2FeE%2FEsMfy9xwlcnh3x3MIF90g0Sy%2FniyOnw4Ow1bWTEXrXAjR85jSmaNWShfsSBMnXGyzqTYSmKKwduTLtbU4qMtVa55fmB7dd%2FGpWztpN0J7zCls659J%2Fp8ZUA9b6%2BBEKFZaaYZ%2FuVsieyfHSxh9TpWOFpM2TlCW7q79LOla%2BwOxGhcpTicDxMFYTYcRGgqVB5JWIDBXiiqmh7t6yjNaEdJ6aTzjg41yPdCLZuctt6HcIhyZb7bAwkvKtxwY6rgIN1qAPLXJmCQ0GTT2PhIGhg8Bv%2F7aPwWaC0PVYT22Aq6fdnRsQTj2fyPbM%2B8vpDiZtjHvAwxpZ8%2Bu34v54e2fKQWZzAZNvH9F8hH4otFre1Z1%2B1VvPQLsOoIOjDAQEAUujxQ5%2BCs3sn6hOdK7DNi%2BKYzu%2FYROsup82g9PBEOFZ0kNIqtNQBkqTqi3e9L7jAwGKYS5nwh7arWxx37FNGpNromzJ%2BZRscOQK%2Fl%2FP7Cv%2BIb15Hkehtt%2B6aOvGO9v1Dqah5UKdwnIMYXj5tWHnXFqOdFHHjmXMAXCjEkCal42SxQwlIoUXyRZnoy9B5h%2BJNChLpq8zs8bSUkTV%2BG5hxp1l%2BoZ%2FPnMsYo9QAPYcnii%2FCQcLWubT5nCv4hflcDAqOUoYcQGVZnxZ%2Btp1HpZ6CQ%3D%3D&X-Amz-Signature=4d7d294bfa757d34ab015c711208057a2d04bd621c0125889fecd1e7afba396c&X-Amz-SignedHeaders=host&response-content-disposition=inline",
           alt: "پرداخت هزینه آزمون پرومتریک با ارزی پلاس",
           width: 1200,
           height: 800,
@@ -273,12 +282,12 @@ const PrometricPayment = () => {
           },
         ]}
         theme={faqThemes.dark}
-        showCategories={false}
+        showCategories={true}
         animate={true}
       />
 
       <CTABanner
-        heading="همین حالا هزینه آزمون پرومتریک خود را پرداخت کن"
+        heading="    هزینه آزمون پرومتریک خود را پرداخت کن"
         description="پرداخت سریع و امن هزینه آزمون پرومتریک با پشتیبانی کامل تیم ارزی پلاس"
         button={{
           text: "ثبت سفارش پرداخت آزمون",

@@ -19,12 +19,12 @@ export const metadata: Metadata = {
     title: "نقد کردن موجودی پی‌پال | تسویه سریع و امن با ارزی پلاس",
     description:
       "با ارزی پلاس، موجودی پی‌پال خود را سریع و امن نقد کنید. تسویه درآمد فریلنسری و فروش بین‌المللی به ریال یا ارز دیگر در کمتر از ۲۴ ساعت و با کارمزد رقابتی.",
-    url: "https://arziplus.com/cashing-paypal",
+    url: "https://arziPlus.com/cashing-paypal",
     siteName: "ارزی پلاس",
     type: "website",
     images: [
       {
-        url: "https://arziplus.com/assets/images/cash-paypal.webp",
+        url: "https://arziPlus.com/assets/images/cash-paypal.webp",
         width: 1200,
         height: 630,
         alt: "نقد کردن موجودی پی‌پال با ارزی پلاس",
@@ -36,10 +36,10 @@ export const metadata: Metadata = {
     title: "نقد کردن موجودی پی‌پال | تسویه سریع و امن با ارزی پلاس",
     description:
       "موجودی پی‌پال خود را با ارزی پلاس نقد کنید. تسویه سریع درآمد فریلنسری و فروش بین‌المللی به ریال یا ارز دیگر با کارمزد رقابتی و پشتیبانی ۲۴ ساعته.",
-    images: ["https://arziplus.com/assets/images/cash-paypal.webp"],
+    images: ["https://arziPlus.com/assets/images/cash-paypal.webp"],
   },
   alternates: {
-    canonical: "https://arziplus.com/cashing-paypal",
+    canonical: "https://arziPlus.com/cashing-paypal",
   },
 };
 const RegisterInternationalExams = () => {

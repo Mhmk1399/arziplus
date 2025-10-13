@@ -134,10 +134,10 @@ Take the Test: شروع آزمون پس از خرید
 
   const duolingoSteps = [
     {
-      id: "register",
-      title: "ثبت‌نام در ارزی پلاس",
-      description: "به راحتی در سایت ارزی پلاس حساب کاربری بسازید.",
-      icon: <FaRegClipboard />,
+      id: "calculate",
+      title: "پرداخت معادل ریالی",
+      description: "معادل ریالی هزینه بر اساس نرخ روز پرداخت می‌شود.",
+      icon: <FaMoneyBillWave />,
       isActive: true,
     },
     {
@@ -153,10 +153,10 @@ Take the Test: شروع آزمون پس از خرید
       icon: <FaEnvelope />,
     },
     {
-      id: "calculate",
-      title: "پرداخت معادل ریالی",
-      description: "معادل ریالی هزینه بر اساس نرخ روز پرداخت می‌شود.",
-      icon: <FaMoneyBillWave />,
+      id: "register",
+      title: "ثبت‌نام در ارزی پلاس",
+      description: "به راحتی در سایت ارزی پلاس حساب کاربری بسازید.",
+      icon: <FaRegClipboard />,
       isActive: true,
     },
   ];
@@ -165,39 +165,34 @@ Take the Test: شروع آزمون پس از خرید
     {
       id: 1,
       icon: <FaGlobeAmericas size={32} />,
-      iconColor: "bg-emerald-700",
-      title: "پرداخت بین‌المللی آسان",
+       title: "پرداخت بین‌المللی آسان",
       description:
         "پرداخت‌های Duolingo بدون نیاز به کارت بین‌المللی انجام می‌شود.",
     },
     {
       id: 2,
       icon: <FaClock size={32} />,
-      iconColor: "bg-emerald-700",
-      title: "پرداخت سریع",
+       title: "پرداخت سریع",
       description:
         "پرداخت‌ها در کمترین زمان انجام می‌شوند و رسید ارسال می‌شود.",
     },
     {
       id: 3,
       icon: <FaPercentage size={32} />,
-      iconColor: "bg-emerald-700",
-      title: "کارمزد شفاف",
+       title: "کارمزد شفاف",
       description: "کارمزد پیش از پرداخت مشخص می‌شود و هزینه منصفانه است.",
     },
     {
       id: 4,
       icon: <FaLock size={32} />,
-      iconColor: "bg-emerald-700",
-      title: "امنیت کامل تراکنش‌ها",
+       title: "امنیت کامل تراکنش‌ها",
       description: "پرداخت‌ها از طریق حساب‌های امن و مطمئن انجام می‌شوند.",
     },
     {
       id: 5,
       icon: <FaHeadset size={32} />,
-      iconColor: "bg-emerald-700",
-      title: "پشتیبانی کامل",
-      description: "در تمام مراحل ثبت‌نام و پرداخت همراهتان هستیم.",
+       title: "پشتیبانی کامل",
+      description: "در تمام مراحل ثبت‌نام و پرداخت در کنار شما و  همراهتان هستیم.",
     },
   ];
 
@@ -244,7 +239,7 @@ Take the Test: شروع آزمون پس از خرید
       <HeroSection
         heading="پرداخت هزینه آزمون Duolingo در ایران — سریع و مطمئن"
         subheading="همین حالا پرداخت کن"
-        description="دولینگو یک آزمون زبان انگلیسی آنلاین است که مدرک آن برای دانشگاه‌ها معتبر است. ارزی پلاس پرداخت بین‌المللی Duolingo را به ساده‌ترین و امن‌ترین شکل برای شما انجام می‌دهد."
+        description="آزمون دولینگو انگلیسی (DET) به عنوان یک آزمون زبان آنلاین مقرون‌به‌صرفه و سریع، مدرکی معتبر ارائه می‌دهد که توسط هزاران دانشگاه در سراسر جهان، از جمله ۹۸ از ۱۰۰ دانشگاه برتر آمریکا، پذیرفته می‌شود. این آزمون، که تنها ۴۵ دقیقه طول می‌کشد و هزینه‌ای حدود ۵۹ دلار دارد، مهارت‌های خواندن، نوشتن، صحبت کردن و شنیدن را ارزیابی می‌کند – ایده‌آل برای دانشجویان ایرانی که به دنبال پذیرش در دانشگاه‌هایی مثل هاروارد، یل، کلمبیا یا NYU هستند."
         buttons={[
           {
             text: "ثبت سفارش پرداخت Duolingo",
@@ -255,7 +250,7 @@ Take the Test: شروع آزمون پس از خرید
         ]}
         media={{
           type: "image",
-          src: "https://arziplus.s3.eu-north-1.amazonaws.com/Desktop/28-min.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=ASIAUQ73WRGQQGXA4BD5%2F20251012%2Feu-north-1%2Fs3%2Faws4_request&X-Amz-Date=20251012T105136Z&X-Amz-Expires=300&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEIP%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCmV1LW5vcnRoLTEiRzBFAiB0Q%2FI9DAVkjqrKWPvHRNowbGpG4gPdwsQb946g1Tn7uAIhAK5gPZMWjbt3dw1zznj1ls%2BAnPQFlFZMiRgpUIls2KOLKtYCCCwQABoMMzExMzc2MTIwMjI1IgwXUqZ0I0sp%2F8%2BQb6EqswJR95Ip01oNlxvWRcwZmLxGu0huE7YxJUI%2Bk8hQ4PZXCkwTn3lX4pb6oveGBsnxE%2F7ol0IXJy1LfNCfo1YLm13CPm7qtpOm3PeZ6O9vNU9kOCcRNuI80N8Va8Vna49o6Ni75tWJgcTZFY%2BBFjuCzYU7EIKLnDLoxT1zrgVibD%2FdfQQ4UG50ydcDVkjqS%2BaDTY1qVIEB3KVUyIA9A66cCnZ4fRTLLeHNAFTzqdpAXj55NCMnul32E%2BJF82%2B0gjbeMjgbIns3FYH03yv0W0JdfmuDQEDqs6n8bqz6CwwZEzN%2BkbWhke5S7duqyPnKh5YR%2BFubR859yMh60vuZLvDAoHGTxVml9HcpVrOWnltC9aDcAKxHBcRdNicQkVzT%2Fy9XTJiX2MqPSXya1g7uET1jGl%2FtL9noMJLyrccGOq0CbAhiXdGw8yGCm5x%2Bedf1iEj6B4FZukrPlTqA%2Bse%2BTde6IkePHEwGKmd2x5nf1oqTMMmJawLXfkZl883ypOIE%2FdIgbTpQ75tvjIi9tnGqvLZQrBY996vFwP00Jn9sQHvcF76Tus0ZmX8aizI47DnNof7%2BO8T0CG7ZkDOwrUzoz8ovbO7nXA5XucFrBfBJdxV2%2FC%2BxmpHUjXHq8ezI2vzWoTbugckLjGnFsANC962qaGzd%2B7xiOTNVg7N1VP%2BmOQ0FKGZu1a%2BxVCGpgSh5PW9WIqTxtBwhsMCOs%2BU1nP0NflwG7mT%2BsDdMdtIVd4oyEd9PKmSWsWlQsj5elChiXW7lQwuE5suLHps1fX7tzEzyCNjvp2GrooEYKvkmE7hfogwHvvYV2vgTAmK2qBUnbQ%3D%3D&X-Amz-Signature=e103769310ee43d9af02c8ffa9d36280c6ee78cd41ca325b5f7724697b2c0481&X-Amz-SignedHeaders=host&response-content-disposition=inline",
+          src: "https://arziPlus.s3.eu-north-1.amazonaws.com/Desktop/28-min.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=ASIAUQ73WRGQQGXA4BD5%2F20251012%2Feu-north-1%2Fs3%2Faws4_request&X-Amz-Date=20251012T105136Z&X-Amz-Expires=300&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEIP%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCmV1LW5vcnRoLTEiRzBFAiB0Q%2FI9DAVkjqrKWPvHRNowbGpG4gPdwsQb946g1Tn7uAIhAK5gPZMWjbt3dw1zznj1ls%2BAnPQFlFZMiRgpUIls2KOLKtYCCCwQABoMMzExMzc2MTIwMjI1IgwXUqZ0I0sp%2F8%2BQb6EqswJR95Ip01oNlxvWRcwZmLxGu0huE7YxJUI%2Bk8hQ4PZXCkwTn3lX4pb6oveGBsnxE%2F7ol0IXJy1LfNCfo1YLm13CPm7qtpOm3PeZ6O9vNU9kOCcRNuI80N8Va8Vna49o6Ni75tWJgcTZFY%2BBFjuCzYU7EIKLnDLoxT1zrgVibD%2FdfQQ4UG50ydcDVkjqS%2BaDTY1qVIEB3KVUyIA9A66cCnZ4fRTLLeHNAFTzqdpAXj55NCMnul32E%2BJF82%2B0gjbeMjgbIns3FYH03yv0W0JdfmuDQEDqs6n8bqz6CwwZEzN%2BkbWhke5S7duqyPnKh5YR%2BFubR859yMh60vuZLvDAoHGTxVml9HcpVrOWnltC9aDcAKxHBcRdNicQkVzT%2Fy9XTJiX2MqPSXya1g7uET1jGl%2FtL9noMJLyrccGOq0CbAhiXdGw8yGCm5x%2Bedf1iEj6B4FZukrPlTqA%2Bse%2BTde6IkePHEwGKmd2x5nf1oqTMMmJawLXfkZl883ypOIE%2FdIgbTpQ75tvjIi9tnGqvLZQrBY996vFwP00Jn9sQHvcF76Tus0ZmX8aizI47DnNof7%2BO8T0CG7ZkDOwrUzoz8ovbO7nXA5XucFrBfBJdxV2%2FC%2BxmpHUjXHq8ezI2vzWoTbugckLjGnFsANC962qaGzd%2B7xiOTNVg7N1VP%2BmOQ0FKGZu1a%2BxVCGpgSh5PW9WIqTxtBwhsMCOs%2BU1nP0NflwG7mT%2BsDdMdtIVd4oyEd9PKmSWsWlQsj5elChiXW7lQwuE5suLHps1fX7tzEzyCNjvp2GrooEYKvkmE7hfogwHvvYV2vgTAmK2qBUnbQ%3D%3D&X-Amz-Signature=e103769310ee43d9af02c8ffa9d36280c6ee78cd41ca325b5f7724697b2c0481&X-Amz-SignedHeaders=host&response-content-disposition=inline",
           alt: "پرداخت هزینه آزمون Duolingo با ارزی پلاس",
           width: 1200,
           height: 800,
@@ -290,8 +285,7 @@ Take the Test: شروع آزمون پس از خرید
         buttonText="ثبت سفارش پرداخت Duolingo"
         buttonLink="/duolingo-payment"
         items={duolingoWhyUs}
-        buttonColor="bg-indigo-700 hover:bg-indigo-800 text-white"
-        theme={themesWhyus.default}
+         theme={themesWhyus.default}
       />
 
       <TextBox
@@ -331,8 +325,8 @@ Take the Test: شروع آزمون پس از خرید
       />
 
       <CTABanner
-        heading="همین حالا هزینه ثبت‌نام Duolingo را پرداخت کن"
-        description="پرداخت امن، سریع و شفاف هزینه آزمون Duolingo. ثبت سفارش کنید تا تیم ما پرداخت بین‌المللی را انجام دهد."
+        heading="    هزینه ثبت‌نام Duolingo را پرداخت کن"
+        description="پرداخت امن، سریع و شفاف هزینه آزمون Duolingo. ثبت سفارش کنید تا تیم ما  انجام دهد."
         button={{
           text: "ثبت سفارش پرداخت Duolingo",
           href: "/duolingo-payment",

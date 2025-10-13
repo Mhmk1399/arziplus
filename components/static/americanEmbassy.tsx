@@ -25,10 +25,11 @@ import CTABanner from "../global/ctaBanner";
 const USVisaPaymentPage = () => {
   const steps = [
     {
-      id: "register",
-      title: "ثبت نام در ارزی پلاس",
-      description: "به سادگی حساب کاربری بساز و آماده پرداخت شو.",
-      icon: <FaDollarSign />,
+      id: "payment",
+      title: "پرداخت معادل ریالی",
+      description:
+        "معادل ریالی هزینه مورد نظر را پرداخت کن و سفارشت نهایی شود.",
+      icon: <FaPercent />,
       isActive: true,
     },
     {
@@ -38,11 +39,10 @@ const USVisaPaymentPage = () => {
       icon: <FaCoins />,
     },
     {
-      id: "payment",
-      title: "پرداخت معادل ریالی",
-      description:
-        "معادل ریالی هزینه مورد نظر را پرداخت کن و سفارشت نهایی شود.",
-      icon: <FaPercent />,
+      id: "register",
+      title: "ثبت نام در ارزی پلاس",
+      description: "به سادگی حساب کاربری بساز و آماده پرداخت شو.",
+      icon: <FaDollarSign />,
       isActive: true,
     },
   ];
@@ -53,7 +53,8 @@ const USVisaPaymentPage = () => {
       icon: <FaClock size={32} />,
       iconColor: "bg-indigo-700",
       title: "سرعت بالا",
-      description: "پرداخت شما در کوتاه‌ترین زمان ممکن توسط کارشناسان ارزی پلاس انجام می‌شود.",
+      description:
+        "پرداخت شما در کوتاه‌ترین زمان ممکن توسط کارشناسان ارزی پلاس انجام می‌شود.",
     },
     {
       id: 2,
@@ -67,14 +68,16 @@ const USVisaPaymentPage = () => {
       icon: <FaPercent size={32} />,
       iconColor: "bg-indigo-700",
       title: "قیمت مناسب",
-      description: "کمترین کارمزد و نرخ منصفانه برای پرداخت ارزی شما انجام میشود..",
+      description:
+        "کمترین کارمزد و نرخ منصفانه برای پرداخت ارزی شما انجام میشود..",
     },
     {
       id: 4,
       icon: <FaHeadset size={32} />,
       iconColor: "bg-indigo-700",
       title: "پشتیبانی حرفه‌ای",
-      description: "کارشناسان ارزی پلاس در تمام مراحل همراه شما تا آخرین مرحله هستند.",
+      description:
+        "کارشناسان ارزی پلاس در تمام مراحل همراه شما تا آخرین مرحله هستند.",
     },
   ];
 
@@ -136,7 +139,7 @@ const USVisaPaymentPage = () => {
       <HeroSection
         heading="پرداخت هزینه سفارت آمریکا"
         subheading="وقت تحقق رویای آمریکایی توست!"
-        description="با ارزی پلاس، پرداخت هزینه سفارت، SEVIS و USCIS را سریع، امن و آسان انجام بده."
+        description="در سال ۲۰۲۵، با افزایش تحریم‌ها، پرداخت هزینه‌های مهاجرتی آمریکا برای ایرانیان چالش‌برانگیز شده، اما ارزی پلاس (arziPlus.com) راه‌حلی ایده‌آل ارائه می‌دهد. SEVIS I-901 با برای ویزای دانشجویی F-1/M-1/J-1، هزینه‌های USCIS (مانند فرم I-129F       یا I-130       بر اساس به‌روزرسانی H.R.1)، و هزینه ویزای سفارت  را بدون کارت اعتباری بین‌المللی، با کارت شتاب یا رمزارز، در عرض چند دقیقه انجام دهید."
         buttons={[
           {
             text: "پرداخت هزینه سفارت",
@@ -147,7 +150,7 @@ const USVisaPaymentPage = () => {
         ]}
         media={{
           type: "image",
-          src: "https://arziplus.s3.eu-north-1.amazonaws.com/Desktop/31-min.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=ASIAUQ73WRGQ2I4BGMJ2%2F20251012%2Feu-north-1%2Fs3%2Faws4_request&X-Amz-Date=20251012T105345Z&X-Amz-Expires=300&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEIP%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCmV1LW5vcnRoLTEiRzBFAiEA8QMJuT1k0TGXl4%2FICeyuxkcy1axjGyVdxK%2FttT2l6egCIC8t6pHpzB9U%2F59P2Pi1ia7E3h7nUZwoaqIuuHZWbeiOKtYCCCwQABoMMzExMzc2MTIwMjI1IgzE3YcF9LXG8T%2FXf38qswLE1CXrneFJuMP5SLD%2BoTibOdrbJuTiQXVle6TzgLRAlJfCWaLNvBXpwu37%2FonWEr5UdT%2BtFKMYjyBDnF2i5LcCs0B9GqHwfqiVLVjprxjkf%2FM%2BlMfTGgkKHZT7ZSIW9Zy9qcJouzOHu7lGIDzVMxb%2BI3KuXqTFhdT5DdAa%2B4oLRS7nIDVMpHv6XnXzqOZ%2Fy1Ooxv%2Bejb8GiOAzhWHOoRr8EDdpT48tyedzB92NE5Ua9GyaVBPIgbF%2BeLASoOPgD4KGOpGM4B7dnAF26sqgX5dv5bNlxo9GAl7i%2FxkJdI3gk828q41%2BdobLF1sxA38FFsl3QCeGZ0MKufMEfVXkinSKCHsH%2FlVXfg1gCqAYCWaixCFzzS7Vem2FJZqcIHTxVtEpkAVzzUa6KVdTKtc1zd5gJOaOMJLyrccGOq0CZHXw6uJXv8RONdMJjxjtAHFtSKYsuytStIjy8KIAbEWBrn4bIT8TBlV8EEVtHWej3IumDNxinF%2B5%2BheCC5F8AhzBtlYnKIrv71JrHa6thZfopVHXlwLe6J%2BAWe0iCY0h8DEz6l%2FJZRxekw2LWdgFulV1P9DnSgrkht2G2zXjJe12EjED2GLvOE0SQIABtcEpfB3EOg%2Fz1JN%2BOZcUkIW4jc8lzV268AVKS8xY4Q0fO7kHseceMM4%2Bt%2F97cnj8VsnxICmmLtdyUEvSLJZQbVMukQ9CoID3g8FNYF6nOo%2FvWJrtKl4E7WkGg4X91zv5kg2kHKtG205teUpMXxF%2B8lnJ6dkhFdt4c9j%2BKnlnOdjA1DEyATpaQCsEkWohYR%2Feiu4kNcDQqzA21%2FvruELX2g%3D%3D&X-Amz-Signature=c6437770f2240fb8ed5334e8361086b56449a4da105872994fc8f78d3c221b91&X-Amz-SignedHeaders=host&response-content-disposition=inline",
+          src: "https://arziPlus.s3.eu-north-1.amazonaws.com/Desktop/31-min.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=ASIAUQ73WRGQ2I4BGMJ2%2F20251012%2Feu-north-1%2Fs3%2Faws4_request&X-Amz-Date=20251012T105345Z&X-Amz-Expires=300&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEIP%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCmV1LW5vcnRoLTEiRzBFAiEA8QMJuT1k0TGXl4%2FICeyuxkcy1axjGyVdxK%2FttT2l6egCIC8t6pHpzB9U%2F59P2Pi1ia7E3h7nUZwoaqIuuHZWbeiOKtYCCCwQABoMMzExMzc2MTIwMjI1IgzE3YcF9LXG8T%2FXf38qswLE1CXrneFJuMP5SLD%2BoTibOdrbJuTiQXVle6TzgLRAlJfCWaLNvBXpwu37%2FonWEr5UdT%2BtFKMYjyBDnF2i5LcCs0B9GqHwfqiVLVjprxjkf%2FM%2BlMfTGgkKHZT7ZSIW9Zy9qcJouzOHu7lGIDzVMxb%2BI3KuXqTFhdT5DdAa%2B4oLRS7nIDVMpHv6XnXzqOZ%2Fy1Ooxv%2Bejb8GiOAzhWHOoRr8EDdpT48tyedzB92NE5Ua9GyaVBPIgbF%2BeLASoOPgD4KGOpGM4B7dnAF26sqgX5dv5bNlxo9GAl7i%2FxkJdI3gk828q41%2BdobLF1sxA38FFsl3QCeGZ0MKufMEfVXkinSKCHsH%2FlVXfg1gCqAYCWaixCFzzS7Vem2FJZqcIHTxVtEpkAVzzUa6KVdTKtc1zd5gJOaOMJLyrccGOq0CZHXw6uJXv8RONdMJjxjtAHFtSKYsuytStIjy8KIAbEWBrn4bIT8TBlV8EEVtHWej3IumDNxinF%2B5%2BheCC5F8AhzBtlYnKIrv71JrHa6thZfopVHXlwLe6J%2BAWe0iCY0h8DEz6l%2FJZRxekw2LWdgFulV1P9DnSgrkht2G2zXjJe12EjED2GLvOE0SQIABtcEpfB3EOg%2Fz1JN%2BOZcUkIW4jc8lzV268AVKS8xY4Q0fO7kHseceMM4%2Bt%2F97cnj8VsnxICmmLtdyUEvSLJZQbVMukQ9CoID3g8FNYF6nOo%2FvWJrtKl4E7WkGg4X91zv5kg2kHKtG205teUpMXxF%2B8lnJ6dkhFdt4c9j%2BKnlnOdjA1DEyATpaQCsEkWohYR%2Feiu4kNcDQqzA21%2FvruELX2g%3D%3D&X-Amz-Signature=c6437770f2240fb8ed5334e8361086b56449a4da105872994fc8f78d3c221b91&X-Amz-SignedHeaders=host&response-content-disposition=inline",
           alt: "پرداخت هزینه سفارت آمریکا",
           width: 1200,
           height: 800,

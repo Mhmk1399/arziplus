@@ -25,24 +25,26 @@ import CTABanner from "../global/ctaBanner";
 const DIDPage = () => {
   const steps = [
     {
-      id: "register",
-      title: "ثبت نام در ارزی پلاس",
-      description: "به راحتی در سایت ارزی پلاس حساب کاربری بسازید.",
-      icon: <FaDollarSign />,
+      id: "payment",
+      title: "پرداخت معادل ریالی",
+      description:
+        "معادل ریالی هزینه اشتراک را پرداخت کنید و دسترسی کامل دریافت کنید.",
+      icon: <FaPercent />,
       isActive: true,
     },
+
     {
       id: "selectPlan",
       title: "انتخاب اشتراک D-ID",
       description: "وارد بخش ثبت سفارش شوید و اشتراک D-ID را انتخاب کنید.",
       icon: <FaCoins />,
     },
+
     {
-      id: "payment",
-      title: "پرداخت معادل ریالی",
-      description:
-        "معادل ریالی هزینه اشتراک را پرداخت کنید و دسترسی کامل دریافت کنید.",
-      icon: <FaPercent />,
+      id: "register",
+      title: "ثبت نام در ارزی پلاس",
+      description: "به راحتی در سایت ارزی پلاس حساب کاربری بسازید.",
+      icon: <FaDollarSign />,
       isActive: true,
     },
   ];
@@ -140,9 +142,9 @@ const DIDPage = () => {
   return (
     <div>
       <HeroSection
-        heading="خرید اکانت D-ID — خالق ویدیوهای حرفه‌ای"
+        heading="خرید اکانت D-ID "
         subheading="ایده‌هایت را در کسری از ثانیه به ویدیو تبدیل کن"
-        description="با D-ID دیگر نیازی به دوربین یا تجهیزات حرفه‌ای نیست و می‌توانید ویدیوهای جذاب و خلاقانه بسازید."
+        description="در دنیای دیجیتال ۲۰۲۵، D-ID به عنوان پلتفرمی پیشرو در تولید ویدیوهای AI، با خرید Simpleshow در سپتامبر، بازار ۵۰ میلیارد دلاری انسان‌های دیجیتال را رهبری می‌کند. این ابزار هوشمند، بدون نیاز به دوربین یا تجهیزات گران‌قیمت، از متن یا تصاویر، ویدیوهای انیمیشنی و تعاملی می‌سازد – ایده‌آل برای بازاریابان، معلمان و علاقه‌مندان به ارزهای دیجیتال."
         buttons={[
           {
             text: "ثبت سفارش D-ID",
@@ -153,17 +155,24 @@ const DIDPage = () => {
         ]}
         media={{
           type: "image",
-          src: "https://arziplus.s3.eu-north-1.amazonaws.com/Desktop/24-min.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=ASIAUQ73WRGQR75UJG5I%2F20251012%2Feu-north-1%2Fs3%2Faws4_request&X-Amz-Date=20251012T104852Z&X-Amz-Expires=300&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEIP%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCmV1LW5vcnRoLTEiRzBFAiB4JiMsd2NmUfVqDhag%2FbeezarWZgxG2MN0PA0yBwbSVQIhALvpnS9uQ6FXvJmAX8JCMZ75OMD3OtoIqNvX2tXdKTszKtYCCCwQABoMMzExMzc2MTIwMjI1Igzs%2FurrPXmBSwXYc04qswLHwF5vHHkAVnhF7%2BGV4I7%2BB8l2hB7%2BfQDEsco13XIVQ%2BxbWrI9t4KUzbP4t0dM%2FpyghS975IvZe4ReJqQfGAhqGBYlzZhbhzKAi294c4Zpp5XvPI%2FYRtMStB1GK88%2FILhoA42uaAe5tzvDce9RjR8TgNtTqXYxVtScqLDOY7RoDeOaRTp8qmTiCgWdV5HQ6veh%2BQivvzmA8NnjkQTmKTtL2WATTyEqCZBpGcc1L%2FXlfG42rUomvQRu1lJOEWFRsGjHdgaOSB5TI70BWR9VGA8siPKuFFLPIfqL89RwM7x9iBswWGqpb65or%2BCDDWb7uoqDoLE16lFrfnQ4lcKSIHtW6fmuZq8vUDDW7DUYvH06btoDc251%2B%2BFpjFvEUkM%2FQBxfksCLH6dwzUIqGoQSdfLLJxZwMJLyrccGOq0C9Zmhy%2BIXy1AunO6cM9BKsfpqY8XEXY3q5Gges5%2FYVBvlCJtMBaQcnA%2BPVTf2VB57jMUVIJXVhMV96Qu7CQKWqtYpjK8NYnqzIUQ%2FmiPAruDlnJcgXsIAkfFfw%2B2iRAaVI9Bbnb5mavDEJSBGVds3NcghxrPPxYVKbpr6lcsorkeOQSn1Z%2ByglFtbiRBwHjlnw2CJrEyy1I7qE5N0H4vRSAIiacCVOE5bro5y2iPGEszQIerlsoxwyctVvp72dS5r3tQ7FeIvXHHZ2%2B5%2BiLpPSWj6j57AeWh2Xo%2BxFjgwj2ehWudc3Q6xIg3bvxghGJkx2zHeVlmxgRo%2FFC7eGGBfklYpByy9MDflI8Mcdqt5XRIOzFlAkRe1acwqekH3SBPPqi8a8wxAPQnIdKsdxg%3D%3D&X-Amz-Signature=fa67c8673e2af7f8cfdf571a8a9e1375e71c93944ba74157271b5bf2794b57a0&X-Amz-SignedHeaders=host&response-content-disposition=inline",
+          src: "https://arziPlus.s3.eu-north-1.amazonaws.com/Desktop/24-min.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=ASIAUQ73WRGQR75UJG5I%2F20251012%2Feu-north-1%2Fs3%2Faws4_request&X-Amz-Date=20251012T104852Z&X-Amz-Expires=300&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEIP%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCmV1LW5vcnRoLTEiRzBFAiB4JiMsd2NmUfVqDhag%2FbeezarWZgxG2MN0PA0yBwbSVQIhALvpnS9uQ6FXvJmAX8JCMZ75OMD3OtoIqNvX2tXdKTszKtYCCCwQABoMMzExMzc2MTIwMjI1Igzs%2FurrPXmBSwXYc04qswLHwF5vHHkAVnhF7%2BGV4I7%2BB8l2hB7%2BfQDEsco13XIVQ%2BxbWrI9t4KUzbP4t0dM%2FpyghS975IvZe4ReJqQfGAhqGBYlzZhbhzKAi294c4Zpp5XvPI%2FYRtMStB1GK88%2FILhoA42uaAe5tzvDce9RjR8TgNtTqXYxVtScqLDOY7RoDeOaRTp8qmTiCgWdV5HQ6veh%2BQivvzmA8NnjkQTmKTtL2WATTyEqCZBpGcc1L%2FXlfG42rUomvQRu1lJOEWFRsGjHdgaOSB5TI70BWR9VGA8siPKuFFLPIfqL89RwM7x9iBswWGqpb65or%2BCDDWb7uoqDoLE16lFrfnQ4lcKSIHtW6fmuZq8vUDDW7DUYvH06btoDc251%2B%2BFpjFvEUkM%2FQBxfksCLH6dwzUIqGoQSdfLLJxZwMJLyrccGOq0C9Zmhy%2BIXy1AunO6cM9BKsfpqY8XEXY3q5Gges5%2FYVBvlCJtMBaQcnA%2BPVTf2VB57jMUVIJXVhMV96Qu7CQKWqtYpjK8NYnqzIUQ%2FmiPAruDlnJcgXsIAkfFfw%2B2iRAaVI9Bbnb5mavDEJSBGVds3NcghxrPPxYVKbpr6lcsorkeOQSn1Z%2ByglFtbiRBwHjlnw2CJrEyy1I7qE5N0H4vRSAIiacCVOE5bro5y2iPGEszQIerlsoxwyctVvp72dS5r3tQ7FeIvXHHZ2%2B5%2BiLpPSWj6j57AeWh2Xo%2BxFjgwj2ehWudc3Q6xIg3bvxghGJkx2zHeVlmxgRo%2FFC7eGGBfklYpByy9MDflI8Mcdqt5XRIOzFlAkRe1acwqekH3SBPPqi8a8wxAPQnIdKsdxg%3D%3D&X-Amz-Signature=fa67c8673e2af7f8cfdf571a8a9e1375e71c93944ba74157271b5bf2794b57a0&X-Amz-SignedHeaders=host&response-content-disposition=inline",
           alt: "خرید اکانت D-ID",
           width: 1200,
           height: 800,
         }}
+        features={[
+          { text: "سادگی و سرعت" },
+          { text: "کیفیت بالا" },
+          { text: "کاربردهای خلاقانه" },
+        ]}
         layout="default"
         theme={{
           headingColor: "text-gray-50",
           subheadingColor: "text-gray-500",
           descriptionColor: "text-gray-300",
           backgroundColor: "bg-indigo-700",
+                    featuresColor:"text-gray-600"
+
         }}
       />
 
