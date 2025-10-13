@@ -317,15 +317,10 @@ export default function AdminRequestsTable({ className = "mt-20" }: AdminRequest
   };
 
   return (
-    <div className={`${className}`} dir="rtl">
-      {/* Header */}
+    <div className={`${className} p-6`} dir="rtl">
+      {/* Filters */}
       <div className="bg-gradient-to-r from-[#4DBFF0]/10 to-[#FF7A00]/10 backdrop-blur-sm border border-[#4DBFF0]/30 rounded-2xl p-6 mb-6">
-        <h1 className={`text-2xl ${estedadBold.className} text-[#0A1D37] mb-4`}>
-          مدیریت درخواست‌های سرویس
-        </h1>
-        
-        {/* Filters */}
-        <div className="flex flex-wrap gap-4">
+        <div className="flex flex-wrap gap-4 items-center">
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
@@ -348,7 +343,7 @@ export default function AdminRequestsTable({ className = "mt-20" }: AdminRequest
             ))}
           </select>
 
-          <div className="text-sm text-[#0A1D37]/70 flex items-center">
+          <div className="text-sm text-[#0A1D37]/70 flex items-center font-medium">
             مجموع: {total} درخواست
           </div>
         </div>
@@ -400,9 +395,7 @@ export default function AdminRequestsTable({ className = "mt-20" }: AdminRequest
                           <div className="font-medium text-[#0A1D37]">
                             {getCustomerName(request.customer)}
                           </div>
-                          <div className="text-sm text-[#0A1D37]/60">
-                            {request.customer.contactInfo.mobilePhone}
-                          </div>
+                          
                         </div>
                       </td>
                       <td className="px-6 py-4">

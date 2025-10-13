@@ -84,7 +84,9 @@ export default function SMSAuthPage() {
 
       if (response.ok) {
         // Store token
+        console.log("Storing token:", data.token?.substring(0, 20) + "...");
         localStorage.setItem("authToken", data.token);
+        console.log("Token stored, redirecting to:", data.redirectTo);
 
         showToast.success(data.message);
 

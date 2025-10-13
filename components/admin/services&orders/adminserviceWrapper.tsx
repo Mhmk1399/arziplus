@@ -2,49 +2,48 @@
 
 import React, { useState, useEffect } from "react";
 import {
-  FaShoppingCart,
-  FaHistory,
-  FaFileContract,
-  FaUser,
+  FaServicestack,
+  FaClipboardList,
+  FaCog,
+  FaChartBar,
 } from "react-icons/fa";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
 import { showToast } from "@/utilities/toast";
 
-// Import customer components
-import ServiceRenderer from "./ServiceRenderer";
-import CustomerRequestsTable from "./orderHistory";
-import TermsPage from "./TermsPage";
+// Import admin components
+import AdminRequestsTable from "./AdminRequestsTable";
+import { ServiceManager } from "./serviceBuilder";
 
-interface ServiceWrapperProps {
-  initialTab?: "services" | "orders" | "terms";
+interface AdminWrapperProps {
+  initialTab?: "requests" | "services" | "analytics";
   className?: string;
 }
 
-interface UserStats {
+interface AdminStats {
   totalRequests: number;
   pendingRequests: number;
   completedRequests: number;
-  rejectedRequests: number;
+  totalServices: number;
 }
 
-const ServiceWrapper: React.FC<ServiceWrapperProps> = ({
-  initialTab = "services",
+const ServiceWrapper: React.FC<AdminWrapperProps> = ({
+  initialTab = "requests",
   className = "mx-10 my-28",
 }) => {
   const [activeTab, setActiveTab] = useState<
-    "services" | "orders" | "terms"
+    "requests" | "services" | "analytics"
   >(initialTab);
-  const [userStats, setUserStats] = useState<UserStats>({
+  const [adminStats, setAdminStats] = useState<AdminStats>({
     totalRequests: 0,
     pendingRequests: 0,
     completedRequests: 0,
-    rejectedRequests: 0,
+    totalServices: 0,
   });
   const [statsLoading, setStatsLoading] = useState(true);
   const { user: currentUser, isLoggedIn } = useCurrentUser();
 
-  // Fetch user statistics
-  const fetchUserStats = async () => {
+  // Fetch admin statistics
+  const fetchAdminStats = async () => {
     if (!isLoggedIn) {
       setStatsLoading(false);
       return;
@@ -52,26 +51,36 @@ const ServiceWrapper: React.FC<ServiceWrapperProps> = ({
 
     try {
       const token = localStorage.getItem("authToken");
-      const response = await fetch("/api/customer/requests/stats", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+
+      // Fetch statistics from service requests endpoint
+      const [allRequestsRes, pendingRequestsRes, completedRequestsRes] =
+        await Promise.all([
+          fetch("/api/service-requests?limit=1", {
+            headers: { Authorization: `Bearer ${token}` },
+          }),
+          fetch("/api/service-requests?status=pending&limit=1", {
+            headers: { Authorization: `Bearer ${token}` },
+          }),
+          fetch("/api/service-requests?status=completed&limit=1", {
+            headers: { Authorization: `Bearer ${token}` },
+          }),
+        ]);
+
+      const [allRequestsData, pendingRequestsData, completedRequestsData] =
+        await Promise.all([
+          allRequestsRes.json(),
+          pendingRequestsRes.json(),
+          completedRequestsRes.json(),
+        ]);
+
+      setAdminStats({
+        totalRequests: allRequestsData.pagination?.total || 0,
+        pendingRequests: pendingRequestsData.pagination?.total || 0,
+        completedRequests: completedRequestsData.pagination?.total || 0,
+        totalServices: 0, // This can be added when services management is implemented
       });
-
-      const data = await response.json();
-
-      if (data.success) {
-        setUserStats({
-          totalRequests: data.stats.totalRequests || 0,
-          pendingRequests: data.stats.pendingRequests || 0,
-          completedRequests: data.stats.completedRequests || 0,
-          rejectedRequests: data.stats.rejectedRequests || 0,
-        });
-      } else {
-        console.error("Failed to fetch user stats:", data.error);
-      }
     } catch (error) {
-      console.error("Error fetching user stats:", error);
+      console.error("Error fetching service stats:", error);
     } finally {
       setStatsLoading(false);
     }
@@ -79,7 +88,7 @@ const ServiceWrapper: React.FC<ServiceWrapperProps> = ({
 
   useEffect(() => {
     if (isLoggedIn) {
-      fetchUserStats();
+      fetchAdminStats();
     } else {
       setStatsLoading(false);
     }
@@ -88,101 +97,112 @@ const ServiceWrapper: React.FC<ServiceWrapperProps> = ({
   // Tab configuration
   const tabs = [
     {
+      id: "requests" as const,
+      label: "مدیریت درخواست‌ها",
+      icon: <FaClipboardList className="text-lg" />,
+      description: "مشاهده و مدیریت درخواست‌های سرویس",
+      component: AdminRequestsTable,
+      badge:
+        adminStats.pendingRequests > 0 ? adminStats.pendingRequests : undefined,
+    },
+    {
       id: "services" as const,
-      label: "خدمات",
-      icon: <FaShoppingCart className="text-lg" />,
-      description: "مشاهده و سفارش خدمات",
-      component: ServiceRenderer,
+      label: "مدیریت سرویس‌ها",
+      icon: <FaServicestack className="text-lg" />,
+      description: "مدیریت و ویرایش سرویس‌ها",
+      component: ServiceManager,
+      badge:
+        adminStats.totalServices > 0 ? adminStats.totalServices : undefined,
     },
     {
-      id: "orders" as const,
-      label: "سفارشات من",
-      icon: <FaHistory className="text-lg" />,
-      description: "تاریخچه و وضعیت سفارشات",
-      component: CustomerRequestsTable,
-      badge: userStats.pendingRequests > 0 ? userStats.pendingRequests : undefined,
-    },
-    {
-      id: "terms" as const,
-      label: "قوانین و شرایط",
-      icon: <FaFileContract className="text-lg" />,
-      description: "شرایط استفاده از خدمات",
-      component: TermsPage,
+      id: "analytics" as const,
+      label: "آنالیز و گزارشات",
+      icon: <FaChartBar className="text-lg" />,
+      description: "آمار و گزارشات سرویس‌ها",
+      component: () => (
+        <div className="p-8 text-center">
+          <FaChartBar className="text-6xl text-gray-400 mx-auto mb-4" />
+          <h3 className="text-xl font-bold text-gray-700 mb-2">
+            آنالیز و گزارشات
+          </h3>
+          <p className="text-gray-500">این بخش در حال توسعه است</p>
+        </div>
+      ),
     },
   ];
 
   // Stats cards data
   const statsCards = [
     {
-      title: "کل سفارشات",
-      value: userStats.totalRequests,
-      icon: <FaShoppingCart className="text-2xl text-[#FF7A00]" />,
+      title: "کل درخواست‌ها",
+      value: adminStats.totalRequests,
+      icon: <FaClipboardList className="text-2xl text-[#FF7A00]" />,
       color: "",
       bgColor: "bg-gray-50",
     },
     {
       title: "در انتظار بررسی",
-      value: userStats.pendingRequests,
-      icon: <FaHistory className="text-2xl text-[#FF7A00]" />,
+      value: adminStats.pendingRequests,
+      icon: <FaClipboardList className="text-2xl text-[#FF7A00]" />,
       color: "",
       bgColor: "bg-gray-50",
     },
     {
       title: "تکمیل شده",
-      value: userStats.completedRequests,
-      icon: <FaShoppingCart className="text-2xl text-[#FF7A00]" />,
+      value: adminStats.completedRequests,
+      icon: <FaClipboardList className="text-2xl text-[#FF7A00]" />,
       color: "",
       bgColor: "bg-gray-50",
     },
     {
-      title: "رد شده",
-      value: userStats.rejectedRequests,
-      icon: <FaFileContract className="text-2xl text-[#FF7A00]" />,
+      title: "سرویس‌های فعال",
+      value: adminStats.totalServices,
+      icon: <FaServicestack className="text-2xl text-[#FF7A00]" />,
       color: "",
       bgColor: "bg-gray-50",
     },
   ];
 
-  const handleTabChange = (tabId: "services" | "orders" | "terms") => {
+  const handleTabChange = (tabId: "requests" | "services" | "analytics") => {
     setActiveTab(tabId);
 
     // Refresh stats when switching tabs
     if (isLoggedIn) {
-      fetchUserStats();
+      fetchAdminStats();
     }
 
     // Show appropriate message
     const tabLabels = {
-      services: "خدمات",
-      orders: "سفارشات من",
-      terms: "قوانین و شرایط",
+      requests: "مدیریت درخواست‌ها",
+      services: "مدیریت سرویس‌ها",
+      analytics: "آنالیز و گزارشات",
     };
 
     showToast.info(`بخش ${tabLabels[tabId]} باز شد`);
   };
 
-  // User welcome section
-  const renderUserWelcome = () => {
+  // Admin welcome section
+  const renderAdminWelcome = () => {
     if (!currentUser) return null;
 
-    const userName =
+    const adminName =
       currentUser.firstName && currentUser.lastName
         ? `${currentUser.firstName} ${currentUser.lastName}`
-        : currentUser.firstName || "کاربر عزیز";
+        : currentUser.firstName || "مدیر محترم";
 
     return (
       <div className=" backdrop-blur-sm  rounded-2xl p-6 mb-8">
         <div className="flex items-center justify-between flex-wrap gap-4">
           <div className="flex items-center gap-4">
             <div className="w-12 h-12  rounded-full flex items-center justify-center">
-              <FaUser className="text-[#FF7A00] text-xl" />
+              <FaCog className="text-[#FF7A00] text-xl" />
             </div>
             <div>
               <h2 className="sm:text-2xl text-base font-bold mb-2 text-[#0A1D37]">
-                سلام {userName} عزیز
+                سلام {adminName} عزیز
               </h2>
               <p className="text-gray-600 text-xs sm:text-md">
-                به پنل خدمات ارزی پلاس خوش آمدید
+                به پنل مدیریت ارزی پلاس خوش آمدید
               </p>
             </div>
           </div>
@@ -230,13 +250,13 @@ const ServiceWrapper: React.FC<ServiceWrapperProps> = ({
         <div className="container mx-auto px-4 py-32">
           <div className="max-w-md mx-auto text-center">
             <div className="w-20 h-20 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-6">
-              <FaUser className="text-white text-3xl" />
+              <FaCog className="text-white text-3xl" />
             </div>
             <h2 className="text-3xl font-bold text-gray-900 mb-4">
               ورود به سیستم لازم است
             </h2>
             <p className="text-gray-600 mb-8 leading-relaxed">
-              برای دسترسی به خدمات، لطفاً وارد حساب کاربری خود شوید
+              برای دسترسی به پنل مدیریت، لطفاً وارد حساب کاربری خود شوید
             </p>
             <div className="space-y-4">
               <a
@@ -252,14 +272,48 @@ const ServiceWrapper: React.FC<ServiceWrapperProps> = ({
     );
   }
 
+  if (
+    !currentUser?.roles.includes("admin") &&
+    !currentUser?.roles.includes("super_admin")
+  ) {
+    return (
+      <div
+        className={`min-h-screen bg-gradient-to-br from-red-50 via-white to-orange-50 ${className}`}
+        dir="rtl"
+      >
+        <div className="container mx-auto px-4 py-32">
+          <div className="max-w-md mx-auto text-center">
+            <div className="w-20 h-20 bg-gradient-to-r from-red-500 to-orange-500 rounded-full flex items-center justify-center mx-auto mb-6">
+              <FaCog className="text-white text-3xl" />
+            </div>
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">
+              دسترسی غیر مجاز
+            </h2>
+            <p className="text-gray-600 mb-8 leading-relaxed">
+              شما به این بخش دسترسی ندارید. لطفاً با مدیر سیستم تماس بگیرید.
+            </p>
+            <div className="space-y-4">
+              <a
+                href="/"
+                className="block w-full px-6 py-4 bg-gradient-to-r from-gray-600 to-gray-700 text-white rounded-xl font-bold hover:shadow-lg transition-all duration-300 hover:scale-105"
+              >
+                بازگشت به خانه
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   const ActiveComponent =
-    tabs.find((tab) => tab.id === activeTab)?.component || ServiceRenderer;
+    tabs.find((tab) => tab.id === activeTab)?.component || AdminRequestsTable;
 
   return (
     <div className={`min-h-screen  ${className}`} dir="rtl">
       <div className="container mx-auto px-4 py-8">
-        {/* User Welcome Section */}
-        {renderUserWelcome()}
+        {/* Admin Welcome Section */}
+        {renderAdminWelcome()}
 
         {/* Stats Cards */}
         {renderStatsCards()}

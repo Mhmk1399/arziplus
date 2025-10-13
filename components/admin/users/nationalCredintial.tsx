@@ -211,7 +211,7 @@ const NationalCredentialAdmin = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50" dir="rtl">
+    <div className="min-h-screen" dir="rtl">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
         <div className="mb-8">
@@ -224,39 +224,11 @@ const NationalCredentialAdmin = () => {
           </div>
 
           {/* Stats */}
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-            {[
-              { label: "کل درخواست‌ها", value: pagination.totalUsers, color: "blue" },
-              { 
-                label: "در انتظار بررسی", 
-                value: credentials.filter(c => c.nationalCredentials.status === "pending_verification").length, 
-                color: "yellow" 
-              },
-              { 
-                label: "تایید شده", 
-                value: credentials.filter(c => c.nationalCredentials.status === "accepted").length, 
-                color: "green" 
-              },
-              { 
-                label: "رد شده", 
-                value: credentials.filter(c => c.nationalCredentials.status === "rejected").length, 
-                color: "red" 
-              },
-            ].map((stat, index) => (
-              <div key={index} className="bg-white rounded-lg p-6 shadow-sm border">
-                <div className="flex items-center">
-                  <div className={`text-2xl font-bold text-${stat.color}-600`}>
-                    {stat.value}
-                  </div>
-                </div>
-                <div className="text-sm text-gray-600 mt-1">{stat.label}</div>
-              </div>
-            ))}
-          </div>
+        
         </div>
 
         {/* Filters */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-6">
+        <div className=" rounded-xl shadow-sm border border-gray-200 p-6 mb-6">
           <div className="flex flex-wrap gap-4 items-center">
             <div className="flex-1 min-w-64">
               <div className="relative">
