@@ -268,7 +268,7 @@ ${paymentDetails.zarinpalResponse?.refId ? `شماره مرجع: ${paymentDetail
     <div className="min-h-screen bg-gradient-to-br from-green-50 via-white to-blue-50" dir="rtl">
       <div className="container mx-auto px-4 py-8">
         {/* Success Header */}
-        <div className="text-center mb-8">
+        <div className="text-center mb-8 mt-20">
           <div className="w-24 h-24 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-4 animate-pulse">
             <FaCheckCircle className="text-white text-4xl" />
           </div>

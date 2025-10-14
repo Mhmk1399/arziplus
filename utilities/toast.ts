@@ -5,7 +5,7 @@ const toastStyles = {
   success: {
     background: 'rgba(34, 197, 94, 0.1)',
     backdropFilter: 'blur(12px)',
-    color: '#ffffff',
+    color: '#000000',
     border: '1px solid rgba(34, 197, 94, 0.3)',
     borderRadius: '16px',
     fontSize: '14px',
@@ -15,7 +15,7 @@ const toastStyles = {
   error: {
     background: 'rgba(239, 68, 68, 0.1)',
     backdropFilter: 'blur(12px)',
-    color: '#ffffff',
+    color: '#000000',
     border: '1px solid rgba(239, 68, 68, 0.3)',
     borderRadius: '16px',
     fontSize: '14px',
@@ -25,7 +25,7 @@ const toastStyles = {
   warning: {
     background: 'rgba(245, 158, 11, 0.1)',
     backdropFilter: 'blur(12px)',
-    color: '#ffffff',
+    color: '#000000',
     border: '1px solid rgba(245, 158, 11, 0.3)',
     borderRadius: '16px',
     fontSize: '14px',
@@ -35,7 +35,7 @@ const toastStyles = {
   info: {
     background: 'rgba(77, 191, 240, 0.1)',
     backdropFilter: 'blur(12px)',
-    color: '#ffffff',
+    color: '#000000',
     border: '1px solid rgba(77, 191, 240, 0.3)',
     borderRadius: '16px',
     fontSize: '14px',
@@ -45,7 +45,7 @@ const toastStyles = {
   loading: {
     background: 'rgba(156, 163, 175, 0.1)',
     backdropFilter: 'blur(12px)',
-    color: '#ffffff',
+    color: '#000000',
     border: '1px solid rgba(156, 163, 175, 0.3)',
     borderRadius: '16px',
     fontSize: '14px',
