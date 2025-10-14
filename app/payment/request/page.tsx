@@ -25,7 +25,7 @@ const PaymentRequestPage: React.FC = () => {
     description: searchParams.get('description') || '',
     serviceId: searchParams.get('serviceId') || '',
     orderId: searchParams.get('orderId') || '',
-    currency: 'IRR' as 'IRR' | 'IRT',
+    currency: 'IRT' as 'IRT' | 'IRT',
   });
 
   useEffect(() => {
@@ -44,17 +44,17 @@ const PaymentRequestPage: React.FC = () => {
     }));
   };
 
-  const formatAmount = (amount: number, currency: 'IRR' | 'IRT') => {
+  const formatAmount = (amount: number, currency: 'IRT' | 'IRT') => {
     if (currency === 'IRT') {
       return `${amount.toLocaleString('fa-IR')} تومان`;
     }
     return `${amount.toLocaleString('fa-IR')} ریال`;
   };
 
-  const convertCurrency = (amount: number, from: 'IRR' | 'IRT', to: 'IRR' | 'IRT') => {
+  const convertCurrency = (amount: number, from: 'IRT' | 'IRT', to: 'IRT' | 'IRT') => {
     if (from === to) return amount;
-    if (from === 'IRT' && to === 'IRR') return amount * 10;
-    if (from === 'IRR' && to === 'IRT') return amount / 10;
+    if (from === 'IRT' && to === 'IRT') return amount * 10;
+    if (from === 'IRT' && to === 'IRT') return amount / 10;
     return amount;
   };
 
@@ -155,7 +155,7 @@ const PaymentRequestPage: React.FC = () => {
   }
 
   const displayAmount = parseFloat(formData.amount.toString()) || 0;
-  const convertedAmount = convertCurrency(displayAmount, formData.currency, formData.currency === 'IRR' ? 'IRT' : 'IRR');
+  const convertedAmount = convertCurrency(displayAmount, formData.currency, formData.currency === 'IRT' ? 'IRT' : 'IRT');
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-orange-50" dir="rtl">
@@ -217,9 +217,9 @@ const PaymentRequestPage: React.FC = () => {
                   <div className="flex bg-gray-100 rounded-lg p-1">
                     <button
                       type="button"
-                      onClick={() => handleInputChange('currency', 'IRR')}
+                      onClick={() => handleInputChange('currency', 'IRT')}
                       className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${
-                        formData.currency === 'IRR'
+                        formData.currency === 'IRT'
                           ? 'bg-[#FF7A00] text-white'
                           : 'text-gray-600 hover:text-[#FF7A00]'
                       }`}
@@ -241,7 +241,7 @@ const PaymentRequestPage: React.FC = () => {
                   
                   {displayAmount > 0 && (
                     <div className="text-sm text-gray-600">
-                      معادل: {formatAmount(convertedAmount, formData.currency === 'IRR' ? 'IRT' : 'IRR')}
+                      معادل: {formatAmount(convertedAmount, formData.currency === 'IRT' ? 'IRT' : 'IRT')}
                     </div>
                   )}
                 </div>

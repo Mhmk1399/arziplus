@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import connect from "@/lib/data";
 import Payment from "@/models/payment";
+import Wallet from "@/models/wallet";
 import { ZarinPal } from "@/lib/zarinpal";
 
 export async function GET(request: NextRequest) {
@@ -86,6 +87,49 @@ export async function GET(request: NextRequest) {
         payment.paidAt = new Date();
 
         await payment.save();
+        
+        // Add to wallet as verified income
+        try {
+          let wallet = await Wallet.findOne({ userId: payment.user });
+          
+          if (!wallet) {
+            wallet = new Wallet({
+              userId: payment.user,
+              inComes: [],
+              outComes: [],
+              balance: [{ amount: 0, updatedAt: new Date() }]
+            });
+          }
+
+          // Add payment as verified income
+          wallet.inComes.push({
+            amount: payment.amount,
+            tag: 'zarinpal_payment',
+            description: `پرداخت ZarinPal - شناسه: ${authority}`,
+            date: new Date(),
+            status: 'verified',
+            verifiedAt: new Date()
+          });
+
+          // Update balance
+          const totalIncomes = wallet.inComes
+            .filter((income: any) => income.status === 'verified')
+            .reduce((sum: number, income: any) => sum + income.amount, 0);
+
+          const totalOutcomes = wallet.outComes
+            .filter((outcome: any) => outcome.status === 'verified')
+            .reduce((sum: number, outcome: any) => sum + outcome.amount, 0);
+
+          const newBalance = totalIncomes - totalOutcomes;
+          wallet.balance.push({ amount: newBalance, updatedAt: new Date() });
+
+          await wallet.save();
+          
+          console.log(`Payment added to wallet: ${authority}, amount: ${payment.amount}`);
+        } catch (walletError) {
+          console.error('Error updating wallet:', walletError);
+          // Don't fail the payment if wallet update fails
+        }
         
         console.log(`Payment verified successfully: ${authority}, redirecting to success page`);
 

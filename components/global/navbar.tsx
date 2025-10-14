@@ -262,7 +262,6 @@ export default function NewNavbar() {
       return `${user.firstName} ${user.lastName}`;
     }
     if (user.firstName) return user.firstName;
-    if (user.email) return user.email;
     return 'کاربر';
   };
 
@@ -404,7 +403,7 @@ export default function NewNavbar() {
                   {showUserDropdown && (
                     <div className="absolute left-0 mt-2 w-48 bg-white/95 backdrop-blur-sm border border-[#FF7A00]/20 rounded-xl shadow-2xl shadow-[#FF7A00]/10 overflow-hidden z-50">
                       <Link
-                        href="/admin"
+                        href="/dashboard"
                         onClick={() => setShowUserDropdown(false)}
                         className="flex items-center gap-3 px-4 py-3 text-[#0A1D37] hover:bg-gradient-to-r hover:from-[#FF7A00]/5 hover:to-[#4DBFF0]/5 transition-all duration-200"
                       >
@@ -739,7 +738,7 @@ export default function NewNavbar() {
                     <span className="font-bold text-[#0A1D37]">{getUserDisplayName()}</span>
                   </div>
                   <Link
-                    href="/admin"
+                    href="/dashboard"
                     onClick={toggleMobileMenu}
                     className="group relative w-full flex items-center justify-center gap-2 p-4 font-bold text-white overflow-hidden rounded-xl transition-all duration-300 hover:scale-105 shadow-lg"
                   >
