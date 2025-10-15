@@ -125,9 +125,6 @@ const AddAmountComponent: React.FC<AddAmountComponentProps> = ({
     try {
       const token = localStorage.getItem("authToken");
       
-      // Convert amount to Rial for API (Toman * 10 = Rial)
-      const apiAmount = amount * 10;
-      
       const response = await fetch("/api/payment/request", {
         method: "POST",
         headers: {
@@ -136,7 +133,7 @@ const AddAmountComponent: React.FC<AddAmountComponentProps> = ({
         },
         body: JSON.stringify({
           ...formData,
-          amount: apiAmount, // Always send in Rial to API
+          amount: amount, // Send in Toman directly
         }),
       });
 

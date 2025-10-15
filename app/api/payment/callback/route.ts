@@ -88,54 +88,94 @@ export async function GET(request: NextRequest) {
 
         await payment.save();
         
-        // Add to wallet as verified income
-        try {
-          let wallet = await Wallet.findOne({ userId: payment.user });
-          
-          if (!wallet) {
-            wallet = new Wallet({
-              userId: payment.user,
-              inComes: [],
-              outComes: [],
-              balance: [{ amount: 0, updatedAt: new Date() }]
+        // Check if this is a service payment
+        const isServicePayment = payment.metadata?.type === 'service_payment' && payment.serviceId;
+        
+        if (isServicePayment) {
+          // Handle service payment - create service request
+          try {
+            const ServiceRequest = (await import('@/models/request')).default;
+            
+            // Parse service data from metadata
+            const serviceData = payment.metadata?.serviceData ? JSON.parse(payment.metadata.serviceData) : {};
+            
+            const serviceRequest = new ServiceRequest({
+              service: payment.serviceId,
+              data: serviceData,
+              customer: payment.userId,
+              customerName: payment.metadata?.customerName || 'کاربر',
+              customerPhone: payment.metadata?.customerPhone || payment.metadata?.mobile,
+              paymentMethod: 'direct',
+              paymentAmount: payment.amount,
+              isPaid: true,
+              paymentId: payment._id,
+              authority: payment.authority,
+              refId: payment.refId,
             });
+
+            await serviceRequest.save();
+            console.log(`Service request created for payment: ${authority}, service: ${payment.serviceId}`);
+          } catch (serviceError) {
+            console.error('Error creating service request:', serviceError);
+            // Don't fail the payment if service request creation fails
           }
+        } else {
+          // Handle wallet top-up
+          try {
+            let wallet = await Wallet.findOne({ userId: payment.userId });
+            
+            if (!wallet) {
+              wallet = new Wallet({
+                userId: payment.userId,
+                inComes: [],
+                outComes: [],
+                balance: [{ amount: 0, updatedAt: new Date() }]
+              });
+            }
 
-          // Add payment as verified income
-          wallet.inComes.push({
-            amount: payment.amount,
-            tag: 'zarinpal_payment',
-            description: `پرداخت ZarinPal - شناسه: ${authority}`,
-            date: new Date(),
-            status: 'verified',
-            verifiedAt: new Date()
-          });
+            // Add payment as verified income
+            wallet.inComes.push({
+              amount: payment.amount,
+              tag: 'zarinpal_payment',
+              description: `پرداخت ZarinPal - شناسه: ${authority}`,
+              date: new Date(),
+              status: 'verified',
+              verifiedAt: new Date()
+            });
 
-          // Update balance
-          const totalIncomes = wallet.inComes
-            .filter((income: any) => income.status === 'verified')
-            .reduce((sum: number, income: any) => sum + income.amount, 0);
+            // Update balance
+            const totalIncomes = wallet.inComes
+              .filter((income: any) => income.status === 'verified')
+              .reduce((sum: number, income: any) => sum + income.amount, 0);
 
-          const totalOutcomes = wallet.outComes
-            .filter((outcome: any) => outcome.status === 'verified')
-            .reduce((sum: number, outcome: any) => sum + outcome.amount, 0);
+            const totalOutcomes = wallet.outComes
+              .filter((outcome: any) => outcome.status === 'verified')
+              .reduce((sum: number, outcome: any) => sum + outcome.amount, 0);
 
-          const newBalance = totalIncomes - totalOutcomes;
-          wallet.balance.push({ amount: newBalance, updatedAt: new Date() });
+            const newBalance = totalIncomes - totalOutcomes;
+            wallet.balance.push({ amount: newBalance, updatedAt: new Date() });
 
-          await wallet.save();
-          
-          console.log(`Payment added to wallet: ${authority}, amount: ${payment.amount}`);
-        } catch (walletError) {
-          console.error('Error updating wallet:', walletError);
-          // Don't fail the payment if wallet update fails
+            await wallet.save();
+            
+            console.log(`Payment added to wallet: ${authority}, amount: ${payment.amount}`);
+          } catch (walletError) {
+            console.error('Error updating wallet:', walletError);
+            // Don't fail the payment if wallet update fails
+          }
         }
         
         console.log(`Payment verified successfully: ${authority}, redirecting to success page`);
 
-        return NextResponse.redirect(
-          new URL(`/payment/success?Authority=${authority}&Status=OK`, request.url)
-        );
+        // Redirect based on payment type
+        if (isServicePayment) {
+          return NextResponse.redirect(
+            new URL(`/payment/success?Authority=${authority}&Status=OK&type=service&service=${encodeURIComponent(payment.metadata?.serviceTitle || '')}`, request.url)
+          );
+        } else {
+          return NextResponse.redirect(
+            new URL(`/payment/success?Authority=${authority}&Status=OK&type=wallet`, request.url)
+          );
+        }
       } else if (verifyResponse.data.code === 101) {
         // Already verified
         payment.status = 'verified';

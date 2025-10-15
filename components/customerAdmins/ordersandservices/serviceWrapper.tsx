@@ -301,7 +301,7 @@ const ServiceWrapper: React.FC<ServiceWrapperProps> = ({
         </div>
 
         {/* Content Area */}
-        <div className="bg-white/50 backdrop-blur-sm border border-white/20 rounded-2xl overflow-hidden shadow-xl">
+        <div className=" backdrop-blur-sm border border-white/20 rounded-2xl overflow-hidden ">
           {/* Tab Content */}
           <div className="min-h-[600px]">
             <ActiveComponent />

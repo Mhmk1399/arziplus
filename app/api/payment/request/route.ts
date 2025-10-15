@@ -14,12 +14,12 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const { amount, description, serviceId, orderId, currency = 'IRR' } = await request.json();
+    const { amount, description, serviceId, orderId, currency = 'IRT', metadata } = await request.json();
 
     // Validation
-    if (!amount || amount < 1000) {
+    if (!amount || amount < 100) {
       return NextResponse.json(
-        { error: "مبلغ باید حداقل ۱۰۰۰ ریال باشد" },
+        { error: "مبلغ باید حداقل ۱۰۰ تومان باشد" },
         { status: 400 }
       );
     }
@@ -92,6 +92,7 @@ export async function POST(request: NextRequest) {
       metadata: {
         mobile: authUser.phone,
         order_id: orderId,
+        ...metadata // Include additional metadata from request
       },
     });
 

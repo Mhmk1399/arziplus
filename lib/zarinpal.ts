@@ -12,7 +12,7 @@ export interface PaymentRequestData {
   amount: number;
   description: string;
   callback_url: string;
-  currency?: 'IRR' | 'IRT';
+  currency?: 'IRT';
   metadata?: {
     mobile?: string;
     email?: string;
@@ -57,7 +57,7 @@ export class ZarinPal {
         amount: data.amount,
         description: data.description,
         callback_url: data.callback_url,
-        currency: data.currency || 'IRR',
+        currency: data.currency || 'IRT',
         metadata: data.metadata || {},
       };
 
@@ -117,11 +117,8 @@ export class ZarinPal {
     return `${ZARINPAL_GATEWAY_URL}${authority}`;
   }
 
-  static formatAmount(amount: number, currency: 'IRR' | 'IRT' = 'IRR'): string {
-    if (currency === 'IRT') {
-      return `${amount.toLocaleString('fa-IR')} تومان`;
-    }
-    return `${amount.toLocaleString('fa-IR')} ریال`;
+  static formatAmount(amount: number, currency: 'IRT' = 'IRT'): string {
+    return `${amount.toLocaleString('fa-IR')} تومان`;
   }
 
   static getStatusMessage(code: number): string {

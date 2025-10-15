@@ -10,6 +10,8 @@ import { estedadBold } from "@/next-persian-fonts/estedad/index";
 import { showToast } from "@/utilities/toast";
 import FileUploaderModal from "@/components/FileUploaderModal";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
+import PaymentMethodSelector from "@/components/payment/PaymentMethodSelector";
+import CardPaymentModal from "@/components/payment/CardPaymentModal";
 
 // Service Field interface matching ServiceRenderer
 interface ServiceField {
@@ -232,6 +234,9 @@ export default function ServiceDetailPage() {
   const [submitting, setSubmitting] = useState(false);
   const [isFileModalOpen, setIsFileModalOpen] = useState(false);
   const [currentFileField, setCurrentFileField] = useState<string | null>(null);
+  const [showPaymentSelector, setShowPaymentSelector] = useState(false);
+  const [showCardPaymentModal, setShowCardPaymentModal] = useState(false);
+  const [walletBalance, setWalletBalance] = useState(0);
   const { user: currentUser } = useCurrentUser();
 
   // Fetch service using SWR
@@ -243,12 +248,40 @@ export default function ServiceDetailPage() {
     }
   );
 
+  // Fetch wallet balance
+  const fetchWalletBalance = async () => {
+    if (!currentUser) return;
+    
+    try {
+      const token = localStorage.getItem("authToken");
+      const response = await fetch("/api/wallet", {
+        headers: {
+          "Authorization": `Bearer ${token}`,
+        },
+      });
+      
+      if (response.ok) {
+        const data = await response.json();
+        setWalletBalance(data.balance || 0);
+      }
+    } catch (error) {
+      console.error("Error fetching wallet balance:", error);
+    }
+  };
+
   // Show helper modal when service loads and has helper text
   useEffect(() => {
     if (service && service.helper && !helperRead) {
       setShowHelperModal(true);
     }
   }, [service, helperRead]);
+
+  // Fetch wallet balance when user loads
+  useEffect(() => {
+    if (currentUser) {
+      fetchWalletBalance();
+    }
+  }, [currentUser]);
 
   const handleHelperClose = () => {
     setShowHelperModal(false);
@@ -541,7 +574,7 @@ export default function ServiceDetailPage() {
     );
   };
 
-  // Handle form submission
+  // Handle form submission - now shows payment selection
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -552,50 +585,188 @@ export default function ServiceDetailPage() {
 
     if (!validateForm()) return;
 
+    // Show payment method selection
+    setShowPaymentSelector(true);
+  };
+
+  // Handle payment method selection
+  const handlePaymentMethodSelect = async (paymentMethod: 'wallet' | 'direct' | 'card') => {
+    setShowPaymentSelector(false);
     setSubmitting(true);
+
     try {
-      const customerName =
-        currentUser.firstName && currentUser.lastName
-          ? `${currentUser.firstName} ${currentUser.lastName}`
-          : currentUser.firstName || "نام مشتری";
-
-      const requestData = {
-        service: service._id,
-        data: formData,
-        customer: currentUser.id,
-        customerName,
-        customerPhone: currentUser.phone,
-      };
-
-      const token = localStorage.getItem("authToken");
-      const headers: Record<string, string> = {
-        "Content-Type": "application/json",
-      };
-
-      if (token) {
-        headers.Authorization = `Bearer ${token}`;
-      }
-
-      const response = await fetch("/api/service-requests", {
-        method: "POST",
-        headers,
-        body: JSON.stringify(requestData),
-      });
-
-      const result = await response.json();
-
-      if (result.success) {
-        showToast.success(`درخواست شما برای ${service.title} با موفقیت ثبت شد`);
-        setFormData({});
-      } else {
-        showToast.error(result.message || "خطا در ثبت درخواست");
+      if (paymentMethod === 'wallet') {
+        await handleWalletPayment();
+      } else if (paymentMethod === 'direct') {
+        await handleDirectPayment();
+      } else if (paymentMethod === 'card') {
+        handleCardPayment();
       }
     } catch (error) {
-      showToast.error("خطا در ثبت درخواست");
-      console.error("Error:", error);
+      console.error("Payment error:", error);
+      showToast.error("خطا در پردازش پرداخت");
     } finally {
       setSubmitting(false);
     }
+  };
+
+  // Handle wallet payment
+  const handleWalletPayment = async () => {
+    try {
+      // Check wallet balance
+      if (walletBalance < service!.fee) {
+        showToast.error("موجودی کیف پول کافی نیست");
+        // Redirect to wallet page
+        window.location.href = "/dashboard?tab=wallet";
+        return;
+      }
+
+      // Create request with wallet payment
+      await createServiceRequest('wallet', service!.fee);
+      
+      showToast.success(`درخواست با پرداخت کیف پول ثبت شد. مبلغ ${service!.fee.toLocaleString()} تومان از کیف پول کسر گردید.`);
+      
+      // Update wallet balance
+      setWalletBalance(prev => prev - service!.fee);
+      setFormData({});
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  // Handle direct payment
+  const handleDirectPayment = async () => {
+    try {
+      const token = localStorage.getItem("authToken");
+      
+      // Prepare payment data similar to addamount.tsx
+      const paymentData = {
+        amount: service!.fee, // Send in Toman directly
+        description: `پرداخت خدمت: ${service!.title}`,
+        serviceId: service!._id,
+        orderId: `SERVICE-${Date.now()}`, // Generate unique order ID
+        currency: 'IRT',
+        // Store service request data in metadata for processing after payment
+        metadata: {
+          mobile: currentUser!.phone,
+          order_id: `SERVICE-${Date.now()}`,
+          serviceData: JSON.stringify(formData), // Service form data
+          customerName: currentUser!.firstName && currentUser!.lastName
+            ? `${currentUser!.firstName} ${currentUser!.lastName}`
+            : currentUser!.firstName || "کاربر",
+          customerPhone: currentUser!.phone,
+          serviceTitle: service!.title,
+          serviceSlug: service!.slug,
+          type: 'service_payment' // Mark as service payment
+        }
+      };
+      
+      // Call payment request API like addamount.tsx does
+      const response = await fetch("/api/payment/request", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(paymentData),
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.success) {
+        // Check if this is a duplicate payment
+        if (data.data.duplicate) {
+          if (data.data.redirectTo) {
+            // Already verified payment, redirect to success page
+            showToast.info("پرداخت قبلاً انجام شده است");
+            return;
+          } else {
+            // Pending duplicate, show warning and redirect to existing payment
+            showToast.warning("درخواست پرداخت تکراری - به درگاه موجود منتقل می‌شوید");
+          }
+        } else {
+          showToast.success("درخواست پرداخت با موفقیت ایجاد شد");
+        }
+        
+        // Redirect to ZarinPal payment portal
+        if (data.data.paymentUrl) {
+          window.location.href = data.data.paymentUrl;
+        }
+      } else {
+        showToast.error(data.error || "خطا در ایجاد درخواست پرداخت");
+      }
+    } catch (error) {
+      console.error("Payment request error:", error);
+      showToast.error("خطا در اتصال به سرور");
+      throw error;
+    }
+  };
+
+  // Handle card payment
+  const handleCardPayment = () => {
+    setShowCardPaymentModal(true);
+  };
+
+  // Handle card payment completion
+  const handleCardPaymentComplete = async (receiptUrl: string) => {
+    try {
+      setShowCardPaymentModal(false);
+      setSubmitting(true);
+
+      // Create request with card payment receipt
+      await createServiceRequest('card', service!.fee, true, receiptUrl);
+      
+      showToast.success(`درخواست با واریز کارت به کارت ثبت شد. پس از تأیید رسید، درخواست پردازش خواهد شد.`);
+      setFormData({});
+    } catch (error) {
+      console.error("Card payment error:", error);
+      showToast.error("خطا در ثبت درخواست");
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  // Create service request
+  const createServiceRequest = async (paymentMethod: string, amount: number, isPaid: boolean = true, receiptUrl?: string) => {
+    const customerName =
+      currentUser!.firstName && currentUser!.lastName
+        ? `${currentUser!.firstName} ${currentUser!.lastName}`
+        : currentUser!.firstName || "نام مشتری";
+
+    const requestData = {
+      service: service!._id,
+      data: formData,
+      customer: currentUser!.id,
+      customerName,
+      customerPhone: currentUser!.phone,
+      paymentMethod,
+      paymentAmount: amount,
+      isPaid,
+      receiptUrl, // For card payments
+    };
+
+    const token = localStorage.getItem("authToken");
+    const headers: Record<string, string> = {
+      "Content-Type": "application/json",
+    };
+
+    if (token) {
+      headers.Authorization = `Bearer ${token}`;
+    }
+
+    const response = await fetch("/api/service-requests", {
+      method: "POST",
+      headers,
+      body: JSON.stringify(requestData),
+    });
+
+    const result = await response.json();
+
+    if (!result.success) {
+      throw new Error(result.message || "خطا در ثبت درخواست");
+    }
+
+    return result;
   };
 
   if (isLoading) {
@@ -750,6 +921,47 @@ export default function ServiceDetailPage() {
         ]}
         maxFileSize={10 * 1024 * 1024} // 10MB
         title="آپلود فایل"
+      />
+      
+      {/* Payment Method Selection Modal */}
+      {showPaymentSelector && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg p-6 max-w-md w-full">
+            <PaymentMethodSelector
+              amount={service?.fee || 0}
+              walletBalance={walletBalance}
+              onPaymentMethodSelect={(method) => {
+                setShowPaymentSelector(false);
+                if (method === 'wallet') {
+                  handleWalletPayment();
+                } else if (method === 'direct') {
+                  handleDirectPayment();
+                } else if (method === 'card') {
+                  handleCardPayment();
+                }
+              }}
+              isWalletEnabled={walletBalance >= (service?.fee || 0)}
+            />
+            <button
+              onClick={() => setShowPaymentSelector(false)}
+              className="mt-4 w-full bg-gray-500 text-white py-2 px-4 rounded-lg hover:bg-gray-600 transition-colors"
+            >
+              انصراف
+            </button>
+          </div>
+        </div>
+      )}
+      
+      {/* Card Payment Modal */}
+      <CardPaymentModal
+        isOpen={showCardPaymentModal}
+        onClose={() => setShowCardPaymentModal(false)}
+        amount={service?.fee || 0}
+        serviceName={service?.title || ''}
+        onPaymentComplete={async (receiptUrl: string) => {
+          await createServiceRequest('card', service?.fee || 0, true, receiptUrl);
+          setShowCardPaymentModal(false);
+        }}
       />
     </>
   );

@@ -5,7 +5,7 @@ export interface IPayment extends Document {
   orderId?: string;
   serviceId?: string;
   amount: number;
-  currency: 'IRR' | 'IRT';
+  currency: 'IRT';
   description: string;
   status: 'pending' | 'paid' | 'failed' | 'cancelled' | 'verified' | 'refunded';
   authority?: string;
@@ -45,8 +45,8 @@ const PaymentSchema: Schema = new Schema({
   },
   currency: {
     type: String,
-    enum: ['IRR', 'IRT'],
-    default: 'IRR',
+    enum: ['IRT'],
+    default: 'IRT',
   },
   description: {
     type: String,

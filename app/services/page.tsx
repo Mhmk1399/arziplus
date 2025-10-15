@@ -63,7 +63,7 @@ const groupServicesByCategory = (services: Service[]) => {
 // Service Card Component
 const ServiceCard = ({ service }: { service: Service }) => {
   return (
-    <div className="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
+    <div className="group relative overflow-hidden  transition-all duration-300 transform hover:scale-105">
       {/* Service Image */}
       <div className="relative h-64 w-full">
         <Image

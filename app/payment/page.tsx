@@ -80,11 +80,8 @@ const PaymentDashboard: React.FC = () => {
     }
   };
 
-  const formatAmount = (amount: number, currency: 'IRR' | 'IRT' = 'IRR') => {
-    if (currency === 'IRT') {
-      return `${amount.toLocaleString('fa-IR')} تومان`;
-    }
-    return `${amount.toLocaleString('fa-IR')} ریال`;
+  const formatAmount = (amount: number, currency: 'IRT' = 'IRT') => {
+    return `${amount.toLocaleString('fa-IR')} تومان`;
   };
 
   const formatDate = (dateString: string) => {

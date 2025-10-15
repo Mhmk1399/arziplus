@@ -6,7 +6,6 @@ const RequestSchema = new mongoose.Schema({
   
   // Customer information
   customer: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-  customerEmail: { type: String }, // Cache customer email for quick access
   customerName: { type: String }, // Cache customer name for quick access
   
   // Request status tracking
@@ -58,20 +57,6 @@ const RequestSchema = new mongoose.Schema({
   timestamps: true // This adds createdAt and updatedAt automatically
 });
 
-// Generate unique request number before saving
-RequestSchema.pre('save', async function(next) {
-  if (this.isNew && !this.requestNumber) {
-    const year = new Date().getFullYear();
-    const count = await mongoose.models.Request.countDocuments({
-      createdAt: {
-        $gte: new Date(year, 0, 1),
-        $lt: new Date(year + 1, 0, 1)
-      }
-    });
-    this.requestNumber = `REQ-${year}-${String(count + 1).padStart(3, '0')}`;
-  }
-  next();
-});
 
 
 

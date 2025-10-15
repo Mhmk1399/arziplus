@@ -16,51 +16,45 @@ import {
 const PaymentRequestPage: React.FC = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { user: currentUser, isLoggedIn, loading: userLoading } = useCurrentUser();
-  
+  const {
+    user: currentUser,
+    isLoggedIn,
+    loading: userLoading,
+  } = useCurrentUser();
+
   const [loading, setLoading] = useState(false);
   const [lastSubmitTime, setLastSubmitTime] = useState(0);
   const [formData, setFormData] = useState({
-    amount: searchParams.get('amount') || '',
-    description: searchParams.get('description') || '',
-    serviceId: searchParams.get('serviceId') || '',
-    orderId: searchParams.get('orderId') || '',
-    currency: 'IRT' as 'IRT' | 'IRT',
+    amount: searchParams.get("amount") || "",
+    description: searchParams.get("description") || "",
+    serviceId: searchParams.get("serviceId") || "",
+    orderId: searchParams.get("orderId") || "",
+    currency: "IRT" as "IRT" | "IRT",
   });
 
   useEffect(() => {
     // Wait for user loading to complete before checking authentication
     if (userLoading) return;
-    
+
     if (!isLoggedIn) {
       router.push("/auth/sms");
     }
   }, [isLoggedIn, userLoading, router]);
 
   const handleInputChange = (field: string, value: string | number) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       [field]: value,
     }));
   };
 
-  const formatAmount = (amount: number, currency: 'IRT' | 'IRT') => {
-    if (currency === 'IRT') {
-      return `${amount.toLocaleString('fa-IR')} تومان`;
-    }
-    return `${amount.toLocaleString('fa-IR')} ریال`;
-  };
-
-  const convertCurrency = (amount: number, from: 'IRT' | 'IRT', to: 'IRT' | 'IRT') => {
-    if (from === to) return amount;
-    if (from === 'IRT' && to === 'IRT') return amount * 10;
-    if (from === 'IRT' && to === 'IRT') return amount / 10;
-    return amount;
+  const formatAmount = (amount: number, currency: "IRT" = "IRT") => {
+    return `${amount.toLocaleString("fa-IR")} تومان`;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     // Prevent multiple rapid submissions (5 second cooldown)
     const now = Date.now();
     if (now - lastSubmitTime < 5000) {
@@ -68,21 +62,21 @@ const PaymentRequestPage: React.FC = () => {
       return;
     }
     setLastSubmitTime(now);
-    
+
     if (!currentUser) {
       showToast.error("لطفاً وارد حساب کاربری خود شوید");
       return;
     }
 
     const amount = parseFloat(formData.amount.toString());
-    
+
     if (!amount || amount <= 0) {
       showToast.error("لطفاً مبلغ معتبر وارد کنید");
       return;
     }
 
-    if (amount < 1000) {
-      showToast.error("حداقل مبلغ پرداخت ۱۰۰۰ ریال است");
+    if (amount < 100) {
+      showToast.error("حداقل مبلغ پرداخت ۱۰۰ تومان است");
       return;
     }
 
@@ -116,12 +110,14 @@ const PaymentRequestPage: React.FC = () => {
             return;
           } else {
             // Pending duplicate, show warning and redirect to existing payment
-            showToast.warning("درخواست پرداخت تکراری - به درگاه موجود منتقل می‌شوید");
+            showToast.warning(
+              "درخواست پرداخت تکراری - به درگاه موجود منتقل می‌شوید"
+            );
           }
         } else {
           showToast.success("درخواست پرداخت با موفقیت ایجاد شد");
         }
-        
+
         // Redirect to ZarinPal (or existing payment URL)
         if (data.data.paymentUrl) {
           window.location.href = data.data.paymentUrl;
@@ -140,7 +136,10 @@ const PaymentRequestPage: React.FC = () => {
   // Show loading while checking authentication
   if (userLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 flex items-center justify-center" dir="rtl">
+      <div
+        className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 flex items-center justify-center"
+        dir="rtl"
+      >
         <div className="text-center">
           <FaSpinner className="animate-spin text-4xl text-[#FF7A00] mx-auto mb-4" />
           <p className="text-gray-600">در حال بررسی احراز هویت...</p>
@@ -155,17 +154,21 @@ const PaymentRequestPage: React.FC = () => {
   }
 
   const displayAmount = parseFloat(formData.amount.toString()) || 0;
-  const convertedAmount = convertCurrency(displayAmount, formData.currency, formData.currency === 'IRT' ? 'IRT' : 'IRT');
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-orange-50" dir="rtl">
+    <div
+      className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-orange-50"
+      dir="rtl"
+    >
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
         <div className="text-center mb-8 mt-20">
           <div className="w-20 h-20 bg-gradient-to-r from-[#FF7A00] to-[#4DBFF0] rounded-full flex items-center justify-center mx-auto mb-4">
             <FaCreditCard className="text-white text-3xl" />
           </div>
-          <h1 className="text-3xl font-bold text-[#0A1D37] mb-2">درخواست پرداخت</h1>
+          <h1 className="text-3xl font-bold text-[#0A1D37] mb-2">
+            درخواست پرداخت
+          </h1>
           <p className="text-gray-600">از درگاه امن زرین‌پال</p>
         </div>
 
@@ -175,7 +178,7 @@ const PaymentRequestPage: React.FC = () => {
             <div className="flex items-center gap-4">
               <div className="w-12 h-12 bg-gradient-to-r from-[#FF7A00]/20 to-[#4DBFF0]/20 rounded-full flex items-center justify-center">
                 <span className="text-[#FF7A00] font-bold text-lg">
-                  {(currentUser.firstName || 'ک').charAt(0)}
+                  {(currentUser.firstName || "ک").charAt(0)}
                 </span>
               </div>
               <div>
@@ -204,44 +207,50 @@ const PaymentRequestPage: React.FC = () => {
                   <input
                     type="number"
                     value={formData.amount}
-                    onChange={(e) => handleInputChange('amount', e.target.value)}
+                    onChange={(e) =>
+                      handleInputChange("amount", e.target.value)
+                    }
                     className="w-full pr-12 pl-4 py-4 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all"
                     placeholder="مبلغ را وارد کنید"
-                    min="1000"
+                    min="100"
                     required
                   />
                 </div>
-                
+
                 {/* Currency Toggle */}
                 <div className="flex items-center gap-4 mt-3">
                   <div className="flex bg-gray-100 rounded-lg p-1">
                     <button
                       type="button"
-                      onClick={() => handleInputChange('currency', 'IRT')}
+                      onClick={() => handleInputChange("currency", "IRT")}
                       className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${
-                        formData.currency === 'IRT'
-                          ? 'bg-[#FF7A00] text-white'
-                          : 'text-gray-600 hover:text-[#FF7A00]'
+                        formData.currency === "IRT"
+                          ? "bg-[#FF7A00] text-white"
+                          : "text-gray-600 hover:text-[#FF7A00]"
                       }`}
                     >
                       ریال
                     </button>
                     <button
                       type="button"
-                      onClick={() => handleInputChange('currency', 'IRT')}
+                      onClick={() => handleInputChange("currency", "IRT")}
                       className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${
-                        formData.currency === 'IRT'
-                          ? 'bg-[#FF7A00] text-white'
-                          : 'text-gray-600 hover:text-[#FF7A00]'
+                        formData.currency === "IRT"
+                          ? "bg-[#FF7A00] text-white"
+                          : "text-gray-600 hover:text-[#FF7A00]"
                       }`}
                     >
                       تومان
                     </button>
                   </div>
-                  
+
                   {displayAmount > 0 && (
                     <div className="text-sm text-gray-600">
-                      معادل: {formatAmount(convertedAmount, formData.currency === 'IRT' ? 'IRT' : 'IRT')}
+                      معادل:{" "}
+                      {formatAmount(
+                        displayAmount,
+                        formData.currency === "IRT" ? "IRT" : "IRT"
+                      )}
                     </div>
                   )}
                 </div>
@@ -256,7 +265,9 @@ const PaymentRequestPage: React.FC = () => {
                   <FaInfoCircle className="absolute right-4 top-4 text-[#FF7A00]" />
                   <textarea
                     value={formData.description}
-                    onChange={(e) => handleInputChange('description', e.target.value)}
+                    onChange={(e) =>
+                      handleInputChange("description", e.target.value)
+                    }
                     className="w-full pr-12 pl-4 py-4 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all resize-none"
                     placeholder="توضیحات مربوط به پرداخت را وارد کنید"
                     rows={3}
@@ -278,12 +289,14 @@ const PaymentRequestPage: React.FC = () => {
                   <input
                     type="text"
                     value={formData.serviceId}
-                    onChange={(e) => handleInputChange('serviceId', e.target.value)}
+                    onChange={(e) =>
+                      handleInputChange("serviceId", e.target.value)
+                    }
                     className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all"
                     placeholder="شناسه سرویس"
                   />
                 </div>
-                
+
                 <div>
                   <label className="block text-sm font-medium text-[#0A1D37] mb-2">
                     شماره سفارش (اختیاری)
@@ -291,7 +304,9 @@ const PaymentRequestPage: React.FC = () => {
                   <input
                     type="text"
                     value={formData.orderId}
-                    onChange={(e) => handleInputChange('orderId', e.target.value)}
+                    onChange={(e) =>
+                      handleInputChange("orderId", e.target.value)
+                    }
                     className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all"
                     placeholder="شماره سفارش"
                   />
@@ -308,7 +323,7 @@ const PaymentRequestPage: React.FC = () => {
                   <FaArrowLeft className="text-sm" />
                   بازگشت
                 </button>
-                
+
                 <button
                   type="submit"
                   disabled={loading}

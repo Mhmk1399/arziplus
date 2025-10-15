@@ -161,7 +161,7 @@ const Dashboard: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100" dir="rtl">
+    <div className="min-h-screen bg-gradient-to-br" dir="rtl">
       {/* Mobile Sidebar Overlay */}
       {sidebarOpen && (
         <div
