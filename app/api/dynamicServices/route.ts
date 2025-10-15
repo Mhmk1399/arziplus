@@ -69,11 +69,13 @@ export async function GET(request: NextRequest) {
     await connect();
     const { searchParams } = new URL(request.url);
     const id = searchParams.get("id");
+    const slug = searchParams.get("slug");
     const isActive = searchParams.get("isActive");
     const search = searchParams.get("search");
     const page = parseInt(searchParams.get("page") || "1");
     const limit = parseInt(searchParams.get("limit") || "10");
 
+    // Fetch by ID
     if (id) {
       if (!mongoose.Types.ObjectId.isValid(id)) {
         return NextResponse.json(
@@ -102,6 +104,30 @@ export async function GET(request: NextRequest) {
       }
 
       return NextResponse.json({ success: true, data: services });
+    }
+
+    // Fetch by slug
+    if (slug) {
+      const service = await DynamicService.findOne({ slug });
+      if (!service) {
+        return NextResponse.json(
+          { success: false, message: "service not found" },
+          { status: 404 }
+        );
+      }
+
+      // Transform legacy data - map items to options for backwards compatibility
+      if (service.fields) {
+        service.fields = service.fields.map((field: ServiceField) => {
+          if (field.items && !field.options) {
+            field.options = field.items;
+            delete field.items;
+          }
+          return field;
+        });
+      }
+
+      return NextResponse.json({ success: true, data: service });
     }
 
     // Build query filters

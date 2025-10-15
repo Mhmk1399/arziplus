@@ -11,7 +11,7 @@ import { useCurrentUser } from "@/hooks/useCurrentUser";
 import { showToast } from "@/utilities/toast";
 
 // Import customer components
-import ServiceRenderer from "./ServiceRenderer";
+import ServicesPage from "@/app/services/page";
 import CustomerRequestsTable from "./orderHistory";
 import TermsPage from "./TermsPage";
 
@@ -92,7 +92,7 @@ const ServiceWrapper: React.FC<ServiceWrapperProps> = ({
       label: "خدمات",
       icon: <FaShoppingCart className="text-lg" />,
       description: "مشاهده و سفارش خدمات",
-      component: ServiceRenderer,
+      component: ServicesPage,
     },
     {
       id: "orders" as const,
@@ -253,7 +253,7 @@ const ServiceWrapper: React.FC<ServiceWrapperProps> = ({
   }
 
   const ActiveComponent =
-    tabs.find((tab) => tab.id === activeTab)?.component || ServiceRenderer;
+    tabs.find((tab) => tab.id === activeTab)?.component || ServicesPage;
 
   return (
     <div className={`min-h-screen  ${className}`} dir="rtl">
