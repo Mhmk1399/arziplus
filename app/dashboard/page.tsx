@@ -1,7 +1,7 @@
 'use client'
 import React, { useState, useEffect } from "react";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import {
   FaUsers,
   FaServicestack,
@@ -14,6 +14,7 @@ import {
   FaHome,
   FaSignOutAlt,
   FaBell,
+  FaWallet,
 } from "react-icons/fa";
 import { showToast } from "@/utilities/toast";
 
@@ -22,6 +23,7 @@ import UserWrapper from "@/components/admin/users/userWrapper";
 import AdminServiceWrapper from "@/components/admin/services&orders/adminserviceWrapper";
 import ServiceWrapper from "@/components/customerAdmins/ordersandservices/serviceWrapper";
 import CredentialWrapper from "@/components/customerAdmins/credintials/credintialWrapper";
+import WalletWrapper from "@/components/customerAdmins/wallet/walletWrapper";
 
 interface MenuItem {
   id: string;
@@ -38,6 +40,7 @@ const Dashboard: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const { user: currentUser, isLoggedIn, loading: userLoading } = useCurrentUser();
   const router = useRouter();
+  const searchParams = useSearchParams();
 
   // Check authentication and redirect if needed
   useEffect(() => {
@@ -65,13 +68,32 @@ const Dashboard: React.FC = () => {
     console.log("User is logged in:", currentUser);
     setLoading(false);
     
-    // Set default menu item based on role
-    if (currentUser.roles.includes("admin") || currentUser.roles.includes("super_admin")) {
-      setSelectedMenuItem("users");
+    // Check for URL parameters
+    const tabParam = searchParams.get('tab');
+    
+    // Set menu item based on URL parameter or user role
+    if (tabParam) {
+      // Validate the tab parameter against available menu items
+      const isAdmin = currentUser.roles.includes("admin") || currentUser.roles.includes("super_admin");
+      const validTabs = isAdmin 
+        ? ["users", "admin-services"] 
+        : ["services", "wallet", "credentials"];
+      
+      if (validTabs.includes(tabParam)) {
+        setSelectedMenuItem(tabParam);
+      } else {
+        // Invalid tab, set default
+        setSelectedMenuItem(isAdmin ? "users" : "services");
+      }
     } else {
-      setSelectedMenuItem("services");
+      // No tab parameter, set default based on role
+      if (currentUser.roles.includes("admin") || currentUser.roles.includes("super_admin")) {
+        setSelectedMenuItem("users");
+      } else {
+        setSelectedMenuItem("services");
+      }
     }
-  }, [isLoggedIn, currentUser, userLoading, router]);
+  }, [isLoggedIn, currentUser, userLoading, router, searchParams]);
 
   // Admin menu items
   const adminMenuItems: MenuItem[] = [
@@ -99,6 +121,13 @@ const Dashboard: React.FC = () => {
       icon: <FaClipboardList className="text-lg" />,
       component: ServiceWrapper,
       description: "مشاهده خدمات و سفارشات",
+    },
+    {
+      id: "wallet",
+      label: "کیف پول",
+      icon: <FaWallet className="text-lg" />,
+      component: WalletWrapper,
+      description: "مدیریت موجودی و تراکنش‌ها",
     },
     {
       id: "credentials",
@@ -302,7 +331,14 @@ const Dashboard: React.FC = () => {
 
         {/* Page Content */}
         <div className="min-h-screen">
-          <ActiveComponent />
+          {selectedMenuItem === "wallet" ? (
+            <WalletWrapper 
+              initialTab={searchParams.get('walletTab') as any || "dashboard"}
+              className="mx-4 my-32" 
+            />
+          ) : (
+            <ActiveComponent />
+          )}
         </div>
       </div>
     </div>

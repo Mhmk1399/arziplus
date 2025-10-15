@@ -284,7 +284,7 @@ const WalletWrapper: React.FC<WalletWrapperProps> = ({
         : currentUser.firstName || "کاربر عزیز";
 
     return (
-      <div className="backdrop-blur-sm rounded-2xl p-6 mb-8">
+      <div className="backdrop-blur-sm rounded-2xl px-6 mt-24 mb-8">
         <div className="flex items-center justify-between flex-wrap gap-4">
           <div className="flex items-center gap-4">
             <div className="w-12 h-12 rounded-full flex items-center justify-center">
