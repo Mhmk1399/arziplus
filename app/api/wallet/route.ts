@@ -26,6 +26,7 @@ async function getUserFromToken(request: NextRequest) {
 
     return user;
   } catch (error) {
+    console.error("JWT verification error:", error);
     throw new Error("Invalid token");
   }
 }

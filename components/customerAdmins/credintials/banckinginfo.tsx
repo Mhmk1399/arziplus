@@ -11,6 +11,7 @@ import { estedadBold } from "@/next-persian-fonts/estedad/index";
 import { showToast } from "@/utilities/toast";
 
 interface BankingInfoData {
+  _id?: string; // Add ID for existing banking info
   bankName: string;
   cardNumber: string;
   shebaNumber: string;
@@ -31,6 +32,7 @@ const BankingInfo = ({
   onValidationChange,
 }: BankingInfoProps) => {
   const [formData, setFormData] = useState<BankingInfoData>({
+    _id: initialData?._id || undefined,
     bankName: initialData?.bankName || "",
     cardNumber: initialData?.cardNumber || "",
     shebaNumber: initialData?.shebaNumber || "",
@@ -117,18 +119,27 @@ const BankingInfo = ({
     try {
       const token = localStorage.getItem("authToken");
       
+      // Check if this is an update (has _id) or create new
+      const isUpdate = !!formData._id;
+      const method = isUpdate ? "PATCH" : "POST";
+      
       // Clean and format data before sending
-      const requestData = {
+      const requestData: any = {
         bankName: formData.bankName.trim(),
         cardNumber: formData.cardNumber.replace(/\s/g, ""), // Remove spaces from card number
         shebaNumber: formData.shebaNumber.trim().toUpperCase(),
         accountHolderName: formData.accountHolderName.trim(),
       };
 
-      console.log("Sending banking data:", requestData); // Debug log
+      // Add bankingInfoId for updates
+      if (isUpdate) {
+        requestData.bankingInfoId = formData._id;
+      }
+
+      console.log(`${isUpdate ? 'Updating' : 'Creating'} banking data:`, requestData); // Debug log
       
       const response = await fetch("/api/users/banckingifo", {
-        method: "POST",
+        method,
         headers: {
           "Authorization": `Bearer ${token}`,
           "Content-Type": "application/json",
@@ -143,9 +154,16 @@ const BankingInfo = ({
       }
 
       const result = await response.json();
+      
+      // Update form data with response if it's a new creation (will have new _id)
+      if (!isUpdate && result.bankingInfo && result.bankingInfo.length > 0) {
+        const newBankingInfo = result.bankingInfo[result.bankingInfo.length - 1];
+        setFormData(prev => ({ ...prev, _id: newBankingInfo._id }));
+      }
+      
       onSave?.(formData);
       setIsSaved(true);
-      showToast.success("اطلاعات بانکی با موفقیت ذخیره شد");
+      showToast.success(isUpdate ? "اطلاعات بانکی با موفقیت به‌روزرسانی شد" : "اطلاعات بانکی با موفقیت ذخیره شد");
       setTimeout(() => setIsSaved(false), 3000);
     } catch (error) {
       console.error("Error saving banking info:", error);
@@ -366,7 +384,7 @@ const BankingInfo = ({
                 ذخیره شد
               </>
             ) : (
-              "ذخیره اطلاعات"
+              formData._id ? "به‌روزرسانی اطلاعات" : "ذخیره اطلاعات"
             )}
           </button>
         </div>

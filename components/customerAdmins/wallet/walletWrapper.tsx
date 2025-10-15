@@ -3,16 +3,10 @@
 import React, { useState, useEffect } from "react";
 import {
   FaWallet,
-  FaHistory,
-  FaMoneyBillWave,
   FaArrowUp,
   FaArrowDown,
   FaUser,
   FaCog,
-  FaPlus,
-  FaMinus,
-  FaChartLine,
-  FaExchangeAlt,
   FaRedo,
 } from "react-icons/fa";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
@@ -20,17 +14,8 @@ import { showToast } from "@/utilities/toast";
 
 // Import wallet components
 import IncomesHistory from "./incomes";
-// import WithdrawHistory from "./withdrawHistory";
-
-// Temporary placeholder component
-const WithdrawHistory: React.FC = () => {
-  return (
-    <div className="p-6">
-      <h2 className="text-xl font-bold mb-4">تاریخچه برداشت‌ها</h2>
-      <p>این بخش در حال توسعه است...</p>
-    </div>
-  );
-};
+import AddAmountComponent from "./addamount";
+import WithdrawComponent from "./withdraw";
 
 interface WalletWrapperProps {
   initialTab?: "dashboard" | "incomes" | "withdraws" | "add-funds";
@@ -350,197 +335,6 @@ const WalletWrapper: React.FC<WalletWrapperProps> = ({
   };
 
   // Dashboard content
-  const renderDashboard = () => {
-    return (
-      <div className="p-6">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Quick Actions */}
-          <div className="bg-gray-50 shadow-xl rounded-xl p-6  border border-[#0A1D37]/10">
-            <h3 className="text-xl font-bold text-[#0A1D37] mb-4 flex items-center gap-2">
-              <FaExchangeAlt className="text-[#FF7A00]" />
-              عملیات سریع
-            </h3>
-
-            <div className="space-y-4">{renderAddFunds()}</div>
-          </div>
-
-          {/* Recent Transactions */}
-          <div className="bg-gray-50  rounded-xl p-6 shadow-xl border-[#0A1D37]/10 border">
-            <h3 className="text-xl font-bold text-[#0A1D37] mb-4 flex items-center gap-2">
-              <FaHistory className="text-[#FF7A00]" />
-              آخرین تراکنش‌ها
-            </h3>
-
-            {walletStats.recentTransactions.length > 0 ? (
-              <div className="space-y-3 max-h-64 overflow-y-auto border border-[#0A1D37]/10 rounded-md bg-gray-100">
-                {walletStats.recentTransactions.map((transaction, index) => (
-                  <div
-                    key={index}
-                    className="flex items-center justify-between p-3 bg-gray-200 rounded-lg"
-                  >
-                    <div className="flex items-center gap-3">
-                      {transaction.type === "income" ? (
-                        <FaArrowUp className="text-green-500" />
-                      ) : (
-                        <FaArrowDown className="text-red-500" />
-                      )}
-                      <div>
-                        <p className="font-medium text-sm">
-                          {transaction.description || transaction.tag}
-                        </p>
-                        <p className="text-xs text-gray-500">
-                          {new Date(transaction.date).toLocaleDateString(
-                            "fa-IR"
-                          )}
-                        </p>
-                      </div>
-                    </div>
-                    <div className="text-right">
-                      <p
-                        className={`font-bold ${
-                          transaction.type === "income"
-                            ? "text-green-600"
-                            : "text-red-600"
-                        }`}
-                      >
-                        {transaction.type === "income" ? "+" : "-"}
-                        {transaction.amount.toLocaleString()} تومان
-                      </p>
-                      <p className="text-xs text-gray-500">
-                        {transaction.status}
-                      </p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <p className="text-gray-500 text-center py-8">
-                تراکنشی وجود ندارد
-              </p>
-            )}
-          </div>
-        </div>
-      </div>
-    );
-  };
-
-  // Add funds content
-  const renderAddFunds = () => {
-    return (
-      <div className="p-6">
-        <div className="max-w-3xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {/* Add Funds Form */}
-            <div className="bg-white rounded-xl p-6 shadow-sm border border-[#0A1D37]/10">
-              <h3 className="text-xl font-bold text-[#0A1D37] mb-4 flex items-center gap-2">
-                <FaPlus className="text-green-500" />
-                افزودن موجودی
-              </h3>
-
-              <div className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    مبلغ (تومان)
-                  </label>
-                  <input
-                    type="number"
-                    value={addAmount}
-                    onChange={(e) => setAddAmount(e.target.value)}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FF7A00] focus:border-transparent"
-                    placeholder="مبلغ مورد نظر را وارد کنید"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    توضیحات (اختیاری)
-                  </label>
-                  <textarea
-                    value={addDescription}
-                    onChange={(e) => setAddDescription(e.target.value)}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FF7A00] focus:border-transparent"
-                    placeholder="توضیحات درباره این تراکنش"
-                    rows={3}
-                  />
-                </div>
-
-                <button
-                  onClick={handleAddFunds}
-                  disabled={actionLoading}
-                  className="w-full px-4 py-3 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-                >
-                  {actionLoading ? (
-                    <FaRedo className="animate-spin" />
-                  ) : (
-                    <FaPlus />
-                  )}
-                  {actionLoading
-                    ? "در حال ثبت..."
-                    : "افزایش موجودی"}
-                </button>
-
-                <p className="text-xs text-gray-500">
-                  درخواست شما پس از بررسی و تایید مدیر اعمال خواهد شد
-                </p>
-              </div>
-            </div>
-
-            {/* Withdraw Form */}
-            <div className="bg-white rounded-xl p-6 shadow-sm border border-[#0A1D37]/10">
-              <h3 className="text-xl font-bold text-[#0A1D37] mb-4 flex items-center gap-2">
-                <FaMinus className="text-red-500" />
-                درخواست برداشت
-              </h3>
-
-              <div className="space-y-4">
-                
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    مبلغ برداشت (تومان)
-                  </label>
-                  <input
-                    type="number"
-                    value={withdrawAmount}
-                    onChange={(e) => setWithdrawAmount(e.target.value)}
-                    max={walletStats.currentBalance}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FF7A00] focus:border-transparent"
-                    placeholder="مبلغ مورد نظر را وارد کنید"
-                  />
-                </div>{" "}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    توضیحات (اختیاری)
-                  </label>
-                  <textarea
-                    value={addDescription}
-                    onChange={(e) => setAddDescription(e.target.value)}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FF7A00] focus:border-transparent"
-                    placeholder="توضیحات درباره این تراکنش"
-                    rows={3}
-                  />
-                </div>
-                <button
-                  onClick={handleWithdraw}
-                  disabled={actionLoading || walletStats.currentBalance === 0}
-                  className="w-full px-4 py-3 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors  disabled:cursor-not-allowed flex items-center justify-center gap-2"
-                >
-                  {actionLoading ? (
-                    <FaRedo className="animate-spin" />
-                  ) : (
-                    <FaMinus />
-                  )}
-                  {actionLoading ? "در حال ثبت..." : "برداشت موجودی"}
-                </button>
-                <p className="text-xs text-gray-500">
-                  درخواست برداشت شما پس از بررسی و تایید پردازش خواهد شد
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  };
 
   if (userLoading) {
     return (
@@ -591,14 +385,33 @@ const WalletWrapper: React.FC<WalletWrapperProps> = ({
   const renderActiveContent = () => {
     switch (activeTab) {
       case "dashboard":
-        return renderDashboard();
+        return <AddAmountComponent />;
       case "incomes":
         return <IncomesHistory />;
       case "withdraws":
-        return <WithdrawHistory />;
-
-      default:
-        return renderDashboard();
+        return (
+          <WithdrawComponent
+            onSuccess={() => {
+              fetchWalletData(); // Refresh wallet data after successful withdrawal
+              showToast.success("درخواست برداشت با موفقیت ثبت شد");
+            }}
+            onCancel={() => setActiveTab("dashboard")}
+            walletBalance={walletStats.currentBalance}
+            walletStats={walletStats}
+          />
+        );
+      case "add-funds":
+        return (
+          <AddAmountComponent
+            onSuccess={() => {
+              fetchWalletData(); // Refresh wallet data after successful payment
+              showToast.success("به درگاه پرداخت منتقل شدید");
+            }}
+            onCancel={() => setActiveTab("dashboard")}
+            walletBalance={walletStats.currentBalance}
+            walletStats={walletStats}
+          />
+        );
     }
   };
 

@@ -3,14 +3,7 @@
 "use client";
 
 import React from "react";
-import {
-  Users,
-  Phone,
-  Clock,
-  ArrowRight,
-  Sparkles,
-  MessageCircle,
-} from "lucide-react";
+import { Users, Clock, Sparkles } from "lucide-react";
 import HeroSection from "./lottery/hero";
 import PricingSection from "./lottery/price";
 import TrustBadges from "./lottery/trust";

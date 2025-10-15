@@ -1,7 +1,15 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { FaSearch, FaCheck, FaTimes, FaEye, FaFilter, FaUniversity, FaUser } from "react-icons/fa";
+import {
+  FaSearch,
+  FaCheck,
+  FaTimes,
+  FaEye,
+  FaFilter,
+  FaUniversity,
+  FaUser,
+} from "react-icons/fa";
 import { showToast } from "@/utilities/toast";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
 
@@ -62,7 +70,9 @@ const BankingInfoAdmin = () => {
   } | null>(null);
   const [showDetailsModal, setShowDetailsModal] = useState(false);
   const [showReviewModal, setShowReviewModal] = useState(false);
-  const [reviewStatus, setReviewStatus] = useState<"accepted" | "rejected">("accepted");
+  const [reviewStatus, setReviewStatus] = useState<"accepted" | "rejected">(
+    "accepted"
+  );
   const [rejectionNotes, setRejectionNotes] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
@@ -129,15 +139,19 @@ const BankingInfoAdmin = () => {
       }
 
       showToast.success(
-        reviewStatus === "accepted" ? "اطلاعات بانکی تایید شد" : "اطلاعات بانکی رد شد"
+        reviewStatus === "accepted"
+          ? "اطلاعات بانکی تایید شد"
+          : "اطلاعات بانکی رد شد"
       );
-      
+
       setShowReviewModal(false);
       setSelectedBankingInfo(null);
       setRejectionNotes("");
       await fetchBankingData();
     } catch (err) {
-      showToast.error(err instanceof Error ? err.message : "خطا در به‌روزرسانی");
+      showToast.error(
+        err instanceof Error ? err.message : "خطا در به‌روزرسانی"
+      );
     } finally {
       setSubmitting(false);
     }
@@ -153,19 +167,27 @@ const BankingInfoAdmin = () => {
   // Utility functions
   const getStatusColor = (status: string) => {
     switch (status) {
-      case "accepted": return "text-green-700 bg-green-100 border-green-300";
-      case "rejected": return "text-red-700 bg-red-100 border-red-300";
-      case "pending_verification": return "text-yellow-700 bg-yellow-100 border-yellow-300";
-      default: return "text-gray-700 bg-gray-100 border-gray-300";
+      case "accepted":
+        return "text-green-700 bg-green-100 border-green-300";
+      case "rejected":
+        return "text-red-700 bg-red-100 border-red-300";
+      case "pending_verification":
+        return "text-yellow-700 bg-yellow-100 border-yellow-300";
+      default:
+        return "text-gray-700 bg-gray-100 border-gray-300";
     }
   };
 
   const getStatusText = (status: string) => {
     switch (status) {
-      case "accepted": return "تایید شده";
-      case "rejected": return "رد شده";
-      case "pending_verification": return "در انتظار بررسی";
-      default: return "نامشخص";
+      case "accepted":
+        return "تایید شده";
+      case "rejected":
+        return "رد شده";
+      case "pending_verification":
+        return "در انتظار بررسی";
+      default:
+        return "نامشخص";
     }
   };
 
@@ -180,7 +202,10 @@ const BankingInfoAdmin = () => {
     return "نام نامشخص";
   };
 
-  const openDetailsModal = (user: UserBankingData, bankingInfo: BankingInfo) => {
+  const openDetailsModal = (
+    user: UserBankingData,
+    bankingInfo: BankingInfo
+  ) => {
     setSelectedBankingInfo({ user, bankingInfo });
     setShowDetailsModal(true);
   };
@@ -196,18 +221,25 @@ const BankingInfoAdmin = () => {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">ورود به سیستم لازم است</h2>
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">
+            ورود به سیستم لازم است
+          </h2>
           <p className="text-gray-600">لطفاً وارد حساب کاربری خود شوید</p>
         </div>
       </div>
     );
   }
 
-  if (!currentUser?.roles.includes("admin") && !currentUser?.roles.includes("super_admin")) {
+  if (
+    !currentUser?.roles.includes("admin") &&
+    !currentUser?.roles.includes("super_admin")
+  ) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">دسترسی غیر مجاز</h2>
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">
+            دسترسی غیر مجاز
+          </h2>
           <p className="text-gray-600">شما به این بخش دسترسی ندارید</p>
         </div>
       </div>
@@ -215,34 +247,31 @@ const BankingInfoAdmin = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50" dir="rtl">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div className="min-h-screen p-6" dir="rtl">
+      <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="mb-8">
-          <div className="flex items-center gap-3 mb-4">
-            <FaUniversity className="text-3xl text-indigo-600" />
-            <div>
-              <h1 className="text-3xl font-bold text-gray-900">مدیریت اطلاعات بانکی</h1>
-              <p className="text-gray-600">بررسی و تایید اطلاعات بانکی کاربران</p>
-            </div>
+        <div className="text-center mb-8">
+          <div className="w-16 h-16 bg-gradient-to-r from-[#FF7A00] to-[#4DBFF0] rounded-full flex items-center justify-center mx-auto mb-4">
+            <FaUniversity className="text-white text-2xl" />
           </div>
-
-          {/* Stats */}
-       
+          <h1 className="text-3xl font-bold text-[#0A1D37] mb-2">
+            مدیریت اطلاعات بانکی
+          </h1>
+          <p className="text-gray-600">بررسی و تایید اطلاعات بانکی کاربران</p>
         </div>
 
         {/* Filters */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-6">
+        <div className="bg-white/80 backdrop-blur-sm border border-gray-200/50 rounded-2xl p-6 mb-6">
           <div className="flex flex-wrap gap-4 items-center">
             <div className="flex-1 min-w-64">
               <div className="relative">
-                <FaSearch className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                <FaSearch className="absolute right-4 top-1/2 transform -translate-y-1/2 text-[#FF7A00]" />
                 <input
                   type="text"
                   placeholder="جستجو بر اساس نام، شماره کارت یا شبا..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full pr-10 pl-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                  className="w-full pr-12 pl-4 py-4 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all"
                 />
               </div>
             </div>
@@ -250,7 +279,7 @@ const BankingInfoAdmin = () => {
             <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
-              className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+              className="px-4 py-4 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all"
             >
               <option value="">همه وضعیت‌ها</option>
               <option value="pending_verification">در انتظار بررسی</option>
@@ -260,9 +289,9 @@ const BankingInfoAdmin = () => {
 
             <button
               onClick={() => fetchBankingData()}
-              className="px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
+              className="flex items-center gap-2 px-6 py-4 bg-gradient-to-r from-[#FF7A00] to-[#4DBFF0] text-white rounded-xl hover:shadow-lg transition-all"
             >
-              <FaFilter className="inline ml-2" />
+              <FaFilter />
               اعمال فیلتر
             </button>
           </div>
@@ -318,7 +347,10 @@ const BankingInfoAdmin = () => {
                 <tbody className="bg-white divide-y divide-gray-200">
                   {users.map((user) =>
                     user.bankingInfo.map((bankInfo) => (
-                      <tr key={`${user._id}-${bankInfo._id}`} className="hover:bg-gray-50">
+                      <tr
+                        key={`${user._id}-${bankInfo._id}`}
+                        className="hover:bg-gray-50"
+                      >
                         <td className="px-6 py-4 whitespace-nowrap">
                           <div className="flex items-center">
                             <FaUser className="text-gray-400 ml-3" />
@@ -333,22 +365,34 @@ const BankingInfoAdmin = () => {
                           </div>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="text-sm text-gray-900">{bankInfo.bankName}</div>
-                          <div className="text-sm text-gray-500">{bankInfo.accountHolderName}</div>
+                          <div className="text-sm text-gray-900">
+                            {bankInfo.bankName}
+                          </div>
+                          <div className="text-sm text-gray-500">
+                            {bankInfo.accountHolderName}
+                          </div>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
                           <div className="text-sm font-mono text-gray-900">
                             {formatCardNumber(bankInfo.cardNumber)}
                           </div>
-                          <div className="text-sm text-gray-500">{bankInfo.shebaNumber}</div>
+                          <div className="text-sm text-gray-500">
+                            {bankInfo.shebaNumber}
+                          </div>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
-                          <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${getStatusColor(bankInfo.status)}`}>
+                          <span
+                            className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${getStatusColor(
+                              bankInfo.status
+                            )}`}
+                          >
                             {getStatusText(bankInfo.status)}
                           </span>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                          {new Date(bankInfo.createdAt).toLocaleDateString('fa-IR')}
+                          {new Date(bankInfo.createdAt).toLocaleDateString(
+                            "fa-IR"
+                          )}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                           <div className="flex gap-2">
@@ -358,10 +402,12 @@ const BankingInfoAdmin = () => {
                             >
                               <FaEye />
                             </button>
-                            {bankInfo.status === "pending_verification" && (
+                            {bankInfo.status && (
                               <>
                                 <button
-                                  onClick={() => openReviewModal(user, bankInfo)}
+                                  onClick={() =>
+                                    openReviewModal(user, bankInfo)
+                                  }
                                   className="text-green-600 hover:text-green-900"
                                 >
                                   <FaCheck />
@@ -381,18 +427,25 @@ const BankingInfoAdmin = () => {
             {pagination.totalPages > 1 && (
               <div className="px-6 py-3 bg-gray-50 border-t border-gray-200 flex items-center justify-between">
                 <div className="text-sm text-gray-700">
-                  صفحه {pagination.currentPage} از {pagination.totalPages} (مجموع {pagination.totalUsers} مورد)
+                  صفحه {pagination.currentPage} از {pagination.totalPages}{" "}
+                  (مجموع {pagination.totalUsers} مورد)
                 </div>
                 <div className="flex gap-2">
                   <button
-                    onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+                    onClick={() =>
+                      setCurrentPage((prev) => Math.max(1, prev - 1))
+                    }
                     disabled={!pagination.hasPreviousPage}
                     className="px-3 py-1 text-sm border border-gray-300 rounded disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-100"
                   >
                     قبلی
                   </button>
                   <button
-                    onClick={() => setCurrentPage(prev => Math.min(pagination.totalPages, prev + 1))}
+                    onClick={() =>
+                      setCurrentPage((prev) =>
+                        Math.min(pagination.totalPages, prev + 1)
+                      )
+                    }
                     disabled={!pagination.hasNextPage}
                     className="px-3 py-1 text-sm border border-gray-300 rounded disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-100"
                   >
@@ -407,69 +460,138 @@ const BankingInfoAdmin = () => {
 
       {/* Details Modal */}
       {showDetailsModal && selectedBankingInfo && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-            <div className="p-6 border-b">
-              <h2 className="text-xl font-bold text-gray-900">جزئیات اطلاعات بانکی</h2>
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-white/90 backdrop-blur-sm border border-gray-200/50 rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl">
+            <div className="p-6 border-b border-gray-200/50">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-gradient-to-r from-[#FF7A00] to-[#4DBFF0] rounded-full flex items-center justify-center">
+                  <FaUniversity className="text-white" />
+                </div>
+                <div>
+                  <h2 className="text-xl font-bold text-[#0A1D37]">
+                    جزئیات اطلاعات بانکی
+                  </h2>
+                  <p className="text-sm text-gray-600">
+                    مشاهده کامل اطلاعات بانکی کاربر
+                  </p>
+                </div>
+              </div>
             </div>
-            
-            <div className="p-6 space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="text-sm font-medium text-gray-600">نام کاربر</label>
-                  <div className="text-gray-900 mt-1">{getUserName(selectedBankingInfo.user)}</div>
-                </div>
-                <div>
-                  <label className="text-sm font-medium text-gray-600">نام بانک</label>
-                  <div className="text-gray-900 mt-1">{selectedBankingInfo.bankingInfo.bankName}</div>
-                </div>
-                <div>
-                  <label className="text-sm font-medium text-gray-600">نام صاحب حساب</label>
-                  <div className="text-gray-900 mt-1">{selectedBankingInfo.bankingInfo.accountHolderName}</div>
-                </div>
-                <div>
-                  <label className="text-sm font-medium text-gray-600">شماره کارت</label>
-                  <div className="text-gray-900 mt-1 font-mono">{formatCardNumber(selectedBankingInfo.bankingInfo.cardNumber)}</div>
-                </div>
-                <div>
-                  <label className="text-sm font-medium text-gray-600">شماره شبا</label>
-                  <div className="text-gray-900 mt-1 font-mono">{selectedBankingInfo.bankingInfo.shebaNumber}</div>
-                </div>
-                <div>
-                  <label className="text-sm font-medium text-gray-600">وضعیت</label>
-                  <div className="mt-1">
-                    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${getStatusColor(selectedBankingInfo.bankingInfo.status)}`}>
-                      {getStatusText(selectedBankingInfo.bankingInfo.status)}
-                    </span>
+
+            <div className="p-6 space-y-6">
+              {/* User Info Card */}
+              <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-4">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center">
+                    <FaUser className="text-white" />
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-blue-800">
+                      {getUserName(selectedBankingInfo.user)}
+                    </h3>
+                    <p className="text-sm text-blue-600">
+                      شناسه کاربر: {selectedBankingInfo.user._id.slice(-8)}
+                    </p>
                   </div>
                 </div>
               </div>
 
+              {/* Banking Details Grid */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="bg-white/80 backdrop-blur-sm border border-gray-200/50 rounded-xl p-4">
+                  <label className="text-sm font-medium text-[#FF7A00] flex items-center gap-2">
+                    <FaUniversity className="text-xs" />
+                    نام بانک
+                  </label>
+                  <div className="text-[#0A1D37] font-semibold mt-1">
+                    {selectedBankingInfo.bankingInfo.bankName}
+                  </div>
+                </div>
+                <div className="bg-white/80 backdrop-blur-sm border border-gray-200/50 rounded-xl p-4">
+                  <label className="text-sm font-medium text-[#FF7A00] flex items-center gap-2">
+                    <FaUser className="text-xs" />
+                    نام صاحب حساب
+                  </label>
+                  <div className="text-[#0A1D37] font-semibold mt-1">
+                    {selectedBankingInfo.bankingInfo.accountHolderName}
+                  </div>
+                </div>
+                <div className="bg-white/80 backdrop-blur-sm border border-gray-200/50 rounded-xl p-4">
+                  <label className="text-sm font-medium text-[#FF7A00]">
+                    شماره کارت
+                  </label>
+                  <div className="text-[#0A1D37] font-mono font-semibold mt-1">
+                    {formatCardNumber(
+                      selectedBankingInfo.bankingInfo.cardNumber
+                    )}
+                  </div>
+                </div>
+                <div className="bg-white/80 backdrop-blur-sm border border-gray-200/50 rounded-xl p-4">
+                  <label className="text-sm font-medium text-[#FF7A00]">
+                    شماره شبا
+                  </label>
+                  <div className="text-[#0A1D37] font-mono font-semibold mt-1">
+                    {selectedBankingInfo.bankingInfo.shebaNumber}
+                  </div>
+                </div>
+              </div>
+
+              {/* Status Card */}
+              <div className="bg-white/80 backdrop-blur-sm border border-gray-200/50 rounded-xl p-4">
+                <label className="text-sm font-medium text-[#FF7A00] mb-3 block">
+                  وضعیت اطلاعات
+                </label>
+                <div className="flex items-center gap-3">
+                  <span
+                    className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium border ${getStatusColor(
+                      selectedBankingInfo.bankingInfo.status
+                    )}`}
+                  >
+                    {getStatusText(selectedBankingInfo.bankingInfo.status)}
+                  </span>
+                  <span className="text-sm text-gray-600">
+                    ثبت شده در:{" "}
+                    {new Date(
+                      selectedBankingInfo.bankingInfo.createdAt
+                    ).toLocaleDateString("fa-IR")}
+                  </span>
+                </div>
+              </div>
+
               {selectedBankingInfo.bankingInfo.rejectionNotes && (
-                <div>
-                  <label className="text-sm font-medium text-red-600">دلیل رد</label>
-                  <div className="mt-1 p-3 bg-red-50 border border-red-200 rounded-lg text-red-700">
+                <div className="bg-red-50 border border-red-200 rounded-xl p-4">
+                  <label className="text-sm font-medium text-red-700 flex items-center gap-2 mb-2">
+                    <FaTimes className="text-xs" />
+                    دلیل رد اطلاعات
+                  </label>
+                  <div className="bg-white/80 border border-red-200/50 rounded-lg p-3 text-red-800">
                     {selectedBankingInfo.bankingInfo.rejectionNotes}
                   </div>
                 </div>
               )}
             </div>
 
-            <div className="p-6 border-t flex justify-end gap-3">
+            <div className="p-6 border-t border-gray-200/50 flex justify-end gap-3">
               <button
                 onClick={() => setShowDetailsModal(false)}
-                className="px-4 py-2 text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-50"
+                className="flex items-center gap-2 px-6 py-3 border border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition-all"
               >
+                <FaTimes className="text-sm" />
                 بستن
               </button>
-              {selectedBankingInfo.bankingInfo.status === "pending_verification" && (
+              {selectedBankingInfo.bankingInfo.status ===
+                "pending_verification" && (
                 <button
                   onClick={() => {
                     setShowDetailsModal(false);
-                    openReviewModal(selectedBankingInfo.user, selectedBankingInfo.bankingInfo);
+                    openReviewModal(
+                      selectedBankingInfo.user,
+                      selectedBankingInfo.bankingInfo
+                    );
                   }}
-                  className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700"
+                  className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-[#FF7A00] to-[#4DBFF0] text-white rounded-xl hover:shadow-lg transition-all"
                 >
+                  <FaCheck className="text-sm" />
                   بررسی و تایید
                 </button>
               )}
@@ -480,74 +602,178 @@ const BankingInfoAdmin = () => {
 
       {/* Review Modal */}
       {showReviewModal && selectedBankingInfo && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-2xl max-w-xl w-full">
-            <div className="p-6 border-b">
-              <h2 className="text-xl font-bold text-gray-900">بررسی اطلاعات بانکی</h2>
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-white/90 backdrop-blur-sm border border-gray-200/50 rounded-2xl max-w-xl w-full shadow-2xl">
+            <div className="p-6 border-b border-gray-200/50">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-gradient-to-r from-green-500 to-blue-500 rounded-full flex items-center justify-center">
+                  <FaCheck className="text-white" />
+                </div>
+                <div>
+                  <h2 className="text-xl font-bold text-[#0A1D37]">
+                    بررسی اطلاعات بانکی
+                  </h2>
+                  <p className="text-sm text-gray-600">
+                    تایید یا رد اطلاعات بانکی کاربر
+                  </p>
+                </div>
+              </div>
             </div>
-            
-            <div className="p-6 space-y-4">
-              <div className="p-4 bg-gray-50 rounded-lg">
-                <div className="text-sm text-gray-600">کاربر: {getUserName(selectedBankingInfo.user)}</div>
-                <div className="text-sm text-gray-600">بانک: {selectedBankingInfo.bankingInfo.bankName}</div>
-                <div className="text-sm text-gray-600">کارت: {formatCardNumber(selectedBankingInfo.bankingInfo.cardNumber)}</div>
+
+            <div className="p-6 space-y-6">
+              <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-4">
+                <div className="flex items-center gap-3 mb-3">
+                  <FaUser className="text-blue-600" />
+                  <span className="font-medium text-blue-800">
+                    اطلاعات کاربر
+                  </span>
+                </div>
+                <div className="space-y-2 text-sm">
+                  <div>
+                    <span className="text-blue-600 font-medium">کاربر:</span>{" "}
+                    <span className="text-blue-900">
+                      {getUserName(selectedBankingInfo.user)}
+                    </span>
+                  </div>
+                  <div>
+                    <span className="text-blue-600 font-medium">بانک:</span>{" "}
+                    <span className="text-blue-900">
+                      {selectedBankingInfo.bankingInfo.bankName}
+                    </span>
+                  </div>
+                  <div>
+                    <span className="text-blue-600 font-medium">کارت:</span>{" "}
+                    <span className="text-blue-900 font-mono">
+                      {formatCardNumber(
+                        selectedBankingInfo.bankingInfo.cardNumber
+                      )}
+                    </span>
+                  </div>
+                </div>
               </div>
 
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-3">تصمیم</label>
-                <div className="flex gap-4">
-                  <label className="flex items-center">
+              <div className="bg-white/80 backdrop-blur-sm border border-gray-200/50 rounded-xl p-4">
+                <label className="block text-sm font-medium text-[#0A1D37] mb-4">
+                  تصمیم نهایی
+                </label>
+                <div className="grid grid-cols-2 gap-3">
+                  <label
+                    className={`flex items-center justify-center gap-2 p-3 rounded-lg border-2 cursor-pointer transition-all ${
+                      reviewStatus === "accepted"
+                        ? "border-green-500 bg-green-50 text-green-700"
+                        : "border-gray-200 bg-white text-gray-600 hover:border-green-200"
+                    }`}
+                  >
                     <input
                       type="radio"
                       name="reviewStatus"
                       value="accepted"
                       checked={reviewStatus === "accepted"}
-                      onChange={(e) => setReviewStatus(e.target.value as "accepted" | "rejected")}
-                      className="ml-2"
+                      onChange={(e) =>
+                        setReviewStatus(
+                          e.target.value as "accepted" | "rejected"
+                        )
+                      }
+                      className="hidden"
                     />
-                    <span className="text-green-700">تایید</span>
+                    <FaCheck
+                      className={
+                        reviewStatus === "accepted"
+                          ? "text-green-600"
+                          : "text-gray-400"
+                      }
+                    />
+                    <span className="font-medium">تایید</span>
                   </label>
-                  <label className="flex items-center">
+                  <label
+                    className={`flex items-center justify-center gap-2 p-3 rounded-lg border-2 cursor-pointer transition-all ${
+                      reviewStatus === "rejected"
+                        ? "border-red-500 bg-red-50 text-red-700"
+                        : "border-gray-200 bg-white text-gray-600 hover:border-red-200"
+                    }`}
+                  >
                     <input
                       type="radio"
                       name="reviewStatus"
                       value="rejected"
                       checked={reviewStatus === "rejected"}
-                      onChange={(e) => setReviewStatus(e.target.value as "accepted" | "rejected")}
-                      className="ml-2"
+                      onChange={(e) =>
+                        setReviewStatus(
+                          e.target.value as "accepted" | "rejected"
+                        )
+                      }
+                      className="hidden"
                     />
-                    <span className="text-red-700">رد</span>
+                    <FaTimes
+                      className={
+                        reviewStatus === "rejected"
+                          ? "text-red-600"
+                          : "text-gray-400"
+                      }
+                    />
+                    <span className="font-medium">رد</span>
                   </label>
                 </div>
               </div>
 
               {reviewStatus === "rejected" && (
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">دلیل رد</label>
+                <div className="bg-red-50 border border-red-200 rounded-xl p-4">
+                  <label className="flex items-center gap-2 text-sm font-medium text-red-700 mb-3">
+                    <FaTimes className="text-xs" />
+                    دلیل رد اطلاعات *
+                  </label>
                   <textarea
                     value={rejectionNotes}
                     onChange={(e) => setRejectionNotes(e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-                    rows={3}
-                    placeholder="لطفاً دلیل رد اطلاعات بانکی را توضیح دهید..."
+                    className="w-full px-4 py-3 border border-red-200 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-red-500 bg-white transition-all"
+                    rows={4}
+                    placeholder="لطفاً دلیل رد اطلاعات بانکی را به صورت واضح و مفصل توضیح دهید..."
+                    required
                   />
+                  <p className="text-xs text-red-600 mt-2">
+                    این توضیحات برای کاربر ارسال خواهد شد
+                  </p>
                 </div>
               )}
             </div>
 
-            <div className="p-6 border-t flex justify-end gap-3">
+            <div className="p-6 border-t border-gray-200/50 flex justify-end gap-3">
               <button
                 onClick={() => setShowReviewModal(false)}
-                className="px-4 py-2 text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-50"
+                className="flex items-center gap-2 px-6 py-3 border border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition-all"
               >
+                <FaTimes className="text-sm" />
                 انصراف
               </button>
               <button
                 onClick={handleStatusUpdate}
-                disabled={submitting || (reviewStatus === "rejected" && !rejectionNotes.trim())}
-                className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                disabled={
+                  submitting ||
+                  (reviewStatus === "rejected" && !rejectionNotes.trim())
+                }
+                className={`flex items-center gap-2 px-6 py-3 rounded-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed ${
+                  reviewStatus === "accepted"
+                    ? "bg-gradient-to-r from-green-500 to-emerald-500 text-white hover:shadow-lg"
+                    : "bg-gradient-to-r from-red-500 to-pink-500 text-white hover:shadow-lg"
+                }`}
               >
-                {submitting ? "در حال پردازش..." : "تایید"}
+                {submitting ? (
+                  <>
+                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                    در حال پردازش...
+                  </>
+                ) : (
+                  <>
+                    {reviewStatus === "accepted" ? (
+                      <FaCheck className="text-sm" />
+                    ) : (
+                      <FaTimes className="text-sm" />
+                    )}
+                    {reviewStatus === "accepted"
+                      ? "تایید اطلاعات"
+                      : "رد اطلاعات"}
+                  </>
+                )}
               </button>
             </div>
           </div>
