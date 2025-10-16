@@ -8,6 +8,10 @@ import {
   FaUser,
   FaCog,
   FaRedo,
+  FaChartLine,
+  FaMoneyBillWave,
+  FaCheckCircle,
+  FaHourglassHalf,
 } from "react-icons/fa";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
 import { showToast } from "@/utilities/toast";
@@ -56,7 +60,7 @@ interface WalletData {
 
 const WalletWrapper: React.FC<WalletWrapperProps> = ({
   initialTab = "dashboard",
-  className = "mx-10 my-28",
+  className = "",
 }) => {
   const [activeTab, setActiveTab] = useState<
     "dashboard" | "incomes" | "withdraws" | "add-funds"
@@ -124,7 +128,7 @@ const WalletWrapper: React.FC<WalletWrapperProps> = ({
     {
       id: "dashboard" as const,
       label: "داشبورد کیف پول",
-      icon: <FaWallet className="text-lg" />,
+      icon: <FaWallet className="text-lg sm:text-xl" />,
       description: "نمای کلی و موجودی",
       badge:
         walletStats.currentBalance > 0
@@ -134,15 +138,15 @@ const WalletWrapper: React.FC<WalletWrapperProps> = ({
     {
       id: "incomes" as const,
       label: "تاریخچه واریزی‌ها",
-      icon: <FaArrowUp className="text-lg" />,
+      icon: <FaArrowUp className="text-lg sm:text-xl" />,
       description: "تاریخچه پرداخت‌ها",
       badge:
         walletStats.pendingIncomes > 0 ? walletStats.pendingIncomes : undefined,
     },
     {
       id: "withdraws" as const,
-      label: "درخواست‌های برداشت",
-      icon: <FaArrowDown className="text-lg" />,
+      label: "درخواست‌  برداشت",
+      icon: <FaArrowDown className="text-lg sm:text-xl" />,
       description: "تاریخچه برداشت‌ها",
     },
   ];
@@ -151,27 +155,43 @@ const WalletWrapper: React.FC<WalletWrapperProps> = ({
   const statsCards = [
     {
       title: "موجودی فعلی",
-      value: `${walletStats.currentBalance.toLocaleString()} تومان`,
-      icon: <FaWallet className="text-2xl text-[#FF7A00]" />,
-      bgColor: "bg-gray-50",
+      value: walletStats.currentBalance.toLocaleString(),
+      suffix: "تومان",
+      icon: <FaWallet className="text-xl sm:text-2xl" />,
+      bgColor: "bg-gradient-to-br from-[#FF7A00]/5 to-[#FF7A00]/10",
+      iconBg: "bg-gradient-to-r from-[#FF7A00]/20 to-[#FF7A00]/10",
+      iconColor: "text-[#FF7A00]",
+      textColor: "text-[#0A1D37]",
     },
     {
       title: "کل واریزی‌ها",
-      value: `${walletStats.totalIncomes.toLocaleString()} تومان`,
-      icon: <FaArrowUp className="text-2xl text-[#FF7A00]" />,
-      bgColor: "bg-gray-50",
+      value: walletStats.totalIncomes.toLocaleString(),
+      suffix: "تومان",
+      icon: <FaArrowUp className="text-xl sm:text-2xl" />,
+      bgColor: "bg-gradient-to-br from-green-50 to-green-100/50",
+      iconBg: "bg-gradient-to-r from-green-100 to-green-50",
+      iconColor: "text-green-600",
+      textColor: "text-green-700",
     },
     {
       title: "کل برداشت‌ها",
-      value: `${walletStats.totalOutcomes.toLocaleString()} تومان`,
-      icon: <FaArrowDown className="text-2xl text-[#FF7A00]" />,
-      bgColor: "bg-gray-50",
+      value: walletStats.totalOutcomes.toLocaleString(),
+      suffix: "تومان",
+      icon: <FaArrowDown className="text-xl sm:text-2xl" />,
+      bgColor: "bg-gradient-to-br from-red-50 to-red-100/50",
+      iconBg: "bg-gradient-to-r from-red-100 to-red-50",
+      iconColor: "text-red-600",
+      textColor: "text-red-700",
     },
     {
       title: "در انتظار تایید",
       value: walletStats.pendingIncomes + walletStats.pendingOutcomes,
-      icon: <FaCog className="text-2xl text-[#FF7A00]" />,
-      bgColor: "bg-gray-50",
+      suffix: "مورد",
+      icon: <FaHourglassHalf className="text-xl sm:text-2xl" />,
+      bgColor: "bg-gradient-to-br from-orange-50 to-orange-100/50",
+      iconBg: "bg-gradient-to-r from-orange-100 to-orange-50",
+      iconColor: "text-orange-600",
+      textColor: "text-orange-700",
     },
   ];
 
@@ -191,35 +211,63 @@ const WalletWrapper: React.FC<WalletWrapperProps> = ({
     showToast.info(`بخش ${tabLabels[tabId]} باز شد`);
   };
 
-  // User welcome section
-
   // Stats cards section
   const renderStatsCards = () => {
-    if (!isLoggedIn || statsLoading || userLoading) return null;
+    if (!isLoggedIn || statsLoading || userLoading) {
+      return (
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-6 mb-6 sm:mb-8">
+          {[1, 2, 3, 4].map((i) => (
+            <div
+              key={i}
+              className="bg-gray-100 rounded-xl sm:rounded-2xl p-4 sm:p-5 lg:p-6 animate-pulse"
+            >
+              <div className="flex items-center justify-between mb-3">
+                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gray-200 rounded-lg sm:rounded-xl"></div>
+                <div className="flex-1 mr-3">
+                  <div className="h-6 sm:h-8 bg-gray-200 rounded w-3/4 mr-auto"></div>
+                </div>
+              </div>
+              <div className="h-4 bg-gray-200 rounded w-2/3"></div>
+            </div>
+          ))}
+        </div>
+      );
+    }
 
     return (
-      <div className="grid grid-cols-2 md:grid-cols-4 w-full max-w-4xl mx-auto gap-4 mb-8">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-6 mb-6 sm:mb-8">
         {statsCards.map((stat, index) => (
           <div
             key={index}
-            className={`${stat.bgColor} backdrop-blur-sm border border-[#0A1D37]/10 rounded-xl p-4 hover:shadow-lg transition-all duration-300`}
+            className={`${stat.bgColor} backdrop-blur-sm border border-gray-100 rounded-xl sm:rounded-2xl p-4 sm:p-5 lg:p-6 hover:shadow-lg hover:scale-[1.02] transition-all duration-300 group`}
           >
-            <div className="flex items-center justify-between mb-2">
-              <div className={`p-2 bg-gradient-to-r  rounded-lg`}>
-                {stat.icon}
+            <div className="flex flex-col gap-3 sm:gap-4">
+              <div className="flex items-start justify-between">
+                <div
+                  className={`p-2 sm:p-2.5 lg:p-3 ${stat.iconBg} rounded-lg sm:rounded-xl group-hover:scale-110 transition-transform duration-300 flex-shrink-0`}
+                >
+                  <div className={stat.iconColor}>{stat.icon}</div>
+                </div>
+                <div className="text-left flex-1 min-w-0 mr-2">
+                  <p
+                    className={`text-lg sm:text-xl lg:text-2xl font-bold ${stat.textColor} mb-0.5 sm:mb-1 truncate`}
+                  >
+                    {stat.value}
+                  </p>
+                  <p className="text-xs sm:text-sm text-gray-600 font-medium">
+                    {stat.suffix}
+                  </p>
+                </div>
               </div>
-              <div className="text-right">
-                <p className="text-lg font-bold text-gray-900">{stat.value}</p>
-              </div>
+              <p className="text-xs sm:text-sm lg:text-base text-gray-700 font-semibold leading-relaxed">
+                {stat.title}
+              </p>
             </div>
-            <p className="text-sm text-gray-600 font-medium">{stat.title}</p>
           </div>
         ))}
       </div>
     );
   };
-
-  // Dashboard content
 
   if (userLoading) {
     return (
@@ -227,9 +275,19 @@ const WalletWrapper: React.FC<WalletWrapperProps> = ({
         className={`min-h-screen flex items-center justify-center ${className}`}
         dir="rtl"
       >
-        <div className="text-center">
-          <FaRedo className="animate-spin text-4xl text-[#FF7A00] mx-auto mb-4" />
-          <p className="text-gray-600">در حال بارگذاری...</p>
+        <div className="text-center space-y-4">
+          <div className="relative w-20 h-20 sm:w-24 sm:h-24 mx-auto">
+            <div className="absolute inset-0 bg-gradient-to-r from-[#FF7A00] to-[#FF7A00]/50 rounded-2xl animate-pulse"></div>
+            <div className="absolute inset-0 flex items-center justify-center">
+              <FaRedo className="animate-spin text-3xl sm:text-4xl text-white" />
+            </div>
+          </div>
+          <div className="space-y-2">
+            <p className="text-base sm:text-lg font-bold text-[#0A1D37]">
+              در حال بارگذاری...
+            </p>
+            <p className="text-xs sm:text-sm text-gray-600">لطفاً صبر کنید</p>
+          </div>
         </div>
       </div>
     );
@@ -241,21 +299,21 @@ const WalletWrapper: React.FC<WalletWrapperProps> = ({
         className={`min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 ${className}`}
         dir="rtl"
       >
-        <div className="container mx-auto px-4 py-32">
+        <div className="container mx-auto px-4 py-16 sm:py-24 lg:py-32">
           <div className="max-w-md mx-auto text-center">
-            <div className="w-20 h-20 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-6">
-              <FaUser className="text-white text-3xl" />
+            <div className="w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24 bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl sm:rounded-3xl flex items-center justify-center mx-auto mb-6 sm:mb-8 shadow-xl animate-pulse">
+              <FaUser className="text-white text-2xl sm:text-3xl lg:text-4xl" />
             </div>
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-3 sm:mb-4">
               ورود به سیستم لازم است
             </h2>
-            <p className="text-gray-600 mb-8 leading-relaxed">
+            <p className="text-sm sm:text-base lg:text-lg text-gray-600 mb-6 sm:mb-8 leading-relaxed px-4">
               برای دسترسی به کیف پول، لطفاً وارد حساب کاربری خود شوید
             </p>
-            <div className="space-y-4">
+            <div className="space-y-4 px-4">
               <a
                 href="/auth/sms"
-                className="block w-full px-6 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl font-bold hover:shadow-lg transition-all duration-300 hover:scale-105"
+                className="block w-full px-6 py-3 sm:py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl sm:rounded-2xl font-bold hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-300"
               >
                 ورود / ثبت نام
               </a>
@@ -302,29 +360,46 @@ const WalletWrapper: React.FC<WalletWrapperProps> = ({
 
   return (
     <div className={`min-h-screen ${className}`} dir="rtl">
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-3 sm:px-4 lg:px-6 py-4 sm:py-6 lg:py-8">
+      
+
         {/* Stats Cards */}
         {renderStatsCards()}
 
         {/* Navigation Tabs */}
-        <div className="backdrop-blur-sm border border-white/20 rounded-2xl p-2 mb-8">
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+        <div className="backdrop-blur-sm bg-white/80 border border-gray-100 rounded-2xl p-2 sm:p-3 lg:p-4 mb-6 sm:mb-8 shadow-sm">
+          <div className="grid  grid-cols-3 gap-1 lg:gap-4">
             {tabs.map((tab) => (
               <button
                 key={tab.id}
                 onClick={() => handleTabChange(tab.id)}
-                className={`relative flex flex-col items-center justify-center gap-3 px-4 py-4 rounded-xl font-medium transition-all duration-300 ${
+                className={`relative flex  items-center justify-center gap-2 sm:gap-3 px-1 sm:px-5 lg:px-6 py-3 sm:py-4 rounded-xl sm:rounded-xl lg:rounded-2xl font-medium transition-all duration-300 group ${
                   activeTab === tab.id
-                    ? "border-[#FF7A00] border bg-gray-50 text-[#0A1D37] shadow-lg scale-105"
-                    : "text-gray-700 hover:scale-105"
+                    ? "border-2 border-[#FF7A00] bg-gradient-to-br from-[#FF7A00]/5 to-[#FF7A00]/10 text-[#0A1D37] shadow-md scale-[1.02]"
+                    : "border-2 border-transparent text-gray-700 hover:bg-gray-50 hover:scale-[1.02] hover:shadow-sm"
                 }`}
               >
-                {tab.icon}
-                <div className="text-center">
-                  <div className="font-bold text-sm">{tab.label}</div>
+                {/* Icon */}
+                <div
+                  className={`transition-all hidden lg:block duration-300 ${
+                    activeTab === tab.id
+                      ? "text-[#FF7A00] scale-110"
+                      : "text-gray-500 group-hover:text-[#FF7A00] group-hover:scale-110"
+                  }`}
+                >
+                  {tab.icon}
+                </div>
+
+                {/* Text Content */}
+                <div className="text-center sm:text-right flex-1 min-w-0">
+                  <div className="font-bold text-xs sm:text-base lg:text-lg mb-0.5 sm:mb-1 truncate">
+                    {tab.label}
+                  </div>
                   <div
-                    className={`text-xs ${
-                      activeTab === tab.id ? "text-[#0A1D37]" : "text-gray-500"
+                    className={`text-xs sm:text-sm hidden sm:block transition-colors duration-300 truncate ${
+                      activeTab === tab.id
+                        ? "text-gray-600"
+                        : "text-gray-500 group-hover:text-gray-600"
                     }`}
                   >
                     {tab.description}
@@ -333,18 +408,61 @@ const WalletWrapper: React.FC<WalletWrapperProps> = ({
 
                 {/* Badge */}
                 {tab.badge && (
-                  <div className="absolute -top-2 -right-2 px-2 py-1 bg-red-500 text-white text-xs rounded-full font-bold">
+                  <div className="absolute -top-2 -left-2 sm:-top-2 sm:-right-2 px-2 py-1 sm:px-2.5 sm:py-1 bg-gradient-to-r from-red-500 to-red-600 text-white text-xs sm:text-sm rounded-full font-bold shadow-lg animate-pulse border-2 border-white whitespace-nowrap">
                     {tab.badge}
                   </div>
                 )}
+
+           
               </button>
             ))}
           </div>
         </div>
 
         {/* Content Area */}
-        <div className="  overflow-hidden ">
-          <div className="min-h-[600px]">{renderActiveContent()}</div>
+        <div className="backdrop-blur-sm bg-white/90 border border-gray-100 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300">
+          <div className="min-h-[400px] sm:min-h-[500px] lg:min-h-[600px]">
+            {renderActiveContent()}
+          </div>
+        </div>
+
+        {/* Quick Actions - Floating Buttons for Mobile */}
+        <div className="fixed bottom-6 left-1/2 transform -translate-x-1/2 sm:hidden z-40 flex gap-3">
+          <button
+            onClick={() => handleTabChange("dashboard")}
+            className={`p-4 rounded-full shadow-2xl transition-all duration-300 ${
+              activeTab === "dashboard"
+                ? "bg-gradient-to-r from-[#FF7A00] to-[#FF7A00]/80 text-white scale-110"
+                : "bg-white text-gray-700 hover:scale-105"
+            }`}
+          >
+            <FaWallet className="text-xl" />
+          </button>
+          <button
+            onClick={() => handleTabChange("incomes")}
+            className={`p-4 rounded-full shadow-2xl transition-all duration-300 relative ${
+              activeTab === "incomes"
+                ? "bg-gradient-to-r from-[#FF7A00] to-[#FF7A00]/80 text-white scale-110"
+                : "bg-white text-gray-700 hover:scale-105"
+            }`}
+          >
+            <FaArrowUp className="text-xl" />
+            {walletStats.pendingIncomes > 0 && (
+              <div className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 rounded-full flex items-center justify-center text-white text-xs font-bold">
+                {walletStats.pendingIncomes}
+              </div>
+            )}
+          </button>
+          <button
+            onClick={() => handleTabChange("withdraws")}
+            className={`p-4 rounded-full shadow-2xl transition-all duration-300 ${
+              activeTab === "withdraws"
+                ? "bg-gradient-to-r from-[#FF7A00] to-[#FF7A00]/80 text-white scale-110"
+                : "bg-white text-gray-700 hover:scale-105"
+            }`}
+          >
+            <FaArrowDown className="text-xl" />
+          </button>
         </div>
       </div>
     </div>

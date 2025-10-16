@@ -10,7 +10,7 @@ import { MdClose, MdMenu } from "react-icons/md";
 import { FaUser, FaSignOutAlt, FaTachometerAlt } from "react-icons/fa";
 import Image from "next/image";
 import { getCurrentUser, AuthUser } from "@/lib/auth";
-
+import { usePathname } from "next/navigation";
 
 export default function NewNavbar() {
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
@@ -19,6 +19,7 @@ export default function NewNavbar() {
   const [mobileActiveSubItem, setMobileActiveSubItem] = useState<string | null>(
     null
   );
+  const pathname = usePathname();
   const [isMounted, setIsMounted] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [user, setUser] = useState<AuthUser | null>(null);
@@ -33,7 +34,7 @@ export default function NewNavbar() {
   const isMouseOverMenu = useRef(false);
   const previousDropdown = useRef<string | null>(null);
 
-  console.log(isScrolled)
+  console.log(isScrolled);
   // Hydration fix and user authentication
   useEffect(() => {
     setIsMounted(true);
@@ -166,15 +167,18 @@ export default function NewNavbar() {
   // Cleanup timeout on unmount and click outside handler
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (showUserDropdown && !(event.target as Element).closest('.user-dropdown')) {
+      if (
+        showUserDropdown &&
+        !(event.target as Element).closest(".user-dropdown")
+      ) {
         setShowUserDropdown(false);
       }
     };
 
-    document.addEventListener('mousedown', handleClickOutside);
-    
+    document.addEventListener("mousedown", handleClickOutside);
+
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
       if (closeTimeoutRef.current) {
         clearTimeout(closeTimeoutRef.current);
       }
@@ -251,23 +255,25 @@ export default function NewNavbar() {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem('authToken');
+    localStorage.removeItem("authToken");
     setUser(null);
     setShowUserDropdown(false);
-    window.location.href = '/';
+    window.location.href = "/";
   };
 
   const getUserDisplayName = () => {
-    if (!user) return '';
+    if (!user) return "";
     if (user.firstName && user.lastName) {
       return `${user.firstName} ${user.lastName}`;
     }
     if (user.firstName) return user.firstName;
-    return 'کاربر';
+    return "کاربر";
   };
 
-  console.log(getCurrentUser , "........................")
-
+  console.log(getCurrentUser, "........................");
+  if (pathname === "/dashboard" || pathname.startsWith("/dashboard")) {
+    return null;
+  }
 
   // Prevent hydration mismatch
   if (!isMounted) {
@@ -383,10 +389,12 @@ export default function NewNavbar() {
                     suppressHydrationWarning
                   >
                     <FaUser className="text-[#FF7A00]" />
-                    <span className="relative z-10">{getUserDisplayName()}</span>
+                    <span className="relative z-10">
+                      {getUserDisplayName()}
+                    </span>
                     <svg
                       className={`w-4 h-4 text-[#FF7A00] transition-transform duration-200 ${
-                        showUserDropdown ? 'rotate-180' : ''
+                        showUserDropdown ? "rotate-180" : ""
                       }`}
                       fill="none"
                       stroke="currentColor"
@@ -736,7 +744,9 @@ export default function NewNavbar() {
                 <div className="space-y-3">
                   <div className="flex items-center gap-3 p-4 bg-gradient-to-r from-[#FF7A00]/10 to-[#4DBFF0]/10 rounded-xl">
                     <FaUser className="text-[#FF7A00]" />
-                    <span className="font-bold text-[#0A1D37]">{getUserDisplayName()}</span>
+                    <span className="font-bold text-[#0A1D37]">
+                      {getUserDisplayName()}
+                    </span>
                   </div>
                   <Link
                     href="/dashboard"

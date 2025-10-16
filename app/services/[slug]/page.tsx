@@ -795,10 +795,10 @@ export default function ServiceDetailPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-white via-[#E8F4FD] to-[#F0F9FF] flex items-center justify-center">
-        <div className="flex items-center gap-3 text-[#4DBFF0]">
+      <div className="min-h-screen bg-gradient-to-br flex items-center justify-center">
+        <div className="flex items-center gap-3 text-[#000]">
           <FaSpinner className="animate-spin text-3xl" />
-          <span className="text-xl font-medium">در حال بارگذاری خدمت...</span>
+          <span className="text-xl font-medium">در حال بارگذاری خدمت</span>
         </div>
       </div>
     );
@@ -960,8 +960,8 @@ export default function ServiceDetailPage() {
 
       {/* Payment Method Selection Modal */}
       {showPaymentSelector && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-lg p-6 max-w-md w-full">
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm   flex items-center justify-center z-80 p-4">
+          <div className="bg-white rounded-lg p-6 max-w-3xl w-full">
             <PaymentMethodSelector
               amount={service?.fee || 0}
               walletBalance={walletBalance}

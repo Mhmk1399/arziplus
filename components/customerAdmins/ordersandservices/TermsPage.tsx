@@ -5,10 +5,10 @@ const TermsPage = () => {
     <div className=" min-h-screen text-white text-justify" dir="rtl">
       <div className="max-w-6xl mx-auto py-8 space-y-12">
         {/* Header */}
-        <div className="text-center mt-20 mb-12">
-          <div className="inline-flex items-center bg-green-600 text-white px-6 py-3 rounded-lg mb-6">
-            <FaShieldAlt className="ml-2" />
-            <span className="font-bold">
+        <div className="text-center ">
+          <div className="inline-flex items-center  text-black px-6 py-3 rounded-lg  ">
+            <FaShieldAlt className="ml-2 text-[#FF7A00]" />
+            <span className="font-bold text-sm">
               شرایط و قوانین استفاده از خدمات ارزی پلاس
             </span>
           </div>

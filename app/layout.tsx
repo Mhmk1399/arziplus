@@ -37,7 +37,7 @@ export default function RootLayout({
           <NewNavbar />
           {children}
         </SchemaProvider>
-        <div className="fixed bottom-2 right-2 flex flex-col gap-1 z-50">
+        <div className="fixed bottom-2 left-2 flex flex-col gap-1 z-50">
           {/* Telegram Button */}
           <Link
             href="https://t.me/YOUR_TELEGRAM_USERNAME"
