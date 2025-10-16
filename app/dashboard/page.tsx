@@ -17,6 +17,7 @@ import {
   FaWallet,
   FaMoneyBillWave,
   FaChevronRight,
+  FaTicketAlt,
 } from "react-icons/fa";
 import { showToast } from "@/utilities/toast";
 
@@ -27,6 +28,8 @@ import ServiceWrapper from "@/components/customerAdmins/ordersandservices/servic
 import CredentialWrapper from "@/components/customerAdmins/credintials/credintialWrapper";
 import WalletWrapper from "@/components/customerAdmins/wallet/walletWrapper";
 import PaymentWrapper from "@/components/admin/payments/paymentWrapper";
+import LotteryAdminWrapper from "@/components/admin/lottery/lotteryWrapper";
+import CustomerLotteryWrapper from "@/components/customerAdmins/lottery/lotteryWrapper";
 import Link from "next/link";
 
 interface MenuItem {
@@ -59,8 +62,8 @@ const Dashboard: React.FC = () => {
           currentUser.roles.includes("admin") ||
           currentUser.roles.includes("super_admin");
         const validTabs = isAdmin
-          ? ["users", "payments", "admin-services"]
-          : ["services", "wallet", "credentials"];
+          ? ["users", "lottery", "payments", "admin-services"]
+          : ["services", "lottery", "wallet", "credentials"];
 
         if (validTabs.includes(hash)) {
           setSelectedMenuItem(hash);
@@ -110,8 +113,8 @@ const Dashboard: React.FC = () => {
         currentUser.roles.includes("admin") ||
         currentUser.roles.includes("super_admin");
       const validTabs = isAdmin
-        ? ["users", "payments", "admin-services"]
-        : ["services", "wallet", "credentials"];
+        ? ["users", "lottery", "payments", "admin-services"]
+        : ["services", "lottery", "wallet", "credentials"];
 
       if (validTabs.includes(targetTab)) {
         setSelectedMenuItem(targetTab);
@@ -164,6 +167,13 @@ const Dashboard: React.FC = () => {
       description: "مدیریت کاربران و احراز هویت",
     },
     {
+      id: "lottery",
+      label: "مدیریت لاتاری",
+      icon: <FaTicketAlt className="text-lg" />,
+      component: LotteryAdminWrapper,
+      description: "مدیریت ثبت‌نام‌های قرعه‌کشی گرین کارت",
+    },
+    {
       id: "payments",
       label: "مدیریت پرداخت‌ها",
       icon: <FaMoneyBillWave className="text-lg" />,
@@ -187,6 +197,13 @@ const Dashboard: React.FC = () => {
       icon: <FaClipboardList className="text-lg" />,
       component: ServiceWrapper,
       description: "مشاهده خدمات و سفارشات",
+    },
+    {
+      id: "lottery",
+      label: "ثبت‌نام‌های لاتاری",
+      icon: <FaTicketAlt className="text-lg" />,
+      component: CustomerLotteryWrapper,
+      description: "مدیریت ثبت‌نام‌های قرعه‌کشی گرین کارت",
     },
     {
       id: "wallet",
