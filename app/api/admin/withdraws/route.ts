@@ -4,8 +4,8 @@ import WithdrawRequest from "@/models/withdrawRequest";
 import connect from "@/lib/data";
 import { getAuthUser } from "@/lib/auth";
 
-interface query {
-  user?: string;
+interface QueryFilter {
+  user?: string | { $in: string[] };
   status?: "pending" | "approved" | "rejected";
   createdAt?: {
     $gte?: Date;
@@ -50,7 +50,7 @@ export async function GET(request: NextRequest) {
     const sortOrder = searchParams.get("sortOrder") || "desc";
 
     // Build query
-    const query: query = {};
+    const query: QueryFilter = {};
 
     if (status && (status === "pending" || status === "approved" || status === "rejected")) {
       query.status = status;
@@ -75,7 +75,7 @@ export async function GET(request: NextRequest) {
     const total = await WithdrawRequest.countDocuments(query);
 
     // Build sort object
-    const sortObj: string = {};
+    const sortObj: Record<string, 1 | -1> = {};
     sortObj[sortBy as string] = sortOrder === "desc" ? -1 : 1;
 
     // Get paginated results with populated user data

@@ -4,31 +4,68 @@ import Wallet from "@/models/wallet";
 import connect from "@/lib/data";
 import { getAuthUser } from "@/lib/auth";
 
-interface income {
-  status: string;
+interface Income {
+  _id?: string;
+  status: "pending" | "verified" | "rejected";
   amount: number;
+  tag?: string;
+  description?: string;
+  date?: Date;
   verifiedAt?: Date;
+  verifiedBy?: string;
 }
 
-interface outcome {
-  status: string;
+interface Outcome {
+  _id?: string;
+  status: "pending" | "verified" | "rejected";
   amount: number;
+  tag?: string;
+  description?: string;
+  date?: Date;
   verifiedAt?: Date;
+  verifiedBy?: string;
 }
 
-interface walletData {
-  inComes?: income[];
-  outComes?: outcome[];
-  balance?: string[];
+interface BalanceEntry {
+  amount: number;
+  updatedAt: Date;
 }
-async function getAdminUser(request: NextRequest) {
-  const authUser = getAuthUser(request);
+
+interface WalletUpdateData {
+  inComes?: Income[];
+  outComes?: Outcome[];
+  balance?: BalanceEntry[];
+}
+
+interface AdminUser {
+  _id: string;
+  roles: string[];
+}
+
+interface UpdateWalletRequest {
+  inComes?: Income[];
+  outComes?: Outcome[];
+  balance?: number;
+}
+
+interface WalletResponse {
+  success: boolean;
+  message?: string;
+  wallet?: WalletUpdateData;
+}
+
+interface ErrorResponse {
+  success: boolean;
+  message: string;
+}
+async function getAdminUser(request: NextRequest): Promise<AdminUser> {
+  const authUser = await getAuthUser(request);
   if (!authUser) {
     throw new Error("No token provided or invalid token");
   }
 
   await connect();
-  const user = await User.findById(authUser.id);
+  const user: AdminUser | null = await User.findById(authUser.id );
 
   if (!user) {
     throw new Error("User not found");
@@ -46,13 +83,13 @@ async function getAdminUser(request: NextRequest) {
 export async function PUT(
   request: NextRequest,
   { params }: { params: Promise<{ walletId: string }> }
-) {
+): Promise<NextResponse<WalletResponse | ErrorResponse>> {
   try {
     const admin = await getAdminUser(request);
     await connect();
 
     const { walletId } = await params;
-    const body = await request.json();
+    const body: UpdateWalletRequest = await request.json();
     const { inComes, outComes, balance } = body;
 
     // Find the wallet
@@ -68,10 +105,10 @@ export async function PUT(
     }
 
     // Update wallet data
-    const updateData: walletData = {};
+    const updateData: WalletUpdateData = {};
 
     if (inComes !== undefined) {
-      updateData.inComes = inComes.map((income: income) => ({
+      updateData.inComes = inComes.map((income: Income) => ({
         ...income,
         verifiedBy: admin._id,
         verifiedAt:
@@ -80,7 +117,7 @@ export async function PUT(
     }
 
     if (outComes !== undefined) {
-      updateData.outComes = outComes.map((outcome: outcome) => ({
+      updateData.outComes = outComes.map((outcome: Outcome) => ({
         ...outcome,
         verifiedBy: admin._id,
         verifiedAt:
@@ -128,7 +165,7 @@ export async function PUT(
 export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ walletId: string }> }
-) {
+): Promise<NextResponse<WalletResponse | ErrorResponse>> {
   try {
     await getAdminUser(request);
     await connect();
