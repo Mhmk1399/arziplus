@@ -602,7 +602,7 @@ const UserValidationWrapper = ({
         <div className="fixed bottom-0 left-0 right-0 sm:hidden bg-white border-t border-gray-200 shadow-lg z-50">
           <div className="grid grid-cols-4 gap-1 p-2">
             {tabs.map((tab) => {
-              const status = getTabStatus(tab.id);
+              // const status = getTabStatus(tab.id);
               const isActive = activeTab === tab.id;
 
               return (

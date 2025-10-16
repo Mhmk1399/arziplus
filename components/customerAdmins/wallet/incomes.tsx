@@ -21,7 +21,7 @@ import {
 } from "react-icons/fa";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
 import { showToast } from "@/utilities/toast";
-import DatePicker from "react-multi-date-picker";
+import DatePicker, { DateObject } from "react-multi-date-picker";
 import persian from "react-date-object/calendars/persian";
 import persian_fa from "react-date-object/locales/persian_fa";
 
@@ -381,7 +381,7 @@ const IncomesHistory: React.FC = () => {
                 </label>
                 <DatePicker
                   value={filters.startDate}
-                  onChange={(date: any) => {
+                  onChange={(date: DateObject | null) => {
                     if (date) {
                       const gregorianDate = new Date(
                         date.year,
@@ -409,7 +409,7 @@ const IncomesHistory: React.FC = () => {
                 </label>
                 <DatePicker
                   value={filters.endDate}
-                  onChange={(date: any) => {
+                  onChange={(date: DateObject | null) => {
                     if (date) {
                       const gregorianDate = new Date(
                         date.year,

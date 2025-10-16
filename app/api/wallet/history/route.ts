@@ -109,7 +109,7 @@ async function getUserFromToken(request: NextRequest): Promise<UserData> {
     }
 
     return user;
-  } catch (error) {
+  } catch {
     throw new Error("Invalid token");
   }
 }

@@ -29,10 +29,7 @@ interface UpdateQuery {
   };
 }
 
-interface AuthUser {
-  id: string;
-  roles: string[];
-}
+ 
 
 interface NationalCredentialsData {
   firstName: string;

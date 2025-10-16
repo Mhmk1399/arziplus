@@ -7,15 +7,13 @@ import {
   FaEye,
   FaEyeSlash,
   FaExclamationTriangle,
-  FaCheck,
-  FaKey,
+   FaKey,
   FaCheckCircle,
   FaTimesCircle,
   FaInfoCircle,
   FaSpinner,
 } from "react-icons/fa";
-import { estedadBold } from "@/next-persian-fonts/estedad/index";
-import { showToast } from "@/utilities/toast";
+ import { showToast } from "@/utilities/toast";
 
 interface SecurityData {
   username: string;
@@ -479,7 +477,7 @@ const Security = ({
                     ? "bg-gray-300 text-gray-500 cursor-not-allowed"
                     : isSaved
                     ? "bg-green-500 text-white shadow-lg"
-                    : "bg-gradient-to-r from-[#4DBFF0] to-[#0A1D37] text-white shadow-lg hover:shadow-xl hover:scale-105 active:scale-95"
+                    : "bg-gradient-to-r from-[#4DBFF0] to-[#4DBFF0] text-white shadow-lg hover:shadow-xl hover:scale-105 active:scale-95"
                 }`}
               >
                 {isLoading ? (

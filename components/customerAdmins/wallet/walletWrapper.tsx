@@ -6,11 +6,8 @@ import {
   FaArrowUp,
   FaArrowDown,
   FaUser,
-  FaCog,
-  FaRedo,
-  FaChartLine,
-  FaMoneyBillWave,
-  FaCheckCircle,
+   FaRedo,
+ 
   FaHourglassHalf,
 } from "react-icons/fa";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
