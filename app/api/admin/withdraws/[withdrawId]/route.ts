@@ -36,13 +36,13 @@ async function getAdminUser(request: NextRequest) {
 // PATCH - Update withdraw request status
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { withdrawId: string } }
+  { params }: { params: Promise<{ withdrawId: string }> }
 ) {
   try {
     const admin = await getAdminUser(request);
     await connect();
 
-    const { withdrawId } = params;
+    const { withdrawId } = await params;
     const body = await request.json();
     const { status, rejectionReason } = body;
 
@@ -171,13 +171,13 @@ export async function PATCH(
 // GET - Get specific withdraw request details
 export async function GET(
   request: NextRequest,
-  { params }: { params: { withdrawId: string } }
+  { params }: { params: Promise<{ withdrawId: string }> }
 ) {
   try {
     await getAdminUser(request);
     await connect();
 
-    const { withdrawId } = params;
+    const { withdrawId } = await params;
 
     const withdrawRequest = await WithdrawRequest.findById(withdrawId)
       .populate(

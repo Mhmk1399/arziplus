@@ -84,7 +84,7 @@ export default function RequestNavigation({ className = '' }: RequestNavigationP
       {/* User info display */}
       <div className="mt-4 pt-4 border-t border-gray-200">
         <p className="text-sm text-gray-600">
-          کاربر: <span className="font-medium">{user.firstName || user.email}</span>
+          کاربر: <span className="font-medium">{user.firstName || user.id}</span>
           {isAdmin && (
             <span className="mr-2 px-2 py-1 bg-red-100 text-red-700 rounded text-xs">
               مدیر
