@@ -6,8 +6,6 @@ import {
   ctaThemes,
   faqThemes,
   stepThemes,
-  textBoxThemes,
-  textBoxTypography,
   themesWhyus,
 } from "@/lib/theme";
 import {
@@ -32,7 +30,6 @@ import {
 import WhyUsSection from "../global/whyUs";
 import FAQSection from "../global/faqSection";
 import CTABanner from "../global/ctaBanner";
-import TextBox from "../global/textBox";
 import { FaClock } from "react-icons/fa";
 
 const AboutPage = () => {

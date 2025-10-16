@@ -74,6 +74,7 @@ const FileUploaderModal: React.FC<FileUploaderModalProps> = ({
         showToast.error(result.error || "آپلود ناموفق بود");
       }
     } catch (error) {
+      console.error("Upload error:", error);
       showToast.error("خطا در آپلود فایل");
     } finally {
       setIsUploading(false);

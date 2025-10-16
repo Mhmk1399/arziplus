@@ -1,5 +1,5 @@
 "use client";
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { 
   FaIdCard, 
   FaUser, 
@@ -175,6 +175,7 @@ const NationalCredentials = ({ initialData, onSave, onValidationChange }: Nation
       }
 
       const result = await response.json();
+      console.log(result)
       onSave?.(formData);
       setIsSaved(true);
       showToast.success("اطلاعات هویتی با موفقیت ذخیره شد");

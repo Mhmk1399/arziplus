@@ -6,10 +6,6 @@ import {
   FaLock,
   FaEye,
   FaEyeSlash,
-  FaUserShield,
-  FaCheckCircle,
-  FaTimesCircle,
-  FaClock,
   FaExclamationTriangle,
   FaCheck,
   FaKey,
@@ -51,7 +47,6 @@ interface SecurityProps {
 
 const Security = ({
   initialData,
-  verificationStatus,
   onSave,
   onValidationChange,
 }: SecurityProps) => {
@@ -78,32 +73,9 @@ const Security = ({
     identity: { status: "not_submitted" },
   };
 
-  const currentVerificationStatus =
-    verificationStatus || defaultVerificationStatus;
 
-  // Status configurations
-  const statusConfig = {
-    active: { color: "text-green-700", bg: "bg-green-100", label: "فعال" },
-    suspended: { color: "text-yellow-700", bg: "bg-yellow-100", label: "معلق" },
-    banned: { color: "text-red-700", bg: "bg-red-100", label: "مسدود" },
-    pending_verification: {
-      color: "text-orange-700",
-      bg: "bg-orange-100",
-      label: "در انتظار تأیید",
-    },
-  };
 
-  const roleConfig = {
-    user: { label: "کاربر عادی", color: "text-blue-700", bg: "bg-blue-100" },
-    admin: { label: "مدیر", color: "text-purple-700", bg: "bg-purple-100" },
-    super_admin: { label: "مدیر کل", color: "text-red-700", bg: "bg-red-100" },
-    moderator: { label: "ناظر", color: "text-green-700", bg: "bg-green-100" },
-    support: {
-      label: "پشتیبانی",
-      color: "text-indigo-700",
-      bg: "bg-indigo-100",
-    },
-  };
+
 
   // Validation functions
   const validateUsername = (username: string): boolean => {
@@ -166,17 +138,7 @@ const Security = ({
     }
   };
 
-  const handleRoleToggle = (role: SecurityData["roles"][0]) => {
-    const currentRoles = formData.roles;
-    const newRoles = currentRoles.includes(role)
-      ? currentRoles.filter((r) => r !== role)
-      : [...currentRoles, role];
 
-    // Ensure at least one role is selected
-    if (newRoles.length > 0) {
-      handleInputChange("roles", newRoles);
-    }
-  };
 
   const handleSave = async () => {
     if (!validateForm()) return;
@@ -224,6 +186,7 @@ const Security = ({
       }
 
       const result = await response.json();
+      console.log(result)
       onSave?.(formData);
       setIsSaved(true);
       showToast.success("تنظیمات امنیتی با موفقیت ذخیره شد");
@@ -236,18 +199,7 @@ const Security = ({
     }
   };
 
-  const getVerificationIcon = (status: string | boolean) => {
-    if (status === "approved" || status === true) {
-      return <FaCheckCircle className="text-green-600" />;
-    }
-    if (status === "rejected") {
-      return <FaTimesCircle className="text-red-600" />;
-    }
-    if (status === "pending") {
-      return <FaClock className="text-orange-600" />;
-    }
-    return <FaTimesCircle className="text-gray-400" />;
-  };
+
 
   return (
     <div className="w-full max-w-4xl mx-auto" dir="rtl">

@@ -4,7 +4,6 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
 import {
-  FaCreditCard,
   FaReceipt,
   FaSearch,
   FaCheckCircle,
@@ -84,7 +83,7 @@ const PaymentDashboard: React.FC = () => {
     }
   };
 
-  const formatAmount = (amount: number, currency: "IRT" = "IRT") => {
+  const formatAmount = (amount: number) => {
     return `${amount.toLocaleString("fa-IR")} تومان`;
   };
 

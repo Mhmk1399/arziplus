@@ -46,10 +46,7 @@ export default function TextBox({
   height = 200,
   theme = {},
   typography = {},
-  spacing = {},
-  style = {},
   animate = true,
-  className = "",
 }: TextBoxProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
@@ -58,27 +55,20 @@ export default function TextBox({
 
   const [isScrollable, setIsScrollable] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
-  console.log(scrollProgress);
+  console.log(scrollProgress,isScrollable);
 
   const {
-    backgroundColor = "bg-white",
     headingColor = "text-gray-900",
     textColor = "text-gray-700",
-    borderColor = "border-gray-200",
-    scrollbarColor = "scrollbar-thumb-blue-500",
-    scrollbarTrackColor = "scrollbar-track-gray-100",
   } = theme;
 
   const {
     headingSize = "text-xl md:text-2xl",
     textSize = "text-base",
-    lineHeight = "leading-relaxed",
     fontWeight = "font-normal",
   } = typography;
 
-  const { padding = "p-6", margin = "", gap = "space-y-4" } = spacing;
 
-  const { rounded = true, shadow = true, border = true } = style;
 
   // بررسی قابلیت اسکرول
   useEffect(() => {

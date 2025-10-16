@@ -48,7 +48,7 @@ const PaymentRequestPage: React.FC = () => {
     }));
   };
 
-  const formatAmount = (amount: number, currency: "IRT" = "IRT") => {
+  const formatAmount = (amount: number) => {
     return `${amount.toLocaleString("fa-IR")} تومان`;
   };
 
@@ -246,11 +246,7 @@ const PaymentRequestPage: React.FC = () => {
 
                   {displayAmount > 0 && (
                     <div className="text-sm text-gray-600">
-                      معادل:{" "}
-                      {formatAmount(
-                        displayAmount,
-                        formData.currency === "IRT" ? "IRT" : "IRT"
-                      )}
+                      معادل: {formatAmount(displayAmount)}
                     </div>
                   )}
                 </div>

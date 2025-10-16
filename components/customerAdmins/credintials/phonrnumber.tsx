@@ -8,8 +8,6 @@ import {
   FaEnvelopeOpen,
   FaCheck,
   FaExclamationTriangle,
-  FaTimes,
-  FaPaperPlane,
   FaClock,
 } from "react-icons/fa";
 import { showToast } from "@/utilities/toast";
@@ -51,14 +49,10 @@ const ContactInfo = ({
 
   // Verification states
   const [emailVerificationModal, setEmailVerificationModal] = useState(false);
-  const [phoneVerificationModal, setPhoneVerificationModal] = useState(false);
-  const [emailVerificationCode, setEmailVerificationCode] = useState("");
-  const [phoneVerificationCode, setPhoneVerificationCode] = useState("");
-  const [emailVerified, setEmailVerified] = useState(false);
-  const [phoneVerified, setPhoneVerified] = useState(false);
-  const [sendingCode, setSendingCode] = useState(false);
-  const [verifyingCode, setVerifyingCode] = useState(false);
 
+  const [sendingCode, setSendingCode] = useState(false);
+
+  console.log(sendingCode, emailVerificationModal);
   // Validation functions
   const validateMobilePhone = (phone: string): boolean => {
     const regex = /^09\d{9}$/;
@@ -161,7 +155,7 @@ const ContactInfo = ({
     setIsLoading(true);
     try {
       const token = localStorage.getItem("authToken");
-      
+
       // Clean and format data before sending
       const requestData = {
         homePhone: formData.homePhone.trim(),
@@ -172,11 +166,11 @@ const ContactInfo = ({
       };
 
       console.log("Sending contact data:", requestData); // Debug log
-      
+
       const response = await fetch("/api/users/contact", {
         method: "POST",
         headers: {
-          "Authorization": `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify(requestData),
@@ -185,189 +179,28 @@ const ContactInfo = ({
       if (!response.ok) {
         const errorData = await response.json();
         console.error("Contact API Error Response:", errorData); // Debug log
-        throw new Error(errorData.error || `خطا در ذخیره اطلاعات تماس (${response.status})`);
+        throw new Error(
+          errorData.error || `خطا در ذخیره اطلاعات تماس (${response.status})`
+        );
       }
 
       const result = await response.json();
+      console.log(result);
       onSave?.(formData);
       setIsSaved(true);
       showToast.success("اطلاعات تماس با موفقیت ذخیره شد");
       setTimeout(() => setIsSaved(false), 3000);
     } catch (error) {
       console.error("Error saving contact info:", error);
-      showToast.error(error instanceof Error ? error.message : "خطا در ذخیره اطلاعات تماس");
+      showToast.error(
+        error instanceof Error ? error.message : "خطا در ذخیره اطلاعات تماس"
+      );
     } finally {
       setIsLoading(false);
     }
   };
 
   // Handle verification functions
-  const handleSendEmailCode = async () => {
-    if (!formData.email || !validateEmail(formData.email)) {
-      setErrors((prev) => ({ ...prev, email: "لطفاً ایمیل معتبر وارد کنید" }));
-      return;
-    }
-
-    setSendingCode(true);
-    try {
-      const token = localStorage.getItem("authToken");
-      
-      const requestData = {
-        email: formData.email.toLowerCase().trim(),
-      };
-
-      console.log("Sending email verification request:", requestData); // Debug log
-      
-      const response = await fetch("/api/users/email", {
-        method: "POST",
-        headers: {
-          "Authorization": `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(requestData),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || "خطا در ارسال کد تایید");
-      }
-
-      setEmailVerificationModal(true);
-      showToast.success("کد تایید ایمیل ارسال شد");
-    } catch (error) {
-      console.error("Error sending email code:", error);
-      showToast.error(error instanceof Error ? error.message : "خطا در ارسال کد تایید ایمیل");
-    } finally {
-      setSendingCode(false);
-    }
-  };
-
-  const handleSendPhoneCode = async () => {
-    if (!formData.mobilePhone || !validateMobilePhone(formData.mobilePhone)) {
-      setErrors((prev) => ({
-        ...prev,
-        mobilePhone: "لطفاً شماره موبایل معتبر وارد کنید",
-      }));
-      return;
-    }
-
-    setSendingCode(true);
-    try {
-      const token = localStorage.getItem("authToken");
-      
-      const requestData = {
-        phone: formData.mobilePhone.trim(),
-      };
-
-      console.log("Sending phone verification request:", requestData); // Debug log
-      
-      const response = await fetch("/api/users/phoneVerification", {
-        method: "POST",
-        headers: {
-          "Authorization": `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(requestData),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || "خطا در ارسال کد تایید");
-      }
-
-      setPhoneVerificationModal(true);
-      showToast.success("کد تایید پیامک ارسال شد");
-    } catch (error) {
-      console.error("Error sending phone code:", error);
-      showToast.error(error instanceof Error ? error.message : "خطا در ارسال کد تایید پیامک");
-    } finally {
-      setSendingCode(false);
-    }
-  };
-
-  const handleVerifyEmail = async () => {
-    if (!emailVerificationCode || emailVerificationCode.length !== 6) {
-      return;
-    }
-
-    setVerifyingCode(true);
-    try {
-      const token = localStorage.getItem("authToken");
-      
-      const requestData = {
-        email: formData.email.toLowerCase().trim(),
-        code: emailVerificationCode.trim(),
-      };
-
-      console.log("Sending email verification:", requestData); // Debug log
-      
-      const response = await fetch("/api/users/email", {
-        method: "PATCH",
-        headers: {
-          "Authorization": `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(requestData),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || "خطا در تایید ایمیل");
-      }
-
-      setEmailVerified(true);
-      setEmailVerificationModal(false);
-      setEmailVerificationCode("");
-      showToast.success("ایمیل با موفقیت تایید شد");
-    } catch (error) {
-      console.error("Error verifying email:", error);
-      showToast.error(error instanceof Error ? error.message : "خطا در تایید ایمیل");
-    } finally {
-      setVerifyingCode(false);
-    }
-  };
-
-  const handleVerifyPhone = async () => {
-    if (!phoneVerificationCode || phoneVerificationCode.length !== 5) {
-      return;
-    }
-
-    setVerifyingCode(true);
-    try {
-      const token = localStorage.getItem("authToken");
-      
-      const requestData = {
-        phone: formData.mobilePhone.trim(),
-        code: phoneVerificationCode.trim(),
-      };
-
-      console.log("Sending phone verification:", requestData); // Debug log
-      
-      const response = await fetch("/api/users/phoneVerification", {
-        method: "PATCH",
-        headers: {
-          "Authorization": `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(requestData),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || "خطا در تایید شماره تلفن");
-      }
-
-      setPhoneVerified(true);
-      setPhoneVerificationModal(false);
-      setPhoneVerificationCode("");
-      showToast.success("شماره تلفن با موفقیت تایید شد");
-    } catch (error) {
-      console.error("Error verifying phone:", error);
-      showToast.error(error instanceof Error ? error.message : "خطا در تایید شماره تلفن");
-    } finally {
-      setVerifyingCode(false);
-    }
-  };
 
   return (
     <div className="w-full max-w-4xl mx-auto ">
@@ -386,13 +219,15 @@ const ContactInfo = ({
       </div>
       {/* Status Display */}
       {formData.status && (
-        <div className={`mb-4 p-6 rounded-xl border ${
-          formData.status === "accepted" 
-            ? "bg-green-50 border-green-200" 
-            : formData.status === "rejected" 
-            ? "bg-red-50 border-red-200" 
-            : "bg-yellow-50 border-yellow-200"
-        }`}>
+        <div
+          className={`mb-4 p-6 rounded-xl border ${
+            formData.status === "accepted"
+              ? "bg-green-50 border-green-200"
+              : formData.status === "rejected"
+              ? "bg-red-50 border-red-200"
+              : "bg-yellow-50 border-yellow-200"
+          }`}
+        >
           <div className="flex items-center gap-2 mb-2">
             {formData.status === "accepted" && (
               <>
@@ -414,15 +249,21 @@ const ContactInfo = ({
             )}
           </div>
           {formData.status === "accepted" && (
-            <p className="text-sm text-green-800">اطلاعات تماس شما توسط ادمین تایید شده است.</p>
+            <p className="text-sm text-green-800">
+              اطلاعات تماس شما توسط ادمین تایید شده است.
+            </p>
           )}
           {formData.status === "pending_verification" && (
-            <p className="text-sm text-yellow-800">اطلاعات تماس شما در انتظار بررسی توسط ادمین است.</p>
+            <p className="text-sm text-yellow-800">
+              اطلاعات تماس شما در انتظار بررسی توسط ادمین است.
+            </p>
           )}
           {formData.status === "rejected" && formData.rejectionNotes && (
             <div className="text-sm text-red-800">
               <p className="mb-1">دلیل رد:</p>
-              <p className="bg-red-100 p-2 rounded">{formData.rejectionNotes}</p>
+              <p className="bg-red-100 p-2 rounded">
+                {formData.rejectionNotes}
+              </p>
             </div>
           )}
         </div>
@@ -587,7 +428,6 @@ const ContactInfo = ({
             )}
           </div>
         </div>
-        
 
         {/* Action Buttons */}
         <div className="flex justify-end gap-4 mt-8 pt-6 border-t border-gray-100">
@@ -618,8 +458,6 @@ const ContactInfo = ({
           </button>
         </div>
       </div>
-
-    
     </div>
   );
 };

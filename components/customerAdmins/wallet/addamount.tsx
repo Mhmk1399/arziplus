@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
 import { showToast } from "@/utilities/toast";
@@ -19,6 +19,18 @@ import {
   FaExclamationTriangle,
 } from "react-icons/fa";
 
+interface WalletTransaction {
+  _id?: string;
+  amount: number;
+  type: "income" | "outcome";
+  tag: string;
+  description: string;
+  date: Date;
+  verifiedAt?: Date;
+  status: "pending" | "verified" | "rejected";
+  verifiedBy?: string;
+}
+
 interface AddAmountComponentProps {
   onSuccess?: () => void;
   onCancel?: () => void;
@@ -27,7 +39,7 @@ interface AddAmountComponentProps {
     totalIncomes: number;
     totalOutcomes: number;
     pendingIncomes: number;
-    recentTransactions: any[];
+    recentTransactions: WalletTransaction[];
   };
 }
 
@@ -39,20 +51,24 @@ const AddAmountComponent: React.FC<AddAmountComponentProps> = ({
     totalIncomes: 0,
     totalOutcomes: 0,
     pendingIncomes: 0,
-    recentTransactions: []
-  }
+    recentTransactions: [],
+  },
 }) => {
   const router = useRouter();
-  const { user: currentUser, isLoggedIn, loading: userLoading } = useCurrentUser();
-  
+  const {
+    user: currentUser,
+    isLoggedIn,
+    loading: userLoading,
+  } = useCurrentUser();
+
   const [loading, setLoading] = useState(false);
   const [lastSubmitTime, setLastSubmitTime] = useState(0);
   const [formData, setFormData] = useState({
-    amount: '',
-    description: 'شارژ کیف پول',
-    serviceId: '',
-    orderId: '',
-    currency: 'IRT',
+    amount: "",
+    description: "شارژ کیف پول",
+    serviceId: "",
+    orderId: "",
+    currency: "IRT",
   });
 
   // Predefined amounts (in Toman)
@@ -68,7 +84,7 @@ const AddAmountComponent: React.FC<AddAmountComponentProps> = ({
   ];
 
   const handleInputChange = (field: string, value: string | number) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       [field]: value,
     }));
@@ -76,19 +92,19 @@ const AddAmountComponent: React.FC<AddAmountComponentProps> = ({
 
   const handlePredefinedAmount = (amount: number) => {
     // All amounts are in Toman (IRT)
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       amount: amount.toString(),
     }));
   };
 
   const formatAmount = (amount: number) => {
-    return `${amount.toLocaleString('fa-IR')} تومان`;
+    return `${amount.toLocaleString("fa-IR")} تومان`;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     // Prevent multiple rapid submissions (5 second cooldown)
     const now = Date.now();
     if (now - lastSubmitTime < 5000) {
@@ -96,14 +112,14 @@ const AddAmountComponent: React.FC<AddAmountComponentProps> = ({
       return;
     }
     setLastSubmitTime(now);
-    
+
     if (!currentUser) {
       showToast.error("لطفاً وارد حساب کاربری خود شوید");
       return;
     }
 
     const amount = parseFloat(formData.amount.toString());
-    
+
     if (!amount || amount <= 0) {
       showToast.error("لطفاً مبلغ معتبر وارد کنید");
       return;
@@ -124,7 +140,7 @@ const AddAmountComponent: React.FC<AddAmountComponentProps> = ({
 
     try {
       const token = localStorage.getItem("authToken");
-      
+
       const response = await fetch("/api/payment/request", {
         method: "POST",
         headers: {
@@ -150,15 +166,17 @@ const AddAmountComponent: React.FC<AddAmountComponentProps> = ({
             return;
           } else {
             // Pending duplicate, show warning and redirect to existing payment
-            showToast.warning("درخواست پرداخت تکراری - به درگاه موجود منتقل می‌شوید");
+            showToast.warning(
+              "درخواست پرداخت تکراری - به درگاه موجود منتقل می‌شوید"
+            );
           }
         } else {
           showToast.success("درخواست پرداخت با موفقیت ایجاد شد");
         }
-        
+
         // Call success callback if provided
         if (onSuccess) onSuccess();
-        
+
         // Redirect to ZarinPal (or existing payment URL)
         if (data.data.paymentUrl) {
           window.location.href = data.data.paymentUrl;
@@ -191,7 +209,9 @@ const AddAmountComponent: React.FC<AddAmountComponentProps> = ({
     return (
       <div className="text-center p-8" dir="rtl">
         <FaExclamationTriangle className="text-4xl text-yellow-500 mx-auto mb-4" />
-        <p className="text-gray-600 mb-4">برای ادامه لطفاً وارد حساب کاربری خود شوید</p>
+        <p className="text-gray-600 mb-4">
+          برای ادامه لطفاً وارد حساب کاربری خود شوید
+        </p>
         <button
           onClick={() => router.push("/auth/sms")}
           className="px-6 py-3 bg-[#FF7A00] text-white rounded-lg hover:bg-[#e56900] transition-colors"
@@ -202,13 +222,10 @@ const AddAmountComponent: React.FC<AddAmountComponentProps> = ({
     );
   }
 
-  const displayAmount = parseFloat(formData.amount.toString()) || 0;
-
   return (
     <div className="p-6" dir="rtl">
       <div className="max-w-6xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          
           {/* Main Form - Left Side */}
           <div className="lg:col-span-2">
             {/* Header */}
@@ -216,7 +233,9 @@ const AddAmountComponent: React.FC<AddAmountComponentProps> = ({
               <div className="w-16 h-16 bg-gradient-to-r from-[#FF7A00] to-[#4DBFF0] rounded-full flex items-center justify-center mx-auto mb-4">
                 <FaCreditCard className="text-white text-2xl" />
               </div>
-              <h2 className="text-2xl font-bold text-[#0A1D37] mb-2">شارژ کیف پول</h2>
+              <h2 className="text-2xl font-bold text-[#0A1D37] mb-2">
+                شارژ کیف پول
+              </h2>
               <p className="text-gray-600">پرداخت امن از طریق درگاه زرین‌پال</p>
             </div>
 
@@ -225,7 +244,7 @@ const AddAmountComponent: React.FC<AddAmountComponentProps> = ({
               <div className="flex items-center gap-4">
                 <div className="w-10 h-10 bg-gradient-to-r from-[#FF7A00]/20 to-[#4DBFF0]/20 rounded-full flex items-center justify-center">
                   <span className="text-[#FF7A00] font-bold">
-                    {(currentUser.firstName || 'ک').charAt(0)}
+                    {(currentUser.firstName || "ک").charAt(0)}
                   </span>
                 </div>
                 <div>
@@ -254,7 +273,9 @@ const AddAmountComponent: React.FC<AddAmountComponentProps> = ({
                     <input
                       type="number"
                       value={formData.amount}
-                      onChange={(e) => handleInputChange('amount', e.target.value)}
+                      onChange={(e) =>
+                        handleInputChange("amount", e.target.value)
+                      }
                       className="w-full pr-12 pl-4 py-4 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all"
                       placeholder="مبلغ را وارد کنید"
                       min="1"
@@ -275,7 +296,8 @@ const AddAmountComponent: React.FC<AddAmountComponentProps> = ({
                         type="button"
                         onClick={() => handlePredefinedAmount(preset.value)}
                         className={`relative p-3 text-sm border rounded-lg transition-all duration-200 ${
-                          Math.abs(parseFloat(formData.amount) - preset.value) < 1
+                          Math.abs(parseFloat(formData.amount) - preset.value) <
+                          1
                             ? "bg-[#FF7A00] text-white border-[#FF7A00] shadow-md"
                             : "bg-white text-gray-700 border-gray-200 hover:border-[#FF7A00] hover:bg-[#FF7A00]/5"
                         }`}
@@ -303,7 +325,9 @@ const AddAmountComponent: React.FC<AddAmountComponentProps> = ({
                     <FaInfoCircle className="absolute right-4 top-4 text-[#FF7A00]" />
                     <textarea
                       value={formData.description}
-                      onChange={(e) => handleInputChange('description', e.target.value)}
+                      onChange={(e) =>
+                        handleInputChange("description", e.target.value)
+                      }
                       className="w-full pr-12 pl-4 py-4 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all resize-none"
                       placeholder="توضیحات مربوط به شارژ کیف پول"
                       rows={3}
@@ -326,7 +350,7 @@ const AddAmountComponent: React.FC<AddAmountComponentProps> = ({
                     <FaArrowLeft className="text-sm" />
                     بازگشت
                   </button>
-                  
+
                   <button
                     type="submit"
                     disabled={loading}
@@ -352,7 +376,6 @@ const AddAmountComponent: React.FC<AddAmountComponentProps> = ({
           {/* Wallet Information Sidebar - Right Side */}
           <div className="lg:col-span-1">
             <div className="space-y-6">
-              
               {/* Current Wallet Balance */}
               <div className="bg-gradient-to-br from-green-50 to-emerald-50 border border-green-200 rounded-2xl p-6">
                 <div className="flex items-center gap-3 mb-4">
@@ -365,7 +388,7 @@ const AddAmountComponent: React.FC<AddAmountComponentProps> = ({
                   </div>
                 </div>
                 <p className="text-2xl font-bold text-green-800">
-                  {walletBalance.toLocaleString('fa-IR')} تومان
+                  {walletBalance.toLocaleString("fa-IR")} تومان
                 </p>
               </div>
 
@@ -379,19 +402,21 @@ const AddAmountComponent: React.FC<AddAmountComponentProps> = ({
                   <div className="flex justify-between items-center">
                     <span className="text-gray-600 text-sm">کل واریزها:</span>
                     <span className="font-semibold text-blue-600">
-                      {walletStats.totalIncomes.toLocaleString('fa-IR')} تومان
+                      {walletStats.totalIncomes.toLocaleString("fa-IR")} تومان
                     </span>
                   </div>
                   <div className="flex justify-between items-center">
                     <span className="text-gray-600 text-sm">کل برداشت‌ها:</span>
                     <span className="font-semibold text-red-600">
-                      {walletStats.totalOutcomes.toLocaleString('fa-IR')} تومان
+                      {walletStats.totalOutcomes.toLocaleString("fa-IR")} تومان
                     </span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-gray-600 text-sm">در انتظار تایید:</span>
+                    <span className="text-gray-600 text-sm">
+                      در انتظار تایید:
+                    </span>
                     <span className="font-semibold text-yellow-600">
-                      {walletStats.pendingIncomes.toLocaleString('fa-IR')} تومان
+                      {walletStats.pendingIncomes.toLocaleString("fa-IR")} تومان
                     </span>
                   </div>
                 </div>
@@ -405,39 +430,58 @@ const AddAmountComponent: React.FC<AddAmountComponentProps> = ({
                 </div>
                 {walletStats.recentTransactions.length > 0 ? (
                   <div className="space-y-3">
-                    {walletStats.recentTransactions.slice(0, 3).map((transaction, index) => (
-                      <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                        <div className="flex items-center gap-2">
-                          {transaction.type === 'income' ? (
-                            <div className="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center">
-                              <span className="text-green-600 text-xs">+</span>
+                    {walletStats.recentTransactions
+                      .slice(0, 3)
+                      .map((transaction, index) => (
+                        <div
+                          key={index}
+                          className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
+                        >
+                          <div className="flex items-center gap-2">
+                            {transaction.type === "income" ? (
+                              <div className="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center">
+                                <span className="text-green-600 text-xs">
+                                  +
+                                </span>
+                              </div>
+                            ) : (
+                              <div className="w-6 h-6 bg-red-100 rounded-full flex items-center justify-center">
+                                <span className="text-red-600 text-xs">-</span>
+                              </div>
+                            )}
+                            <div>
+                              <p className="text-xs font-medium">
+                                {transaction.description || transaction.tag}
+                              </p>
+                              <p className="text-xs text-gray-500">
+                                {new Date(transaction.date).toLocaleDateString(
+                                  "fa-IR"
+                                )}
+                              </p>
                             </div>
-                          ) : (
-                            <div className="w-6 h-6 bg-red-100 rounded-full flex items-center justify-center">
-                              <span className="text-red-600 text-xs">-</span>
-                            </div>
-                          )}
-                          <div>
-                            <p className="text-xs font-medium">{transaction.description || transaction.tag}</p>
+                          </div>
+                          <div className="text-left">
+                            <p
+                              className={`text-xs font-bold ${
+                                transaction.type === "income"
+                                  ? "text-green-600"
+                                  : "text-red-600"
+                              }`}
+                            >
+                              {transaction.type === "income" ? "+" : "-"}
+                              {transaction.amount.toLocaleString("fa-IR")}
+                            </p>
                             <p className="text-xs text-gray-500">
-                              {new Date(transaction.date).toLocaleDateString("fa-IR")}
+                              {transaction.status}
                             </p>
                           </div>
                         </div>
-                        <div className="text-left">
-                          <p className={`text-xs font-bold ${
-                            transaction.type === 'income' ? 'text-green-600' : 'text-red-600'
-                          }`}>
-                            {transaction.type === 'income' ? '+' : '-'}
-                            {transaction.amount.toLocaleString('fa-IR')}
-                          </p>
-                          <p className="text-xs text-gray-500">{transaction.status}</p>
-                        </div>
-                      </div>
-                    ))}
+                      ))}
                   </div>
                 ) : (
-                  <p className="text-gray-500 text-center py-4 text-sm">تراکنشی وجود ندارد</p>
+                  <p className="text-gray-500 text-center py-4 text-sm">
+                    تراکنشی وجود ندارد
+                  </p>
                 )}
               </div>
 
@@ -448,7 +492,9 @@ const AddAmountComponent: React.FC<AddAmountComponentProps> = ({
                     <FaShieldAlt className="text-white text-sm" />
                   </div>
                   <div>
-                    <p className="font-medium text-blue-800 text-sm">پرداخت امن</p>
+                    <p className="font-medium text-blue-800 text-sm">
+                      پرداخت امن
+                    </p>
                     <p className="text-xs text-blue-600">
                       تمامی پرداخت‌ها از طریق درگاه امن زرین‌پال انجام می‌شود
                     </p>
@@ -463,14 +509,15 @@ const AddAmountComponent: React.FC<AddAmountComponentProps> = ({
                     <FaClock className="text-white text-sm" />
                   </div>
                   <div>
-                    <p className="font-medium text-yellow-800 text-sm">زمان پردازش</p>
+                    <p className="font-medium text-yellow-800 text-sm">
+                      زمان پردازش
+                    </p>
                     <p className="text-xs text-yellow-600">
                       شارژ کیف پول پس از پرداخت موفق، فوراً انجام می‌شود
                     </p>
                   </div>
                 </div>
               </div>
-
             </div>
           </div>
         </div>

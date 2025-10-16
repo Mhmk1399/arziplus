@@ -43,7 +43,7 @@ const ServicesGrid: React.FC<ServicesGridProps> = ({
     Math.min(services.length, visibleServices)
   );
   const angleStep = 360 / displayServices.length;
-
+console.log(hoveredService,currentRotation)
   // Calculate radius based on screen width - much smaller for mobile
   const radius = useMemo(() => {
     if (screenWidth < 640) {

@@ -7,7 +7,6 @@ import {
   FaShieldAlt,
   FaCheck,
   FaExclamationTriangle,
-  FaClock,
 } from "react-icons/fa";
 import { estedadBold } from "@/next-persian-fonts/estedad/index";
 
@@ -24,15 +23,85 @@ interface ValidationStatus {
   security: boolean;
 }
 
-interface UserValidationWrapperProps {
-  initialData?: {
-    bankingInfo?: any;
-    nationalCredentials?: any;
-    contactInfo?: any;
-    security?: any;
-    verificationStatus?: any;
+interface BankingInfoData {
+  _id?: string;
+  bankName: string;
+  cardNumber: string;
+  shebaNumber: string;
+  accountHolderName: string;
+  status?: "accepted" | "rejected" | "pending_verification";
+  rejectionNotes?: string;
+}
+
+interface NationalCredentialsData {
+  firstName: string;
+  lastName: string;
+  nationalNumber: string;
+  nationalCardImageUrl: string;
+  verificationImageUrl: string;
+  status?: "accepted" | "rejected" | "pending_verification";
+  rejectionNotes?: string;
+}
+
+interface ContactInfoData {
+  homePhone: string;
+  mobilePhone: string;
+  email: string;
+  address: string;
+  postalCode: string;
+  status?: "accepted" | "rejected" | "pending_verification";
+  rejectionNotes?: string;
+}
+
+interface SecurityData {
+  username: string;
+  status: "active" | "suspended" | "banned" | "pending_verification";
+  roles: ("user" | "admin" | "super_admin" | "moderator" | "support")[];
+}
+
+interface VerificationStatus {
+  email: {
+    isVerified: boolean;
+    verifiedAt?: Date;
   };
-  onSave?: (section: string, data: any) => void;
+  phone: {
+    isVerified: boolean;
+    verifiedAt?: Date;
+    verificationCode?: string;
+    verificationCodeExpires?: Date;
+  };
+  identity: {
+    status: "not_submitted" | "pending" | "approved" | "rejected";
+    submittedAt?: Date;
+    reviewedAt?: Date;
+    reviewedBy?: string;
+    rejectionReason?: string;
+  };
+}
+
+interface UserData {
+  security?: SecurityData;
+  nationalCredentials?: NationalCredentialsData;
+  contactInfo?: ContactInfoData;
+  bankingInfo?: BankingInfoData[];
+  verificationStatus?: VerificationStatus;
+}
+
+interface UserApiResponse {
+  user: {
+    username: string;
+    status: "active" | "suspended" | "banned" | "pending_verification";
+    roles: ("user" | "admin" | "super_admin" | "moderator" | "support")[];
+    nationalCredentials?: NationalCredentialsData;
+    contactInfo?: ContactInfoData;
+    bankingInfo?: BankingInfoData[];
+    verifications?: VerificationStatus;
+  };
+}
+
+interface UserValidationWrapperProps {
+  initialData?: UserData;
+  onSave?: (section: string, data: BankingInfoData | NationalCredentialsData | ContactInfoData | SecurityData) => void;
 }
 
 const UserValidationWrapper = ({
@@ -47,11 +116,11 @@ const UserValidationWrapper = ({
     security: false,
   });
   const [completionPercentage, setCompletionPercentage] = useState(0);
-  const [userData, setUserData] = useState<any>(initialData || {});
+  const [userData, setUserData] = useState<UserData>(initialData || {});
   const [loading, setLoading] = useState(false);
 
   // Load user data from API
-  const loadUserData = async () => {
+  const loadUserData = async (): Promise<void> => {
     if (initialData) return; // Use provided data if available
 
     setLoading(true);
@@ -66,17 +135,17 @@ const UserValidationWrapper = ({
       });
 
       if (response.ok) {
-        const result = await response.json();
+        const result: UserApiResponse = await response.json();
         setUserData({
           security: {
             username: result.user.username,
             status: result.user.status,
             roles: result.user.roles,
           },
-          nationalCredentials: result.user.nationalCredentials || {},
-          contactInfo: result.user.contactInfo || {},
+          nationalCredentials: result.user.nationalCredentials || undefined,
+          contactInfo: result.user.contactInfo || undefined,
           bankingInfo: result.user.bankingInfo || [], // Keep as array for proper checking
-          verificationStatus: result.user.verifications || {},
+          verificationStatus: result.user.verifications || undefined,
         });
       }
     } catch (error) {
@@ -92,7 +161,7 @@ const UserValidationWrapper = ({
   }, []);
 
   // Check data completeness based on actual user data
-  const checkDataCompleteness = (data: any) => {
+  const checkDataCompleteness = (data: UserData): ValidationStatus => {
     const status: ValidationStatus = {
       security: false,
       nationalCredentials: false,
@@ -173,14 +242,6 @@ const UserValidationWrapper = ({
         const statusAccepted = firstBank.status === "accepted";
         status.bankingInfo = statusAccepted;
       }
-    } else if (
-      data.bankingInfo?.bankName &&
-      data.bankingInfo?.cardNumber &&
-      data.bankingInfo?.shebaNumber &&
-      data.bankingInfo?.accountHolderName
-    ) {
-      // Single banking info object
-      status.bankingInfo = true;
     }
 
     return status;
@@ -238,24 +299,14 @@ const UserValidationWrapper = ({
     },
   ];
 
-  const handleSectionSave = async (section: string, data: any) => {
+  const handleSectionSave = async (section: string, data: BankingInfoData | NationalCredentialsData | ContactInfoData | SecurityData): Promise<void> => {
     onSave?.(section, data);
     
     // Refresh user data to update status indicators
     await loadUserData();
   };
 
-  // Get initial data for the active component
-  const getInitialDataForTab = (tabId: string) => {
-    if (!userData) return undefined;
-    
-    if (tabId === "bankingInfo") {
-      // For banking info, pass the first item if it exists
-      return userData.bankingInfo?.[0] || undefined;
-    }
-    
-    return userData[tabId as keyof typeof userData];
-  };
+
 
   const getTabStatus = (tabId: string) => {
     const isValid = validationStatus[tabId as keyof ValidationStatus];
@@ -275,38 +326,55 @@ const UserValidationWrapper = ({
     };
   };
 
-  const getColorClasses = (color: string, isActive: boolean = false) => {
-    const colors = {
-      purple: {
-        active: "bg-purple-600 text-white border-purple-600",
-        inactive: "text-purple-600 border-purple-200 hover:bg-purple-50",
-        icon: "text-purple-600",
-      },
-      emerald: {
-        active: "bg-emerald-600 text-white border-emerald-600",
-        inactive: "text-emerald-600 border-emerald-200 hover:bg-emerald-50",
-        icon: "text-emerald-600",
-      },
-      blue: {
-        active: "bg-blue-600 text-white border-blue-600",
-        inactive: "text-blue-600 border-blue-200 hover:bg-blue-50",
-        icon: "text-blue-600",
-      },
-      indigo: {
-        active: "bg-indigo-600 text-white border-indigo-600",
-        inactive: "text-indigo-600 border-indigo-200 hover:bg-indigo-50",
-        icon: "text-indigo-600",
-      },
-    };
-    return (
-      colors[color as keyof typeof colors]?.[
-        isActive ? "active" : "inactive"
-      ] || ""
-    );
-  };
 
-  const ActiveComponent =
-    tabs.find((tab) => tab.id === activeTab)?.component || Security;
+
+  // Render the appropriate component based on active tab
+  const renderActiveComponent = () => {
+    const verificationStatusWithEmail = userData?.verificationStatus ? {
+      ...userData.verificationStatus,
+      email: userData.verificationStatus.email || { isVerified: false }
+    } : undefined;
+
+    switch (activeTab) {
+      case "security":
+        return (
+          <Security
+            initialData={userData?.security as Partial<SecurityData>}
+            verificationStatus={verificationStatusWithEmail}
+            onSave={(data) => handleSectionSave(activeTab, data)}
+          />
+        );
+      case "nationalCredentials":
+        return (
+          <NationalCredentials
+            initialData={userData?.nationalCredentials}
+            onSave={(data) => handleSectionSave(activeTab, data)}
+          />
+        );
+      case "contactInfo":
+        return (
+          <ContactInfo
+            initialData={userData?.contactInfo}
+            onSave={(data) => handleSectionSave(activeTab, data)}
+          />
+        );
+      case "bankingInfo":
+        return (
+          <BankingInfo
+            initialData={userData?.bankingInfo?.[0]}
+            onSave={(data) => handleSectionSave(activeTab, data)}
+          />
+        );
+      default:
+        return (
+          <Security
+            initialData={userData?.security as Partial<SecurityData>}
+            verificationStatus={verificationStatusWithEmail}
+            onSave={(data) => handleSectionSave(activeTab, data)}
+          />
+        );
+    }
+  };
 
   return (
     <div className="w-full max-w-7xl mx-auto p-6 mt-32 " dir="rtl">
@@ -440,11 +508,7 @@ const UserValidationWrapper = ({
               <p className="text-gray-600">در حال بارگذاری...</p>
             </div>
           ) : (
-            <ActiveComponent
-              initialData={getInitialDataForTab(activeTab)}
-              verificationStatus={userData?.verificationStatus}
-              onSave={(data: any) => handleSectionSave(activeTab, data)}
-            />
+            renderActiveComponent()
           )}
         </div>
       </div>

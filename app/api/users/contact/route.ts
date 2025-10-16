@@ -4,6 +4,41 @@ import User from "@/models/users";
 import { getAuthUser } from "@/lib/auth";
 import mongoose from "mongoose";
 
+interface query {
+  _id?: string;
+  "contactInfo.mobilePhone"?: string | { $exists: boolean; $ne: string };
+  "contactInfo.email"?: string;
+  "contactInfo.address"?: string;
+  $or?: { [key: string]: { $regex: string; $options: string } }[];
+  "verifications.email.isVerified"?: boolean;
+  "verifications.phone.isVerified"?: boolean;
+  "nationalCredentials.firstName"?: string;
+  "nationalCredentials.lastName"?: string;
+}
+
+interface updatedData {
+  "contactInfo.mobilePhone"?: string;
+  "contactInfo.email"?: string;
+  "contactInfo.address"?: string;
+  "nationalCredentials.firstName"?: string;
+  "nationalCredentials.lastName"?: string;
+  contactInfo?: {
+    homePhone?: string;
+    mobilePhone: string;
+    email: string;
+    address?: string;
+    postalCode?: string;
+    status: string;
+  };
+  $unset?: { [key: string]: string };
+
+  [key: string]:
+    | string
+    | boolean
+    | Date
+    | { [key: string]: string }
+    | undefined;
+}
 // GET - Fetch contact information with pagination and filtering
 export async function GET(request: NextRequest) {
   try {
@@ -22,11 +57,13 @@ export async function GET(request: NextRequest) {
     await connect();
 
     // Build query
-    const query: any = {};
+    const query: query = {};
 
     // Check permissions - users can only see their own contact info, admins can see all
-    const isAdmin = authUser.roles.includes("admin") || authUser.roles.includes("super_admin");
-    
+    const isAdmin =
+      authUser.roles.includes("admin") ||
+      authUser.roles.includes("super_admin");
+
     if (!isAdmin) {
       query._id = authUser.id;
     } else if (userId) {
@@ -57,7 +94,9 @@ export async function GET(request: NextRequest) {
 
     const [users, totalUsers] = await Promise.all([
       User.find(query)
-        .select("contactInfo verifications.email verifications.phone nationalCredentials.firstName nationalCredentials.lastName createdAt updatedAt")
+        .select(
+          "contactInfo verifications.email verifications.phone nationalCredentials.firstName nationalCredentials.lastName createdAt updatedAt"
+        )
         .sort({ updatedAt: -1 })
         .skip(skip)
         .limit(limit)
@@ -91,14 +130,8 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "غیر مجاز" }, { status: 401 });
     }
 
-    const {
-      userId,
-      homePhone,
-      mobilePhone,
-      email,
-      address,
-      postalCode,
-    } = await request.json();
+    const { userId, homePhone, mobilePhone, email, address, postalCode } =
+      await request.json();
 
     // Validate required fields
     if (!mobilePhone || !email) {
@@ -145,7 +178,9 @@ export async function POST(request: NextRequest) {
     // Determine target user
     const targetUserId = userId || authUser.id;
     const isOwnProfile = authUser.id === targetUserId;
-    const isAdmin = authUser.roles.includes("admin") || authUser.roles.includes("super_admin");
+    const isAdmin =
+      authUser.roles.includes("admin") ||
+      authUser.roles.includes("super_admin");
 
     // Check permissions
     if (!isOwnProfile && !isAdmin) {
@@ -162,7 +197,7 @@ export async function POST(request: NextRequest) {
     if (email !== user.contactInfo?.email) {
       const existingEmail = await User.findOne({
         "contactInfo.email": email.toLowerCase(),
-        _id: { $ne: targetUserId }
+        _id: { $ne: targetUserId },
       });
 
       if (existingEmail) {
@@ -177,7 +212,7 @@ export async function POST(request: NextRequest) {
     if (mobilePhone !== user.contactInfo?.mobilePhone) {
       const existingPhone = await User.findOne({
         "contactInfo.mobilePhone": mobilePhone,
-        _id: { $ne: targetUserId }
+        _id: { $ne: targetUserId },
       });
 
       if (existingPhone) {
@@ -199,7 +234,7 @@ export async function POST(request: NextRequest) {
     };
 
     // Check if email or phone changed to reset verification
-    const updateData: any = { contactInfo };
+    const updateData: updatedData = { contactInfo };
 
     if (email.toLowerCase() !== user.contactInfo?.email) {
       updateData["verifications.email.isVerified"] = false;
@@ -208,18 +243,17 @@ export async function POST(request: NextRequest) {
 
     if (mobilePhone !== user.contactInfo?.mobilePhone) {
       updateData["verifications.phone.isVerified"] = false;
-      updateData["$unset"] = { 
-        ...updateData["$unset"],
-        "verifications.phone.verifiedAt": "" 
+      updateData["$unset"] = {
+        ...(updateData["$unset"] || {}),
+        "verifications.phone.verifiedAt": "",
       };
     }
 
     // Update contact info
-    const updatedUser = await User.findByIdAndUpdate(
-      targetUserId,
-      updateData,
-      { new: true, runValidators: true }
-    ).select("contactInfo verifications.email verifications.phone");
+    const updatedUser = await User.findByIdAndUpdate(targetUserId, updateData, {
+      new: true,
+      runValidators: true,
+    }).select("contactInfo verifications.email verifications.phone");
 
     return NextResponse.json({
       message: "اطلاعات تماس با موفقیت به‌روزرسانی شد",
@@ -260,10 +294,7 @@ export async function PATCH(request: NextRequest) {
 
     const validTypes = ["email", "phone"];
     if (!validTypes.includes(verificationType)) {
-      return NextResponse.json(
-        { error: "نوع تایید نامعتبر" },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: "نوع تایید نامعتبر" }, { status: 400 });
     }
 
     await connect();
@@ -271,9 +302,10 @@ export async function PATCH(request: NextRequest) {
     // Determine target user
     const targetUserId = userId || authUser.id;
     const isOwnProfile = authUser.id === targetUserId;
-    const isAdmin = authUser.roles.includes("admin") || authUser.roles.includes("super_admin");
+    const isAdmin =
+      authUser.roles.includes("admin") ||
+      authUser.roles.includes("super_admin");
 
-    // Check permissions - admins can update any user, users can only verify their own
     if (!isOwnProfile && !isAdmin) {
       return NextResponse.json({ error: "دسترسی غیر مجاز" }, { status: 403 });
     }
@@ -285,21 +317,21 @@ export async function PATCH(request: NextRequest) {
     }
 
     // Prepare update data
-    const updateData: any = {};
+    const updateData: updatedData = {};
     updateData[`verifications.${verificationType}.isVerified`] = isVerified;
 
     if (isVerified) {
       updateData[`verifications.${verificationType}.verifiedAt`] = new Date();
     } else {
-      updateData["$unset"] = { [`verifications.${verificationType}.verifiedAt`]: "" };
+      updateData["$unset"] = {
+        [`verifications.${verificationType}.verifiedAt`]: "",
+      };
     }
 
     // Update verification status
-    const updatedUser = await User.findByIdAndUpdate(
-      targetUserId,
-      updateData,
-      { new: true }
-    ).select("verifications.email verifications.phone");
+    const updatedUser = await User.findByIdAndUpdate(targetUserId, updateData, {
+      new: true,
+    }).select("verifications.email verifications.phone");
 
     return NextResponse.json({
       message: "وضعیت تایید با موفقیت به‌روزرسانی شد",

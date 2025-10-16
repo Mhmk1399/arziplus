@@ -12,13 +12,10 @@ import {
   FaRocket,
   FaPhone,
   FaMapMarkerAlt,
-  FaTelegram,
-  FaWhatsapp,
   FaClock,
   FaHeadset,
   FaUserTie,
   FaGlobe,
-  FaShieldAlt,
 } from "react-icons/fa";
 import FAQSection from "../global/faqSection";
 import CTABanner from "../global/ctaBanner";
@@ -26,37 +23,7 @@ import TextBox from "../global/textBox";
 import WhyUsSection from "../global/whyUs";
 
 const ContactPage = () => {
-  const contactMethods = [
-    {
-      id: 1,
-      icon: <FaPhone size={32} />,
-      iconColor: "bg-emerald-700",
-      title: "پشتیبانی تلفنی",
-      description: "۰۲۱ – ۹۱۰۰ XXX (شنبه تا پنجشنبه، ۹ صبح تا ۶ عصر)",
-    },
-    {
-      id: 2,
-      icon: <FaTelegram size={32} />,
-      iconColor: "bg-blue-700",
-      title: "پشتیبانی تلگرام و واتساپ",
-      description: "لینک تماس مستقیم پشتیبانی آنلاین",
-    },
-    {
-      id: 3,
-      icon: <FaEnvelope size={32} />,
-      iconColor: "bg-purple-700",
-      title: "پست الکترونیکی",
-      description: "support@arziPlus.com",
-    },
-    {
-      id: 4,
-      icon: <FaMapMarkerAlt size={32} />,
-      iconColor: "bg-orange-700",
-      title: "آدرس دفتر مرکزی",
-      description:
-        "تهران، خیابان ولیعصر، بالاتر از پارک ملت، ساختمان تجارت بینالملل، طبقه سوم",
-    },
-  ];
+
 
   const whyChooseUs = [
     {
@@ -89,22 +56,6 @@ const ContactPage = () => {
     },
   ];
 
-  const workingHours = [
-    {
-      id: 1,
-      icon: <FaClock size={32} />,
-      iconColor: "bg-emerald-700",
-      title: "شنبه تا پنجشنبه",
-      description: "۹ صبح تا ۶ عصر",
-    },
-    {
-      id: 2,
-      icon: <FaGlobe size={32} />,
-      iconColor: "bg-blue-700",
-      title: "جمعه و تعطیلات رسمی",
-      description: "پشتیبانی فقط آنلاین",
-    },
-  ];
 
   const contactFaq = [
     {

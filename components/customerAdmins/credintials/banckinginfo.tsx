@@ -10,6 +10,14 @@ import {
 import { estedadBold } from "@/next-persian-fonts/estedad/index";
 import { showToast } from "@/utilities/toast";
 
+interface requestData {
+  bankName?: string;
+  cardNumber: string;
+  shebaNumber?: string;
+  accountHolderName?: string;
+  bankingInfoId?: string; // For updates
+}
+
 interface BankingInfoData {
   _id?: string; // Add ID for existing banking info
   bankName: string;
@@ -118,13 +126,13 @@ const BankingInfo = ({
     setIsLoading(true);
     try {
       const token = localStorage.getItem("authToken");
-      
+
       // Check if this is an update (has _id) or create new
       const isUpdate = !!formData._id;
       const method = isUpdate ? "PATCH" : "POST";
-      
+
       // Clean and format data before sending
-      const requestData: any = {
+      const requestData: requestData = {
         bankName: formData.bankName.trim(),
         cardNumber: formData.cardNumber.replace(/\s/g, ""), // Remove spaces from card number
         shebaNumber: formData.shebaNumber.trim().toUpperCase(),
@@ -136,12 +144,15 @@ const BankingInfo = ({
         requestData.bankingInfoId = formData._id;
       }
 
-      console.log(`${isUpdate ? 'Updating' : 'Creating'} banking data:`, requestData); // Debug log
-      
+      console.log(
+        `${isUpdate ? "Updating" : "Creating"} banking data:`,
+        requestData
+      ); // Debug log
+
       const response = await fetch("/api/users/banckingifo", {
         method,
         headers: {
-          "Authorization": `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify(requestData),
@@ -150,24 +161,33 @@ const BankingInfo = ({
       if (!response.ok) {
         const errorData = await response.json();
         console.error("Banking API Error Response:", errorData); // Debug log
-        throw new Error(errorData.error || `خطا در ذخیره اطلاعات بانکی (${response.status})`);
+        throw new Error(
+          errorData.error || `خطا در ذخیره اطلاعات بانکی (${response.status})`
+        );
       }
 
       const result = await response.json();
-      
+
       // Update form data with response if it's a new creation (will have new _id)
       if (!isUpdate && result.bankingInfo && result.bankingInfo.length > 0) {
-        const newBankingInfo = result.bankingInfo[result.bankingInfo.length - 1];
-        setFormData(prev => ({ ...prev, _id: newBankingInfo._id }));
+        const newBankingInfo =
+          result.bankingInfo[result.bankingInfo.length - 1];
+        setFormData((prev) => ({ ...prev, _id: newBankingInfo._id }));
       }
-      
+
       onSave?.(formData);
       setIsSaved(true);
-      showToast.success(isUpdate ? "اطلاعات بانکی با موفقیت به‌روزرسانی شد" : "اطلاعات بانکی با موفقیت ذخیره شد");
+      showToast.success(
+        isUpdate
+          ? "اطلاعات بانکی با موفقیت به‌روزرسانی شد"
+          : "اطلاعات بانکی با موفقیت ذخیره شد"
+      );
       setTimeout(() => setIsSaved(false), 3000);
     } catch (error) {
       console.error("Error saving banking info:", error);
-      showToast.error(error instanceof Error ? error.message : "خطا در ذخیره اطلاعات بانکی");
+      showToast.error(
+        error instanceof Error ? error.message : "خطا در ذخیره اطلاعات بانکی"
+      );
     } finally {
       setIsLoading(false);
     }
@@ -195,13 +215,15 @@ const BankingInfo = ({
       </div>
       {/* Status Display */}
       {formData.status && (
-        <div className={`mt-6 p-6 mb-6 rounded-xl border ${
-          formData.status === "accepted" 
-            ? "bg-green-50 border-green-200" 
-            : formData.status === "rejected" 
-            ? "bg-red-50 border-red-200" 
-            : "bg-yellow-50 border-yellow-200"
-        }`}>
+        <div
+          className={`mt-6 p-6 mb-6 rounded-xl border ${
+            formData.status === "accepted"
+              ? "bg-green-50 border-green-200"
+              : formData.status === "rejected"
+              ? "bg-red-50 border-red-200"
+              : "bg-yellow-50 border-yellow-200"
+          }`}
+        >
           <div className="flex items-center gap-2 mb-2">
             {formData.status === "accepted" && (
               <>
@@ -223,15 +245,21 @@ const BankingInfo = ({
             )}
           </div>
           {formData.status === "accepted" && (
-            <p className="text-sm text-green-800">اطلاعات بانکی شما توسط ادمین تایید شده است.</p>
+            <p className="text-sm text-green-800">
+              اطلاعات بانکی شما توسط ادمین تایید شده است.
+            </p>
           )}
           {formData.status === "pending_verification" && (
-            <p className="text-sm text-yellow-800">اطلاعات بانکی شما در انتظار بررسی توسط ادمین است.</p>
+            <p className="text-sm text-yellow-800">
+              اطلاعات بانکی شما در انتظار بررسی توسط ادمین است.
+            </p>
           )}
           {formData.status === "rejected" && formData.rejectionNotes && (
             <div className="text-sm text-red-800">
               <p className="mb-1">دلیل رد:</p>
-              <p className="bg-red-100 p-2 rounded">{formData.rejectionNotes}</p>
+              <p className="bg-red-100 p-2 rounded">
+                {formData.rejectionNotes}
+              </p>
             </div>
           )}
         </div>
@@ -383,8 +411,10 @@ const BankingInfo = ({
                 <FaCheck />
                 ذخیره شد
               </>
+            ) : formData._id ? (
+              "به‌روزرسانی اطلاعات"
             ) : (
-              formData._id ? "به‌روزرسانی اطلاعات" : "ذخیره اطلاعات"
+              "ذخیره اطلاعات"
             )}
           </button>
         </div>

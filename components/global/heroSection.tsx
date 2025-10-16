@@ -82,7 +82,6 @@ export default function HeroSection({
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const {
     headingColor = "text-[#0A1D37]",
-    backgroundColor,
     subheadingColor = "text-[#A0A0A0]",
     featuresColor = "text-[#FFFFFF]",
   } = theme;
@@ -310,7 +309,6 @@ export default function HeroSection({
       ? "max-w-6xl mx-auto px-4 md:px-8 text-center"
       : "max-w-7xl mx-auto px-4 md:px-8";
 
-  const backgroundClasses = backgroundColor;
 
   const renderMedia = () => {
     if (media.type === "video") {

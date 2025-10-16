@@ -3,7 +3,13 @@ import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
 import useSWR from "swr";
 import Image from "next/image";
-import { FaArrowRight, FaSpinner, FaWallet, FaInfoCircle, FaCheckCircle } from "react-icons/fa";
+import {
+  FaArrowRight,
+  FaSpinner,
+  FaWallet,
+  FaInfoCircle,
+  FaCheckCircle,
+} from "react-icons/fa";
 import Link from "next/link";
 import { estedadBold } from "@/next-persian-fonts/estedad/index";
 // Remove ServiceRenderer import as we'll implement the form directly
@@ -31,7 +37,7 @@ interface ServiceField {
   }>;
   showIf?: {
     field: string;
-    value: any;
+    value: string;
   };
 }
 
@@ -72,25 +78,30 @@ const fetcher = async (url: string): Promise<Service> => {
 };
 
 // Service Helper Modal Component
-const ServiceHelperModal = ({ 
-  helper, 
-  isOpen, 
-  onClose 
-}: { 
-  helper: string; 
-  isOpen: boolean; 
-  onClose: () => void; 
+const ServiceHelperModal = ({
+  helper,
+  isOpen,
+  onClose,
+}: {
+  helper: string;
+  isOpen: boolean;
+  onClose: () => void;
 }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4" dir="rtl">
+    <div
+      className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+      dir="rtl"
+    >
       <div className="bg-white rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl">
         {/* Modal Header */}
         <div className="bg-gradient-to-l from-[#FF7A00] to-[#4DBFF0] p-6 rounded-t-3xl">
           <div className="flex items-center gap-3">
             <FaInfoCircle className="text-white text-2xl" />
-            <h2 className={`text-2xl font-bold text-white ${estedadBold.className}`}>
+            <h2
+              className={`text-2xl font-bold text-white ${estedadBold.className}`}
+            >
               راهنمای خدمات
             </h2>
           </div>
@@ -150,20 +161,28 @@ const ServiceSummary = ({ service }: { service: Service }) => {
 
       {/* Service Details Card */}
       <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-[#4DBFF0]/20">
-        <h1 className={`text-2xl font-bold text-[#0A1D37] mb-4 ${estedadBold.className}`}>
+        <h1
+          className={`text-2xl font-bold text-[#0A1D37] mb-4 ${estedadBold.className}`}
+        >
           {service.title}
         </h1>
 
         {service.description && (
           <div className="mb-6">
-            <h3 className="text-lg font-medium text-[#0A1D37] mb-2">توضیحات خدمت:</h3>
-            <p className="text-[#0A1D37]/80 leading-relaxed">{service.description}</p>
+            <h3 className="text-lg font-medium text-[#0A1D37] mb-2">
+              توضیحات خدمت:
+            </h3>
+            <p className="text-[#0A1D37]/80 leading-relaxed">
+              {service.description}
+            </p>
           </div>
         )}
 
         {/* Pricing */}
         <div className="mb-6">
-          <h3 className="text-lg font-medium text-[#0A1D37] mb-3">هزینه خدمت:</h3>
+          <h3 className="text-lg font-medium text-[#0A1D37] mb-3">
+            هزینه خدمت:
+          </h3>
           <div className="bg-gradient-to-l from-[#FF7A00]/10 to-[#4DBFF0]/10 rounded-xl p-4 border border-[#4DBFF0]/30">
             <div className="flex items-center justify-between">
               <span className="text-[#0A1D37]/70">مبلغ:</span>
@@ -171,11 +190,13 @@ const ServiceSummary = ({ service }: { service: Service }) => {
                 {service.fee.toLocaleString()} تومان
               </span>
             </div>
-            
+
             {service.wallet && (
               <div className="mt-3 flex items-center gap-2 text-green-600">
                 <FaWallet />
-                <span className="text-sm font-medium">قابل پرداخت با کیف پول</span>
+                <span className="text-sm font-medium">
+                  قابل پرداخت با کیف پول
+                </span>
               </div>
             )}
           </div>
@@ -184,7 +205,9 @@ const ServiceSummary = ({ service }: { service: Service }) => {
         {/* Category */}
         {service.category && (
           <div className="mb-4">
-            <h3 className="text-lg font-medium text-[#0A1D37] mb-2">دسته‌بندی:</h3>
+            <h3 className="text-lg font-medium text-[#0A1D37] mb-2">
+              دسته‌بندی:
+            </h3>
             <span className="inline-block bg-[#4DBFF0]/20 text-[#0A1D37] px-3 py-1 rounded-full text-sm font-medium">
               {service.category}
             </span>
@@ -194,10 +217,12 @@ const ServiceSummary = ({ service }: { service: Service }) => {
         {/* Required Fields Info */}
         {service.fields && service.fields.length > 0 && (
           <div className="mb-6">
-            <h3 className="text-lg font-medium text-[#0A1D37] mb-2">اطلاعات مورد نیاز:</h3>
+            <h3 className="text-lg font-medium text-[#0A1D37] mb-2">
+              اطلاعات مورد نیاز:
+            </h3>
             <ul className="space-y-1 text-[#0A1D37]/70 text-sm">
               {service.fields
-                .filter(field => field.required)
+                .filter((field) => field.required)
                 .map((field, index) => (
                   <li key={index} className="flex items-center gap-2">
                     <div className="w-1.5 h-1.5 bg-[#4DBFF0] rounded-full" />
@@ -240,7 +265,11 @@ export default function ServiceDetailPage() {
   const { user: currentUser } = useCurrentUser();
 
   // Fetch service using SWR
-  const { data: service, error, isLoading } = useSWR<Service>(
+  const {
+    data: service,
+    error,
+    isLoading,
+  } = useSWR<Service>(
     slug ? `/api/dynamicServices?slug=${slug}` : null,
     fetcher,
     {
@@ -251,15 +280,15 @@ export default function ServiceDetailPage() {
   // Fetch wallet balance
   const fetchWalletBalance = async () => {
     if (!currentUser) return;
-    
+
     try {
       const token = localStorage.getItem("authToken");
       const response = await fetch("/api/wallet", {
         headers: {
-          "Authorization": `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
         },
       });
-      
+
       if (response.ok) {
         const data = await response.json();
         setWalletBalance(data.balance || 0);
@@ -590,16 +619,18 @@ export default function ServiceDetailPage() {
   };
 
   // Handle payment method selection
-  const handlePaymentMethodSelect = async (paymentMethod: 'wallet' | 'direct' | 'card') => {
+  const handlePaymentMethodSelect = async (
+    paymentMethod: "wallet" | "direct" | "card"
+  ) => {
     setShowPaymentSelector(false);
     setSubmitting(true);
 
     try {
-      if (paymentMethod === 'wallet') {
+      if (paymentMethod === "wallet") {
         await handleWalletPayment();
-      } else if (paymentMethod === 'direct') {
+      } else if (paymentMethod === "direct") {
         await handleDirectPayment();
-      } else if (paymentMethod === 'card') {
+      } else if (paymentMethod === "card") {
         handleCardPayment();
       }
     } catch (error) {
@@ -622,12 +653,14 @@ export default function ServiceDetailPage() {
       }
 
       // Create request with wallet payment
-      await createServiceRequest('wallet', service!.fee);
-      
-      showToast.success(`درخواست با پرداخت کیف پول ثبت شد. مبلغ ${service!.fee.toLocaleString()} تومان از کیف پول کسر گردید.`);
-      
+      await createServiceRequest("wallet", service!.fee);
+
+      showToast.success(
+        `درخواست با پرداخت کیف پول ثبت شد. مبلغ ${service!.fee.toLocaleString()} تومان از کیف پول کسر گردید.`
+      );
+
       // Update wallet balance
-      setWalletBalance(prev => prev - service!.fee);
+      setWalletBalance((prev) => prev - service!.fee);
       setFormData({});
     } catch (error) {
       throw error;
@@ -638,29 +671,30 @@ export default function ServiceDetailPage() {
   const handleDirectPayment = async () => {
     try {
       const token = localStorage.getItem("authToken");
-      
+
       // Prepare payment data similar to addamount.tsx
       const paymentData = {
         amount: service!.fee, // Send in Toman directly
         description: `پرداخت خدمت: ${service!.title}`,
         serviceId: service!._id,
         orderId: `SERVICE-${Date.now()}`, // Generate unique order ID
-        currency: 'IRT',
+        currency: "IRT",
         // Store service request data in metadata for processing after payment
         metadata: {
           mobile: currentUser!.phone,
           order_id: `SERVICE-${Date.now()}`,
           serviceData: JSON.stringify(formData), // Service form data
-          customerName: currentUser!.firstName && currentUser!.lastName
-            ? `${currentUser!.firstName} ${currentUser!.lastName}`
-            : currentUser!.firstName || "کاربر",
+          customerName:
+            currentUser!.firstName && currentUser!.lastName
+              ? `${currentUser!.firstName} ${currentUser!.lastName}`
+              : currentUser!.firstName || "کاربر",
           customerPhone: currentUser!.phone,
           serviceTitle: service!.title,
           serviceSlug: service!.slug,
-          type: 'service_payment' // Mark as service payment
-        }
+          type: "service_payment", // Mark as service payment
+        },
       };
-      
+
       // Call payment request API like addamount.tsx does
       const response = await fetch("/api/payment/request", {
         method: "POST",
@@ -682,12 +716,14 @@ export default function ServiceDetailPage() {
             return;
           } else {
             // Pending duplicate, show warning and redirect to existing payment
-            showToast.warning("درخواست پرداخت تکراری - به درگاه موجود منتقل می‌شوید");
+            showToast.warning(
+              "درخواست پرداخت تکراری - به درگاه موجود منتقل می‌شوید"
+            );
           }
         } else {
           showToast.success("درخواست پرداخت با موفقیت ایجاد شد");
         }
-        
+
         // Redirect to ZarinPal payment portal
         if (data.data.paymentUrl) {
           window.location.href = data.data.paymentUrl;
@@ -708,26 +744,14 @@ export default function ServiceDetailPage() {
   };
 
   // Handle card payment completion
-  const handleCardPaymentComplete = async (receiptUrl: string) => {
-    try {
-      setShowCardPaymentModal(false);
-      setSubmitting(true);
-
-      // Create request with card payment receipt
-      await createServiceRequest('card', service!.fee, true, receiptUrl);
-      
-      showToast.success(`درخواست با واریز کارت به کارت ثبت شد. پس از تأیید رسید، درخواست پردازش خواهد شد.`);
-      setFormData({});
-    } catch (error) {
-      console.error("Card payment error:", error);
-      showToast.error("خطا در ثبت درخواست");
-    } finally {
-      setSubmitting(false);
-    }
-  };
 
   // Create service request
-  const createServiceRequest = async (paymentMethod: string, amount: number, isPaid: boolean = true, receiptUrl?: string) => {
+  const createServiceRequest = async (
+    paymentMethod: string,
+    amount: number,
+    isPaid: boolean = true,
+    receiptUrl?: string
+  ) => {
     const customerName =
       currentUser!.firstName && currentUser!.lastName
         ? `${currentUser!.firstName} ${currentUser!.lastName}`
@@ -782,10 +806,15 @@ export default function ServiceDetailPage() {
 
   if (error || !service) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-white via-[#E8F4FD] to-[#F0F9FF] flex items-center justify-center" dir="rtl">
+      <div
+        className="min-h-screen bg-gradient-to-br from-white via-[#E8F4FD] to-[#F0F9FF] flex items-center justify-center"
+        dir="rtl"
+      >
         <div className="text-center p-8">
           <div className="text-red-500 text-6xl mb-4">❌</div>
-          <h2 className="text-3xl font-bold text-[#0A1D37] mb-4">خدمت یافت نشد</h2>
+          <h2 className="text-3xl font-bold text-[#0A1D37] mb-4">
+            خدمت یافت نشد
+          </h2>
           <p className="text-[#0A1D37]/60 mb-8">
             خدمت مورد نظر شما وجود ندارد یا در حال حاضر فعال نیست
           </p>
@@ -802,7 +831,10 @@ export default function ServiceDetailPage() {
 
   return (
     <>
-      <div className="min-h-screen bg-gradient-to-br from-white via-[#E8F4FD] to-[#F0F9FF] py-32" dir="rtl">
+      <div
+        className="min-h-screen bg-gradient-to-br from-white via-[#E8F4FD] to-[#F0F9FF] py-32"
+        dir="rtl"
+      >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Two Column Layout */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -816,7 +848,9 @@ export default function ServiceDetailPage() {
               <div className="bg-white/90 backdrop-blur-sm rounded-3xl shadow-xl border border-[#4DBFF0]/20 overflow-hidden">
                 {/* Form Header */}
                 <div className="bg-gradient-to-l from-[#FF7A00] to-[#4DBFF0] p-6">
-                  <h2 className={`text-2xl font-bold text-white ${estedadBold.className}`}>
+                  <h2
+                    className={`text-2xl font-bold text-white ${estedadBold.className}`}
+                  >
                     فرم درخواست خدمت
                   </h2>
                   <p className="text-white/90 mt-1">
@@ -829,12 +863,13 @@ export default function ServiceDetailPage() {
                   {/* User Info Display */}
                   {currentUser && (
                     <div className="mb-6 p-4 bg-gradient-to-l from-[#4DBFF0]/10 to-[#FF7A00]/10 rounded-xl border border-[#4DBFF0]/30">
-                      <p className="text-[#0A1D37]/70 text-sm mb-1">درخواست توسط:</p>
+                      <p className="text-[#0A1D37]/70 text-sm mb-1">
+                        درخواست توسط:
+                      </p>
                       <p className="font-medium text-[#0A1D37]">
                         {currentUser.firstName && currentUser.lastName
                           ? `${currentUser.firstName} ${currentUser.lastName}`
-                          : currentUser.firstName || "کاربر"
-                        }
+                          : currentUser.firstName || "کاربر"}
                       </p>
                     </div>
                   )}
@@ -922,7 +957,7 @@ export default function ServiceDetailPage() {
         maxFileSize={10 * 1024 * 1024} // 10MB
         title="آپلود فایل"
       />
-      
+
       {/* Payment Method Selection Modal */}
       {showPaymentSelector && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
@@ -932,11 +967,11 @@ export default function ServiceDetailPage() {
               walletBalance={walletBalance}
               onPaymentMethodSelect={(method) => {
                 setShowPaymentSelector(false);
-                if (method === 'wallet') {
+                if (method === "wallet") {
                   handleWalletPayment();
-                } else if (method === 'direct') {
+                } else if (method === "direct") {
                   handleDirectPayment();
-                } else if (method === 'card') {
+                } else if (method === "card") {
                   handleCardPayment();
                 }
               }}
@@ -951,15 +986,20 @@ export default function ServiceDetailPage() {
           </div>
         </div>
       )}
-      
+
       {/* Card Payment Modal */}
       <CardPaymentModal
         isOpen={showCardPaymentModal}
         onClose={() => setShowCardPaymentModal(false)}
         amount={service?.fee || 0}
-        serviceName={service?.title || ''}
+        serviceName={service?.title || ""}
         onPaymentComplete={async (receiptUrl: string) => {
-          await createServiceRequest('card', service?.fee || 0, true, receiptUrl);
+          await createServiceRequest(
+            "card",
+            service?.fee || 0,
+            true,
+            receiptUrl
+          );
           setShowCardPaymentModal(false);
         }}
       />

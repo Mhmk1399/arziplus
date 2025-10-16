@@ -99,7 +99,7 @@ const statusDescriptions = {
 };
 
 export default function CustomerRequestsTable({ className = "my-28 mx-16" }: CustomerRequestsTableProps) {
-  const { user, isLoggedIn } = useCurrentUser();
+  const { isLoggedIn } = useCurrentUser();
   const [requests, setRequests] = useState<Request[]>([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);

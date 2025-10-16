@@ -9,6 +9,7 @@ import { showToast } from "@/utilities/toast";
 import UsersList from "./usersList";
 import NationalCredentialAdmin from "./nationalCredintial";
 import BankingInfoAdmin from "./bankingInfo";
+import Link from "next/link";
 
 interface AdminWrapperProps {
   initialTab?: "users" | "credentials" | "banking" | "settings";
@@ -282,12 +283,12 @@ const UserWrapper: React.FC<AdminWrapperProps> = ({
               شما به این بخش دسترسی ندارید. لطفاً با مدیر سیستم تماس بگیرید.
             </p>
             <div className="space-y-4">
-              <a
+              <Link
                 href="/"
                 className="block w-full px-6 py-4 bg-gradient-to-r from-gray-600 to-gray-700 text-white rounded-xl font-bold hover:shadow-lg transition-all duration-300 hover:scale-105"
               >
                 بازگشت به خانه
-              </a>
+              </Link>
             </div>
           </div>
         </div>
@@ -350,8 +351,6 @@ const UserWrapper: React.FC<AdminWrapperProps> = ({
             <ActiveComponent />
           </div>
         </div>
-
-   
       </div>
     </div>
   );

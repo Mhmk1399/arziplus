@@ -1,9 +1,18 @@
 import { NextRequest, NextResponse } from "next/server";
 import connect from "@/lib/data";
 import Payment from "@/models/payment";
-import User from "@/models/users";
 import { getAuthUser } from "@/lib/auth";
 
+interface query {
+  userId?: string;
+  _id?: string;
+  authority?: string;
+  status?: string;
+  createdAt?: {
+    $gte?: Date;
+    $lte?: Date;
+  };
+}
 export async function GET(request: NextRequest) {
   try {
     const authUser = getAuthUser(request);
@@ -15,33 +24,36 @@ export async function GET(request: NextRequest) {
     }
 
     const { searchParams } = new URL(request.url);
-    const page = parseInt(searchParams.get('page') || '1');
-    const limit = parseInt(searchParams.get('limit') || '10');
-    const status = searchParams.get('status');
-    const startDate = searchParams.get('startDate');
-    const endDate = searchParams.get('endDate');
+    const page = parseInt(searchParams.get("page") || "1");
+    const limit = parseInt(searchParams.get("limit") || "10");
+    const status = searchParams.get("status");
+    const startDate = searchParams.get("startDate");
+    const endDate = searchParams.get("endDate");
 
     const skip = (page - 1) * limit;
 
     await connect();
 
     // Build query
-    let query: any = {};
-    
+    const query: query = {};
+
     // For regular users, only show their payments
     // For admins, show all payments if userId is not specified
-    if (!authUser.roles.includes('admin') && !authUser.roles.includes('super_admin')) {
+    if (
+      !authUser.roles.includes("admin") &&
+      !authUser.roles.includes("super_admin")
+    ) {
       query.userId = authUser.id;
     } else {
       // Admin can filter by specific user
-      const userId = searchParams.get('userId');
+      const userId = searchParams.get("userId");
       if (userId) {
         query.userId = userId;
       }
     }
 
     // Status filter
-    if (status && status !== 'all') {
+    if (status && status !== "all") {
       query.status = status;
     }
 
@@ -58,7 +70,10 @@ export async function GET(request: NextRequest) {
 
     // Get payments with pagination
     const payments = await Payment.find(query)
-      .populate('userId', 'nationalCredentials.firstName nationalCredentials.lastName contactInfo.mobilePhone')
+      .populate(
+        "userId",
+        "nationalCredentials.firstName nationalCredentials.lastName contactInfo.mobilePhone"
+      )
       .sort({ createdAt: -1 })
       .skip(skip)
       .limit(limit)
@@ -74,21 +89,23 @@ export async function GET(request: NextRequest) {
       {
         $group: {
           _id: null,
-          totalAmount: { $sum: '$amount' },
+          totalAmount: { $sum: "$amount" },
           successfulPayments: {
-            $sum: { $cond: [{ $eq: ['$status', 'verified'] }, 1, 0] }
+            $sum: { $cond: [{ $eq: ["$status", "verified"] }, 1, 0] },
           },
           pendingPayments: {
-            $sum: { $cond: [{ $eq: ['$status', 'pending'] }, 1, 0] }
+            $sum: { $cond: [{ $eq: ["$status", "pending"] }, 1, 0] },
           },
           failedPayments: {
-            $sum: { $cond: [{ $in: ['$status', ['failed', 'cancelled']] }, 1, 0] }
+            $sum: {
+              $cond: [{ $in: ["$status", ["failed", "cancelled"]] }, 1, 0],
+            },
           },
           successfulAmount: {
-            $sum: { $cond: [{ $eq: ['$status', 'verified'] }, '$amount', 0] }
-          }
-        }
-      }
+            $sum: { $cond: [{ $eq: ["$status", "verified"] }, "$amount", 0] },
+          },
+        },
+      },
     ]);
 
     const statistics = stats[0] || {
@@ -114,9 +131,8 @@ export async function GET(request: NextRequest) {
         statistics,
       },
     });
-
   } catch (error) {
-    console.error('Payment history error:', error);
+    console.error("Payment history error:", error);
     return NextResponse.json(
       { error: "خطای سرور در دریافت تاریخچه پرداخت" },
       { status: 500 }
@@ -147,36 +163,38 @@ export async function POST(request: NextRequest) {
     await connect();
 
     // Build query based on user role and search parameter
-    let query: any = {};
-    
+    const query: query = {};
+
     if (paymentId) {
       query._id = paymentId;
     } else if (authority) {
       query.authority = authority;
     }
-    
-    if (!authUser.roles.includes('admin') && !authUser.roles.includes('super_admin')) {
+
+    if (
+      !authUser.roles.includes("admin") &&
+      !authUser.roles.includes("super_admin")
+    ) {
       query.userId = authUser.id;
     }
 
     const payment = await Payment.findOne(query)
-      .populate('userId', 'nationalCredentials.firstName nationalCredentials.lastName contactInfo.mobilePhone')
+      .populate(
+        "userId",
+        "nationalCredentials.firstName nationalCredentials.lastName contactInfo.mobilePhone"
+      )
       .lean();
 
     if (!payment) {
-      return NextResponse.json(
-        { error: "پرداخت یافت نشد" },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: "پرداخت یافت نشد" }, { status: 404 });
     }
 
     return NextResponse.json({
       success: true,
       data: payment,
     });
-
   } catch (error) {
-    console.error('Payment details error:', error);
+    console.error("Payment details error:", error);
     return NextResponse.json(
       { error: "خطای سرور در دریافت جزئیات پرداخت" },
       { status: 500 }

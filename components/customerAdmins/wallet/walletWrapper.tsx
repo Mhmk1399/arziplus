@@ -22,6 +22,18 @@ interface WalletWrapperProps {
   className?: string;
 }
 
+interface WalletTransaction {
+  _id?: string;
+  amount: number;
+  type: "income" | "outcome";
+  tag: string;
+  description: string;
+  date: Date;
+  verifiedAt?: Date;
+  status: "pending" | "verified" | "rejected";
+  verifiedBy?: string;
+}
+
 interface WalletStats {
   currentBalance: number;
   totalIncomes: number;
@@ -30,15 +42,15 @@ interface WalletStats {
   pendingOutcomes: number;
   verifiedIncomes: number;
   verifiedOutcomes: number;
-  recentTransactions: any[];
+  recentTransactions: WalletTransaction[];
 }
 
 interface WalletData {
   _id: string;
   userId: string;
-  inComes: any[];
-  outComes: any[];
-  balance: any[];
+  inComes: string[];
+  outComes: string[];
+  balance: string[];
   currentBalance: number;
 }
 
@@ -63,18 +75,10 @@ const WalletWrapper: React.FC<WalletWrapperProps> = ({
 
   const [walletData, setWalletData] = useState<WalletData | null>(null);
   const [statsLoading, setStatsLoading] = useState(true);
-  const [actionLoading, setActionLoading] = useState(false);
 
-  // Form states
-  const [addAmount, setAddAmount] = useState("");
-  const [addDescription, setAddDescription] = useState("");
-  const [withdrawAmount, setWithdrawAmount] = useState("");
+  console.log(walletData);
 
-  const {
-    user: currentUser,
-    isLoggedIn,
-    loading: userLoading,
-  } = useCurrentUser();
+  const { isLoggedIn, loading: userLoading } = useCurrentUser();
 
   // Fetch wallet data and statistics
   const fetchWalletData = async () => {
@@ -116,93 +120,6 @@ const WalletWrapper: React.FC<WalletWrapperProps> = ({
     }
   }, [isLoggedIn, userLoading]);
 
-  // Handle add funds
-  const handleAddFunds = async () => {
-    if (!addAmount || parseFloat(addAmount) <= 0) {
-      showToast.error("لطفاً مبلغ معتبر وارد کنید");
-      return;
-    }
-
-    setActionLoading(true);
-    try {
-      const token = localStorage.getItem("authToken");
-      const response = await fetch("/api/wallet", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          action: "add_income",
-          amount: parseFloat(addAmount),
-          description: addDescription || "افزودن موجودی دستی",
-          tag: "manual_deposit",
-        }),
-      });
-
-      const data = await response.json();
-
-      if (data.success) {
-        showToast.success("درخواست افزودن موجودی ثبت شد (در انتظار تایید)");
-        setAddAmount("");
-        setAddDescription("");
-        fetchWalletData(); // Refresh data
-      } else {
-        showToast.error(data.error || "خطا در ثبت درخواست");
-      }
-    } catch (error) {
-      console.error("Error adding funds:", error);
-      showToast.error("خطا در ارتباط با سرور");
-    } finally {
-      setActionLoading(false);
-    }
-  };
-
-  // Handle withdraw request
-  const handleWithdraw = async () => {
-    if (!withdrawAmount || parseFloat(withdrawAmount) <= 0) {
-      showToast.error("لطفاً مبلغ معتبر وارد کنید");
-      return;
-    }
-
-    if (parseFloat(withdrawAmount) > walletStats.currentBalance) {
-      showToast.error("موجودی کافی نیست");
-      return;
-    }
-
-    setActionLoading(true);
-    try {
-      const token = localStorage.getItem("authToken");
-      const response = await fetch("/api/wallet", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          action: "withdraw",
-          amount: parseFloat(withdrawAmount),
-        }),
-      });
-
-      const data = await response.json();
-
-      if (data.success) {
-        showToast.success("درخواست برداشت ثبت شد");
-        setWithdrawAmount("");
-        fetchWalletData(); // Refresh data
-      } else {
-        showToast.error(data.error || "خطا در ثبت درخواست");
-      }
-    } catch (error) {
-      console.error("Error creating withdraw request:", error);
-      showToast.error("خطا در ارتباط با سرور");
-    } finally {
-      setActionLoading(false);
-    }
-  };
-
-  // Tab configuration
   const tabs = [
     {
       id: "dashboard" as const,
@@ -275,38 +192,6 @@ const WalletWrapper: React.FC<WalletWrapperProps> = ({
   };
 
   // User welcome section
-  const renderUserWelcome = () => {
-    if (!currentUser) return null;
-
-    const userName =
-      currentUser.firstName && currentUser.lastName
-        ? `${currentUser.firstName} ${currentUser.lastName}`
-        : currentUser.firstName || "کاربر عزیز";
-
-    return (
-      <div className="backdrop-blur-sm rounded-2xl px-6 mt-24 mb-8">
-        <div className="flex items-center justify-between flex-wrap gap-4">
-          <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-full flex items-center justify-center">
-              <FaWallet className="text-[#FF7A00] text-xl" />
-            </div>
-            <div>
-              <h2 className="sm:text-2xl text-base font-bold mb-2 text-[#0A1D37]">
-                کیف پول {userName}
-              </h2>
-              <p className="text-gray-600 text-xs sm:text-md">
-                مدیریت موجودی و تراکنش‌های شما
-              </p>
-            </div>
-          </div>
-
-          <div className="text-sm hidden sm:block text-gray-500">
-            آخرین بروزرسانی: {new Date().toLocaleDateString("fa-IR")}
-          </div>
-        </div>
-      </div>
-    );
-  };
 
   // Stats cards section
   const renderStatsCards = () => {

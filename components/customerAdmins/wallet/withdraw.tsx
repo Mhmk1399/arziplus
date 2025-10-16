@@ -20,9 +20,19 @@ import {
   FaTimesCircle,
   FaEdit,
   FaArrowDown,
-  FaCreditCard,
-  FaUser,
 } from "react-icons/fa";
+
+interface WalletTransaction {
+  _id?: string;
+  amount: number;
+  type: "income" | "outcome";
+  tag: string;
+  description: string;
+  date: Date;
+  verifiedAt?: Date;
+  status: "pending" | "verified" | "rejected";
+  verifiedBy?: string;
+}
 
 interface WithdrawComponentProps {
   onSuccess?: () => void;
@@ -32,7 +42,7 @@ interface WithdrawComponentProps {
     totalIncomes: number;
     totalOutcomes: number;
     pendingIncomes: number;
-    recentTransactions: any[];
+    recentTransactions: WalletTransaction[];
   };
 }
 
@@ -99,25 +109,35 @@ const WithdrawComponent: React.FC<WithdrawComponentProps> = ({
         });
 
         const data = await response.json();
-        
-        console.log('Banking API Response:', data); // Debug log
 
-        if (data.bankingData && Array.isArray(data.bankingData) && data.bankingData.length > 0) {
+        console.log("Banking API Response:", data); // Debug log
+
+        if (
+          data.bankingData &&
+          Array.isArray(data.bankingData) &&
+          data.bankingData.length > 0
+        ) {
           // Get the first user (should be current user)
           const currentUser = data.bankingData[0];
-          
-          if (currentUser.bankingInfo && Array.isArray(currentUser.bankingInfo) && currentUser.bankingInfo.length > 0) {
+
+          if (
+            currentUser.bankingInfo &&
+            Array.isArray(currentUser.bankingInfo) &&
+            currentUser.bankingInfo.length > 0
+          ) {
             // Find the first accepted banking info, or the first one if none are accepted
-            const acceptedBanking = currentUser.bankingInfo.find((banking: any) => banking.status === 'accepted');
+            const acceptedBanking = currentUser.bankingInfo.find(
+              (banking: BankingInfo) => banking.status === "accepted"
+            );
             const bankingToUse = acceptedBanking || currentUser.bankingInfo[0];
-            console.log('Selected banking info:', bankingToUse); // Debug log
+            console.log("Selected banking info:", bankingToUse); // Debug log
             setBankingInfo(bankingToUse);
           } else {
-            console.log('No banking info in user data'); // Debug log
+            console.log("No banking info in user data"); // Debug log
             setBankingInfo(null);
           }
         } else {
-          console.log('No banking data found:', data); // Debug log
+          console.log("No banking data found:", data); // Debug log
           setBankingInfo(null);
         }
       } catch (error) {

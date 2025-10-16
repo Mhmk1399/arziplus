@@ -1,6 +1,6 @@
 import React from "react";
 import { COLORS } from "../lottery";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 
 const requirements = [
   {

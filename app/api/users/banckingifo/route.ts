@@ -4,6 +4,20 @@ import User from "@/models/users";
 import { getAuthUser } from "@/lib/auth";
 import mongoose from "mongoose";
 
+interface updateData {
+  [key: string]: string;
+}
+interface banckinfo {
+  _id?: string;
+  cardNumber: number;
+  shebaNumber: number;
+}
+interface query {
+  _id?: string;
+  $or?: { [key: string]: { $regex: string; $options: string } }[];
+  "bankingInfo.0"?: { $exists: boolean };
+}
+
 // GET - Fetch banking information with pagination and filtering
 export async function GET(request: NextRequest) {
   try {
@@ -11,7 +25,7 @@ export async function GET(request: NextRequest) {
     if (!authUser) {
       return NextResponse.json({ error: "غیر مجاز" }, { status: 401 });
     }
-    console.log(authUser)
+    console.log(authUser);
 
     const { searchParams } = new URL(request.url);
     const page = parseInt(searchParams.get("page") || "1");
@@ -22,11 +36,13 @@ export async function GET(request: NextRequest) {
     await connect();
 
     // Build query
-    const query: any = {};
+    const query: query = {};
 
     // Check permissions - users can only see their own banking info, admins can see all
-    const isAdmin = authUser.roles.includes("admin") || authUser.roles.includes("super_admin");
-    
+    const isAdmin =
+      authUser.roles.includes("admin") ||
+      authUser.roles.includes("super_admin");
+
     if (!isAdmin) {
       query._id = authUser.id;
     } else if (userId) {
@@ -50,7 +66,9 @@ export async function GET(request: NextRequest) {
 
     const [users, totalUsers] = await Promise.all([
       User.find(query)
-        .select("bankingInfo nationalCredentials.firstName nationalCredentials.lastName createdAt updatedAt")
+        .select(
+          "bankingInfo nationalCredentials.firstName nationalCredentials.lastName createdAt updatedAt"
+        )
         .sort({ updatedAt: -1 })
         .skip(skip)
         .limit(limit)
@@ -84,13 +102,8 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "غیر مجاز" }, { status: 401 });
     }
 
-    const {
-      userId,
-      bankName,
-      cardNumber,
-      shebaNumber,
-      accountHolderName,
-    } = await request.json();
+    const { userId, bankName, cardNumber, shebaNumber, accountHolderName } =
+      await request.json();
 
     // Validate required fields
     if (!bankName || !cardNumber || !shebaNumber || !accountHolderName) {
@@ -122,7 +135,9 @@ export async function POST(request: NextRequest) {
     // Determine target user
     const targetUserId = userId || authUser.id;
     const isOwnProfile = authUser.id === targetUserId;
-    const isAdmin = authUser.roles.includes("admin") || authUser.roles.includes("super_admin");
+    const isAdmin =
+      authUser.roles.includes("admin") ||
+      authUser.roles.includes("super_admin");
 
     // Check permissions
     if (!isOwnProfile && !isAdmin) {
@@ -138,7 +153,7 @@ export async function POST(request: NextRequest) {
     // Check for duplicate card number or SHEBA number
     const existingCard = await User.findOne({
       "bankingInfo.cardNumber": cleanCardNumber,
-      _id: { $ne: targetUserId }
+      _id: { $ne: targetUserId },
     });
 
     if (existingCard) {
@@ -150,7 +165,7 @@ export async function POST(request: NextRequest) {
 
     const existingSheba = await User.findOne({
       "bankingInfo.shebaNumber": shebaNumber,
-      _id: { $ne: targetUserId }
+      _id: { $ne: targetUserId },
     });
 
     if (existingSheba) {
@@ -162,7 +177,8 @@ export async function POST(request: NextRequest) {
 
     // Check if user already has this bank account
     const hasDuplicateInUser = user.bankingInfo.some(
-      (bank: any) => bank.cardNumber === cleanCardNumber || bank.shebaNumber === shebaNumber
+      (bank: banckinfo) =>
+        bank.cardNumber === cleanCardNumber || bank.shebaNumber === shebaNumber
     );
 
     if (hasDuplicateInUser) {
@@ -235,7 +251,9 @@ export async function PATCH(request: NextRequest) {
     // Determine target user
     const targetUserId = userId || authUser.id;
     const isOwnProfile = authUser.id === targetUserId;
-    const isAdmin = authUser.roles.includes("admin") || authUser.roles.includes("super_admin");
+    const isAdmin =
+      authUser.roles.includes("admin") ||
+      authUser.roles.includes("super_admin");
 
     // Check permissions
     if (!isOwnProfile && !isAdmin) {
@@ -249,7 +267,7 @@ export async function PATCH(request: NextRequest) {
     }
 
     const bankingInfoIndex = user.bankingInfo.findIndex(
-      (bank: any) => bank._id.toString() === bankingInfoId
+      (bank: banckinfo) => bank._id?.toString() === bankingInfoId
     );
 
     if (bankingInfoIndex === -1) {
@@ -260,11 +278,14 @@ export async function PATCH(request: NextRequest) {
     }
 
     // Validate updates
-    const updateData: any = {};
+    const updateData: updateData = {};
 
-    if (bankName) updateData[`bankingInfo.${bankingInfoIndex}.bankName`] = bankName.trim();
-    if (accountHolderName) updateData[`bankingInfo.${bankingInfoIndex}.accountHolderName`] = accountHolderName.trim();
-    
+    if (bankName)
+      updateData[`bankingInfo.${bankingInfoIndex}.bankName`] = bankName.trim();
+    if (accountHolderName)
+      updateData[`bankingInfo.${bankingInfoIndex}.accountHolderName`] =
+        accountHolderName.trim();
+
     // Admin-only status updates
     if (status && isAdmin) {
       if (!["accepted", "rejected", "pending_verification"].includes(status)) {
@@ -274,10 +295,11 @@ export async function PATCH(request: NextRequest) {
         );
       }
       updateData[`bankingInfo.${bankingInfoIndex}.status`] = status;
-      
+
       // Add rejection notes if status is rejected
       if (status === "rejected" && rejectionNotes) {
-        updateData[`bankingInfo.${bankingInfoIndex}.rejectionNotes`] = rejectionNotes.trim();
+        updateData[`bankingInfo.${bankingInfoIndex}.rejectionNotes`] =
+          rejectionNotes.trim();
       } else if (status !== "rejected") {
         // Clear rejection notes if status is not rejected
         updateData[`bankingInfo.${bankingInfoIndex}.rejectionNotes`] = "";
@@ -298,11 +320,13 @@ export async function PATCH(request: NextRequest) {
         "bankingInfo.cardNumber": cleanCardNumber,
         $or: [
           { _id: { $ne: targetUserId } },
-          { 
+          {
             _id: targetUserId,
-            "bankingInfo._id": { $ne: new mongoose.Types.ObjectId(bankingInfoId) }
-          }
-        ]
+            "bankingInfo._id": {
+              $ne: new mongoose.Types.ObjectId(bankingInfoId),
+            },
+          },
+        ],
       });
 
       if (existingCard) {
@@ -312,7 +336,8 @@ export async function PATCH(request: NextRequest) {
         );
       }
 
-      updateData[`bankingInfo.${bankingInfoIndex}.cardNumber`] = cleanCardNumber;
+      updateData[`bankingInfo.${bankingInfoIndex}.cardNumber`] =
+        cleanCardNumber;
     }
 
     if (shebaNumber) {
@@ -328,11 +353,13 @@ export async function PATCH(request: NextRequest) {
         "bankingInfo.shebaNumber": shebaNumber,
         $or: [
           { _id: { $ne: targetUserId } },
-          { 
+          {
             _id: targetUserId,
-            "bankingInfo._id": { $ne: new mongoose.Types.ObjectId(bankingInfoId) }
-          }
-        ]
+            "bankingInfo._id": {
+              $ne: new mongoose.Types.ObjectId(bankingInfoId),
+            },
+          },
+        ],
       });
 
       if (existingSheba) {
@@ -342,7 +369,8 @@ export async function PATCH(request: NextRequest) {
         );
       }
 
-      updateData[`bankingInfo.${bankingInfoIndex}.shebaNumber`] = shebaNumber.toUpperCase();
+      updateData[`bankingInfo.${bankingInfoIndex}.shebaNumber`] =
+        shebaNumber.toUpperCase();
     }
 
     // Update banking info
@@ -386,7 +414,9 @@ export async function DELETE(request: NextRequest) {
     // Determine target user
     const targetUserId = userId || authUser.id;
     const isOwnProfile = authUser.id === targetUserId;
-    const isAdmin = authUser.roles.includes("admin") || authUser.roles.includes("super_admin");
+    const isAdmin =
+      authUser.roles.includes("admin") ||
+      authUser.roles.includes("super_admin");
 
     // Check permissions
     if (!isOwnProfile && !isAdmin) {
@@ -412,4 +442,4 @@ export async function DELETE(request: NextRequest) {
     console.error("Delete banking info error:", error);
     return NextResponse.json({ error: "خطای سرور" }, { status: 500 });
   }
-} 
+}

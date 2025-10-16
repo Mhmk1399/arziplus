@@ -117,7 +117,7 @@ export class ZarinPal {
     return `${ZARINPAL_GATEWAY_URL}${authority}`;
   }
 
-  static formatAmount(amount: number, currency: 'IRT' = 'IRT'): string {
+  static formatAmount(amount: number): string {
     return `${amount.toLocaleString('fa-IR')} تومان`;
   }
 

@@ -13,6 +13,7 @@ import { showToast } from "@/utilities/toast";
 // Import admin components
 import AdminRequestsTable from "./AdminRequestsTable";
 import { ServiceManager } from "./serviceBuilder";
+import Link from "next/link";
 
 interface AdminWrapperProps {
   initialTab?: "requests" | "services" | "analytics";
@@ -293,12 +294,12 @@ const ServiceWrapper: React.FC<AdminWrapperProps> = ({
               شما به این بخش دسترسی ندارید. لطفاً با مدیر سیستم تماس بگیرید.
             </p>
             <div className="space-y-4">
-              <a
+              <Link
                 href="/"
                 className="block w-full px-6 py-4 bg-gradient-to-r from-gray-600 to-gray-700 text-white rounded-xl font-bold hover:shadow-lg transition-all duration-300 hover:scale-105"
               >
                 بازگشت به خانه
-              </a>
+              </Link>
             </div>
           </div>
         </div>

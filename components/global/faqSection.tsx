@@ -73,7 +73,6 @@ export default function FAQSection({
   const {
     // backgroundColor = "",
     headingColor = "text-[#FFFFFF]",
-    descriptionColor = "text-[#A0A0A0]",
     questionColor = "text-[#FFFFFF]",
     answerColor = "text-[#A0A0A0]",
     iconColor = "text-[#FF7A00]",

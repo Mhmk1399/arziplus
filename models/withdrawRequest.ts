@@ -15,7 +15,21 @@ const withdrawSchema = new mongoose.Schema({
     enum: ["pending", "approved", "rejected"],
     default: "pending",
   },
+  rejectionReason: {
+    type: String,
+  },
+  processedBy: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+  },
+  processedAt: {
+    type: Date,
+  },
   createdAt: {
+    type: Date,
+    default: Date.now,
+  },
+  updatedAt: {
     type: Date,
     default: Date.now,
   },

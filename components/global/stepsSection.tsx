@@ -52,7 +52,6 @@ export default function StepsSection({
   theme = {},
   showIcons = false,
   animated = true,
-  interactive = false,
   className = "",
 }: StepsSectionProps) {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -60,7 +59,6 @@ export default function StepsSection({
   const contentRef = useRef<HTMLDivElement>(null);
   const autoScrollRef = useRef<NodeJS.Timeout | null>(null);
 
-  const [activeStep, setActiveStep] = useState<string | null>(null);
   const [visibleSteps, setVisibleSteps] = useState<Set<string>>(new Set());
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isMounted, setIsMounted] = useState(false);
@@ -231,12 +229,7 @@ export default function StepsSection({
     return () => observer.disconnect();
   }, [animated, isMounted]);
 
-  // Handle step click
-  const handleStepClick = (stepId: string) => {
-    if (interactive) {
-      setActiveStep(activeStep === stepId ? null : stepId);
-    }
-  };
+
 
   // Navigation handlers - Fixed for RTL
   const handlePrevious = () => {

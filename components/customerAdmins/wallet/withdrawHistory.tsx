@@ -4,14 +4,12 @@ import React, { useState, useEffect } from "react";
 import {
   FaMoneyBillWave,
   FaFilter,
-  FaSearch,
   FaCalendarAlt,
   FaRedo,
   FaCheckCircle,
   FaTimesCircle,
   FaClock,
   FaEye,
-  FaUser,
   FaDownload
 } from "react-icons/fa";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
@@ -74,7 +72,7 @@ const WithdrawHistory: React.FC = () => {
   });
   const [showFilters, setShowFilters] = useState(false);
 
-  const { user: currentUser, isLoggedIn, loading: userLoading } = useCurrentUser();
+  const { isLoggedIn, loading: userLoading } = useCurrentUser();
 
   // Fetch withdraw requests
   const fetchWithdrawRequests = async (page = 1) => {

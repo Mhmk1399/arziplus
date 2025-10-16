@@ -57,6 +57,7 @@ const CardPaymentModal: React.FC<CardPaymentModalProps> = ({
       onPaymentComplete(receiptUrl);
       showToast.success("رسید واریز با موفقیت ثبت شد");
     } catch (error) {
+      console.error("Error submitting receipt:", error);
       showToast.error("خطا در ثبت رسید");
     } finally {
       setIsSubmitting(false);
@@ -144,7 +145,7 @@ const CardPaymentModal: React.FC<CardPaymentModalProps> = ({
               <ol className="text-sm text-yellow-700 space-y-1">
                 <li>1. مبلغ {amount.toLocaleString()} تومان را به شماره کارت فوق واریز کنید</li>
                 <li>2. عکس رسید واریز را گرفته و آپلود کنید</li>
-                <li>3. بر روی دکمه "تأیید پرداخت" کلیک کنید</li>
+                <li>3. بر روی دکمه تأیید پرداخت کلیک کنید</li>
                 <li>4. پس از بررسی، درخواست شما پردازش خواهد شد</li>
               </ol>
             </div>

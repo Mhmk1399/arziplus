@@ -35,13 +35,7 @@ interface UpdateRequestBody {
   isNoteVisibleToCustomer?: boolean;
 }
 
-// Type for pagination response
-interface PaginationInfo {
-  page: number;
-  limit: number;
-  total: number;
-  pages: number;
-}
+
 
 // GET - Retrieve service requests with filters and pagination
 export async function GET(request: NextRequest) {

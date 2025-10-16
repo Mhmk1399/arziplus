@@ -33,6 +33,7 @@ export default function NewNavbar() {
   const isMouseOverMenu = useRef(false);
   const previousDropdown = useRef<string | null>(null);
 
+  console.log(isScrolled)
   // Hydration fix and user authentication
   useEffect(() => {
     setIsMounted(true);

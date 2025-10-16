@@ -5,6 +5,29 @@ import { getAuthUser } from "@/lib/auth";
 import bcrypt from "bcryptjs";
 import mongoose from "mongoose";
 
+
+interface updatedData{
+  username?: string;
+  password?: string;
+  roles?: string[];
+  status?: string;
+}
+interface query {
+  _id?: string;
+  "contactInfo.mobilePhone"?: string | { $exists: boolean; $ne: string };
+  "contactInfo.email"?: string;
+  "contactInfo.address"?: string;
+  $or?: { [key: string]: { $regex: string; $options: string } }[];
+  "verifications.email.isVerified"?: boolean;
+  "verifications.phone.isVerified"?: boolean;
+  "verifications.identity.status"?: string;
+  "nationalCredentials.firstName"?: string;
+  "nationalCredentials.lastName"?: string;
+  roles?: string | { $in: string[] };
+  status?: string;
+  username?: string | { $regex: string; $options: string };
+}
+
 // GET - Fetch users with pagination and filtering
 export async function GET(request: NextRequest) {
   try {
@@ -32,7 +55,7 @@ export async function GET(request: NextRequest) {
     await connect();
 
     // Build query
-    const query: any = {};
+    const query: query = {};
 
     // Search by name, email, phone, or username
     if (search) {
@@ -130,7 +153,7 @@ export async function PATCH(request: NextRequest) {
     }
 
     // Prepare update data
-    const updateData: any = {};
+    const updateData: updatedData = {};
 
     // Username validation and update
     if (username) {

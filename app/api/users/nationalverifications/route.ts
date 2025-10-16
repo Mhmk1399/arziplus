@@ -4,8 +4,105 @@ import User from "@/models/users";
 import { getAuthUser } from "@/lib/auth";
 import mongoose from "mongoose";
 
+interface SearchQuery {
+  _id?: string;
+  $or?: { [key: string]: { $regex: string; $options: string } }[];
+  "nationalCredentials.lastName"?: { $regex: string; $options: string };
+  "nationalCredentials.nationalNumber"?: { $regex: string; $options: string };
+  "nationalCredentials.firstName"?:
+    | { $exists: boolean; $ne?: string }
+    | { $regex: string; $options: string };
+  "verifications.identity.status"?: string;
+}
+
+interface UpdateQuery {
+  "verifications.identity.status"?: string;
+  "verifications.identity.reviewedAt"?: Date;
+  "verifications.identity.reviewedBy"?: string;
+  "verifications.identity.rejectionReason"?: string;
+  "nationalCredentials.status"?: string;
+  "nationalCredentials.rejectionNotes"?: string;
+  status?: string;
+  $unset?: {
+    "verifications.identity.rejectionReason"?: string;
+    "nationalCredentials.rejectionNotes"?: string;
+  };
+}
+
+interface AuthUser {
+  id: string;
+  roles: string[];
+}
+
+interface NationalCredentialsData {
+  firstName: string;
+  lastName: string;
+  nationalNumber: string;
+  nationalCardImageUrl?: string;
+  verificationImageUrl?: string;
+  status?: "pending_verification" | "accepted" | "rejected";
+}
+
+interface VerificationData {
+  status: "not_submitted" | "pending" | "approved" | "rejected";
+  submittedAt?: Date;
+  reviewedAt?: Date;
+  reviewedBy?: string;
+  rejectionReason?: string;
+}
+
+interface UserDocument {
+  _id: string;
+  nationalCredentials?: NationalCredentialsData;
+  verifications: {
+    identity: VerificationData;
+  };
+  status: string;
+}
+
+interface GetCredentialsResponse {
+  credentials: UserDocument[];
+  pagination: {
+    currentPage: number;
+    totalPages: number;
+    totalUsers: number;
+    hasNextPage: boolean;
+    hasPreviousPage: boolean;
+  };
+}
+
+interface PostCredentialsRequest {
+  userId?: string;
+  firstName: string;
+  lastName: string;
+  nationalNumber: string;
+  nationalCardImageUrl?: string;
+  verificationImageUrl?: string;
+}
+
+interface PostCredentialsResponse {
+  message: string;
+  nationalCredentials: NationalCredentialsData;
+  verificationStatus: VerificationData;
+}
+
+interface PatchVerificationRequest {
+  userId: string;
+  status: "not_submitted" | "pending" | "approved" | "rejected";
+  rejectionReason?: string;
+}
+
+interface PatchVerificationResponse {
+  message: string;
+  verificationStatus: VerificationData;
+  userStatus: string;
+}
+
+interface ErrorResponse {
+  error: string;
+}
 // GET - Fetch national credentials with pagination and filtering
-export async function GET(request: NextRequest) {
+export async function GET(request: NextRequest): Promise<NextResponse<GetCredentialsResponse | ErrorResponse>> {
   try {
     const authUser = getAuthUser(request);
     if (!authUser) {
@@ -13,7 +110,10 @@ export async function GET(request: NextRequest) {
     }
 
     // Only admins can view all users' credentials
-    if (!authUser.roles.includes("admin") && !authUser.roles.includes("super_admin")) {
+    if (
+      !authUser.roles.includes("admin") &&
+      !authUser.roles.includes("super_admin")
+    ) {
       return NextResponse.json({ error: "دسترسی غیر مجاز" }, { status: 403 });
     }
 
@@ -27,7 +127,7 @@ export async function GET(request: NextRequest) {
     await connect();
 
     // Build query
-    const query: any = {};
+    const query: SearchQuery = {};
 
     // Filter by specific user
     if (userId) {
@@ -39,7 +139,12 @@ export async function GET(request: NextRequest) {
       query.$or = [
         { "nationalCredentials.firstName": { $regex: search, $options: "i" } },
         { "nationalCredentials.lastName": { $regex: search, $options: "i" } },
-        { "nationalCredentials.nationalNumber": { $regex: search, $options: "i" } },
+        {
+          "nationalCredentials.nationalNumber": {
+            $regex: search,
+            $options: "i",
+          },
+        },
       ];
     }
 
@@ -55,7 +160,9 @@ export async function GET(request: NextRequest) {
 
     const [users, totalUsers] = await Promise.all([
       User.find(query)
-        .select("nationalCredentials verifications.identity createdAt updatedAt")
+        .select(
+          "nationalCredentials verifications.identity createdAt updatedAt"
+        )
         .sort({ "verifications.identity.submittedAt": -1 })
         .skip(skip)
         .limit(limit)
@@ -65,8 +172,8 @@ export async function GET(request: NextRequest) {
 
     const totalPages = Math.ceil(totalUsers / limit);
 
-    return NextResponse.json({
-      credentials: users,
+    const response: GetCredentialsResponse = {
+      credentials: users as unknown as UserDocument[],
       pagination: {
         currentPage: page,
         totalPages,
@@ -74,21 +181,25 @@ export async function GET(request: NextRequest) {
         hasNextPage: page < totalPages,
         hasPreviousPage: page > 1,
       },
-    });
+    };
+
+    return NextResponse.json(response);
   } catch (error) {
     console.error("Get national credentials error:", error);
-    return NextResponse.json({ error: "خطای سرور" }, { status: 500 });
+    const errorResponse: ErrorResponse = { error: "خطای سرور" };
+    return NextResponse.json(errorResponse, { status: 500 });
   }
 }
 
 // POST - Create or update national credentials
-export async function POST(request: NextRequest) {
+export async function POST(request: NextRequest): Promise<NextResponse<PostCredentialsResponse | ErrorResponse>> {
   try {
     const authUser = getAuthUser(request);
     if (!authUser) {
       return NextResponse.json({ error: "غیر مجاز" }, { status: 401 });
     }
 
+    const requestData: PostCredentialsRequest = await request.json();
     const {
       userId,
       firstName,
@@ -96,7 +207,7 @@ export async function POST(request: NextRequest) {
       nationalNumber,
       nationalCardImageUrl,
       verificationImageUrl,
-    } = await request.json();
+    } = requestData;
 
     // Validate required fields
     if (!firstName || !lastName || !nationalNumber) {
@@ -115,20 +226,19 @@ export async function POST(request: NextRequest) {
     }
 
     // Validate national number checksum
-    const digits = nationalNumber.split('').map(Number);
-    const checksum = digits.reduce((sum: number, digit: number, index: number) => {
-      if (index < 9) return sum + digit * (10 - index);
-      return sum;
-    }, 0) % 11;
+    const digits = nationalNumber.split("").map(Number);
+    const checksum =
+      digits.reduce((sum: number, digit: number, index: number) => {
+        if (index < 9) return sum + digit * (10 - index);
+        return sum;
+      }, 0) % 11;
 
     const lastDigit = digits[9];
-    const isValidNationalNumber = checksum < 2 ? lastDigit === checksum : lastDigit === 11 - checksum;
+    const isValidNationalNumber =
+      checksum < 2 ? lastDigit === checksum : lastDigit === 11 - checksum;
 
     if (!isValidNationalNumber) {
-      return NextResponse.json(
-        { error: "کد ملی معتبر نیست" },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: "کد ملی معتبر نیست" }, { status: 400 });
     }
 
     await connect();
@@ -136,7 +246,9 @@ export async function POST(request: NextRequest) {
     // Determine target user
     const targetUserId = userId || authUser.id;
     const isOwnProfile = authUser.id === targetUserId;
-    const isAdmin = authUser.roles.includes("admin") || authUser.roles.includes("super_admin");
+    const isAdmin =
+      authUser.roles.includes("admin") ||
+      authUser.roles.includes("super_admin");
 
     // Check permissions
     if (!isOwnProfile && !isAdmin) {
@@ -152,7 +264,7 @@ export async function POST(request: NextRequest) {
     // Check if national number already exists (for other users)
     const existingUser = await User.findOne({
       "nationalCredentials.nationalNumber": nationalNumber,
-      _id: { $ne: targetUserId }
+      _id: { $ne: targetUserId },
     });
 
     if (existingUser) {
@@ -163,18 +275,24 @@ export async function POST(request: NextRequest) {
     }
 
     // Prepare update data
-    const nationalCredentials = {
+    const nationalCredentials: NationalCredentialsData = {
       firstName: firstName.trim(),
       lastName: lastName.trim(),
       nationalNumber,
-      nationalCardImageUrl: nationalCardImageUrl || user.nationalCredentials?.nationalCardImageUrl || "",
-      verificationImageUrl: verificationImageUrl || user.nationalCredentials?.verificationImageUrl || "",
+      nationalCardImageUrl:
+        nationalCardImageUrl ||
+        user.nationalCredentials?.nationalCardImageUrl ||
+        "",
+      verificationImageUrl:
+        verificationImageUrl ||
+        user.nationalCredentials?.verificationImageUrl ||
+        "",
       status: "pending_verification", // Default status for new/updated credentials
     };
 
     // Update verification status
-    const verificationUpdate: any = {
-      "nationalCredentials": nationalCredentials,
+    const verificationUpdate: Record<string, unknown> = {
+      nationalCredentials: nationalCredentials,
       "verifications.identity.submittedAt": new Date(),
     };
 
@@ -189,25 +307,30 @@ export async function POST(request: NextRequest) {
       { new: true, runValidators: true }
     ).select("nationalCredentials verifications.identity");
 
-    return NextResponse.json({
+    if (!updatedUser) {
+      return NextResponse.json({ error: "خطا در به‌روزرسانی کاربر" }, { status: 500 });
+    }
+
+    const response: PostCredentialsResponse = {
       message: "اطلاعات هویتی با موفقیت ثبت شد",
       nationalCredentials: updatedUser.nationalCredentials,
       verificationStatus: updatedUser.verifications.identity,
-    });
+    };
+
+    return NextResponse.json(response);
   } catch (error) {
     console.error("Create national credentials error:", error);
     if (error instanceof mongoose.Error.ValidationError) {
-      return NextResponse.json(
-        { error: "داده‌های ورودی نامعتبر" },
-        { status: 400 }
-      );
+      const errorResponse: ErrorResponse = { error: "داده‌های ورودی نامعتبر" };
+      return NextResponse.json(errorResponse, { status: 400 });
     }
-    return NextResponse.json({ error: "خطای سرور" }, { status: 500 });
+    const errorResponse: ErrorResponse = { error: "خطای سرور" };
+    return NextResponse.json(errorResponse, { status: 500 });
   }
 }
 
 // PATCH - Update verification status (admin only)
-export async function PATCH(request: NextRequest) {
+export async function PATCH(request: NextRequest): Promise<NextResponse<PatchVerificationResponse | ErrorResponse>> {
   try {
     const authUser = getAuthUser(request);
     if (!authUser) {
@@ -215,11 +338,15 @@ export async function PATCH(request: NextRequest) {
     }
 
     // Only admins can update verification status
-    if (!authUser.roles.includes("admin") && !authUser.roles.includes("super_admin")) {
+    if (
+      !authUser.roles.includes("admin") &&
+      !authUser.roles.includes("super_admin")
+    ) {
       return NextResponse.json({ error: "دسترسی غیر مجاز" }, { status: 403 });
     }
 
-    const { userId, status, rejectionReason } = await request.json();
+    const requestData: PatchVerificationRequest = await request.json();
+    const { userId, status, rejectionReason } = requestData;
 
     if (!userId || !status) {
       return NextResponse.json(
@@ -230,10 +357,7 @@ export async function PATCH(request: NextRequest) {
 
     const validStatuses = ["not_submitted", "pending", "approved", "rejected"];
     if (!validStatuses.includes(status)) {
-      return NextResponse.json(
-        { error: "وضعیت نامعتبر" },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: "وضعیت نامعتبر" }, { status: 400 });
     }
 
     if (status === "rejected" && !rejectionReason) {
@@ -252,20 +376,25 @@ export async function PATCH(request: NextRequest) {
     }
 
     // Prepare update data
-    const updateData: any = {
+    const updateData: UpdateQuery = {
       "verifications.identity.status": status,
       "verifications.identity.reviewedAt": new Date(),
       "verifications.identity.reviewedBy": authUser.id,
-      "nationalCredentials.status": status === "approved" ? "accepted" : status === "rejected" ? "rejected" : "pending_verification",
+      "nationalCredentials.status":
+        status === "approved"
+          ? "accepted"
+          : status === "rejected"
+          ? "rejected"
+          : "pending_verification",
     };
 
-    if (status === "rejected") {
+    if (status === "rejected" && rejectionReason) {
       updateData["verifications.identity.rejectionReason"] = rejectionReason;
       updateData["nationalCredentials.rejectionNotes"] = rejectionReason;
     } else {
-      updateData["$unset"] = { 
+      updateData["$unset"] = {
         "verifications.identity.rejectionReason": "",
-        "nationalCredentials.rejectionNotes": ""
+        "nationalCredentials.rejectionNotes": "",
       };
     }
 
@@ -274,19 +403,24 @@ export async function PATCH(request: NextRequest) {
       updateData.status = "active";
     }
 
-    const updatedUser = await User.findByIdAndUpdate(
-      userId,
-      updateData,
-      { new: true }
-    ).select("nationalCredentials verifications.identity status");
+    const updatedUser = await User.findByIdAndUpdate(userId, updateData, {
+      new: true,
+    }).select("nationalCredentials verifications.identity status");
 
-    return NextResponse.json({
+    if (!updatedUser) {
+      return NextResponse.json({ error: "کاربر یافت نشد" }, { status: 404 });
+    }
+
+    const response: PatchVerificationResponse = {
       message: "وضعیت تایید با موفقیت به‌روزرسانی شد",
       verificationStatus: updatedUser.verifications.identity,
       userStatus: updatedUser.status,
-    });
+    };
+
+    return NextResponse.json(response);
   } catch (error) {
     console.error("Update verification status error:", error);
-    return NextResponse.json({ error: "خطای سرور" }, { status: 500 });
+    const errorResponse: ErrorResponse = { error: "خطای سرور" };
+    return NextResponse.json(errorResponse, { status: 500 });
   }
 }

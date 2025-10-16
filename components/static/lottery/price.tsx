@@ -1,6 +1,6 @@
 import React from "react";
 import { COLORS } from "../lottery";
-import { Globe, MapPin, CheckCircle, Shield } from "lucide-react";
+import { Globe, MapPin, CheckCircle } from "lucide-react";
 
 const plans = [
   {

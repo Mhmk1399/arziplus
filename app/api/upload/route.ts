@@ -4,15 +4,15 @@ import { s3 } from "@/lib/s3";
 
 // Allowed file types and size limits
 const ALLOWED_TYPES = [
-  'image/jpeg',
-  'image/jpg', 
-  'image/png',
-  'image/gif',
-  'image/webp',
-  'application/pdf',
-  'application/msword',
-  'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-  'text/plain'
+  "image/jpeg",
+  "image/jpg",
+  "image/png",
+  "image/gif",
+  "image/webp",
+  "application/pdf",
+  "application/msword",
+  "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+  "text/plain",
 ];
 
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
@@ -21,7 +21,7 @@ export async function POST(req: NextRequest) {
   try {
     // Check if required environment variables are set
     if (!process.env.AWS_S3_BUCKET) {
-      console.error('AWS_S3_BUCKET environment variable is not set');
+      console.error("AWS_S3_BUCKET environment variable is not set");
       return NextResponse.json(
         { success: false, error: "Server configuration error" },
         { status: 500 }
@@ -30,7 +30,7 @@ export async function POST(req: NextRequest) {
 
     const formData = await req.formData();
     const file = formData.get("file") as File;
-    
+
     if (!file) {
       return NextResponse.json(
         { success: false, error: "No file provided" },
@@ -41,9 +41,11 @@ export async function POST(req: NextRequest) {
     // Validate file type
     if (!ALLOWED_TYPES.includes(file.type)) {
       return NextResponse.json(
-        { 
-          success: false, 
-          error: `File type ${file.type} not allowed. Allowed types: ${ALLOWED_TYPES.join(', ')}` 
+        {
+          success: false,
+          error: `File type ${
+            file.type
+          } not allowed. Allowed types: ${ALLOWED_TYPES.join(", ")}`,
         },
         { status: 400 }
       );
@@ -52,9 +54,11 @@ export async function POST(req: NextRequest) {
     // Validate file size
     if (file.size > MAX_FILE_SIZE) {
       return NextResponse.json(
-        { 
-          success: false, 
-          error: `File size too large. Maximum size: ${MAX_FILE_SIZE / (1024 * 1024)}MB` 
+        {
+          success: false,
+          error: `File size too large. Maximum size: ${
+            MAX_FILE_SIZE / (1024 * 1024)
+          }MB`,
         },
         { status: 400 }
       );
@@ -63,7 +67,7 @@ export async function POST(req: NextRequest) {
     // Generate unique filename
     const timestamp = Date.now();
     const randomId = Math.random().toString(36).substring(2);
-    const cleanFileName = file.name.replace(/[^a-zA-Z0-9.-]/g, '_');
+    const cleanFileName = file.name.replace(/[^a-zA-Z0-9.-]/g, "_");
     const uniqueFileName = `${timestamp}_${randomId}_${cleanFileName}`;
     const key = `uploads/${uniqueFileName}`;
 
@@ -80,16 +84,18 @@ export async function POST(req: NextRequest) {
         originalName: file.name,
         uploadedAt: new Date().toISOString(),
         fileSize: file.size.toString(),
-      }
+      },
     });
 
     const uploadResult = await s3.send(uploadCommand);
 
+    console.log(uploadResult);
+
     // Generate CloudFront URL (permanent, no expiration)
     if (!process.env.AWS_CLOUDFRONT_DOMAIN) {
-      throw new Error('AWS_CLOUDFRONT_DOMAIN environment variable is required');
+      throw new Error("AWS_CLOUDFRONT_DOMAIN environment variable is required");
     }
-    
+
     const publicUrl = `https://${process.env.AWS_CLOUDFRONT_DOMAIN}/${key}`;
 
     return NextResponse.json({
@@ -100,37 +106,39 @@ export async function POST(req: NextRequest) {
         originalName: file.name,
         size: file.size,
         type: file.type,
-        uploadedAt: new Date().toISOString()
+        uploadedAt: new Date().toISOString(),
       },
-      message: "File uploaded successfully"
+      message: "File uploaded successfully",
     });
-
   } catch (error) {
     console.error("Upload error:", error);
-    
+
     // Handle specific AWS errors
     if (error instanceof Error) {
-      if (error.name === 'NoSuchBucket') {
+      if (error.name === "NoSuchBucket") {
         return NextResponse.json(
           { success: false, error: "S3 bucket not found" },
           { status: 500 }
         );
       }
-      
-      if (error.name === 'AccessDenied') {
+
+      if (error.name === "AccessDenied") {
         return NextResponse.json(
           { success: false, error: "Access denied to S3 bucket" },
           { status: 500 }
         );
       }
-      
-      if (error.name === 'CredentialsError' || error.name === 'InvalidAccessKeyId') {
+
+      if (
+        error.name === "CredentialsError" ||
+        error.name === "InvalidAccessKeyId"
+      ) {
         return NextResponse.json(
           { success: false, error: "Invalid AWS credentials" },
           { status: 500 }
         );
       }
-      
+
       // Return the actual error message for debugging
       return NextResponse.json(
         { success: false, error: `Upload failed: ${error.message}` },
@@ -148,15 +156,24 @@ export async function POST(req: NextRequest) {
 // GET endpoint to check upload service status
 export async function GET() {
   try {
-    const requiredVars = ['AWS_S3_BUCKET', 'AWS_REGION', 'AWS_ACCESS_KEY_ID', 'AWS_SECRET_ACCESS_KEY', 'AWS_CLOUDFRONT_DOMAIN'];
-    const missingVars = requiredVars.filter(varName => !process.env[varName]);
+    const requiredVars = [
+      "AWS_S3_BUCKET",
+      "AWS_REGION",
+      "AWS_ACCESS_KEY_ID",
+      "AWS_SECRET_ACCESS_KEY",
+      "AWS_CLOUDFRONT_DOMAIN",
+    ];
+    const missingVars = requiredVars.filter((varName) => !process.env[varName]);
 
     if (missingVars.length > 0) {
-      return NextResponse.json({
-        success: false,
-        error: "Missing environment variables",
-        missing: missingVars
-      }, { status: 500 });
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Missing environment variables",
+          missing: missingVars,
+        },
+        { status: 500 }
+      );
     }
 
     return NextResponse.json({
@@ -167,14 +184,17 @@ export async function GET() {
         region: process.env.AWS_REGION,
         cloudfront: process.env.AWS_CLOUDFRONT_DOMAIN,
         allowedTypes: ALLOWED_TYPES,
-        maxFileSize: `${MAX_FILE_SIZE / (1024 * 1024)}MB`
-      }
+        maxFileSize: `${MAX_FILE_SIZE / (1024 * 1024)}MB`,
+      },
     });
   } catch (error) {
-    console.log(error)
-    return NextResponse.json({
-      success: false,
-      error: "Failed to check service status"
-    }, { status: 500 });
+    console.log(error);
+    return NextResponse.json(
+      {
+        success: false,
+        error: "Failed to check service status",
+      },
+      { status: 500 }
+    );
   }
 }

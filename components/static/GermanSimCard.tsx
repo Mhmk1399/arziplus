@@ -6,8 +6,6 @@ import {
   faqThemes,
   splitSectionThemes,
   stepThemes,
-  textBoxThemes,
-  textBoxTypography,
   themesWhyus,
 } from "@/lib/theme";
 import {

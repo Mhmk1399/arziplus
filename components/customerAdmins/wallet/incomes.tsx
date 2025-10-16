@@ -6,7 +6,6 @@ import {
   FaFilter,
   FaArrowUp,
   FaArrowDown,
-  FaSearch,
   FaCalendarAlt,
   FaTags,
   FaRedo,
@@ -70,7 +69,7 @@ const IncomesHistory: React.FC = () => {
   });
   const [showFilters, setShowFilters] = useState(false);
 
-  const { user: currentUser, isLoggedIn, loading: userLoading } = useCurrentUser();
+  const {  isLoggedIn, loading: userLoading } = useCurrentUser();
 
   // Fetch transactions
   const fetchTransactions = async (page = 1) => {

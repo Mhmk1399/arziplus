@@ -15,6 +15,7 @@ import {
   FaSignOutAlt,
   FaBell,
   FaWallet,
+  FaMoneyBillWave,
 } from "react-icons/fa";
 import { showToast } from "@/utilities/toast";
 
@@ -24,6 +25,7 @@ import AdminServiceWrapper from "@/components/admin/services&orders/adminservice
 import ServiceWrapper from "@/components/customerAdmins/ordersandservices/serviceWrapper";
 import CredentialWrapper from "@/components/customerAdmins/credintials/credintialWrapper";
 import WalletWrapper from "@/components/customerAdmins/wallet/walletWrapper";
+import PaymentWrapper from "@/components/admin/payments/paymentWrapper";
 
 interface MenuItem {
   id: string;
@@ -76,7 +78,7 @@ const Dashboard: React.FC = () => {
       // Validate the tab parameter against available menu items
       const isAdmin = currentUser.roles.includes("admin") || currentUser.roles.includes("super_admin");
       const validTabs = isAdmin 
-        ? ["users", "admin-services"] 
+        ? ["users", "payments", "admin-services"] 
         : ["services", "wallet", "credentials"];
       
       if (validTabs.includes(tabParam)) {
@@ -103,6 +105,13 @@ const Dashboard: React.FC = () => {
       icon: <FaUsers className="text-lg" />,
       component: UserWrapper,
       description: "مدیریت کاربران و احراز هویت",
+    },
+    {
+      id: "payments",
+      label: "مدیریت پرداخت‌ها",
+      icon: <FaMoneyBillWave className="text-lg" />,
+      component: PaymentWrapper,
+      description: "مدیریت کیف پول‌ها و درخواست‌های برداشت",
     },
     {
       id: "admin-services",
@@ -333,7 +342,7 @@ const Dashboard: React.FC = () => {
         <div className="min-h-screen">
           {selectedMenuItem === "wallet" ? (
             <WalletWrapper 
-              initialTab={searchParams.get('walletTab') as any || "dashboard"}
+              initialTab={searchParams.get('walletTab') as "dashboard" | "incomes" | "withdraws" | "add-funds" | undefined || "dashboard"}
               className="mx-4 my-32" 
             />
           ) : (

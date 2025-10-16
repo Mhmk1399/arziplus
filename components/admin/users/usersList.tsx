@@ -93,7 +93,7 @@ const UsersList = () => {
   const [verificationFilter, setVerificationFilter] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
-
+  console.log(setVerificationFilter);
   // Modal states
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [showUserDetails, setShowUserDetails] = useState(false);
@@ -230,21 +230,32 @@ const UsersList = () => {
       }
 
       showToast.success("اطلاعات کاربر با موفقیت به‌روزرسانی شد");
-      
+
       // Update the selectedUser to reflect changes immediately
       if (selectedUser) {
-        const updatedUser = {
+        const updatedUser: User = {
           ...selectedUser,
           username: editForm.username,
           roles: editForm.roles,
-          status: editForm.status as "active" | "suspended" | "banned" | "pending_verification",
+          status: editForm.status as
+            | "active"
+            | "suspended"
+            | "banned"
+            | "pending_verification",
           nationalCredentials: {
             ...selectedUser.nationalCredentials,
             ...editForm.nationalCredentials,
+            status: editForm.nationalCredentials.status as "accepted" | "rejected" | "pending_verification" | undefined,
           },
           contactInfo: {
             ...selectedUser.contactInfo,
-            ...editForm.contactInfo,
+            email: editForm.contactInfo.email,
+            mobilePhone: editForm.contactInfo.mobilePhone,
+            homePhone: editForm.contactInfo.homePhone ? parseInt(editForm.contactInfo.homePhone, 10) : selectedUser.contactInfo?.homePhone,
+            postalCode: editForm.contactInfo.postalCode ? parseInt(editForm.contactInfo.postalCode, 10) : selectedUser.contactInfo?.postalCode || 0,
+            address: editForm.contactInfo.address,
+            rejectionNotes: editForm.contactInfo.rejectionNotes,
+            status: editForm.contactInfo.status as "accepted" | "rejected" | "pending_verification" | undefined,
           },
           profile: {
             ...selectedUser.profile,
@@ -253,7 +264,7 @@ const UsersList = () => {
         };
         setSelectedUser(updatedUser);
       }
-      
+
       setShowEditUser(false);
       // Refresh the users list to get the latest data from server
       console.log("Refreshing users list after update...");
@@ -327,6 +338,7 @@ const UsersList = () => {
       showToast.success("تمام اطلاعات کاربر تایید شد");
       await fetchUsers();
     } catch (err) {
+      console.error("Error validating user:", err);
       showToast.error("خطا در تایید اطلاعات کاربر");
     }
   };
@@ -349,7 +361,7 @@ const UsersList = () => {
   // Update selectedUser when users list changes
   useEffect(() => {
     if (selectedUser && users.length > 0) {
-      const updatedUser = users.find(u => u._id === selectedUser._id);
+      const updatedUser = users.find((u) => u._id === selectedUser._id);
       if (updatedUser) {
         setSelectedUser(updatedUser);
         console.log("Updated selectedUser with fresh data:", updatedUser);

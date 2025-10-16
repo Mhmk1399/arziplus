@@ -19,7 +19,7 @@ interface Service {
   icon?: string;
   image?: string;
   status: string;
-  fields?: any[];
+  fields?: string[];
 }
 
 // API Response interface
@@ -51,11 +51,13 @@ const groupServicesByCategory = (services: Service[]) => {
   }, {} as Record<string, Service[]>);
 
   // Sort categories to show "سایر خدمات" (uncategorized) last
-  const sortedEntries = Object.entries(grouped).sort(([categoryA], [categoryB]) => {
-    if (categoryA === "سایر خدمات") return 1;
-    if (categoryB === "سایر خدمات") return -1;
-    return categoryA.localeCompare(categoryB, 'fa');
-  });
+  const sortedEntries = Object.entries(grouped).sort(
+    ([categoryA], [categoryB]) => {
+      if (categoryA === "سایر خدمات") return 1;
+      if (categoryB === "سایر خدمات") return -1;
+      return categoryA.localeCompare(categoryB, "fa");
+    }
+  );
 
   return Object.fromEntries(sortedEntries);
 };
@@ -88,10 +90,7 @@ const ServiceCard = ({ service }: { service: Service }) => {
           >
             {service.title}
           </h3>
-          <div className="flex items-center gap-2 mt-2">
-            
-           
-          </div>
+          <div className="flex items-center gap-2 mt-2"></div>
         </div>
       </div>
 
@@ -126,7 +125,8 @@ const CategorySection = ({
   // Check scroll position and update arrow visibility
   const checkScrollPosition = () => {
     if (scrollContainerRef.current) {
-      const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current;
+      const { scrollLeft, scrollWidth, clientWidth } =
+        scrollContainerRef.current;
       setCanScrollLeft(scrollLeft > 0);
       setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 1);
     }
@@ -138,7 +138,7 @@ const CategorySection = ({
       const cardWidth = 296; // 280px + 16px gap
       scrollContainerRef.current.scrollBy({
         left: -cardWidth,
-        behavior: 'smooth'
+        behavior: "smooth",
       });
     }
   };
@@ -148,7 +148,7 @@ const CategorySection = ({
       const cardWidth = 296; // 280px + 16px gap
       scrollContainerRef.current.scrollBy({
         left: cardWidth,
-        behavior: 'smooth'
+        behavior: "smooth",
       });
     }
   };
@@ -159,7 +159,7 @@ const CategorySection = ({
       setIsDragging(true);
       setStartX(e.pageX - scrollContainerRef.current.offsetLeft);
       setScrollLeft(scrollContainerRef.current.scrollLeft);
-      scrollContainerRef.current.style.cursor = 'grabbing';
+      scrollContainerRef.current.style.cursor = "grabbing";
     }
   };
 
@@ -174,14 +174,14 @@ const CategorySection = ({
   const handleMouseUp = () => {
     setIsDragging(false);
     if (scrollContainerRef.current) {
-      scrollContainerRef.current.style.cursor = 'grab';
+      scrollContainerRef.current.style.cursor = "grab";
     }
   };
 
   const handleMouseLeave = () => {
     setIsDragging(false);
     if (scrollContainerRef.current) {
-      scrollContainerRef.current.style.cursor = 'grab';
+      scrollContainerRef.current.style.cursor = "grab";
     }
   };
 
@@ -209,8 +209,8 @@ const CategorySection = ({
   useEffect(() => {
     checkScrollPosition();
     const handleResize = () => checkScrollPosition();
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, [services.length]);
 
   return (
@@ -232,7 +232,7 @@ const CategorySection = ({
           <button
             onClick={scrollToLeft}
             className="hidden lg:flex absolute right-0 top-1/2 transform -translate-y-1/2 z-10 bg-white/90 backdrop-blur-sm rounded-full p-3 shadow-lg hover:bg-white transition-all duration-300 group-hover:opacity-100 opacity-0"
-            style={{ marginRight: '-20px' }}
+            style={{ marginRight: "-20px" }}
           >
             <FaArrowRight className="text-[#0A1D37] text-sm" />
           </button>
@@ -243,19 +243,19 @@ const CategorySection = ({
           <button
             onClick={scrollToRight}
             className="hidden lg:flex absolute left-0 top-1/2 transform -translate-y-1/2 z-10 bg-white/90 backdrop-blur-sm rounded-full p-3 shadow-lg hover:bg-white transition-all duration-300 group-hover:opacity-100 opacity-0"
-            style={{ marginLeft: '-20px' }}
+            style={{ marginLeft: "-20px" }}
           >
             <FaArrowLeft className="text-[#0A1D37] text-sm" />
           </button>
         )}
 
         {/* Scrollable Services Grid */}
-        <div 
+        <div
           ref={scrollContainerRef}
           className="flex gap-6 overflow-x-auto scrollbar-hide pb-4 cursor-grab"
           style={{
-            scrollbarWidth: 'none',
-            msOverflowStyle: 'none',
+            scrollbarWidth: "none",
+            msOverflowStyle: "none",
           }}
           onScroll={checkScrollPosition}
           onMouseDown={handleMouseDown}
@@ -266,13 +266,13 @@ const CategorySection = ({
           onTouchMove={handleTouchMove}
           onTouchEnd={handleTouchEnd}
         >
-          {services.map((service, index) => (
+          {services.map((service) => (
             <div
               key={service._id}
               className="flex-shrink-0 w-full sm:w-1/2 md:w-1/3 lg:w-1/4"
-              style={{ 
-                minWidth: '280px',
-                userSelect: isDragging ? 'none' : 'auto'
+              style={{
+                minWidth: "280px",
+                userSelect: isDragging ? "none" : "auto",
               }}
             >
               <ServiceCard service={service} />

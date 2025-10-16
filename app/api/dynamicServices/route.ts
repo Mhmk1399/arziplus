@@ -55,13 +55,7 @@ interface ServiceRequestBody extends Partial<ServiceDocument> {
   id?: string; // For PUT requests
 }
 
-// Type for pagination response
-interface PaginationInfo {
-  page: number;
-  limit: number;
-  total: number;
-  pages: number;
-}
+
 
 // GET - Retrieve services with filters and pagination
 export async function GET(request: NextRequest) {

@@ -6,8 +6,6 @@ import {
   faqThemes,
   splitSectionThemes,
   stepThemes,
-  textBoxThemes,
-  textBoxTypography,
   themesWhyus,
 } from "@/lib/theme";
 import {
@@ -25,7 +23,6 @@ import {
 import WhyUsSection from "../global/whyUs";
 import FAQSection from "../global/faqSection";
 import CTABanner from "../global/ctaBanner";
-import TextBox from "../global/textBox";
 import { FaMedal, FaLock } from "react-icons/fa";
 import HeroSplitSection from "../global/heroSplitSection";
 
