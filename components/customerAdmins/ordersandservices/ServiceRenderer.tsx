@@ -534,10 +534,13 @@ const ServiceRenderer: React.FC<ServiceRendererProps> = ({
                               <Image
                                 src={service.image}
                                 alt={service.title}
-                                width={96}
-                                height={64}
-                                className="w-1/2 h-1/2 object-cover group-hover:scale-110 transition-transform duration-300"
+                                width={250}
+                                height={120}
+                                className="object-cover group-hover:scale-110 transition-transform duration-300"
                                 unoptimized={true}
+                                onError={(e) => {
+                                  console.error("ServiceRenderer mobile - Failed to load service image:", service.image);
+                                }}
                               />
                             ) : (
                               <div className="w-1/2 h-16 mx-auto bg-gradient-to-br from-[#4DBFF0]/20 to-[#FF7A00]/20 rounded-xl flex items-center justify-center">
@@ -617,6 +620,9 @@ const ServiceRenderer: React.FC<ServiceRendererProps> = ({
                               height={96}
                               className="w-1/2 h-1/2 mx-auto object-cover group-hover:scale-110 transition-transform duration-300"
                               unoptimized={true}
+                              onError={(e) => {
+                                console.error("ServiceRenderer desktop - Failed to load service image:", service.image);
+                              }}
                             />
                           ) : (
                             <div className="w-1/2 h-24 mx-auto bg-gradient-to-br from-[#4DBFF0]/20 to-[#FF7A00]/20 rounded-xl flex items-center justify-center">

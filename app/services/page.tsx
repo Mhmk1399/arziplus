@@ -69,19 +69,51 @@ const groupServicesByCategory = (services: Service[]) => {
   return Object.fromEntries(sortedEntries);
 };
 
-// Service Card Component
+// Service Card Component  
 const ServiceCard = ({ service }: { service: Service }) => {
+  const [imageError, setImageError] = useState(false);
+  
+  console.log("Service data:", service);
+  console.log("Service image URL:", service.image);
+  
   return (
     <div className="group relative overflow-hidden bg-white rounded-2xl sm:rounded-3xl shadow-sm hover:shadow-2xl transition-all duration-500 transform hover:scale-[1.03] border border-gray-100">
       {/* Service Image */}
       <div className="relative h-48 sm:h-56 lg:h-64 w-full overflow-hidden">
-        <Image
-          src={service.image || "/assets/images/logoArzi.webp"}
-          alt={service.title}
-          fill
-          className="object-cover transition-transform duration-500 group-hover:scale-110"
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-        />
+        {!imageError && service.image ? (
+          <Image
+            src={service.image}
+            alt={service.title}
+            fill
+            className="object-cover transition-transform duration-500 group-hover:scale-110"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            unoptimized={true}
+            onError={(e) => {
+              console.error("Failed to load service image with Next.js Image:", service.image);
+              console.error("Falling back to regular img tag");
+              setImageError(true);
+            }}
+          />
+        ) : service.image ? (
+          <img
+            src={service.image}
+            alt={service.title}
+            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+            onError={(e) => {
+              console.error("Failed to load service image with img tag:", service.image);
+              const img = e.target as HTMLImageElement;
+              img.style.display = "none";
+            }}
+          />
+        ) : (
+          <Image
+            src="/assets/images/logoArzi.webp"
+            alt={service.title}
+            fill
+            className="object-cover transition-transform duration-500 group-hover:scale-110"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          />
+        )}
 
         {/* Fallback Text */}
         {!service.image && (
@@ -121,14 +153,7 @@ const ServiceCard = ({ service }: { service: Service }) => {
         </div>
       </div>
 
-      {/* Description - Show on hover */}
-      {/* {service.description && (
-        <div className="absolute inset-0 bg-gradient-to-t from-[#0A1D37]   to-transparent p-4 sm:p-5 lg:p-6 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end">
-          <p className="text-white/90 text-xs sm:text-sm lg:text-base leading-relaxed line-clamp-4 mb-4">
-            {service.description}
-          </p>
-        </div>
-      )} */}
+
 
       {/* CTA Button */}
       <div className="p-3 sm:p-4 lg:p-5 bg-gradient-to-br from-gray-50 to-white">
