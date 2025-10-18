@@ -92,7 +92,6 @@ export async function POST(req: NextRequest) {
     console.log(uploadResult);
 
     // Generate public URL for Liara Object Storage
-    // Liara provides direct access to objects via: https://{bucket-name}.storage.iran.liara.space/{key}
     const bucketName = process.env.LIARA_BUCKET_NAME;
     const publicUrl = `https://${bucketName}.storage.c2.liara.space/${key}`;
 

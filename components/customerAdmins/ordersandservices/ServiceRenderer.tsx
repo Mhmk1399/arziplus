@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import Image from "next/image";
 import { ServiceField } from "@/types/serviceBuilder/types";
 import { showToast } from "@/utilities/toast";
 import FileUploaderModal from "@/components/FileUploaderModal";
@@ -415,11 +416,15 @@ const ServiceRenderer: React.FC<ServiceRendererProps> = ({
                     (value.includes("image") ||
                       value.match(/\.(jpg|jpeg|png|gif|webp)$/i)) && (
                       <div className="mt-2">
-                        <img
+                        <Image
                           src={value}
                           alt="پیش‌نمایش"
+                          width={128}
+                          height={128}
                           className="w-32 h-32 object-cover rounded-lg border border-[#4DBFF0]/50"
+                          unoptimized={true}
                           onError={(e) => {
+                            console.error("Failed to load image:", value);
                             const img = e.target as HTMLImageElement;
                             img.style.display = "none";
                           }}
@@ -526,10 +531,13 @@ const ServiceRenderer: React.FC<ServiceRendererProps> = ({
                         >
                           <div className="relative mb-3">
                             {service.image ? (
-                              <img
+                              <Image
                                 src={service.image}
                                 alt={service.title}
+                                width={96}
+                                height={64}
                                 className="w-1/2 h-1/2 object-cover group-hover:scale-110 transition-transform duration-300"
+                                unoptimized={true}
                               />
                             ) : (
                               <div className="w-1/2 h-16 mx-auto bg-gradient-to-br from-[#4DBFF0]/20 to-[#FF7A00]/20 rounded-xl flex items-center justify-center">
@@ -602,10 +610,13 @@ const ServiceRenderer: React.FC<ServiceRendererProps> = ({
                       >
                         <div className="relative mb-4 overflow-hidden rounded-xl">
                           {service.image ? (
-                            <img
+                            <Image
                               src={service.image}
                               alt={service.title}
+                              width={120}
+                              height={96}
                               className="w-1/2 h-1/2 mx-auto object-cover group-hover:scale-110 transition-transform duration-300"
+                              unoptimized={true}
                             />
                           ) : (
                             <div className="w-1/2 h-24 mx-auto bg-gradient-to-br from-[#4DBFF0]/20 to-[#FF7A00]/20 rounded-xl flex items-center justify-center">
