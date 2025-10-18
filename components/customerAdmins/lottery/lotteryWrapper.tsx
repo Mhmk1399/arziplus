@@ -1,12 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import CustomerLotteryList from "./lotteryList";
-import {
-  FaTicketAlt,
-  FaPlus,
-  FaList,
-  FaHistory,
-} from "react-icons/fa";
+import { FaTicketAlt, FaPlus, FaList } from "react-icons/fa";
 
 const CustomerLotteryWrapper = () => {
   const [activeTab, setActiveTab] = useState("list");
@@ -22,69 +17,147 @@ const CustomerLotteryWrapper = () => {
     // You can add more tabs here in the future like history, statistics, etc.
   ];
 
-  const ActiveComponent = tabs.find((tab) => tab.id === activeTab)?.component || CustomerLotteryList;
+  const ActiveComponent =
+    tabs.find((tab) => tab.id === activeTab)?.component || CustomerLotteryList;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50" dir="rtl">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
-        <div className="py-6 border-b border-gray-200 mb-6">
-          <div className="flex items-center justify-between mb-6">
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 bg-gradient-to-r from-[#FF7A00] to-[#4DBFF0] rounded-2xl flex items-center justify-center shadow-lg">
-                <FaTicketAlt className="text-white text-xl" />
+    <div
+      className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50"
+      dir="rtl"
+    >
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+        {/* Header Section - Enhanced spacing and responsive design */}
+        <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6 sm:p-8 mb-6 sm:mb-8">
+          {/* Top Header Row */}
+          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 mb-6 sm:mb-8">
+            {/* Title Section */}
+            <div className="flex items-start sm:items-center gap-4 sm:gap-5">
+              <div className="flex-shrink-0 w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-r from-[#FF7A00] to-[#4DBFF0] rounded-2xl flex items-center justify-center shadow-lg hover:shadow-xl transition-shadow duration-300">
+                <FaTicketAlt className="text-white text-2xl sm:text-3xl" />
               </div>
-              <div>
-                <h1 className="text-3xl font-bold text-[#0A1D37]">
+              <div className="space-y-1.5">
+                <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#0A1D37] leading-tight">
                   ثبت‌نام‌های لاتاری
                 </h1>
-                <p className="text-gray-600 mt-1">
+                <p className="text-sm sm:text-base text-gray-600 leading-relaxed">
                   مدیریت درخواست‌های شما برای قرعه‌کشی گرین کارت آمریکا
                 </p>
               </div>
             </div>
+
+            {/* New Registration Button */}
             <a
               href="/lottery/form"
-              className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-[#FF7A00] to-[#4DBFF0] text-white rounded-xl hover:shadow-lg hover:scale-105 transition-all duration-300"
+              className="
+                flex items-center justify-center gap-3
+                px-6 sm:px-8 py-3.5 sm:py-4
+                bg-gradient-to-r from-[#FF7A00] to-[#4DBFF0] 
+                text-white font-bold
+                rounded-xl sm:rounded-2xl
+                hover:shadow-2xl hover:scale-105 
+                active:scale-95
+                transition-all duration-300
+                shadow-lg
+                w-full lg:w-auto
+                text-sm sm:text-base
+                group
+              "
             >
-              <FaPlus className="text-sm" />
-              ثبت‌نام جدید
+              <FaPlus className="text-base sm:text-lg group-hover:rotate-90 transition-transform duration-300" />
+              <span>ثبت‌نام جدید</span>
             </a>
           </div>
 
-          {/* Tabs Navigation */}
-          <div className="flex gap-2 overflow-x-auto pb-2">
-            {tabs.map((tab) => (
-              <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
-                className={`flex items-center gap-3 px-6 py-3 rounded-xl transition-all duration-300 whitespace-nowrap ${
-                  activeTab === tab.id
-                    ? "bg-gradient-to-r from-[#FF7A00]/15 to-[#4DBFF0]/15 border-2 border-[#FF7A00]/30 text-[#0A1D37] shadow-lg transform scale-[1.02]"
-                    : "hover:bg-gray-50 text-gray-700 hover:text-[#0A1D37] hover:shadow-md hover:scale-[1.01] border-2 border-transparent"
-                }`}
-              >
-                <div
-                  className={`flex-shrink-0 p-2 rounded-lg ${
-                    activeTab === tab.id
-                      ? "text-[#FF7A00] bg-white/70 shadow-md"
-                      : "text-gray-500 group-hover:text-[#FF7A00] group-hover:bg-[#FF7A00]/10"
-                  } transition-all duration-300`}
+          {/* Tabs Navigation - Improved design */}
+          <div className="relative">
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-1 px-2 py-2">
+              {tabs.map((tab) => (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id)}
+                  className={`
+                    group
+                    flex items-center gap-3 sm:gap-4
+                    px-5 sm:px-6 py-3.5 sm:py-4
+                    rounded-xl sm:rounded-2xl
+                    transition-all duration-300
+                    whitespace-nowrap
+                    min-w-fit
+                    ${
+                      activeTab === tab.id
+                        ? `
+                          bg-gradient-to-r from-[#FF7A00]/15 to-[#4DBFF0]/15 
+                          border-2 border-[#FF7A00]/40 
+                          text-[#0A1D37] 
+                           
+                          scale-[1.03]
+                        `
+                        : `
+                          bg-gray-50 
+                          hover:bg-gray-100 
+                          text-gray-700 
+                          hover:text-[#0A1D37] 
+                          hover:shadow-lg 
+                          hover:scale-[1.02] 
+                          border-2 border-gray-200
+                          hover:border-gray-300
+                        `
+                    }
+                  `}
                 >
-                  {tab.icon}
-                </div>
-                <div className="text-right">
-                  <p className="font-bold text-sm">{tab.label}</p>
-                  <p className="text-xs opacity-70">{tab.description}</p>
-                </div>
-              </button>
-            ))}
+                  {/* Icon Container */}
+                  <div
+                    className={`
+                      flex-shrink-0 
+                      p-2 sm:p-2.5
+                      rounded-lg sm:rounded-xl
+                      transition-all duration-300
+                      ${
+                        activeTab === tab.id
+                          ? "text-[#FF7A00] bg-white shadow-md scale-110"
+                          : "text-gray-500 bg-white/70 group-hover:text-[#FF7A00] group-hover:bg-[#FF7A00]/10 group-hover:scale-105"
+                      }
+                    `}
+                  >
+                    {tab.icon}
+                  </div>
+
+                  {/* Text Content */}
+                  <div className="text-right space-y-0.5">
+                    <p className="font-bold text-sm sm:text-base">
+                      {tab.label}
+                    </p>
+                    <p className="text-xs sm:text-sm opacity-75 leading-tight max-w-[200px]">
+                      {tab.description}
+                    </p>
+                  </div>
+                </button>
+              ))}
+            </div>
           </div>
         </div>
 
-        {/* Tab Content */}
-        <div className="pb-8">
+        {/* Tab Content - Better container */}
+        <div
+          className="
+          bg-white 
+          rounded-2xl 
+          shadow-lg 
+          border border-gray-100 
+          p-6 sm:p-8
+          min-h-[400px]
+          animate-in fade-in duration-500
+        "
+        >
           <ActiveComponent />
+        </div>
+
+        {/* Optional: Info Footer */}
+        <div className="mt-6 sm:mt-8 text-center">
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-50 border border-blue-100 rounded-xl text-sm text-blue-700">
+            <span className="text-lg">ℹ️</span>
+            <span>برای مشاهده جزئیات هر ثبت‌نام، روی آن کلیک کنید</span>
+          </div>
         </div>
       </div>
     </div>
