@@ -9,9 +9,6 @@ export interface LiaraFileInfo {
   uploadedAt?: string;
 }
 
-// Keep backward compatibility
-export interface CloudFrontFileInfo extends LiaraFileInfo {}
-
 /**
  * Generate Liara Object Storage URL from file key (no expiration - permanent URLs)
  * @param key - The file key
@@ -25,7 +22,7 @@ export function getLiaraUrl(key: string): string {
     console.warn('NEXT_PUBLIC_LIARA_BUCKET_NAME not configured, using fallback');
   }
   
-  return `https://${bucketName}.storage.iran.liara.space/${key}`;
+  return `https://${bucketName}.storage.c2.liara.space/${key}`;
 }
 
 // Alias for backward compatibility
@@ -55,11 +52,11 @@ export function getCloudFrontUrls(keys: string[]): string[] {
 export function extractKeyFromUrl(url: string): string {
   const bucketName = process.env.NEXT_PUBLIC_LIARA_BUCKET_NAME;
   
-  if (!bucketName || !url.includes('.storage.iran.liara.space')) {
+  if (!bucketName || !url.includes('.storage.c2.liara.space')) {
     return '';
   }
   
-  return url.split(`${bucketName}.storage.iran.liara.space/`)[1] || '';
+  return url.split(`${bucketName}.storage.c2.liara.space/`)[1] || '';
 }
 
 /**

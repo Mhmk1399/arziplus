@@ -70,7 +70,6 @@ const PersianDatePicker: React.FC<PersianDatePickerProps> = ({
   onChange,
   placeholder = "تاریخ تولد",
   className = "",
-  required = false,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [tempDate, setTempDate] = useState(value);
