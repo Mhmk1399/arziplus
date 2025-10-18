@@ -1157,10 +1157,10 @@ const LotteryMultiStepForm: React.FC = () => {
 
   return (
     <div
-      className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50 p-4"
+      className="min-h-screen bg-gradient-to-br  from-gray-50 via-white to-blue-50 p-4"
       dir="rtl"
     >
-      <div className="max-w-4xl mx-auto">
+      <div className="max-w-4xl mx-auto mt-28">
         {/* Header */}
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold text-[#0A1D37] mb-4">

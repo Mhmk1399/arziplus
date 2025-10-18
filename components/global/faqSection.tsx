@@ -206,49 +206,6 @@ export default function FAQSection({
     return () => ctx.revert();
   }, [animate, hasAnimated]);
 
-  // انیمیشن بهبود یافته برای باز/بسته شدن FAQ items
-  useEffect(() => {
-    faqItems.forEach((item) => {
-      const answerElement = document.getElementById(`faq-answer-${item.id}`);
-      const contentElement = document.getElementById(`faq-content-${item.id}`);
-
-      if (answerElement && contentElement) {
-        if (openItem === item.id) {
-          // باز کردن با انیمیشن نرم
-          gsap.to(answerElement, {
-            height: contentElement.scrollHeight,
-            duration: 0.5,
-            ease: "power2.inOut",
-            onComplete: () => {
-              gsap.set(answerElement, { height: "auto" });
-            },
-          });
-          gsap.to(contentElement, {
-            opacity: 1,
-            y: 0,
-            duration: 0.4,
-            delay: 0.1,
-            ease: "power2.out",
-          });
-        } else {
-          // بستن با انیمیشن نرم
-          gsap.to(contentElement, {
-            opacity: 0,
-            y: -10,
-            duration: 0.3,
-            ease: "power2.in",
-          });
-          gsap.to(answerElement, {
-            height: 0,
-            duration: 0.4,
-            delay: 0.1,
-            ease: "power2.inOut",
-          });
-        }
-      }
-    });
-  }, [openItem, faqItems]);
-
   const layoutClasses = {
     default: "max-w-7xl mx-auto px-4 md:px-8",
     centered: "max-w-4xl mx-auto px-4 md:px-8",
@@ -395,22 +352,15 @@ export default function FAQSection({
 
                       {/* Enhanced Answer with smooth animation */}
                       <div
-                        id={`faq-answer-${item.id}`}
-                        className="overflow-hidden"
-                        style={{
-                          height: 0,
-                        }}
+                        className={`overflow-hidden transition-all duration-300 ease-in-out ${
+                          openItem === item.id
+                            ? "max-h-96 opacity-100"
+                            : "max-h-0 opacity-0"
+                        }`}
                       >
-                        <div
-                          id={`faq-content-${item.id}`}
-                          className="px-4 md:px-6 pb-4 md:pb-6"
-                          style={{
-                            opacity: 0,
-                            transform: "translateY(-10px)",
-                          }}
-                        >
+                        <div className="px-4 md:px-6 pb-4 md:pb-6">
                           <div
-                            className={`text-sm md:text-base ${answerColor} leading-relaxed pt-4 border-t border-[#FF7A00]/20 relative`}
+                            className={`text-sm md:text-base ${answerColor} leading-relaxed pt-4 border-t border-[#FF7A00]/20 relative transition-all duration-200`}
                           >
                             {/* Answer content with better spacing */}
                             <div className="space-y-3">{item.answer}</div>
