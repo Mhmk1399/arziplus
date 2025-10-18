@@ -1,6 +1,6 @@
-// Utility functions for CloudFront file URL management
+// Utility functions for Liara Object Storage file URL management
 
-export interface CloudFrontFileInfo {
+export interface LiaraFileInfo {
   key: string;
   url: string;
   originalName?: string;
@@ -9,54 +9,65 @@ export interface CloudFrontFileInfo {
   uploadedAt?: string;
 }
 
+// Keep backward compatibility
+export interface CloudFrontFileInfo extends LiaraFileInfo {}
+
 /**
- * Generate CloudFront URL from S3 key (no expiration - permanent URLs)
- * @param key - The S3 file key
- * @returns CloudFront URL
+ * Generate Liara Object Storage URL from file key (no expiration - permanent URLs)
+ * @param key - The file key
+ * @returns Liara Object Storage URL
  */
-export function getCloudFrontUrl(key: string): string {
+export function getLiaraUrl(key: string): string {
   // Use the public environment variable for client-side access
-  const cloudFrontDomain = process.env.NEXT_PUBLIC_CLOUDFRONT_DOMAIN;
+  const bucketName = process.env.NEXT_PUBLIC_LIARA_BUCKET_NAME || 'arziplus';
   
-  if (!cloudFrontDomain) {
-    console.error('NEXT_PUBLIC_CLOUDFRONT_DOMAIN not configured');
-    // Fallback to hardcoded domain if env var not available (temporary)
-    return `https://d3v53265btnfty.cloudfront.net/${key}`;
+  if (!process.env.NEXT_PUBLIC_LIARA_BUCKET_NAME) {
+    console.warn('NEXT_PUBLIC_LIARA_BUCKET_NAME not configured, using fallback');
   }
   
-  return `https://${cloudFrontDomain}/${key}`;
+  return `https://${bucketName}.storage.iran.liara.space/${key}`;
+}
+
+// Alias for backward compatibility
+export function getCloudFrontUrl(key: string): string {
+  return getLiaraUrl(key);
 }
 
 /**
- * Generate CloudFront URLs from multiple S3 keys
- * @param keys - Array of S3 file keys
- * @returns Array of CloudFront URLs
+ * Generate Liara Object Storage URLs from multiple file keys
+ * @param keys - Array of file keys
+ * @returns Array of Liara Object Storage URLs
  */
+export function getLiaraUrls(keys: string[]): string[] {
+  return keys.map(key => getLiaraUrl(key));
+}
+
+// Alias for backward compatibility
 export function getCloudFrontUrls(keys: string[]): string[] {
-  return keys.map(key => getCloudFrontUrl(key));
+  return getLiaraUrls(keys);
 }
 
 /**
- * Extract S3 key from CloudFront URL
- * @param url - CloudFront URL
- * @returns S3 key
+ * Extract file key from Liara Object Storage URL
+ * @param url - Liara Object Storage URL
+ * @returns File key
  */
 export function extractKeyFromUrl(url: string): string {
-  const cloudFrontDomain = process.env.NEXT_PUBLIC_CLOUDFRONT_DOMAIN || 'd3v53265btnfty.cloudfront.net';
+  const bucketName = process.env.NEXT_PUBLIC_LIARA_BUCKET_NAME;
   
-  if (!url.includes(cloudFrontDomain)) {
+  if (!bucketName || !url.includes('.storage.iran.liara.space')) {
     return '';
   }
   
-  return url.split(`${cloudFrontDomain}/`)[1] || '';
+  return url.split(`${bucketName}.storage.iran.liara.space/`)[1] || '';
 }
 
 /**
- * Upload a file to S3 and get back the file info with signed URL
+ * Upload a file to Liara Object Storage and get back the file info
  * @param file - File object to upload
  * @returns Promise with upload response
  */
-export async function uploadFile(file: File): Promise<CloudFrontFileInfo | null> {
+export async function uploadFile(file: File): Promise<LiaraFileInfo | null> {
   try {
     const formData = new FormData();
     formData.append('file', file);

@@ -243,6 +243,7 @@ const FileUploaderModal: React.FC<FileUploaderModalProps> = ({
                         width={400}
                         height={200}
                         className="w-full max-h-48 rounded-lg border border-[#4DBFF0]/30 object-cover"
+                        unoptimized={true}
                       />
                     </div>
                   )}

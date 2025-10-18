@@ -20,8 +20,8 @@ const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
 export async function POST(req: NextRequest) {
   try {
     // Check if required environment variables are set
-    if (!process.env.AWS_S3_BUCKET) {
-      console.error("AWS_S3_BUCKET environment variable is not set");
+    if (!process.env.LIARA_BUCKET_NAME) {
+      console.error("LIARA_BUCKET_NAME environment variable is not set");
       return NextResponse.json(
         { success: false, error: "Server configuration error" },
         { status: 500 }
@@ -74,9 +74,9 @@ export async function POST(req: NextRequest) {
     // Convert file to buffer
     const buffer = Buffer.from(await file.arrayBuffer());
 
-    // Upload to S3 (CloudFront will serve via OAC)
+    // Upload to Liara Object Storage
     const uploadCommand = new PutObjectCommand({
-      Bucket: process.env.AWS_S3_BUCKET,
+      Bucket: process.env.LIARA_BUCKET_NAME,
       Key: key,
       Body: buffer,
       ContentType: file.type,
@@ -91,12 +91,10 @@ export async function POST(req: NextRequest) {
 
     console.log(uploadResult);
 
-    // Generate CloudFront URL (permanent, no expiration)
-    if (!process.env.AWS_CLOUDFRONT_DOMAIN) {
-      throw new Error("AWS_CLOUDFRONT_DOMAIN environment variable is required");
-    }
-
-    const publicUrl = `https://${process.env.AWS_CLOUDFRONT_DOMAIN}/${key}`;
+    // Generate public URL for Liara Object Storage
+    // Liara provides direct access to objects via: https://{bucket-name}.storage.iran.liara.space/{key}
+    const bucketName = process.env.LIARA_BUCKET_NAME;
+    const publicUrl = `https://${bucketName}.storage.iran.liara.space/${key}`;
 
     return NextResponse.json({
       success: true,
@@ -113,18 +111,18 @@ export async function POST(req: NextRequest) {
   } catch (error) {
     console.error("Upload error:", error);
 
-    // Handle specific AWS errors
+    // Handle specific Liara Object Storage errors
     if (error instanceof Error) {
       if (error.name === "NoSuchBucket") {
         return NextResponse.json(
-          { success: false, error: "S3 bucket not found" },
+          { success: false, error: "Liara bucket not found" },
           { status: 500 }
         );
       }
 
       if (error.name === "AccessDenied") {
         return NextResponse.json(
-          { success: false, error: "Access denied to S3 bucket" },
+          { success: false, error: "Access denied to Liara bucket" },
           { status: 500 }
         );
       }
@@ -134,7 +132,7 @@ export async function POST(req: NextRequest) {
         error.name === "InvalidAccessKeyId"
       ) {
         return NextResponse.json(
-          { success: false, error: "Invalid AWS credentials" },
+          { success: false, error: "Invalid Liara Object Storage credentials" },
           { status: 500 }
         );
       }
@@ -157,11 +155,10 @@ export async function POST(req: NextRequest) {
 export async function GET() {
   try {
     const requiredVars = [
-      "AWS_S3_BUCKET",
-      "AWS_REGION",
-      "AWS_ACCESS_KEY_ID",
-      "AWS_SECRET_ACCESS_KEY",
-      "AWS_CLOUDFRONT_DOMAIN",
+      "LIARA_BUCKET_NAME",
+      "LIARA_ENDPOINT",
+      "LIARA_ACCESS_KEY",
+      "LIARA_SECRET_KEY",
     ];
     const missingVars = requiredVars.filter((varName) => !process.env[varName]);
 
@@ -178,11 +175,10 @@ export async function GET() {
 
     return NextResponse.json({
       success: true,
-      message: "Upload service is configured and ready",
+      message: "Liara Object Storage upload service is configured and ready",
       config: {
-        bucket: process.env.AWS_S3_BUCKET,
-        region: process.env.AWS_REGION,
-        cloudfront: process.env.AWS_CLOUDFRONT_DOMAIN,
+        bucket: process.env.LIARA_BUCKET_NAME,
+        endpoint: process.env.LIARA_ENDPOINT,
         allowedTypes: ALLOWED_TYPES,
         maxFileSize: `${MAX_FILE_SIZE / (1024 * 1024)}MB`,
       },

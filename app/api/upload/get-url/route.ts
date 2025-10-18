@@ -16,7 +16,7 @@ export async function GET(req: NextRequest) {
       );
     }
 
-    if (!process.env.AWS_S3_BUCKET) {
+    if (!process.env.LIARA_BUCKET_NAME) {
       return NextResponse.json(
         { success: false, error: "Server configuration error" },
         { status: 500 }
@@ -25,7 +25,7 @@ export async function GET(req: NextRequest) {
 
     // Generate a pre-signed URL for the file
     const getObjectCommand = new GetObjectCommand({
-      Bucket: process.env.AWS_S3_BUCKET,
+      Bucket: process.env.LIARA_BUCKET_NAME,
       Key: key,
       ResponseContentDisposition: 'inline',
     });
@@ -85,7 +85,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    if (!process.env.AWS_S3_BUCKET) {
+    if (!process.env.LIARA_BUCKET_NAME) {
       return NextResponse.json(
         { success: false, error: "Server configuration error" },
         { status: 500 }
@@ -95,7 +95,7 @@ export async function POST(req: NextRequest) {
     const signedUrls = await Promise.allSettled(
       keys.map(async (key: string) => {
         const getObjectCommand = new GetObjectCommand({
-          Bucket: process.env.AWS_S3_BUCKET,
+          Bucket: process.env.LIARA_BUCKET_NAME,
           Key: key,
           ResponseContentDisposition: 'inline',
         });
