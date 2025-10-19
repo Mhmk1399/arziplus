@@ -10,15 +10,12 @@ import {
   FaTrash,
   FaCheck,
   FaTimes,
-  FaClock,
-  FaUser,
+   FaUser,
   FaChild,
   FaIdCard,
   FaMapMarkerAlt,
   FaPhone,
-  FaEnvelope,
-  FaCalendarAlt,
-  FaGlobe,
+ 
   FaHeart,
 } from "react-icons/fa";
 

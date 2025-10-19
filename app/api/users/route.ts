@@ -6,6 +6,35 @@ import bcrypt from "bcryptjs";
 import mongoose from "mongoose";
 
 
+interface ProfilePreferences {
+  language?: string;
+  notifications?: {
+    email?: boolean;
+    sms?: boolean;
+    push?: boolean;
+  };
+}
+
+interface NationalCredentials {
+  firstName?: string;
+  lastName?: string;
+  nationalNumber?: string;
+  nationalCardImageUrl?: string;
+  verificationImageUrl?: string;
+  status?: string;
+  rejectionNotes?: string;
+}
+
+interface ContactInfo {
+  homePhone?: string;
+  mobilePhone?: string;
+  email?: string;
+  address?: string;
+  postalCode?: string;
+  status?: string;
+  rejectionNotes?: string;
+}
+
 interface updatedData{
   username?: string;
   password?: string;
@@ -13,9 +42,9 @@ interface updatedData{
   status?: string;
   "profile.avatar"?: string;
   "profile.bio"?: string;
-  "profile.preferences"?: any;
-  nationalCredentials?: any;
-  contactInfo?: any;
+  "profile.preferences"?: ProfilePreferences;
+  nationalCredentials?: NationalCredentials;
+  contactInfo?: ContactInfo;
 }
 interface query {
   _id?: string;
