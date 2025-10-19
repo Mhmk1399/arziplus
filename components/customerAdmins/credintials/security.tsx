@@ -138,7 +138,7 @@ const Security = ({
           }));
         }
       } catch (error) {
-        console.error("Error loading user data:", error);
+        console.log("Error loading user data:", error);
       }
     };
 
@@ -320,7 +320,7 @@ const Security = ({
 
       if (!response.ok) {
         const errorData = await response.json();
-        console.error("Security API Error Response:", errorData);
+        console.log("Security API Error Response:", errorData);
         throw new Error(
           errorData.error || `خطا در ذخیره اطلاعات (${response.status})`
         );
@@ -333,7 +333,7 @@ const Security = ({
       showToast.success("تنظیمات امنیتی با موفقیت ذخیره شد");
       setTimeout(() => setIsSaved(false), 3000);
     } catch (error) {
-      console.error("Error saving security settings:", error);
+      console.log("Error saving security settings:", error);
       showToast.error(
         error instanceof Error ? error.message : "خطا در ذخیره اطلاعات"
       );

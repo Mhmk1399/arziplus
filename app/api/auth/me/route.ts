@@ -28,7 +28,7 @@ export async function GET(request: NextRequest) {
     });
 
   } catch (error) {
-    console.error('Get user error:', error);
+    console.log('Get user error:', error);
     return NextResponse.json(
       { error: "خطای سرور" },
       { status: 500 }

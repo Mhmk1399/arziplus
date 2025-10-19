@@ -144,7 +144,7 @@ export async function PUT(
       wallet: updatedWallet,
     });
   } catch (error) {
-    console.error("Error updating wallet:", error);
+    console.log("Error updating wallet:", error);
     return NextResponse.json(
       {
         success: false,
@@ -192,7 +192,7 @@ export async function GET(
       wallet,
     });
   } catch (error) {
-    console.error("Error fetching wallet:", error);
+    console.log("Error fetching wallet:", error);
     return NextResponse.json(
       {
         success: false,

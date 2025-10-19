@@ -176,7 +176,7 @@ const ContactInfo = ({
 
       if (!response.ok) {
         const errorData = await response.json();
-        console.error("Contact API Error Response:", errorData);
+        console.log("Contact API Error Response:", errorData);
         throw new Error(
           errorData.error || `خطا در ذخیره اطلاعات تماس (${response.status})`
         );
@@ -189,7 +189,7 @@ const ContactInfo = ({
       showToast.success("اطلاعات تماس با موفقیت ذخیره شد");
       setTimeout(() => setIsSaved(false), 3000);
     } catch (error) {
-      console.error("Error saving contact info:", error);
+      console.log("Error saving contact info:", error);
       showToast.error(
         error instanceof Error ? error.message : "خطا در ذخیره اطلاعات تماس"
       );

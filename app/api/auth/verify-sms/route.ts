@@ -91,7 +91,7 @@ export async function POST(request: NextRequest) {
     });
 
   } catch (error) {
-    console.error('SMS verification error:', error);
+    console.log('SMS verification error:', error);
     return NextResponse.json(
       { error: "خطای سرور" },
       { status: 500 }

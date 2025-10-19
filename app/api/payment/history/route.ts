@@ -132,7 +132,7 @@ export async function GET(request: NextRequest) {
       },
     });
   } catch (error) {
-    console.error("Payment history error:", error);
+    console.log("Payment history error:", error);
     return NextResponse.json(
       { error: "خطای سرور در دریافت تاریخچه پرداخت" },
       { status: 500 }
@@ -194,7 +194,7 @@ export async function POST(request: NextRequest) {
       data: payment,
     });
   } catch (error) {
-    console.error("Payment details error:", error);
+    console.log("Payment details error:", error);
     return NextResponse.json(
       { error: "خطای سرور در دریافت جزئیات پرداخت" },
       { status: 500 }

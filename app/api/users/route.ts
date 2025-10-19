@@ -146,7 +146,7 @@ export async function GET(request: NextRequest) {
       },
     });
   } catch (error) {
-    console.error("Get users error:", error);
+    console.log("Get users error:", error);
     return NextResponse.json({ error: "خطای سرور" }, { status: 500 });
   }
 }
@@ -333,7 +333,7 @@ export async function PATCH(request: NextRequest) {
       user: updatedUser,
     });
   } catch (error) {
-    console.error("Update user error:", error);
+    console.log("Update user error:", error);
     if (error instanceof mongoose.Error.ValidationError) {
       return NextResponse.json(
         { error: "داده‌های ورودی نامعتبر" },
@@ -400,7 +400,7 @@ export async function DELETE(request: NextRequest) {
       message: "کاربر با موفقیت حذف شد",
     });
   } catch (error) {
-    console.error("Delete user error:", error);
+    console.log("Delete user error:", error);
     return NextResponse.json({ error: "خطای سرور" }, { status: 500 });
   }
 }

@@ -71,10 +71,10 @@ const ServiceWrapper: React.FC<ServiceWrapperProps> = ({
           rejectedRequests: data.stats.rejectedRequests || 0,
         });
       } else {
-        console.error("Failed to fetch user stats:", data.error);
+        console.log("Failed to fetch user stats:", data.error);
       }
     } catch (error) {
-      console.error("Error fetching user stats:", error);
+      console.log("Error fetching user stats:", error);
     } finally {
       setStatsLoading(false);
     }

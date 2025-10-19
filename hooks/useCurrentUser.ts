@@ -11,7 +11,7 @@ export const useCurrentUser = () => {
         const currentUser = getCurrentUser();
         setUser(currentUser);
       } catch (error) {
-        console.error('Error fetching current user:', error);
+        console.log('Error fetching current user:', error);
         setUser(null);
       } finally {
         setLoading(false);

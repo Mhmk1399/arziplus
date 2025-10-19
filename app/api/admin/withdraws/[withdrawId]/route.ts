@@ -149,7 +149,7 @@ export async function PATCH(
       withdrawRequest: updatedWithdrawRequest,
     });
   } catch (error) {
-    console.error("Error updating withdraw request:", error);
+    console.log("Error updating withdraw request:", error);
     return NextResponse.json(
       {
         success: false,
@@ -201,7 +201,7 @@ export async function GET(
       withdrawRequest,
     });
   } catch (error) {
-    console.error("Error fetching withdraw request:", error);
+    console.log("Error fetching withdraw request:", error);
     return NextResponse.json(
       {
         success: false,

@@ -138,7 +138,7 @@ export default function AdminRequestsTable({ className = "mt-20" }: AdminRequest
         showToast.error("خطا در دریافت درخواست‌ها");
       }
     } catch (error) {
-      console.error("Error fetching requests:", error);
+      console.log("Error fetching requests:", error);
       showToast.error("خطا در دریافت درخواست‌ها");
     } finally {
       setLoading(false);
@@ -177,7 +177,7 @@ export default function AdminRequestsTable({ className = "mt-20" }: AdminRequest
         showToast.error(data.error || "خطا در به‌روزرسانی");
       }
     } catch (error) {
-      console.error("Update error:", error);
+      console.log("Update error:", error);
       showToast.error("خطا در به‌روزرسانی درخواست");
     } finally {
       setUpdating(false);

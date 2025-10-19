@@ -95,7 +95,7 @@ export async function PUT(request: NextRequest) {
     });
 
   } catch (error) {
-    console.error('Admin update error:', error);
+    console.log('Admin update error:', error);
     return NextResponse.json(
       { error: "خطای سرور" },
       { status: 500 }

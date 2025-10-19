@@ -65,7 +65,7 @@ const CardPaymentModal: React.FC<CardPaymentModalProps> = ({
       onPaymentComplete(receiptUrl);
       showToast.success("رسید واریز با موفقیت ثبت شد");
     } catch (error) {
-      console.error("Error submitting receipt:", error);
+      console.log("Error submitting receipt:", error);
       showToast.error("خطا در ثبت رسید");
     } finally {
       setIsSubmitting(false);

@@ -77,7 +77,7 @@ const PaymentDashboard: React.FC = () => {
         setRecentPayments(data.data.payments);
       }
     } catch (error) {
-      console.error("Error fetching dashboard data:", error);
+      console.log("Error fetching dashboard data:", error);
     } finally {
       setLoading(false);
     }

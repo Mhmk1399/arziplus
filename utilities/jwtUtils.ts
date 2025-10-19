@@ -42,7 +42,7 @@ export const decodeJWT = (token: string): DecodedToken => {
     
     return JSON.parse(payload) as DecodedToken;
   } catch (error) {
-    console.error('JWT decode error:', error);
+    console.log('JWT decode error:', error);
     throw new Error('Invalid token format or corrupted data');
   }
 };
@@ -70,7 +70,7 @@ export const getUserFromToken = (): DecodedToken | null => {
 
     return decoded;
   } catch (error) {
-    console.error('Error getting user from token:', error);
+    console.log('Error getting user from token:', error);
     localStorage.removeItem("userToken");
     localStorage.removeItem("token");
     return null;
@@ -118,6 +118,6 @@ export const logoutUser = (): void => {
     
 
   } catch (error) {
-    console.error('Error during logout:', error);
+    console.log('Error during logout:', error);
   }
 };

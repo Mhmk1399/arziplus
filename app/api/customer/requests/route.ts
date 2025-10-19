@@ -68,7 +68,7 @@ export async function GET(request: NextRequest) {
     });
 
   } catch (error: unknown) {
-    console.error('Customer requests error:', error);
+    console.log('Customer requests error:', error);
     return NextResponse.json(
       { error: "خطای سرور" },
       { status: 500 }
@@ -137,7 +137,7 @@ export async function POST(request: NextRequest) {
     });
 
   } catch (error: unknown) {
-    console.error('Customer response error:', error);
+    console.log('Customer response error:', error);
     return NextResponse.json(
       { error: "خطای سرور" },
       { status: 500 }

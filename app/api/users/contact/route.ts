@@ -117,7 +117,7 @@ export async function GET(request: NextRequest) {
       },
     });
   } catch (error) {
-    console.error("Get contact info error:", error);
+    console.log("Get contact info error:", error);
     return NextResponse.json({ error: "خطای سرور" }, { status: 500 });
   }
 }
@@ -264,7 +264,7 @@ export async function POST(request: NextRequest) {
       },
     });
   } catch (error) {
-    console.error("Update contact info error:", error);
+    console.log("Update contact info error:", error);
     if (error instanceof mongoose.Error.ValidationError) {
       return NextResponse.json(
         { error: "داده‌های ورودی نامعتبر" },
@@ -341,7 +341,7 @@ export async function PATCH(request: NextRequest) {
       },
     });
   } catch (error) {
-    console.error("Update contact verification error:", error);
+    console.log("Update contact verification error:", error);
     return NextResponse.json({ error: "خطای سرور" }, { status: 500 });
   }
 }

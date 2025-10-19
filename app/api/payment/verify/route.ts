@@ -121,7 +121,7 @@ export async function POST(request: NextRequest) {
     }
 
   } catch (error) {
-    console.error('Payment verify error:', error);
+    console.log('Payment verify error:', error);
     return NextResponse.json(
       { error: "خطای سرور در تایید پرداخت" },
       { status: 500 }

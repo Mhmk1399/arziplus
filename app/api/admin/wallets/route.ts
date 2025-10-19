@@ -42,7 +42,7 @@ export async function GET(request: NextRequest) {
       count: wallets.length,
     });
   } catch (error) {
-    console.error("Error fetching wallets:", error);
+    console.log("Error fetching wallets:", error);
     return NextResponse.json(
       {
         success: false,

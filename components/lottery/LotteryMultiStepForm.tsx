@@ -201,7 +201,7 @@ const LotteryMultiStepForm: React.FC = () => {
         setWalletBalance(data.balance || 0);
       }
     } catch (error) {
-      console.error("Error fetching wallet balance:", error);
+      console.log("Error fetching wallet balance:", error);
     }
   };
 
@@ -244,7 +244,7 @@ const LotteryMultiStepForm: React.FC = () => {
       // Update wallet balance
       setWalletBalance((prev) => prev - lotteryFee);
     } catch (error) {
-      console.error("Wallet payment error:", error);
+      console.log("Wallet payment error:", error);
       showToast.error("خطا در پرداخت از کیف پول");
     } finally {
       setIsSubmitting(false);
@@ -298,7 +298,7 @@ const LotteryMultiStepForm: React.FC = () => {
         showToast.error(data.error || "خطا در ایجاد درخواست پرداخت");
       }
     } catch (error) {
-      console.error("Payment request error:", error);
+      console.log("Payment request error:", error);
       showToast.error("خطا در اتصال به سرور");
     } finally {
       setIsSubmitting(false);

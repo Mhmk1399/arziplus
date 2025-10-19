@@ -143,7 +143,7 @@ export async function GET(request: NextRequest) {
               `Service request created for payment: ${authority}, service: ${payment.serviceId}`
             );
           } catch (serviceError) {
-            console.error("Error creating service request:", serviceError);
+            console.log("Error creating service request:", serviceError);
             // Don't fail the payment if service request creation fails
           }
         } else {
@@ -191,7 +191,7 @@ export async function GET(request: NextRequest) {
               `Payment added to wallet: ${authority}, amount: ${payment.amount}`
             );
           } catch (walletError) {
-            console.error("Error updating wallet:", walletError);
+            console.log("Error updating wallet:", walletError);
             // Don't fail the payment if wallet update fails
           }
         }
@@ -242,7 +242,7 @@ export async function GET(request: NextRequest) {
         );
       }
     } catch (verifyError) {
-      console.error("Payment verification error:", verifyError);
+      console.log("Payment verification error:", verifyError);
 
       // Update payment status to failed
       payment.status = "failed";
@@ -257,7 +257,7 @@ export async function GET(request: NextRequest) {
       );
     }
   } catch (error) {
-    console.error("Payment callback error:", error);
+    console.log("Payment callback error:", error);
     return NextResponse.redirect(
       new URL("/payment/failed?error=server_error", request.url)
     );

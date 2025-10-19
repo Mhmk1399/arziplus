@@ -34,7 +34,7 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({ message: 'کد تایید ارسال شد' });
   } catch (error) {
-    console.error('Send code error:', error);
+    console.log('Send code error:', error);
     return NextResponse.json({ error: 'خطای سرور' }, { status: 500 });
   }
 }

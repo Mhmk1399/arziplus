@@ -93,7 +93,7 @@ async function getUserFromToken(request: NextRequest): Promise<UserData> {
 
     return user;
   } catch (error) {
-    console.error("JWT verification error:", error);
+    console.log("JWT verification error:", error);
     throw new Error("Invalid token");
   }
 }
@@ -183,7 +183,7 @@ export async function GET(request: NextRequest): Promise<NextResponse<GetWithdra
 
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : "Unknown error occurred";
-    console.error("Error fetching withdraw requests:", error);
+    console.log("Error fetching withdraw requests:", error);
     
     const errorResponse: ErrorResponse = {
       success: false,

@@ -22,7 +22,7 @@ export async function POST(request: NextRequest) {
       action: existingUser ? 'login' : 'register'
     });
   } catch (error) {
-    console.error('Check phone error:', error);
+    console.log('Check phone error:', error);
     return NextResponse.json({ error: 'خطای سرور' }, { status: 500 });
   }
 }

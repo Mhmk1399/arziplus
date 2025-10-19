@@ -160,7 +160,7 @@ export default function CustomerRequestsTable({
         showToast.error(data.error || "خطا در دریافت درخواست‌ها");
       }
     } catch (error) {
-      console.error("Error fetching requests:", error);
+      console.log("Error fetching requests:", error);
       showToast.error("خطا در دریافت درخواست‌ها");
     } finally {
       setLoading(false);
@@ -205,7 +205,7 @@ export default function CustomerRequestsTable({
         showToast.error(data.error || "خطا در ارسال پاسخ");
       }
     } catch (error) {
-      console.error("Response error:", error);
+      console.log("Response error:", error);
       showToast.error("خطا در ارسال پاسخ");
     } finally {
       setSubmittingResponse(false);
@@ -260,7 +260,7 @@ export default function CustomerRequestsTable({
         showToast.error(data.error || "خطا در به‌روزرسانی درخواست");
       }
     } catch (error) {
-      console.error("Update error:", error);
+      console.log("Update error:", error);
       showToast.error("خطا در به‌روزرسانی درخواست");
     }
   };

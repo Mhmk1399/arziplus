@@ -344,7 +344,7 @@ export default function HeroSection({
             unoptimized={true}
             priority
             onError={() => {
-              console.error("Failed to load hero image with Next.js Image:", media.src);
+              console.log("Failed to load hero image with Next.js Image:", media.src);
               setImageError(true);
             }}
           />
@@ -354,7 +354,7 @@ export default function HeroSection({
             alt={media.alt || "Hero Image"}
             className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110"
             onError={(e) => {
-              console.error("Failed to load hero image with img tag:", media.src);
+              console.log("Failed to load hero image with img tag:", media.src);
               const img = e.target as HTMLImageElement;
               img.style.display = "none";
             }}

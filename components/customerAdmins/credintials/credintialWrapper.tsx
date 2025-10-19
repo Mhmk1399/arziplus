@@ -159,7 +159,7 @@ const UserValidationWrapper = ({
         });
       }
     } catch (error) {
-      console.error("Error loading user data:", error);
+      console.log("Error loading user data:", error);
     } finally {
       setLoading(false);
     }

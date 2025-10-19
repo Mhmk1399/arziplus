@@ -294,7 +294,7 @@ export default function ServiceDetailPage() {
         setWalletBalance(data.balance || 0);
       }
     } catch (error) {
-      console.error("Error fetching wallet balance:", error);
+      console.log("Error fetching wallet balance:", error);
     }
   };
 
@@ -634,7 +634,7 @@ export default function ServiceDetailPage() {
         handleCardPayment();
       }
     } catch (error) {
-      console.error("Payment error:", error);
+      console.log("Payment error:", error);
       showToast.error("خطا در پردازش پرداخت");
     } finally {
       setSubmitting(false);
@@ -732,7 +732,7 @@ export default function ServiceDetailPage() {
         showToast.error(data.error || "خطا در ایجاد درخواست پرداخت");
       }
     } catch (error) {
-      console.error("Payment request error:", error);
+      console.log("Payment request error:", error);
       showToast.error("خطا در اتصال به سرور");
       throw error;
     }

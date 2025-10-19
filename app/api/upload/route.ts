@@ -21,7 +21,7 @@ export async function POST(req: NextRequest) {
   try {
     // Check if required environment variables are set
     if (!process.env.LIARA_BUCKET_NAME) {
-      console.error("LIARA_BUCKET_NAME environment variable is not set");
+      console.log("LIARA_BUCKET_NAME environment variable is not set");
       return NextResponse.json(
         { success: false, error: "Server configuration error" },
         { status: 500 }
@@ -108,7 +108,7 @@ export async function POST(req: NextRequest) {
       message: "File uploaded successfully",
     });
   } catch (error) {
-    console.error("Upload error:", error);
+    console.log("Upload error:", error);
 
     // Handle specific Liara Object Storage errors
     if (error instanceof Error) {

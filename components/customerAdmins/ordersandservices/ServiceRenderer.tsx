@@ -98,7 +98,7 @@ const ServiceRenderer: React.FC<ServiceRendererProps> = ({
       }
     } catch (error: unknown) {
       showToast.error("Error fetching services");
-      console.error("Error:", error);
+      console.log("Error:", error);
     } finally {
       setLoading(false);
     }
@@ -214,7 +214,7 @@ const ServiceRenderer: React.FC<ServiceRendererProps> = ({
       }
     } catch (error: unknown) {
       showToast.error("Error submitting request");
-      console.error("Error:", error);
+      console.log("Error:", error);
     } finally {
       setSubmitting(false);
     }
@@ -424,7 +424,7 @@ const ServiceRenderer: React.FC<ServiceRendererProps> = ({
                           className="w-32 h-32 object-cover rounded-lg border border-[#4DBFF0]/50"
                           unoptimized={true}
                           onError={(e) => {
-                            console.error("Failed to load image:", value);
+                            console.log("Failed to load image:", value);
                             const img = e.target as HTMLImageElement;
                             img.style.display = "none";
                           }}
@@ -539,7 +539,7 @@ const ServiceRenderer: React.FC<ServiceRendererProps> = ({
                                 className="object-cover group-hover:scale-110 transition-transform duration-300"
                                 unoptimized={true}
                                 onError={() => {
-                                  console.error(
+                                  console.log(
                                     "ServiceRenderer mobile - Failed to load service image:",
                                     service.image
                                   );
@@ -626,7 +626,7 @@ const ServiceRenderer: React.FC<ServiceRendererProps> = ({
                               className="w-1/2 h-1/2 mx-auto object-cover group-hover:scale-110 transition-transform duration-300"
                               unoptimized={true}
                               onError={() => {
-                                console.error(
+                                console.log(
                                   "ServiceRenderer desktop - Failed to load service image:",
                                   service.image
                                 );

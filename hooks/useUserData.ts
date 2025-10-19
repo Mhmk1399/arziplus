@@ -71,7 +71,7 @@ export const useUserData = (userId?: string) => {
       setUserData(result.user);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'خطای نامشخص');
-      console.error('Error loading user data:', err);
+      console.log('Error loading user data:', err);
     } finally {
       setLoading(false);
     }
@@ -105,7 +105,7 @@ export const useUserData = (userId?: string) => {
       await loadUserData(); // Refresh data
       return true;
     } catch (error) {
-      console.error("Update security error:", error);
+      console.log("Update security error:", error);
       throw error;
     }
   };
@@ -139,7 +139,7 @@ export const useUserData = (userId?: string) => {
       await loadUserData(); // Refresh data
       return true;
     } catch (error) {
-      console.error("Update national credentials error:", error);
+      console.log("Update national credentials error:", error);
       throw error;
     }
   };
@@ -173,7 +173,7 @@ export const useUserData = (userId?: string) => {
       await loadUserData(); // Refresh data
       return true;
     } catch (error) {
-      console.error("Update contact info error:", error);
+      console.log("Update contact info error:", error);
       throw error;
     }
   };
@@ -206,7 +206,7 @@ export const useUserData = (userId?: string) => {
       await loadUserData(); // Refresh data
       return true;
     } catch (error) {
-      console.error("Add banking info error:", error);
+      console.log("Add banking info error:", error);
       throw error;
     }
   };
@@ -233,7 +233,7 @@ export const useUserData = (userId?: string) => {
 
       return true;
     } catch (error) {
-      console.error("Send email verification error:", error);
+      console.log("Send email verification error:", error);
       throw error;
     }
   };
@@ -262,7 +262,7 @@ export const useUserData = (userId?: string) => {
       await loadUserData(); // Refresh data
       return true;
     } catch (error) {
-      console.error("Verify email error:", error);
+      console.log("Verify email error:", error);
       throw error;
     }
   };
@@ -289,7 +289,7 @@ export const useUserData = (userId?: string) => {
 
       return true;
     } catch (error) {
-      console.error("Send phone verification error:", error);
+      console.log("Send phone verification error:", error);
       throw error;
     }
   };
@@ -318,7 +318,7 @@ export const useUserData = (userId?: string) => {
       await loadUserData(); // Refresh data
       return true;
     } catch (error) {
-      console.error("Verify phone error:", error);
+      console.log("Verify phone error:", error);
       throw error;
     }
   };

@@ -75,7 +75,7 @@ const UserWrapper: React.FC<AdminWrapperProps> = ({
         pendingBanking: bankingData.pagination?.totalUsers || 0,
       });
     } catch (error) {
-      console.error("Error fetching admin stats:", error);
+      console.log("Error fetching admin stats:", error);
     } finally {
       setStatsLoading(false);
     }

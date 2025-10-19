@@ -94,14 +94,14 @@ export async function POST(request: NextRequest) {
         expiresAt: expiresAt.toISOString(),
       });
     } catch (smsError) {
-      console.error("SMS send error:", smsError);
+      console.log("SMS send error:", smsError);
       return NextResponse.json(
         { error: "خطا در ارسال پیامک" },
         { status: 500 }
       );
     }
   } catch (error) {
-    console.error("Send phone verification error:", error);
+    console.log("Send phone verification error:", error);
     return NextResponse.json({ error: "خطای سرور" }, { status: 500 });
   }
 }
@@ -254,7 +254,7 @@ export async function PATCH(request: NextRequest) {
       phoneVerification: updatedUser.verifications.phone,
     });
   } catch (error) {
-    console.error("Verify phone error:", error);
+    console.log("Verify phone error:", error);
     return NextResponse.json({ error: "خطای سرور" }, { status: 500 });
   }
 }
@@ -304,7 +304,7 @@ export async function GET(request: NextRequest) {
         new Date().getTime() - new Date(phoneVerification.lastCodeSent).getTime() >= 60000,
     });
   } catch (error) {
-    console.error("Get phone verification status error:", error);
+    console.log("Get phone verification status error:", error);
     return NextResponse.json({ error: "خطای سرور" }, { status: 500 });
   }
 }

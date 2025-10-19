@@ -198,7 +198,7 @@ const NationalCredentials = ({
       showToast.success("اطلاعات هویتی با موفقیت ذخیره شد");
       setTimeout(() => setIsSaved(false), 3000);
     } catch (error) {
-      console.error("Error saving national credentials:", error);
+      console.log("Error saving national credentials:", error);
       showToast.error(
         error instanceof Error ? error.message : "خطا در ذخیره اطلاعات هویتی"
       );

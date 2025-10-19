@@ -89,8 +89,8 @@ const ServiceCard = ({ service }: { service: Service }) => {
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             unoptimized={true}
             onError={() => {
-              console.error("Failed to load service image with Next.js Image:", service.image);
-              console.error("Falling back to regular img tag");
+              console.log("Failed to load service image with Next.js Image:", service.image);
+              console.log("Falling back to regular img tag");
               setImageError(true);
             }}
           />
@@ -100,7 +100,7 @@ const ServiceCard = ({ service }: { service: Service }) => {
             alt={service.title}
             className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
             onError={(e) => {
-              console.error("Failed to load service image with img tag:", service.image);
+              console.log("Failed to load service image with img tag:", service.image);
               const img = e.target as HTMLImageElement;
               img.style.display = "none";
             }}

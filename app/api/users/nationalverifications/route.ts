@@ -182,7 +182,7 @@ export async function GET(request: NextRequest): Promise<NextResponse<GetCredent
 
     return NextResponse.json(response);
   } catch (error) {
-    console.error("Get national credentials error:", error);
+    console.log("Get national credentials error:", error);
     const errorResponse: ErrorResponse = { error: "خطای سرور" };
     return NextResponse.json(errorResponse, { status: 500 });
   }
@@ -316,7 +316,7 @@ export async function POST(request: NextRequest): Promise<NextResponse<PostCrede
 
     return NextResponse.json(response);
   } catch (error) {
-    console.error("Create national credentials error:", error);
+    console.log("Create national credentials error:", error);
     if (error instanceof mongoose.Error.ValidationError) {
       const errorResponse: ErrorResponse = { error: "داده‌های ورودی نامعتبر" };
       return NextResponse.json(errorResponse, { status: 400 });
@@ -416,7 +416,7 @@ export async function PATCH(request: NextRequest): Promise<NextResponse<PatchVer
 
     return NextResponse.json(response);
   } catch (error) {
-    console.error("Update verification status error:", error);
+    console.log("Update verification status error:", error);
     const errorResponse: ErrorResponse = { error: "خطای سرور" };
     return NextResponse.json(errorResponse, { status: 500 });
   }

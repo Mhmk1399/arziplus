@@ -100,7 +100,7 @@ export async function GET(request: NextRequest) {
       },
     });
   } catch (error: unknown) {
-    console.error("GET Error:", error);
+    console.log("GET Error:", error);
     return NextResponse.json(
       { success: false, message: "Internal server error" },
       { status: 500 }
@@ -178,7 +178,7 @@ export async function POST(request: NextRequest) {
       { status: 201 }
     );
   } catch (error: unknown) {
-    console.error("POST Error:", error);
+    console.log("POST Error:", error);
     if (error instanceof mongoose.Error.ValidationError) {
       return NextResponse.json(
         { success: false, message: "Validation error", errors: error.errors },
@@ -234,7 +234,7 @@ export async function PUT(request: NextRequest) {
       data: updatedRequest,
     });
   } catch (error: unknown) {
-    console.error("PUT Error:", error);
+    console.log("PUT Error:", error);
     if (error instanceof mongoose.Error.ValidationError) {
       return NextResponse.json(
         { success: false, message: "Validation error", errors: error.errors },
@@ -294,7 +294,7 @@ export async function DELETE(request: NextRequest) {
       data: deletedRequest,
     });
   } catch (error: unknown) {
-    console.error("DELETE Error:", error);
+    console.log("DELETE Error:", error);
     return NextResponse.json(
       { success: false, message: "Internal server error" },
       { status: 500 }

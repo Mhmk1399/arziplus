@@ -100,7 +100,7 @@ const PaymentStatusPage: React.FC = () => {
         setPaymentStatus(null);
       }
     } catch (error) {
-      console.error("Error checking payment status:", error);
+      console.log("Error checking payment status:", error);
       setError("خطا در اتصال به سرور");
       setPaymentStatus(null);
     } finally {
@@ -132,7 +132,7 @@ const PaymentStatusPage: React.FC = () => {
         showToast.error(data.error || "خطا در تایید پرداخت");
       }
     } catch (error) {
-      console.error("Verification error:", error);
+      console.log("Verification error:", error);
       showToast.error("خطا در اتصال به سرور");
     } finally {
       setVerifying(false);

@@ -140,7 +140,7 @@ const WithdrawComponent: React.FC<WithdrawComponentProps> = ({
           setBankingInfo(null);
         }
       } catch (error) {
-        console.error("Error fetching banking info:", error);
+        console.log("Error fetching banking info:", error);
         setBankingInfo(null);
       } finally {
         setBankingInfoLoading(false);
@@ -229,7 +229,7 @@ const WithdrawComponent: React.FC<WithdrawComponentProps> = ({
         showToast.error(data.error || "خطا در ثبت درخواست برداشت");
       }
     } catch (error) {
-      console.error("Withdraw request error:", error);
+      console.log("Withdraw request error:", error);
       showToast.error("خطا در اتصال به سرور");
     } finally {
       setLoading(false);

@@ -81,7 +81,7 @@ const ServiceWrapper: React.FC<AdminWrapperProps> = ({
         totalServices: 0, // This can be added when services management is implemented
       });
     } catch (error) {
-      console.error("Error fetching service stats:", error);
+      console.log("Error fetching service stats:", error);
     } finally {
       setStatsLoading(false);
     }

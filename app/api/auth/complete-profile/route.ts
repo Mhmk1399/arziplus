@@ -100,7 +100,7 @@ console.log(_)
     });
 
   } catch (error) {
-    console.error('Complete profile error:', error);
+    console.log('Complete profile error:', error);
     return NextResponse.json(
       { error: "خطای سرور" },
       { status: 500 }

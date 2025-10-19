@@ -5,7 +5,7 @@ const requiredVars = ['LIARA_ENDPOINT', 'LIARA_ACCESS_KEY', 'LIARA_SECRET_KEY'];
 const missingVars = requiredVars.filter(varName => !process.env[varName]);
 
 if (missingVars.length > 0) {
-  console.error('Missing Liara Object Storage environment variables:', missingVars);
+  console.log('Missing Liara Object Storage environment variables:', missingVars);
   throw new Error(`Missing required Liara Object Storage environment variables: ${missingVars.join(', ')}`);
 }
 

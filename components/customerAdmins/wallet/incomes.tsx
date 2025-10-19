@@ -112,7 +112,7 @@ const IncomesHistory: React.FC = () => {
         showToast.error("خطا در دریافت تاریخچه تراکنش‌ها");
       }
     } catch (error) {
-      console.error("Error fetching transactions:", error);
+      console.log("Error fetching transactions:", error);
       showToast.error("خطا در ارتباط با سرور");
     } finally {
       setLoading(false);

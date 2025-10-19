@@ -102,11 +102,11 @@ const WalletWrapper: React.FC<WalletWrapperProps> = ({
         setWalletData(data.wallet);
         setWalletStats(data.stats);
       } else {
-        console.error("Failed to fetch wallet data:", data.error);
+        console.log("Failed to fetch wallet data:", data.error);
         showToast.error("خطا در دریافت اطلاعات کیف پول");
       }
     } catch (error) {
-      console.error("Error fetching wallet data:", error);
+      console.log("Error fetching wallet data:", error);
       showToast.error("خطا در ارتباط با سرور");
     } finally {
       setStatsLoading(false);

@@ -156,7 +156,7 @@ export async function POST(request: NextRequest) {
     }
 
   } catch (error) {
-    console.error('Payment request error:', error);
+    console.log('Payment request error:', error);
     return NextResponse.json(
       { error: "خطای سرور در ایجاد درخواست پرداخت" },
       { status: 500 }

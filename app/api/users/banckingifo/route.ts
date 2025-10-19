@@ -89,7 +89,7 @@ export async function GET(request: NextRequest) {
       },
     });
   } catch (error) {
-    console.error("Get banking info error:", error);
+    console.log("Get banking info error:", error);
     return NextResponse.json({ error: "خطای سرور" }, { status: 500 });
   }
 }
@@ -209,7 +209,7 @@ export async function POST(request: NextRequest) {
       bankingInfo: updatedUser.bankingInfo,
     });
   } catch (error) {
-    console.error("Add banking info error:", error);
+    console.log("Add banking info error:", error);
     if (error instanceof mongoose.Error.ValidationError) {
       return NextResponse.json(
         { error: "داده‌های ورودی نامعتبر" },
@@ -385,7 +385,7 @@ export async function PATCH(request: NextRequest) {
       bankingInfo: updatedUser.bankingInfo,
     });
   } catch (error) {
-    console.error("Update banking info error:", error);
+    console.log("Update banking info error:", error);
     return NextResponse.json({ error: "خطای سرور" }, { status: 500 });
   }
 }
@@ -439,7 +439,7 @@ export async function DELETE(request: NextRequest) {
       bankingInfo: updatedUser.bankingInfo,
     });
   } catch (error) {
-    console.error("Delete banking info error:", error);
+    console.log("Delete banking info error:", error);
     return NextResponse.json({ error: "خطای سرور" }, { status: 500 });
   }
 }

@@ -160,7 +160,7 @@ const BankingInfo = ({
 
       if (!response.ok) {
         const errorData = await response.json();
-        console.error("Banking API Error Response:", errorData); // Debug log
+        console.log("Banking API Error Response:", errorData); // Debug log
         throw new Error(
           errorData.error || `خطا در ذخیره اطلاعات بانکی (${response.status})`
         );
@@ -184,7 +184,7 @@ const BankingInfo = ({
       );
       setTimeout(() => setIsSaved(false), 3000);
     } catch (error) {
-      console.error("Error saving banking info:", error);
+      console.log("Error saving banking info:", error);
       showToast.error(
         error instanceof Error ? error.message : "خطا در ذخیره اطلاعات بانکی"
       );

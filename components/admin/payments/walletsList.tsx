@@ -69,7 +69,7 @@ const WalletsList: React.FC = () => {
       setWallets(data.wallets || []);
       setFilteredWallets(data.wallets || []);
     } catch (error) {
-      console.error("Error fetching wallets:", error);
+      console.log("Error fetching wallets:", error);
       showToast.error("خطا در دریافت کیف پول‌ها");
     } finally {
       setLoading(false);
@@ -211,7 +211,7 @@ const WalletsList: React.FC = () => {
       setShowEditWallet(false);
       fetchWallets();
     } catch (error) {
-      console.error("Error updating wallet:", error);
+      console.log("Error updating wallet:", error);
       showToast.error("خطا در بروزرسانی کیف پول");
     } finally {
       setSubmitting(false);

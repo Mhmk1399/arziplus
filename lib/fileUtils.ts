@@ -80,10 +80,10 @@ export async function uploadFile(file: File): Promise<LiaraFileInfo | null> {
       return result.data;
     }
     
-    console.error('Upload failed:', result.error);
+    console.log('Upload failed:', result.error);
     return null;
   } catch (error) {
-    console.error('Upload error:', error);
+    console.log('Upload error:', error);
     return null;
   }
 }

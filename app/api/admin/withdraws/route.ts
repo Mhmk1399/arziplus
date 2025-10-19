@@ -119,7 +119,7 @@ export async function GET(request: NextRequest) {
       stats,
     });
   } catch (error) {
-    console.error("Error fetching withdraw requests:", error);
+    console.log("Error fetching withdraw requests:", error);
     return NextResponse.json(
       {
         success: false,

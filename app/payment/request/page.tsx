@@ -126,7 +126,7 @@ const PaymentRequestPage: React.FC = () => {
         showToast.error(data.error || "خطا در ایجاد درخواست پرداخت");
       }
     } catch (error) {
-      console.error("Payment request error:", error);
+      console.log("Payment request error:", error);
       showToast.error("خطا در اتصال به سرور");
     } finally {
       setLoading(false);

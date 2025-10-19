@@ -72,7 +72,7 @@ export async function POST(request: NextRequest) {
     });
 
   } catch (error) {
-    console.error('SMS send error:', error);
+    console.log('SMS send error:', error);
     return NextResponse.json(
       { error: "خطای سرور" },
       { status: 500 }

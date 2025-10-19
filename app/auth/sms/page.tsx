@@ -134,7 +134,7 @@ export default function SMSAuthPage() {
         showToast.error(data.error);
       }
     } catch (error) {
-      console.error(error);
+      console.log(error);
       showToast.error("خطا در ارسال مجدد");
     } finally {
       setLoading(false);

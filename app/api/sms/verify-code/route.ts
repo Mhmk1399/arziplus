@@ -40,7 +40,7 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({ message: "کد با موفقیت تایید شد" });
   } catch (error) {
-    console.error("Verify code error:", error);
+    console.log("Verify code error:", error);
     return NextResponse.json({ error: "خطای سرور" }, { status: 500 });
   }
 }

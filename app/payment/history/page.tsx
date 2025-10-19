@@ -111,7 +111,7 @@ const PaymentHistoryPage: React.FC = () => {
         showToast.error(data.error || "خطا در دریافت تاریخچه پرداخت");
       }
     } catch (error) {
-      console.error("Error fetching payment history:", error);
+      console.log("Error fetching payment history:", error);
       showToast.error("خطا در اتصال به سرور");
     } finally {
       setLoading(false);

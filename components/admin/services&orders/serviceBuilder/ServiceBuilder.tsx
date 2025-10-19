@@ -182,7 +182,7 @@ const ServiceBuilder: React.FC<ServiceBuilderProps> = ({
       await onSave(formData);
       // Success toast will be handled by the parent component
     } catch (error) {
-      console.error("Error saving service:", error);
+      console.log("Error saving service:", error);
       const errorMessage =
         error instanceof Error ? error.message : "خطا در ذخیره سرویس";
       showToast.error(errorMessage);

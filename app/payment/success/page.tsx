@@ -113,7 +113,7 @@ const PaymentSuccessPage: React.FC = () => {
         router.push('/payment/failed');
       }
     } catch (error) {
-      console.error("Error fetching payment details:", error);
+      console.log("Error fetching payment details:", error);
       showToast.error("خطا در اتصال به سرور");
       router.push('/payment/failed');
     } finally {
@@ -143,7 +143,7 @@ const PaymentSuccessPage: React.FC = () => {
         showToast.success("پرداخت با موفقیت تایید شد");
       }
     } catch (error) {
-      console.error("Verification error:", error);
+      console.log("Verification error:", error);
     } finally {
       setVerifying(false);
     }

@@ -293,7 +293,7 @@ export async function GET(
   } catch (error) {
     const errorMessage =
       error instanceof Error ? error.message : "Unknown error occurred";
-    console.error("Error fetching wallet history:", error);
+    console.log("Error fetching wallet history:", error);
 
     const errorResponse: ErrorResponse = {
       success: false,

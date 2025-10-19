@@ -110,7 +110,7 @@ const WithdrawRequestsList: React.FC = () => {
         }
       );
     } catch (error) {
-      console.error("Error fetching withdraw requests:", error);
+      console.log("Error fetching withdraw requests:", error);
       showToast.error("خطا در دریافت درخواست‌های برداشت");
     } finally {
       setLoading(false);
@@ -248,7 +248,7 @@ const WithdrawRequestsList: React.FC = () => {
       setShowEditRequest(false);
       fetchWithdrawRequests();
     } catch (error) {
-      console.error("Error updating withdraw request:", error);
+      console.log("Error updating withdraw request:", error);
       showToast.error(
         error instanceof Error
           ? error.message
@@ -296,7 +296,7 @@ const WithdrawRequestsList: React.FC = () => {
       );
       fetchWithdrawRequests();
     } catch (error) {
-      console.error("Error updating withdraw request:", error);
+      console.log("Error updating withdraw request:", error);
       showToast.error("خطا در بروزرسانی درخواست برداشت");
     }
   };

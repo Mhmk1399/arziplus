@@ -107,7 +107,7 @@ const WithdrawHistory: React.FC = () => {
         showToast.error("خطا در دریافت درخواست‌های برداشت");
       }
     } catch (error) {
-      console.error("Error fetching withdraw requests:", error);
+      console.log("Error fetching withdraw requests:", error);
       showToast.error("خطا در ارتباط با سرور");
     } finally {
       setLoading(false);

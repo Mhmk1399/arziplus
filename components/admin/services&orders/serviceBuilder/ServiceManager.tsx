@@ -57,7 +57,7 @@ const ServiceManager: React.FC<ServiceManagerProps> = ({
         throw new Error(result.message || "Failed to create service");
       }
     } catch (error) {
-      console.error("Error creating service:", error);
+      console.log("Error creating service:", error);
       throw error;
     }
   };
@@ -91,7 +91,7 @@ const ServiceManager: React.FC<ServiceManagerProps> = ({
         throw new Error(result.message || "Failed to update service");
       }
     } catch (error) {
-      console.error("Error updating service:", error);
+      console.log("Error updating service:", error);
       throw error;
     }
   };
@@ -279,7 +279,7 @@ const AdminServiceList: React.FC<{
         showToast.error("خطا در حذف سرویس");
       }
     } catch (error) {
-      console.error("Error deleting service:", error);
+      console.log("Error deleting service:", error);
       showToast.error("خطا در حذف سرویس");
     }
   };
@@ -306,7 +306,7 @@ const AdminServiceList: React.FC<{
         showToast.error("خطا در تغییر وضعیت");
       }
     } catch (error) {
-      console.error("Error toggling status:", error);
+      console.log("Error toggling status:", error);
       showToast.error("خطا در تغییر وضعیت");
     }
   };
