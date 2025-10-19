@@ -539,13 +539,18 @@ const ServiceRenderer: React.FC<ServiceRendererProps> = ({
                                 className="object-cover group-hover:scale-110 transition-transform duration-300"
                                 unoptimized={true}
                                 onError={() => {
-                                  console.error("ServiceRenderer mobile - Failed to load service image:", service.image);
+                                  console.error(
+                                    "ServiceRenderer mobile - Failed to load service image:",
+                                    service.image
+                                  );
                                 }}
                               />
                             ) : (
                               <div className="w-1/2 h-16 mx-auto bg-gradient-to-br from-[#4DBFF0]/20 to-[#FF7A00]/20 rounded-xl flex items-center justify-center">
                                 {service.icon ? (
-                                  <span className="text-2xl">{service.icon}</span>
+                                  <span className="text-2xl">
+                                    {service.icon}
+                                  </span>
                                 ) : (
                                   <div className="w-6 h-6 bg-gradient-to-r from-[#4DBFF0] to-[#FF7A00] rounded-lg"></div>
                                 )}
@@ -621,7 +626,10 @@ const ServiceRenderer: React.FC<ServiceRendererProps> = ({
                               className="w-1/2 h-1/2 mx-auto object-cover group-hover:scale-110 transition-transform duration-300"
                               unoptimized={true}
                               onError={() => {
-                                console.error("ServiceRenderer desktop - Failed to load service image:", service.image);
+                                console.error(
+                                  "ServiceRenderer desktop - Failed to load service image:",
+                                  service.image
+                                );
                               }}
                             />
                           ) : (
