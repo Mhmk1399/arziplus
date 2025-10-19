@@ -164,8 +164,9 @@ const PaypalOpening = () => {
     {
       id: "3",
       question: "آیا می‌توانم با آی‌پی ایران وارد حساب شوم؟",
-      answer: "خیر، حتما باید با VPS های امنی که شرکت در اختیار شما میدهد یا پیشنهاد میدهد، استفاده نمایید. به محض وارد شدن با آی پی ایران، حسابتان بسته میشود.",
-       category: "ورود و امنیت",
+      answer:
+        "خیر، حتما باید با VPS های امنی که شرکت در اختیار شما میدهد یا پیشنهاد میدهد، استفاده نمایید. به محض وارد شدن با آی پی ایران، حسابتان بسته میشود.",
+      category: "ورود و امنیت",
     },
   ];
   const faqIcons = {
@@ -255,15 +256,16 @@ const PaypalOpening = () => {
         description="پی‌پال (PayPal) محبوب‌ترین و امن‌ترین سیستم پرداخت بین‌المللی است که میلیون‌ها کاربر در سراسر جهان برای خرید اینترنتی، انتقال وجه، دریافت درآمد ارزی و پرداخت‌های آنلاین از آن استفاده می‌کنند. با وجود محدودیت‌های ایجاد شده برای کاربران ایرانی، ارزی پلاس راهکاری سریع و مطمئن ارائه می‌دهد تا بدون نیاز به سفر یا داشتن اقامت خارجی، یک حساب پی‌پال وریفای‌شده و ۱۰۰٪ امن افتتاح کنید و از تمامی امکانات آن، مانند خرید از سایت‌های خارجی و دریافت پول از مشتریان بین‌المللی، بهره‌مند شوید."
         buttons={[
           {
-            text: "شروع کنید",
-            href: "/register",
+            text: "افتتاح حساب پی پال",
+            href: "/services/Opening-a-PayPal-account",
             variant: "secondary",
             icon: <FaExplosion />,
           },
         ]}
+
         media={{
           type: "image",
-          src: "https://arziPlus.s3.eu-north-1.amazonaws.com/Desktop/12-min.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=ASIAUQ73WRGQWGHQVYIL%2F20251012%2Feu-north-1%2Fs3%2Faws4_request&X-Amz-Date=20251012T094814Z&X-Amz-Expires=300&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEIL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCmV1LW5vcnRoLTEiSDBGAiEAt4%2BB6h6GLjcmRH9br6l7jiS42KQneka9Mh8ontMH%2FzQCIQC2VEgrU192t8neq6ohop98IduPA61%2FcKBk%2Bvwigi4x7CrWAggrEAAaDDMxMTM3NjEyMDIyNSIMMxsuTD1EWJIXQR%2FPKrMCL96aFf1S4lL78CmOIrRZa4U%2BLljYiZ%2FJBHHBuqgGP4dvmPvPhQwFqNXzhCePERfktzTNuIXqEhlrjFJbH6fRjDkYSFLTZg62UzGqLb6jKJZkyHvzxvTAxzYx9RJ0H8CoX%2BAfZ7ZXj7scLbWG1oBvMznFNZUIxR%2BjamDIZLoFjzhganE8XlZ9ywoKVEIFNDZJY2H0QUNRw3N%2FyrU04USmjaZM3EjW%2F9LUBV%2FbL4Yo9nxfmZAMA0Jgui1tmKT2h13YlCZ25EbBd8FYkfPazEGTHVOeRuYJXjTHHO%2BcZm94RSxd31%2BIlNCQ19XEkqL8dwgmzhlybWv9a83Th6a0lqu%2FuXmarEm0Hom6u8e0JghkKIVCJDGqWvQskk%2FCF6iUbfePqMDwxA5xsle4IHJ8rCMBeZ74cjCS8q3HBjqsAgwoSsgy5rsUiQ8JWwNpAKJQ0vFgKcbzP4%2BdQUJPy52TL6rhhD17GQyjK8BKPIdQ6e%2FDm9EkVmZwRCjQXJbNABgQzYoipUFUkBq%2FEQ72THqg7EbH4xi6%2Bfw%2FRFHToqoGd%2FN%2B8z3%2BWceexBjsAD6Hx29YbS0KtdWOdsAKxFjCQEBtA9hJ%2FROdBQoOZse4itNmEIXZ%2BxEtai1IgA1H5b2HoGR7X6v2HxZetorMwln%2F4XvKp2%2BND7UapMRYEaj8JQ08iCoKWjG6SgcldNoEs1kygHziqqhU97kBTaL7%2BD2U%2B8uzV6cXyC9m8m06NLy0hSpaofux%2Bevgf9DtvX6pa%2BMFfGffnbntpZxCyYPIXiLJwIq8aW2t4GFS6qk7l2pfPdimn7iYPoGzMm83wAeZFw%3D%3D&X-Amz-Signature=d26cbd9f66e75ce867e14970b60961f555951883c89f987db2c6209ee7171784&X-Amz-SignedHeaders=host&response-content-disposition=inline",
+          src: "https://arziplus.storage.c2.liara.space/images/pages/12-min.png",
           alt: "صرافی آنلاین پیشرفته",
           width: 1200,
           height: 400,
@@ -281,12 +283,12 @@ const PaypalOpening = () => {
         animated={true}
         interactive={true}
         showIcons={true}
-       />
+      />
       <WhyUsSection
         heading="کاربردهای حساب پی‌پال"
         description="با افتتاح حساب پی‌پال از طریق ارزی پلاس، می‌توانید به امکانات گسترده‌ای دسترسی داشته باشید:"
         buttonText="افتتاح حساب پی‌پال"
-        buttonLink="/paypal-account"
+        buttonLink="/services/Opening-a-PayPal-account"
         items={itemsWhyus}
         buttonColor="bg-blue-500 hover:bg-blue-700 text-white"
         theme={themesWhyus.default}
@@ -298,8 +300,7 @@ const PaypalOpening = () => {
         compact={false}
       />
       <ServicesGrid
-
-         services={[
+        services={[
           {
             name: "حساب پی پال وریفای شده",
             description:
@@ -329,7 +330,7 @@ const PaypalOpening = () => {
             name: "پشتیبانی ارزی پلاس",
             description:
               "استفاده امن از حساب پی پال به صورت امانتی با ضمانت کامل",
-            icon: <MdOutlineSupportAgent  />,
+            icon: <MdOutlineSupportAgent />,
           },
         ]}
         title="افتتاح حساب پی پال شامل چه مواردی میشود"
@@ -341,7 +342,7 @@ const PaypalOpening = () => {
         buttons={[
           {
             text: "افتتاح حساب پی‌پال با ارزی پلاس",
-            href: "/paypal-account",
+            href: "/services/Opening-a-PayPal-account",
             variant: "primary",
             icon: <FaShieldAlt />,
           },
@@ -360,7 +361,7 @@ const PaypalOpening = () => {
         buttons={[
           {
             text: "ارسال سوال",
-            href: "/support",
+            href: "/contact",
             variant: "outline",
             icon: <FaEnvelope />,
           },
@@ -373,10 +374,10 @@ const PaypalOpening = () => {
       />
       <CTABanner
         heading="همین حالا حساب پی‌پال خود را افتتاح کنید!"
-        description="با ارزی پلاس، به دنیای پرداخت‌های بین‌المللی متصل شوید و بدون محدودیت از خدمات پی‌پال استفاده کنید."
+        description="   به دنیای پرداخت‌های بین‌المللی متصل و بدون محدودیت از خدمات پی‌پال استفاده کنید."
         button={{
           text: "ثبت درخواست افتتاح حساب پی‌پال",
-          href: "/register",
+          href: "/dashboard#services",
           variant: "primary",
           icon: <FaRocket />,
         }}

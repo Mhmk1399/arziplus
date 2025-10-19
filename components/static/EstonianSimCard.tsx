@@ -26,6 +26,7 @@ import CTABanner from "../global/ctaBanner";
 import TextBox from "../global/textBox";
 import { FaMedal, FaLock, FaHeadset } from "react-icons/fa";
 import HeroSplitSection from "../global/heroSplitSection";
+import { FaSimCard } from "react-icons/fa";
 
 const EstonianSimCard = () => {
   const longText = `مجموعه ارزی پلاس با بیش از 13سال فعالیت در خدمات بین الملل با توافقات صورت گرفته توانسته است به عنوان نماینده فروش سیم‌کارت‌های ودافون انگلیس، سیم‌کارت استونی و سلکام مالزی فعالیت کند. هر سیم‌کارت با  پیش شماره رسمی آن کشور ارائه می‌شود: در سال 2025، سیمکارت‌های prepaid استونی از اپراتورهای Elisa, Tele2 و Telia با پلن‌های مقرون‌به‌صرفه از 5€ (شامل 5-10GB داده EU + calls/SMS)، گزینه‌ای ایده‌آل برای verification بین‌المللی و roaming فراهم می‌کنند. ارزی پلاس با صدور فیزیکی و ارسال به ایران، فرآیند را ایمن نگه می‌دارد، و با recharge هر 5 ماه، از غیرفعال شدن جلوگیری می‌کند. این سیمکارت‌ها با پوشش 5G در استونی و roaming partners در 220+ کشور (شامل ایران از طریق MCI/RighTel)، برای فریلنسرها، تریدرها و کاربران crypto مناسب هستند.`;
@@ -155,14 +156,14 @@ const EstonianSimCard = () => {
         buttons={[
           {
             text: "خرید سیمکارت استونی",
-            href: "/register",
-            variant: "primary",
+            href: "/services/EstonianSimCard",
+            variant: "secondary",
             icon: <FaExplosion />,
           },
         ]}
         media={{
           type: "image",
-          src: "https://arziPlus.s3.eu-north-1.amazonaws.com/Desktop/45-min.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=ASIAUQ73WRGQ2DXOXLEH%2F20251012%2Feu-north-1%2Fs3%2Faws4_request&X-Amz-Date=20251012T110240Z&X-Amz-Expires=300&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEIP%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCmV1LW5vcnRoLTEiSDBGAiEA7j6WAMP1u1nfiaV79Cz9%2FEZUIyYCIDHKzozggwDz140CIQDnthjc3yYD%2F%2FXfMx1ak35ldEdIvBOgeJ4Cip6PxekkDSrWAggsEAAaDDMxMTM3NjEyMDIyNSIM50z1mbFqn5gqtpCQKrMCyAkPydmA1K4N1bjT6x7XcWoTdw6ZVVR%2BQucAHXV0%2F1QVCYOlUXgm8FEfivGw9%2BGzrroVbH6IeIQRB7YgD9Em6JLvo8v0ZfwCwy3ZUgrzvj%2FMSkHO%2FwkG8%2FBCb%2FRBG%2FwdFWRkDP5N9Sz2s5uceapHoiekLVmXIAnbbEL5psB%2BKWYZ6yxS32IeRmCiR9agnAys6PgvvXwS9BLE4Y0fb2loscnip4o6aXqplbjG3uSJDR4j3QUHW%2BUycWr8kAXs6Hff0GrqOuRY9zawgV4n0aS7PjVKgMf6Ln3tfhukdCUboN5mQrwWwSbA1fJb85vDBQNWDA8PWRmRBAycYMyVzsCCuICEn22ijbE82y9RUOmloKYVJZWOInNm4yUrNln9LGq9FVAJ9HPuMNd6znaKkjOXuulD2zCS8q3HBjqsAgU9718iPRglCh0yo7WNHVt0wy%2F3we5Ze4N5kduwFteznnYuDMRyyiPugl9nFkZr5vmVbaD%2BNNdvBCvf3gtlxtZu2UVO3yyx5TR%2B8dNdfVeRRHl%2Fr11LpWhzzqsGLdNKAzUyuhbiUBjmBlpU57s9TjDQdK89IAtVwZmUcvzdAqnKmLLk9IyIB%2BlfWwhRC6Mb8yVHmjNZ7rGYi08hnGoQj%2FOBMwE99JOYBdcHS2kzjGUbIyxnWFNcUDgyOgh6WWp%2FhhcoV2YPxU8kST6dwRfVOqyhQGbrDTfjdj1U724UWtX7gB5IBB%2Bk3a2uu5x%2B9n6dW%2BQLwfUkJgeTuAffzmeTX3w9u%2FbwuO0ZQDI%2F%2BTVYwzgMy9uy6y3p9eh1ipVozq7KXyt46HEqdmlBPlns%2BA%3D%3D&X-Amz-Signature=5a68146da93b20e1a0dd019c98f336e0c76fe7c5815c5aac2a8e2b8a7c84f46e&X-Amz-SignedHeaders=host&response-content-disposition=inline",
+          src: "https://arziplus.storage.c2.liara.space/images/pages/45-min.png",
           alt: "سیمکارت استونی با ارزی پلاس",
           width: 1200,
           height: 800,
@@ -195,9 +196,9 @@ const EstonianSimCard = () => {
         heading="ویژگی‌ و کاربرد‌ سیم‌کارت‌های بین المللی"
         description="با این سیم‌کارت می‌توانید در سایت‌های فریلنسری، گیمینگ، ترید، صرافی‌های ارزی، OpenAI و شبکه‌های اجتماعی ثبت‌نام کنید. پشتیبانی آنتن در ایران فعال است اما اینترنت آن رومینگ و بسیار گران (حدود ‎250‎ دلار/GB) می‌باشد."
         buttonText="خرید سیمکارت"
-        buttonLink="/estonian-sim"
+        buttonLink="/services/EstonianSimCard"
         items={simWhyUs}
-         theme={themesWhyus.default}
+        theme={themesWhyus.default}
       />
 
       <TextBox
@@ -224,10 +225,10 @@ const EstonianSimCard = () => {
         description="ارزی پلاس با سابقه چندین ساله، تضمین امنیت تراکنش‌ها و نرخ رقابتی، بهترین گزینه برای نقد کردن پی‌پال است."
         buttons={[
           {
-            text: "ثبت درخواست نقد کردن",
-            href: "/cashing-paypal",
-            variant: "primary",
-            icon: <FaShieldAlt />,
+            text: "ثبت درخواست  سیم کارت",
+            href: "/services/EstonianSimCard",
+            variant: "secondary",
+            icon: <FaSimCard />,
           },
         ]}
         imageSrc="/assets/images/cash-paypal-2.webp"
@@ -266,7 +267,7 @@ const EstonianSimCard = () => {
         buttons={[
           {
             text: "تماس با پشتیبانی",
-            href: "/support",
+            href: "/contact",
             variant: "outline",
             icon: <FaEnvelope />,
           },
@@ -280,11 +281,11 @@ const EstonianSimCard = () => {
 
       <CTABanner
         heading="✅ همین حالا به دنیای ارتباطات بین‌المللی بپیوندید!"
-        description="🚀 ثبت نام سریع و ساده در ارزی پلاس، شروعی تازه برای شماست. فرآیند سفارش سیم کارت بین‌المللی‌تان تنها چند گام کوتاه فاصله دارد. جهت ثبت سفارش کلیک کنید"
+        description=" ثبت نام سریع و ساده در ارزی پلاس، شروعی تازه برای شماست. فرآیند سفارش سیم کارت بین‌المللی‌تان تنها چند گام کوتاه فاصله دارد. جهت ثبت سفارش کلیک کنید"
         button={{
           text: "خرید سیمکارت استونی",
-          href: "/estonian-sim",
-          variant: "primary",
+          href: "/dashboard#services",
+          variant: "ghost",
           icon: <FaRocket />,
         }}
         theme={ctaThemes.primary}

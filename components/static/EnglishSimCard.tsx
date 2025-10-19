@@ -28,6 +28,7 @@ import CTABanner from "../global/ctaBanner";
 import TextBox from "../global/textBox";
 import { FaMedal, FaLock, FaHeadset } from "react-icons/fa";
 import HeroSplitSection from "../global/heroSplitSection";
+import { FaSimCard } from "react-icons/fa";
 
 const EnglishSimCard = () => {
   const longText = `با خرید سیم کارت های ودافون انگلیس به یک خط دائمی برای ایجاد ارتباط با کل جهان دست یابید. با داشتن سیم کارت ودافون می توانید ارسال و دریافت پیامک به تمامی خطوط بین المللی داشته  و در اکثر سایت هایی که ایران را تحریم کرده اند ثبت نام کنید. این سیم کارت ها با پیش شماره کشور انگلستان ارائه می‌شوند: در سال 2025، Vodafone UK prepaid SIMها با پلن‌های Unlimited Max (unlimited data/calls/texts برای 30 days از £10) و roaming در 108 destinations بدون extra cost گزینه‌ای ایده‌آل برای verification و international communication فراهم می‌کنند. ارزی پلاس با صدور فیزیکی و ارسال به ایران، فرآیند را ایمن نگه می‌دارد، و با recharge هر 5 ماه، از غیرفعال شدن جلوگیری می‌کند.`;
@@ -157,14 +158,14 @@ const EnglishSimCard = () => {
         buttons={[
           {
             text: "خرید سیمکارت انگلیس",
-            href: "/register",
-            variant: "primary",
+            href: "/services/EnglishSimCard",
+            variant: "secondary",
             icon: <FaExplosion />,
           },
         ]}
         media={{
           type: "image",
-          src: "https://arziPlus.s3.eu-north-1.amazonaws.com/Desktop/44-min.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=ASIAUQ73WRGQXO5TVUXK%2F20251012%2Feu-north-1%2Fs3%2Faws4_request&X-Amz-Date=20251012T110151Z&X-Amz-Expires=300&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEIP%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCmV1LW5vcnRoLTEiRzBFAiA8zkW3NmkZqC5xlH90svAjdA6HzWTxuC%2FKZSc9yKwCaQIhAJmyWANqW5YRBqnDf6Da1tvn0QIGD5F66Vh7i2WhRXHtKtYCCCwQABoMMzExMzc2MTIwMjI1IgxkFxHp2WvHf6j0P%2BUqswLNWIvwF9zz2Jj7p5itDHTPoek4fugWoIOxWpsW86cqWjLIOKRiRvdg9zN7jPgptY0%2Fp5LM2eJX7gaPCOabL1h7ecLtJdtlmwawVBatCPefCC6A1CUqQNiHhs2TtTIrG5XM%2FcxMO3HgIMV8h0nfWdB7Ika8Rmz0l1b%2Bt%2FFIcUNGU6b21au9Kvw84n5msBVBdWZ6suIGkC7hOT4eZBBkPTM%2BJVc6l2fz4dNi%2F1egIrsmzqlU0l8Z1DsIySWOCBQMRP9hYnPugK6ybhauLoJ1zkWis4mY1SoIWlwD8hk7tdFloDDUH9E0%2B7rocqQCGuPhqdr01cqicaBUgcOogPjPA60pX4Y1%2F%2FojyM1zErkECo5sMZ5YAc6IbWA1UvQahPwvBT3kfjRhHuqlOXudNnQ8BQIXp9gsMJLyrccGOq0Cv4zrdMmd2kCXc4dXcUZ7f2%2BoPTjamejk7XmHB%2FGCzfnNqvW2fv6NPXF%2Fihfbw%2BCYa%2FoZVPV1ldB0frg2bpyAgwzqXPkwE05YpA9pwEWLfY84kn3%2BqTBolQ0pYt1PinWMeU1%2FdQppPOUCpM3Tq3XBc7APiJBTFO4aHLxDPE7PDgHztmuOvpt8wZT8q6etM0k3ZXUXyt3OFfKnbjh7eWhpagqjYq%2BWUNJCrXDAEwBMId7%2BaTg%2BvopVcxg4SST2shi9QcQyBFfylE3FZRTmCEGtsSncXU5oWhP2C%2B1ilicTdFVZReFKEbhdgSs8ADi3BwLMLqyRqj%2FpDzcyrxQidy4%2BBljQ%2FKUKzEAkxsnl%2FXDnYWc9Zb%2FOM0EFYa2P3sPIKriAHIkEuEJQgAa91GnS3Q%3D%3D&X-Amz-Signature=ae95ba35de9579218a38e7449cfe42595c91dadf2b1f35c6c13d8474ea70ad16&X-Amz-SignedHeaders=host&response-content-disposition=inline",
+          src: "https://arziplus.storage.c2.liara.space/images/pages/44-min.png",
           alt: "سیمکارت Vodafone و EE انگلیس با ارزی پلاس",
           width: 1200,
           height: 800,
@@ -197,7 +198,7 @@ const EnglishSimCard = () => {
         heading="ویژگی‌ و کاربرد‌ سیم‌کارت‌های Vodafone "
         description="سیمکارت بین‌المللی Vodafone با پیش‌شماره ‎0044‎ و پوشش در بیش از ‎220‎ کشور، فعال در ایران برای تماس و پیامک. ایده‌آل برای ثبت‌نام در سایت‌های خارجی، فریلنسری، گیمینگ، ترید و وریفای بین‌المللی با شماره ثابت جهانی."
         buttonText="خرید سیمکارت"
-        buttonLink="/english-sim"
+        buttonLink="/services/EnglishSimCard"
         items={simWhyUs}
          theme={themesWhyus.default}
       />
@@ -224,10 +225,10 @@ const EnglishSimCard = () => {
         description="ارزی پلاس با سابقه چندین ساله، تضمین امنیت تراکنش‌ها و نرخ رقابتی، بهترین گزینه برای نقد کردن پی‌پال است."
         buttons={[
           {
-            text: "ثبت درخواست نقد کردن",
-            href: "/cashing-paypal",
-            variant: "primary",
-            icon: <FaShieldAlt />,
+            text: "خرید سیم کارت انگلیس",
+            href: "/services/EnglishSimCard",
+            variant: "secondary",
+            icon: <FaSimCard />,
           },
         ]}
         imageSrc="/assets/images/cash-paypal-2.webp"
@@ -266,7 +267,7 @@ const EnglishSimCard = () => {
         buttons={[
           {
             text: "تماس با پشتیبانی",
-            href: "/support",
+            href: "/contact",
             variant: "outline",
             icon: <FaEnvelope />,
           },
@@ -283,8 +284,8 @@ const EnglishSimCard = () => {
         description="  ثبت نام سریع و ساده در ارزی پلاس، شروعی تازه برای شماست. جهت ثبت سفارش کلیک کنید"
         button={{
           text: "خرید سیمکارت انگلیس",
-          href: "/english-sim",
-          variant: "primary",
+          href: "/dashboard#services",
+          variant: "ghost",
           icon: <FaRocket />,
         }}
         theme={ctaThemes.primary}

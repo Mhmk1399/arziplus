@@ -190,14 +190,14 @@ Joker.com با تمرکز بر سادگی و کارایی، ویژگی‌های 
         buttons={[
           {
             text: "همین حالا بخر",
-            href: "/register",
-            variant: "primary",
+            href: "/services/jokerPayment",
+            variant: "secondary",
             icon: <FaExplosion />,
           },
         ]}
         media={{
           type: "image",
-          src: "https://arziPlus.s3.eu-north-1.amazonaws.com/Desktop/43-min.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=ASIAUQ73WRGQ66WKXVL7%2F20251012%2Feu-north-1%2Fs3%2Faws4_request&X-Amz-Date=20251012T110112Z&X-Amz-Expires=300&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEIP%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCmV1LW5vcnRoLTEiRjBEAiALoJF4HQgEOBALZ3hrosKIDcU6LSO%2BnOqkb9fmmXk4AgIgNlyCCnAuxTH2QFOnQl0Hr5DjYXNOvvO040fyS430v5Eq1gIILBAAGgwzMTEzNzYxMjAyMjUiDNxWCXJ5WsJzw0tb8iqzAgj4SaYKQFsJzi4dqoTpwkLGCWvjnwn6J96yhdrmz6KQ49NjVvYpRJHd0nk5KaYTxWraETQ97WkqtF%2FH%2BfnFkLe4%2BQrROHJWhR2KFfLjYZZeQJB7CCHja8yG9MuomPhILGApxd8drN%2FxV6ASLIW3DV2c%2BRyoqooWbmjhz1sDMPSUSV3Olmh8QZz944%2FtpGmtJwLdmyuUXfIhKPSob%2Ft7GC7hnf9TvwGGcBZ2rf7n%2BR6waDPFFiSs4LGIrhjxEN7jUQFN0wx9V052TTF54EcpTg8IbCm6pMeDVTtIhhSV9%2BTdZAM6itlFM%2BZ6F21t2LDlRgbL066ZQBy%2Bo49g4MvF2CJOZQ1ZxBoa%2FvmLJm%2FJrMIedrWtNJ455m%2BEqnlVR4qqFWorlD0SdhYuRFXGy1T2etipdFIwkvKtxwY6rgLWRrN9nxqLTb%2BAyiqDjuMEJhNpDFDRj9kFArqSxqQlYF%2BmCV6%2FYTMjG5dMTzZd5LcjpQJDNPzdQ8Z1aNl4svbczZMf9jRin9ZROL8lXukZExoHGh8RcALWx3MLiHnzBkGhdvLSSZrPEWrIVIbdPuY3%2BzWK1CdP7Kjew5hmF93fDMmiYoERmv1Gycc%2BzPO5HwntrqcM7uHq7V0U7je%2BGs06rt82gbyXR4%2BfIAmKxlI9pVa%2BM6CknsSVDgylZVVAXFTRhiYIlRJBpdPLE1eJsbzV7y2dY31KkArIBWqTZJXkDJSBxR2pP9hvkoLP2%2BDV1CLGikG6zBcZI3Tc7xJMt8dmcVJXBKkuBnuRx5mosPGo%2FEjGhGKsVOTzjhD1JQammREc640t0Qpkwkw6GNAOng%3D%3D&X-Amz-Signature=ee6d70dbd4007122427889e02c12c2626eb279f260b9bd932fe86ffac8dece03&X-Amz-SignedHeaders=host&response-content-disposition=inline",
+          src: "https://arziplus.storage.c2.liara.space/images/pages/43-min.png",
           alt: "خرید دامنه از جوکر با ارزی پلاس",
           width: 1200,
           height: 800,
@@ -230,9 +230,9 @@ Joker.com با تمرکز بر سادگی و کارایی، ویژگی‌های 
         heading="مزایای پرداخت هزینه خرید از سایت جوکر در ارزی پلاس"
         description="ارزی پلاس، بهترین پیشنهاد برای تو که دنبال خرید دامنه‌ای؛ چون که... مزایای خرید هاست و دامنه از جوکر خرید از جوکر راه حل خوبیه؛ چون... حفظ حریم خصوصی حفظ حریم خصوصی کاربر سیستم مدیریت منحصر به فرد هیچ دغدغه ایی برای مدیریت با سیستم حرفه ایی جوکر نداری ارائه پشتیبانی فنی پشتیبانی حرفه ایی و تمام وقت گواهینامه SSL امکان برقراری یک اتصال امن و رمزنگاری‌شده بین مرورگر کاربر و سرور وب‌سایت"
         buttonText="پرداخت کن"
-        buttonLink="/joker-payment"
+        buttonLink="/services/jokerPayment"
         items={jokerWhyUs}
-         theme={themesWhyus.default}
+        theme={themesWhyus.default}
       />
 
       <TextBox
@@ -254,18 +254,18 @@ Joker.com با تمرکز بر سادگی و کارایی، ویژگی‌های 
 
       <HeroSplitSection
         heading="چرا ارزی پلاس؟"
-        subHeading="امنیت و اطمینان در افتتاح حساب پایر"
+        subHeading="امنیت و اطمینان در خرید دامنه از جوکر"
         description="ارزی پلاس با تجربه چندین ساله در افتتاح و وریفای حساب‌های بین‌المللی، امنیت بالا و خدمات جامع، بهترین گزینه برای مدیریت مالی بین‌المللی شما است."
         buttons={[
           {
             text: "افتتاح حساب پایر با ارزی پلاس",
-            href: "/payeer-register",
-            variant: "primary",
+            href: "/services/jokerPayment",
+            variant: "secondary",
             icon: <FaShieldAlt />,
           },
         ]}
         imageSrc="/assets/images/payeer.jpeg"
-        imageAlt="افتتاح حساب بین‌المللی پایر در ایران با ارزی پلاس"
+        imageAlt="خرید دامنه از جوکر"
         theme={splitSectionThemes.dark}
         layout="image-left"
         imageWidth="1/2"
@@ -273,8 +273,7 @@ Joker.com با تمرکز بر سادگی و کارایی، ویژگی‌های 
           {
             id: 1,
             title: "تجربه تخصصی",
-            description:
-              "افتتاح و وریفای حساب‌های بین‌المللی پایر با تجربه چندین ساله و تیم متخصص.",
+            description: "خرید و ثبت دامنه با تجربه چندین ساله و تیم متخصص.",
             icon: <FaClock />,
             style: {
               bg: "bg-yellow-900/30",
@@ -289,7 +288,7 @@ Joker.com با تمرکز بر سادگی و کارایی، ویژگی‌های 
             id: 2,
             title: "امنیت و محرمانگی",
             description:
-              "اطمینان از امنیت داده‌ها و حفاظت کامل اطلاعات کاربران در استفاده از پایر.",
+              "اطمینان از امنیت داده‌ها و حفاظت کامل اطلاعات کاربران در استفاده از جوکر.",
             icon: <FaLock />,
             style: {
               bg: "bg-rose-900/20",
@@ -298,19 +297,7 @@ Joker.com با تمرکز بر سادگی و کارایی، ویژگی‌های 
               iconColor: "text-rose-400",
             },
           },
-          {
-            id: 3,
-            title: "خدمات جانبی کامل",
-            description:
-              "شارژ حساب، نقد موجودی، خرید و فروش ووچر و خدمات ارزی کامل برای کاربران پایر.",
-            icon: <FaTools />,
-            style: {
-              bg: "bg-amber-900/20",
-              border: "border-amber-400",
-              text: "text-amber-200",
-              iconColor: "text-amber-400",
-            },
-          },
+
           {
             id: 4,
             title: "پشتیبانی سریع و دائمی",
@@ -334,7 +321,7 @@ Joker.com با تمرکز بر سادگی و کارایی، ویژگی‌های 
         buttons={[
           {
             text: "تماس با پشتیبانی",
-            href: "/support",
+            href: "/contact",
             variant: "outline",
             icon: <FaEnvelope />,
           },
@@ -347,12 +334,12 @@ Joker.com با تمرکز بر سادگی و کارایی، ویژگی‌های 
       />
 
       <CTABanner
-        heading="خرید هاست و دامنه دلخواه و مورد نیازت رو بسپار به ارزی پلاس..."
-        description="همین الان سفارش خریدت رو ثبت کن. ارزی پلاس با سرعت، امنیت و کارمزد کم، هزینه ثبت دامنه جوکر را مدیریت می‌کند."
+        heading="خرید هاست و دامنه دلخواه و مورد نیازت رو بسپار به  ما"
+        description="       ارزی پلاس با سرعت، امنیت و کارمزد کم، هزینه ثبت دامنه جوکر را مدیریت می‌کند"
         button={{
           text: "پرداخت کن",
-          href: "/joker-payment",
-          variant: "primary",
+          href: "/dashboard#services",
+          variant: "ghost",
           icon: <FaRocket />,
         }}
         theme={ctaThemes.primary}

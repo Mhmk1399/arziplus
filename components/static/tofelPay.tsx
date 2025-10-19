@@ -259,14 +259,14 @@ const ToeflPayment = () => {
         buttons={[
           {
             text: "ثبت سفارش پرداخت TOEFL",
-            href: "/register",
+            href: "/services/toeflPayment",
             variant: "secondary",
             icon: <FaExplosion />,
           },
         ]}
         media={{
           type: "image",
-          src: "https://arziPlus.s3.eu-north-1.amazonaws.com/Desktop/26-min.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=ASIAUQ73WRGQSC4D7GEL%2F20251012%2Feu-north-1%2Fs3%2Faws4_request&X-Amz-Date=20251012T104952Z&X-Amz-Expires=300&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEIP%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCmV1LW5vcnRoLTEiSDBGAiEA1nd4Cr3ZYv8lv0a27YdrF89oRIqonUbJWRH30nVJoyYCIQD7z%2FoloMEkaW0fjl4Wka6L4jnWGxv87Z7temM%2FwGkuQCrWAggsEAAaDDMxMTM3NjEyMDIyNSIMVAUCAEM3ns7pkzhdKrMCy3PLJfa0zFf1q6TsBjywbIK5ueds8Ndu20wznDzFFppe4pvWENGWHzko7imeVFPI%2BXAY765%2F%2BhsXrF%2Be9jiIFCfypRvjyKSEUUuAnmmm6%2FmaNQr1gTA832JatqqirrW3oFZKhekx1fQspHcSsjcbcUxGbTVxrmDMbxhG2WEJP0gicYoAjI5tXvu1hd7Ar9txvbg0XIAGSm%2B4lThNfnFnrxGV7NvM463F9wNTWmVqajqycaLTLFPOwU8pPPaooEiraSZ7%2BkOuKGpCffWmZTMihG0uhE90oNrbCAjI%2FUWyOt179%2BwT71Bfzpaw%2F5ouUuVykMP7%2B6EImr60M1i9j%2Fvjqa1bjCudpyMihs%2Bxu5nIklDIs4EYPfK5kfUwWWwpE3JOO6li3zRuWvrYdo7RRXI%2FpgPgyDCS8q3HBjqsAp%2FiBJDBrPeHJoXMcuncgiTFk5d1K5SJj2Enl9deARds1W%2FPiVWpq7yUVd4K5RwSfNRoViXZfHEQcaxDek4xQBTo%2F%2BfEP2OQ8bsQ05%2FDumaYSB6bZW5%2FYsB16sx9kpsDvvaaJLYuWxLEui8pVka9L2bbjc5%2Bi73TFhPc9fr47RPiJ5LkfaeT4OEUsFRK2YoYh2%2F%2FCYAIV75YShyniyYxM11%2Bv7%2FqH64ASqOyd9hlecHah3TITR89%2FThW5kF7xCBAHCZCmpmYSnpWYA5ulC8uJYAsKyRJ33RrCAGR9GPgn22Ky%2FbfTIpj5H17Guy0HcwU719KYiIFOOY81KkA%2Fyx1XhSFfs5cNCSZMwx5mUmCfPFve66K6Ap1ep317EVl0MmDNrw327pVfV1e1Kdwpw%3D%3D&X-Amz-Signature=bb08b3a8c06e13889278e19e42e79b399c34632e43b0db0d9804e54930abf6e0&X-Amz-SignedHeaders=host&response-content-disposition=inline",
+          src: "https://arziplus.storage.c2.liara.space/images/pages/26-min.png",
           alt: "پرداخت هزینه آزمون TOEFL با ارزی پلاس",
           width: 1200,
           height: 800,
@@ -299,9 +299,9 @@ const ToeflPayment = () => {
         heading="چرا پرداخت TOEFL را به ارزی پلاس بسپارم؟"
         description="ارزی پلاس پرداخت‌های بین‌المللی TOEFL را با امنیت، سرعت و کارمزد شفاف انجام می‌دهد. مناسب برای متقاضیان تحصیل و افرادی که نیاز به ثبت‌نام راحت و بدون دردسر دارند."
         buttonText="ثبت سفارش پرداخت TOEFL"
-        buttonLink="/toefl-payment"
+        buttonLink="/services/toeflPayment"
         items={toeflWhyUs}
-         theme={themesWhyus.default}
+        theme={themesWhyus.default}
       />
 
       <TextBox
@@ -327,8 +327,8 @@ const ToeflPayment = () => {
         description={`ارزی پلاس علاوه بر پرداخت هزینه، در صورت نیاز راهنمایی مراحل ثبت‌نام TOEFL و انتخاب تاریخ و مرکز آزمون را به شما ارائه می‌دهد. توجه داشته باشید که انتخاب نهایی زمان و مرکز آزمون باید در سایت رسمی TOEFL انجام شود.`}
         buttons={[
           {
-            text: "راهنمای ثبت‌نام",
-            href: "/support",
+            text: "ثبت نام tofel",
+            href: "/services/toeflPayment",
             variant: "primary",
             icon: <FaShieldAlt />,
           },
@@ -391,7 +391,7 @@ const ToeflPayment = () => {
         buttons={[
           {
             text: "تماس با پشتیبانی",
-            href: "/support",
+            href: "/contact",
             variant: "outline",
             icon: <FaEnvelope />,
           },
@@ -408,7 +408,7 @@ const ToeflPayment = () => {
         description="پرداخت امن، سریع و شفاف هزینه آزمون TOEFL. ثبت سفارش کنید تا تیم ما  انجام دهد."
         button={{
           text: "ثبت سفارش پرداخت TOEFL",
-          href: "/toefl-payment",
+          href: "/dashboard#services",
           variant: "primary",
           icon: <FaRocket />,
         }}

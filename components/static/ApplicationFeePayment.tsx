@@ -129,8 +129,7 @@ const ApplicationFeePayment = () => {
     {
       id: "complete",
       title: "سفارشت انجام شد!",
-      description:
-        "خب این هدف هم تیک خورد ",
+      description: "خب این هدف هم تیک خورد ",
       icon: <FaRocket />,
     },
     {
@@ -246,14 +245,14 @@ const ApplicationFeePayment = () => {
         buttons={[
           {
             text: "همین حالا پرداخت کن",
-            href: "/register",
-            variant: "primary",
+            href: "/services/ApplicationFeePayment",
+            variant: "secondary",
             icon: <FaExplosion />,
           },
         ]}
         media={{
           type: "image",
-          src: "https://arziPlus.s3.eu-north-1.amazonaws.com/Desktop/38-min.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=ASIAUQ73WRGQUNKO7MEP%2F20251012%2Feu-north-1%2Fs3%2Faws4_request&X-Amz-Date=20251012T105744Z&X-Amz-Expires=300&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEIP%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCmV1LW5vcnRoLTEiRzBFAiAV27zgxLAgZbw70PG%2B3l0sRJbOTed4X4ZMqXhZi51kJQIhAJFrQlK9vXl945yjdT3l428Wdjhmimd1bJaxbVKr4l%2BaKtYCCCwQABoMMzExMzc2MTIwMjI1IgwPDCBmL%2B0tdSihps4qswI1ounhrYjAg%2BhSdwkKVodiFW3PE%2ByT3sZNQ7Og4hpefLRrR04u5uM9Tx2vtFoA%2B1U7NAuuD%2FMXpMIzrhDkOecG92Kvc73wtkaejjnQaP6pK1l6%2Fc0SzHHpbYBm07OuvVLlU2HtGDAIKOiy8GKnJazTnjbsVRcFc5pt9x%2F6PP8TfDkK%2BRO%2FDE1gRB9Cy7SXgDpkvuDcpkQegtH48DSdaM2aYfsFF1SQLDaE0Oqs6YLbMHdeiwmZT2gq%2FHe4QavtPD80SrpX8tisObxQHvo%2BEH6xfXsMDSr2vFxKexuFeNXiLH9AJPU0pE03swfkt0qQu%2FRDn9ww6znqnyZxS4x4pqUvnlTfeCpLmWFyb1N7udOQPLYTGd6xhEpNcQP5NvtxNTFsBMX0QBlsdFn1OD2fyLUYI77DMJLyrccGOq0CUAZLFpO5agT0ze2FuWWikJbGdkDEsA5q%2Blo6QMZCo6y5KjgPc5pDC4RhQJBJu7eog%2FVouxYYceuYW1KpeuOU8tjM91JuBdTdxXmMmNEVvHa8nm7Q%2Fg0eSAIGvxRD5SB%2Bl%2BlxopX1AYUE8LonmFW6IWi5urgDkDJKOOg00eDDNDcZxei0WTqwuCUesxhSb3e%2BLPEAIyoFqTDeWEZt7HHpy%2BNn8N6yx25EtfOIbqr6L8LLz3QhexI7oyXhCHAGiSd8%2F9Q2vz8JRhOgXwkZQsDqbt0ghsA9vHGXZIqiG0BSrtzQVHb8xNhh5L21ugHNGhtegw5HdOd1Y5tSIVgC90nTboSet6gk%2FLMguNeyBErCHePbHQXq3H8nsGuxzSI7aQrJRk7z5Wx9ktjUIK7fzQ%3D%3D&X-Amz-Signature=f3fa715c165e2cbb4fae2281a74aa14cfda47fa09fd069941e1730c693817be4&X-Amz-SignedHeaders=host&response-content-disposition=inline",
+          src: "https://arziplus.storage.c2.liara.space/images/pages/38-min.png",
           alt: "پرداخت اپلیکیشن فی با ارزی پلاس",
           width: 1200,
           height: 800,
@@ -286,9 +285,9 @@ const ApplicationFeePayment = () => {
         heading="مزایای پرداخت اپلیکیشن فی با ارزی پلاس"
         description="با ارزی پلاس که هزینه‌های دانشگاه رو پرداخت می‌کنی، خیالت راحته! چون: با پرداخت هزینه اپلیکیشن فی، انگیزه‌ات رو به دانشگاه نشون میدی؟ فرصت درس خوندن توی بهترین دانشگاه‌های دنیا رو الکی از دست نده!"
         buttonText="پرداخت کن"
-        buttonLink="/application-payment"
+        buttonLink="/services/ApplicationFeePayment"
         items={appWhyUs}
-         theme={themesWhyus.default}
+        theme={themesWhyus.default}
       />
 
       <TextBox
@@ -315,8 +314,8 @@ const ApplicationFeePayment = () => {
         buttons={[
           {
             text: "ثبت سفارش پرداخت آزمون",
-            href: "/exams",
-            variant: "primary",
+            href: "/services/ApplicationFeePayment",
+            variant: "red",
             icon: <FaShield />,
           },
         ]}
@@ -360,7 +359,7 @@ const ApplicationFeePayment = () => {
         buttons={[
           {
             text: "تماس با پشتیبانی",
-            href: "/support",
+            href: "/contact",
             variant: "outline",
             icon: <FaEnvelope />,
           },
@@ -377,8 +376,8 @@ const ApplicationFeePayment = () => {
         description="  ارزی پلاس با سرعت، امنیت و کارمزد کم، اپلیکیشن فی دانشگاه خارجی‌ات را مدیریت می‌کند."
         button={{
           text: "پرداخت کن",
-          href: "/application-payment",
-          variant: "primary",
+          href: "/dashboard#services",
+          variant: "outline",
           icon: <FaRocket />,
         }}
         theme={ctaThemes.primary}

@@ -25,10 +25,9 @@ import FAQSection from "../global/faqSection";
 import CTABanner from "../global/ctaBanner";
 import { FaMedal, FaLock } from "react-icons/fa";
 import HeroSplitSection from "../global/heroSplitSection";
+import { FaSimCard } from "react-icons/fa";
 
 const MalaysianSimCard = () => {
-   
-
   const simSteps = [
     {
       id: "activation",
@@ -133,14 +132,14 @@ const MalaysianSimCard = () => {
         buttons={[
           {
             text: "خرید سیمکارت مالزی",
-            href: "/register",
-            variant: "primary",
+            href: "/services/MalaysianSimCard",
+            variant: "secondary",
             icon: <FaExplosion />,
           },
         ]}
         media={{
           type: "image",
-          src: "https://arziplus.s3.eu-north-1.amazonaws.com/Desktop/42-min.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=ASIAUQ73WRGQWYPYJQ3D%2F20251013%2Feu-north-1%2Fs3%2Faws4_request&X-Amz-Date=20251013T150915Z&X-Amz-Expires=300&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEJ%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCmV1LW5vcnRoLTEiRjBEAiBExKUN2jgRauhVTrv5YPheevlP8si2e0KfWxI%2FOuDM%2BgIgdEuxRZg1soB2l0CgIKi6yzCX81JvL6ZimpL%2Bczx5KoQq1gIISBAAGgwzMTEzNzYxMjAyMjUiDNqV9E%2FkGZ%2BQRDL8BiqzAr3%2F57Glb0Z2VA4VUjc5PQBEez76nO1e0SPmFMy1pdaI%2F0ffG4uoR0keBeGBYpKFh8xU9kMgFbJlDl%2FORzqG9gfZL6Fdk0TRWxNcbQ6xculWs7QiEZtsxpqMffjCUEij00MtTPXLzZeHs%2FJoPmDtCQUNTDHuX672U3Dp0SXMP4HBkSCr4wefr1Bj%2F6avlajhgScpg%2B3FAYtshwIhxbYCWhxO1%2F5oJL60Qm4jNI84%2BRUM4bpWWXmspg%2FDsTQJQjv0%2B4x4y5JqWPg0kxPgJ9Oe%2BIytZ16hBLHMiVxXK1EaYY73UCuVZvFWF23mKTJ8gcmCW1QBxREW0G7dVVHx3ynN5RF9RC3Ju9wZ0qKSBG1QnZbSmVUp09zSrYLDsU63sBD6Qw4LIVB4hWrEekEYgpzFamTQ0hIwn%2FezxwY6rgLFYH8HDhb3HEjpzHF9KUAnGBw4ArczJXjwyI5aPkKXl2S8wNDEZpoX9L2S8NkABvkh1hDXNrzfQbSUJugfE5zMnAGl9ulRws5d2UaQmbwSz4hur89ve8brUHKZlM1GX0G%2BapJlQu1%2FLfDOLXjVxX2lqxO4Yqsii8wlQ8vEvs7qhONGQgVFx0ZzAwe%2F%2FSjUEZkO6ek%2F4SApjVN4hV8dbKg4PNXyXP93o3%2FqbvQXW%2F8pzWlzfiK3BgayVTOUEDH4Cg8kdFcTT3Dd8AFicpunuK95vdcek67EQFiCY3DuXhDOMW1z4cO5dn1un3qn48Bz2uag0ogImtb9IkRQDOoM28i%2FNXsgQQOr%2FyJZ1x%2FmL60y7bDIjgnnrS5D%2FDDeck3O%2FY21AXI3hnCXiI2K8TS%2BvQ%3D%3D&X-Amz-Signature=35d32b040095896af267f7a1853dfa0774028b353c236530405f7290aee0ac35&X-Amz-SignedHeaders=host&response-content-disposition=inline",
+          src: "https://arziplus.storage.c2.liara.space/images/pages/42-min.png",
           alt: "سیمکارت مالزی Celcom و XOX با ارزی پلاس",
           width: 1200,
           height: 800,
@@ -173,13 +172,11 @@ const MalaysianSimCard = () => {
         heading="سیمکارت های مالزی"
         description="سیمکارت های اپراتور Celcom و XOX مالزی دارای آنتن دهی مناسب در مراکز استان‌های ایران می‌باشند. این سیمکارت ها برای وریفای حساب های بانکی و وریفای اکانت به عنوان شهروند مالزی استفاده ویژه ای دارند. سیمکارت های مالزی به صورت فیزیکی و به نام متقاضی صادر می‌شود و به به آدرس متقاضی در ایران ارسال می شود. قابلیت ارسال و دریافت پیام‌های بین المللی."
         buttonText="خرید سیمکارت"
-        buttonLink="/malaysian-sim"
+        buttonLink="/services/MalaysianSimCard"
         items={simWhyUs}
         buttonColor="bg-indigo-700 hover:bg-indigo-800 text-white"
         theme={themesWhyus.default}
       />
-
-  
 
       <HeroSplitSection
         heading="چرا ارزی پلاس؟"
@@ -187,10 +184,10 @@ const MalaysianSimCard = () => {
         description="ارزی پلاس با سابقه چندین ساله، تضمین امنیت تراکنش‌ها و نرخ رقابتی، بهترین گزینه برای نقد کردن پی‌پال است."
         buttons={[
           {
-            text: "ثبت درخواست نقد کردن",
-            href: "/cashing-paypal",
-            variant: "primary",
-            icon: <FaShieldAlt />,
+            text: "خرید سیم کارت مالزی",
+            href: "/services/MalaysianSimCard",
+            variant: "secondary",
+            icon: <FaSimCard />,
           },
         ]}
         imageSrc="/assets/images/cash-paypal-2.webp"
@@ -229,7 +226,7 @@ const MalaysianSimCard = () => {
         buttons={[
           {
             text: "تماس با پشتیبانی",
-            href: "/support",
+            href: "/contact",
             variant: "outline",
             icon: <FaEnvelope />,
           },
@@ -246,8 +243,8 @@ const MalaysianSimCard = () => {
         description="  ارزی پلاس با سرعت، امنیت و کارمزد کم، سیمکارت مالزی را مدیریت می‌کند."
         button={{
           text: "خرید سیمکارت مالزی",
-          href: "/malaysian-sim",
-          variant: "primary",
+          href: "/dashboard#services",
+          variant: "ghost",
           icon: <FaRocket />,
         }}
         theme={ctaThemes.primary}

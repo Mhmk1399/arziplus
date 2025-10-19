@@ -215,13 +215,13 @@ const PrometricPayment = () => {
         buttons={[
           {
             text: "ثبت سفارش پرداخت آزمون پرومتریک",
-            href: "/register",
+            href: "/services/prometricPayment",
             variant: "secondary",
           },
         ]}
         media={{
           type: "image",
-          src: "https://arziPlus.s3.eu-north-1.amazonaws.com/Desktop/30-min.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=ASIAUQ73WRGQYHU7NOIQ%2F20251012%2Feu-north-1%2Fs3%2Faws4_request&X-Amz-Date=20251012T105251Z&X-Amz-Expires=300&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEIP%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCmV1LW5vcnRoLTEiRjBEAiApZI0zu1onLtBtbjAslqw8FqEBv82Ftfnp5IWcTqOUoAIgdmSvQfFPSyHDc%2Bi8nYzC1JR6Ii2hEXgtI7zL4Aam6ucq1gIILBAAGgwzMTEzNzYxMjAyMjUiDOqAbWHJCVjuN4F8miqzAsd7ywP9NBmgcWBY9E%2F0YzLKlfYqeCtsj4vASYNThdijPTc1EypJaEhUNBtgh6xO6ttjqEyj8uX%2FaBm9xhIUjDRuHtXAgeeQ8%2B3sLUjVSAzMxmBODfPtCwvMbdgV5nzQqFUE391cmE%2F%2FhJ2tyoxv9NPEwQp%2BPh3KHD3C%2Fu%2FeE%2FEsMfy9xwlcnh3x3MIF90g0Sy%2FniyOnw4Ow1bWTEXrXAjR85jSmaNWShfsSBMnXGyzqTYSmKKwduTLtbU4qMtVa55fmB7dd%2FGpWztpN0J7zCls659J%2Fp8ZUA9b6%2BBEKFZaaYZ%2FuVsieyfHSxh9TpWOFpM2TlCW7q79LOla%2BwOxGhcpTicDxMFYTYcRGgqVB5JWIDBXiiqmh7t6yjNaEdJ6aTzjg41yPdCLZuctt6HcIhyZb7bAwkvKtxwY6rgIN1qAPLXJmCQ0GTT2PhIGhg8Bv%2F7aPwWaC0PVYT22Aq6fdnRsQTj2fyPbM%2B8vpDiZtjHvAwxpZ8%2Bu34v54e2fKQWZzAZNvH9F8hH4otFre1Z1%2B1VvPQLsOoIOjDAQEAUujxQ5%2BCs3sn6hOdK7DNi%2BKYzu%2FYROsup82g9PBEOFZ0kNIqtNQBkqTqi3e9L7jAwGKYS5nwh7arWxx37FNGpNromzJ%2BZRscOQK%2Fl%2FP7Cv%2BIb15Hkehtt%2B6aOvGO9v1Dqah5UKdwnIMYXj5tWHnXFqOdFHHjmXMAXCjEkCal42SxQwlIoUXyRZnoy9B5h%2BJNChLpq8zs8bSUkTV%2BG5hxp1l%2BoZ%2FPnMsYo9QAPYcnii%2FCQcLWubT5nCv4hflcDAqOUoYcQGVZnxZ%2Btp1HpZ6CQ%3D%3D&X-Amz-Signature=4d7d294bfa757d34ab015c711208057a2d04bd621c0125889fecd1e7afba396c&X-Amz-SignedHeaders=host&response-content-disposition=inline",
+          src: "https://arziplus.storage.c2.liara.space/images/pages/30-min.png",
           alt: "پرداخت هزینه آزمون پرومتریک با ارزی پلاس",
           width: 1200,
           height: 800,
@@ -251,7 +251,7 @@ const PrometricPayment = () => {
         description="تجربه‌ای سریع، مطمئن و بدون دردسر در پرداخت هزینه‌های بین‌المللی"
         items={prometricWhyUs}
         buttonText="ثبت سفارش پرداخت آزمون"
-        buttonLink="/prometric-payment"
+        buttonLink="/services/prometricPayment"
         theme={themesWhyus.default}
       />
 
@@ -272,7 +272,7 @@ const PrometricPayment = () => {
         buttons={[
           {
             text: "تماس با پشتیبانی",
-            href: "/support",
+            href: "/contact",
             variant: "outline",
             icon: <FaEnvelope />,
           },
@@ -287,7 +287,7 @@ const PrometricPayment = () => {
         description="پرداخت سریع و امن هزینه آزمون پرومتریک با پشتیبانی کامل تیم ارزی پلاس"
         button={{
           text: "ثبت سفارش پرداخت آزمون",
-          href: "/prometric-payment",
+          href: "/dashboard#services",
           variant: "primary",
           icon: <FaRocket />,
         }}

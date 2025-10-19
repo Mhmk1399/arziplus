@@ -216,14 +216,14 @@ const DepositFeePayment = () => {
         buttons={[
           {
             text: "همین حالا پرداخت کن",
-            href: "/register",
-            variant: "primary",
+            href: "/services/depositFeePayment",
+            variant: "secondary",
             icon: <FaExplosion />,
           },
         ]}
         media={{
           type: "image",
-          src: "https://arziPlus.s3.eu-north-1.amazonaws.com/Desktop/37-min.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=ASIAUQ73WRGQV2B4JUO4%2F20251012%2Feu-north-1%2Fs3%2Faws4_request&X-Amz-Date=20251012T105653Z&X-Amz-Expires=300&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEIP%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCmV1LW5vcnRoLTEiRzBFAiAxM0dtp9J%2BYfkrIc7adFy00pqyA4KDceHx2Bak7mcOnwIhAJw3sXs1ad3GbYTpRGBXlvbgApBGjk3VEOZHhzZsdT3bKtYCCCwQABoMMzExMzc2MTIwMjI1IgxmPFH4jpziAith%2Br4qswJCZlJvry0MAnJtk1S1DfKhQ0o0NQYKpsu9eColIViSRa2YwTOGhgVbyA3TDzS4lJ5wjezacVJMClmulH97WqGA0%2FTf7OtnKWx6ANbHZp9wdv1B8IjFF9jeg136j60qhHzRdgtFiYRqdqP5%2B7iMiWGHeVuhnTfvVV9Bte6ug%2F1mxiZxIgdwekUPaDK618e%2FS3JxHlbkyAYyiBR6qSpkTnz%2FXv8hjlQMMENTvKAAN1TuPY9xU2UQZZTol1Rz3aI703tF%2BZ5WveIbTu2lZu2zZnglMr9KlxlZHHsv5Q0a0ztc7qaPbGHPzRbpKc5giBCspnKx24z28%2Btn5kFEqzQxS94mMJolU9aKqHFBeiPztOP69GAkoURLRlpmUgO2DQEfSWKrXbXR%2B0GOjP1IaxNVH4QuAmROMJLyrccGOq0CQgPUUqpBvakcqWLb2uBrbtG2y4fXjRjg3o%2FGZYKR%2FY90xqDT00w8QGs6mwH%2BkPP%2FHIwH%2FCOE1i9zj202T1C8NRoWh4HY4KQEht8S1ZSVCdn5XFe94QPOI6Wi2G2PBCIZO1LwDLHAHQSwPygSIm4GThUZ1EkqfHC0GVlCnLQvjv5f97vhBPKAQudjtRJ6wz2aAEMANYZIKcXysQbGjiXJQhMXw57VdeZv5lA63pKgBgWC2HlLbhYxg8D27Iw%2F4coQtqb9t5eXV2dDdNc4fVYRtwkV8bri4J%2Bkja57imFabFZH%2ByFIK5ATuGUyk0V0bae2SBQRn6xpsAfHNhT%2FEFlmaIkIsvSv%2FQWzQJxvdA1M6VGPDlkZxKslw9qzuQUTDCv1VRDPSNYK07mW%2Fcz8xw%3D%3D&X-Amz-Signature=c17988d0e1b7d7a081ee2bae2133f23b2e6a84331f53be7de46c1aa7f1232478&X-Amz-SignedHeaders=host&response-content-disposition=inline",
+          src: "https://arziplus.storage.c2.liara.space/images/pages/37-min.png",
           alt: "پرداخت دیپازیت فی با ارزی پلاس",
           width: 1200,
           height: 800,
@@ -256,9 +256,9 @@ const DepositFeePayment = () => {
         heading="مزایای پرداخت دیپازیت فی در ارزی پلاس"
         description="با ارزی پلاس پرداخت هزینه‌های دانشگاهت ساده می‌شه... می‌خوای توی دانشگاه‌های خارج از کشور درس بخونی؟ توی این مسیر هر پرداختی داری، با خیال راحت بسپار به ما."
         buttonText="پرداخت کن"
-        buttonLink="/deposit-payment"
+        buttonLink="/services/depositFeePayment"
         items={depositWhyUs}
-         theme={themesWhyus.default}
+        theme={themesWhyus.default}
       />
 
       <TextBox
@@ -285,7 +285,7 @@ const DepositFeePayment = () => {
         buttons={[
           {
             text: "ثبت سفارش پرداخت آزمون",
-            href: "/exams",
+            href: "/services/depositFeePayment",
             variant: "primary",
             icon: <FaShield />,
           },
@@ -330,7 +330,7 @@ const DepositFeePayment = () => {
         buttons={[
           {
             text: "تماس با پشتیبانی",
-            href: "/support",
+            href: "/contact",
             variant: "outline",
             icon: <FaEnvelope />,
           },
@@ -347,7 +347,7 @@ const DepositFeePayment = () => {
         description="   ارزی پلاس با سرعت، امنیت و کارمزد کم، دیپازیت فی دانشگاه خارجی‌ات را مدیریت می‌کند."
         button={{
           text: "پرداخت کن",
-          href: "/deposit-payment",
+          href: "/dashboard#services",
           variant: "primary",
           icon: <FaRocket />,
         }}

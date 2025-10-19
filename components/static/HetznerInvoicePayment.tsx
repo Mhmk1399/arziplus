@@ -300,14 +300,14 @@ const HetznerInvoicePayment = () => {
         buttons={[
           {
             text: "پرداخت فاکتور هتزنر",
-            href: "/register",
+            href: "/services/HetznerInvoicePayment",
             variant: "primary",
             icon: <FaExplosion />,
           },
         ]}
         media={{
           type: "image",
-          src: "https://arziPlus.s3.eu-north-1.amazonaws.com/Desktop/41-min.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=ASIAUQ73WRGQUPBUHDKN%2F20251012%2Feu-north-1%2Fs3%2Faws4_request&X-Amz-Date=20251012T105942Z&X-Amz-Expires=300&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEIP%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCmV1LW5vcnRoLTEiRzBFAiEAuRDGOFTKNXTYJo12gcVh5FlSwTsl4nM0xqvBdQHThxQCIAS1jh0BboBdXayPf6rELkI64%2B1617BSR%2F3fxPohV2DOKtYCCCwQABoMMzExMzc2MTIwMjI1Igwj57Ez83j%2BfAdewRcqswLKSD%2FtxsTDKM9nv0NOTWdxh%2F0B5f1FkSNdcQdwYYJjJjXy0iF968eOghVfa5CTc1p%2BACMvm5hmEA4nW87YEpGmi3X%2BLBsyPFbm5gZ3l2nOyWlMp4xrWZdbVZLPrftk1y5WIMhGp6bH8kRnR5RoF%2F3CiR2cB0sIfh0LdUs1jEftXPc1KN%2BjEMdX6WjKx8ZS0qzD%2Bd4WMe%2FbVRcXM2jOn3r%2F%2BdHFfkGyws0LuOX6G5QFmiBsRKHCHzFnH%2FUzcbR%2FuxyDWS1T3Pf9AlEs%2FbqodfVo3qAtS7sVm6B9fr%2B%2BPrlIzUT0dBqFA2FtEFe0fND%2BSBk6GmMxyu34gyoHfa8%2FDJAr3Zq1e6bec%2BIJmPJ8rUebuOpmtVXkATh33sUqsbMEq3yHbQ20sWivOV0ukyEMSrb9aIWrMJLyrccGOq0C1wa8hs6QNe0Ru3K14dRSKFlTmjeW%2Bn5vLNlryzUFiztlWdksFd0oCIdKNkW%2FgdlrFbJPd0LVGEXrJYd5VoYlpY%2B%2BaST5fP44myCTw4njea%2FhZDnM3zPE%2FLQL9SAQgl47dbuL33oAO4wD1gazZV0zvP4EvoSeNaVyqn%2FtbHkG9avv0mhPSz3uPWWIBwEOMgzqgXQR8MvC2HrZdQyEVJDmyZsMjH%2BmWmqcxAgeUdkQZs%2Fs3ip8pP4rCuCgLAFmc%2B%2Frv8GQoGalMIH6w3ILrvlyYAolGFGch9vJpj7lYjSfYOn4EbB%2B%2FiiOggBI8LNlXCZ8rl%2F%2Fmwnyw7Y9uYugiFZk4Hj8ov1Za3OteCV8rhHojEBMJpJx2QbmE%2Bc3Ys%2BP57toxnzWogAppIC8tq64FA%3D%3D&X-Amz-Signature=eb91831ff0e7480161f4e1fbcae1dff3929164e234724e75412fd0cc95a4d4f4&X-Amz-SignedHeaders=host&response-content-disposition=inline",
+          src: "https://arziplus.storage.c2.liara.space/images/pages/41-min.png",
           alt: "پرداخت فاکتور هتزنر با ارزی پلاس",
           width: 1200,
           height: 800,
@@ -340,7 +340,7 @@ const HetznerInvoicePayment = () => {
         heading="مزایای پرداخت هزینه فاکتور هتزنر در ارزی پلاس"
         description="ارزی پلاس، خرید هاست و دامنه رو به یک تجربه لذت‌بخش تبدیل کرده؛ چون که... ارزی پلاس، خرید هاست و دامنه رو به یک تجربه لذت‌بخش تبدیل کرده؛ چون که..."
         buttonText="پرداخت کن"
-        buttonLink="/hetzner-payment"
+        buttonLink="/services/HetznerInvoicePayment"
         items={hetznerWhyUs}
          theme={themesWhyus.default}
       />
@@ -369,7 +369,7 @@ const HetznerInvoicePayment = () => {
         buttons={[
           {
             text: "ثبت سفارش پرداخت آزمون",
-            href: "/exams",
+            href: "/services/HetznerInvoicePayment",
             variant: "primary",
             icon: <FaShield />,
           },
@@ -414,7 +414,7 @@ const HetznerInvoicePayment = () => {
         buttons={[
           {
             text: "تماس با پشتیبانی",
-            href: "/support",
+            href: "/contact",
             variant: "outline",
             icon: <FaEnvelope />,
           },
@@ -431,7 +431,7 @@ const HetznerInvoicePayment = () => {
         description="   ارزی پلاس با سرعت، امنیت و کارمزد کم، فاکتور هتزنر را مدیریت می‌کند."
         button={{
           text: "پرداخت کن",
-          href: "/hetzner-payment",
+          href: "/dashboard#services",
           variant: "primary",
           icon: <FaRocket />,
         }}

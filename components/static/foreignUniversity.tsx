@@ -280,13 +280,13 @@ const UniversityTuitionPayment = () => {
         buttons={[
           {
             text: "همین حالا پرداخت کن",
-            href: "/register",
+            href: "/services/Paying-tuition-fees-at-a-foreign-university",
             variant: "red",
           },
         ]}
         media={{
           type: "image",
-          src: "/assets/images/univercity.png",
+          src: "https://arziplus.storage.c2.liara.space/images/pages/36-min.png",
           alt: "پرداخت شهریه دانشگاه خارجی با ارزی پلاس",
           width: 1200,
           height: 800,
@@ -325,7 +325,7 @@ const UniversityTuitionPayment = () => {
         heading="مزایای پرداخت شهریه دانشگاه خارجی با ارزی پلاس"
         description="با ارزی پلاس که هزینه‌های دانشگاه رو پرداخت می‌کنی، خیالت راحته! چون: اینجا می‌تونی، تمام پرداخت‌های مربوط به تحصیل در خارج از کشور رو انجام بدی. اگه هدفت درس خوندن توی بهترین دانشگاه‌های دنیاست، الان وقتشه."
         buttonText="پرداخت کن"
-        buttonLink="/tuition-payment"
+        buttonLink="/services/Paying-tuition-fees-at-a-foreign-university"
         items={tuitionWhyUs}
         theme={themesWhyus.default}
       />
@@ -353,7 +353,7 @@ const UniversityTuitionPayment = () => {
         buttons={[
           {
             text: "ثبت سفارش پرداخت آزمون",
-            href: "/exams",
+            href: "/services/Paying-tuition-fees-at-a-foreign-university",
             variant: "primary",
             icon: <FaShield />,
           },
@@ -398,7 +398,7 @@ const UniversityTuitionPayment = () => {
         buttons={[
           {
             text: "تماس با پشتیبانی",
-            href: "/support",
+            href: "/contact",
             variant: "outline",
             icon: <FaEnvelope />,
           },
@@ -415,7 +415,7 @@ const UniversityTuitionPayment = () => {
         description="پرداخت کن و به هدف‌های تحصیلی‌ات برس. ارزی پلاس با سرعت و امنیت."
         button={{
           text: "پرداخت کن",
-          href: "/tuition-payment",
+          href: "/dashboard#services",
           variant: "primary",
           icon: <FaRocket />,
         }}

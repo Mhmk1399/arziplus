@@ -94,35 +94,35 @@ const WiseCharge = () => {
     {
       id: 1,
       icon: <FaGlobeAmericas size={32} />,
-       title: "ارسال و دریافت بین‌المللی با وایز",
+      title: "ارسال و دریافت بین‌المللی با وایز",
       description:
         "وایز (Wise) بستری امن و ارزان برای انتقال پول بین‌المللی است؛ با شارژ حساب در ارزی پلاس می‌توانید پرداخت‌های برون‌مرزی خود را سریع انجام دهید.",
     },
     {
       id: 2,
       icon: <FaPercentage size={32} />,
-       title: "کارمزد پایین و نرخ رقابتی",
+      title: "کارمزد پایین و نرخ رقابتی",
       description:
         "نرخ تبدیل و کارمزد خدمات در ارزی پلاس شفاف و اقتصادی است؛ هزینه‌ها پیش از انجام تراکنش به‌صورت کامل نمایش داده می‌شوند.",
     },
     {
       id: 3,
       icon: <FaClock size={32} />,
-       title: "سرعت انجام تراکنش",
+      title: "سرعت انجام تراکنش",
       description:
         "اغلب تراکنش‌ها ظرف ۱ تا ۳ ساعت انجام می‌شود و در موارد معمولاً کمتر از چند ساعت تکمیل می‌گردد.",
     },
     {
       id: 4,
       icon: <FaLock size={32} />,
-       title: "امنیت و محرمانگی اطلاعات",
+      title: "امنیت و محرمانگی اطلاعات",
       description:
         "اطلاعات حساب و تراکنش‌ها در ارزی پلاس با استانداردهای امنیتی مدیریت می‌شود و محرمانگی کامل رعایت می‌شود.",
     },
     {
       id: 5,
       icon: <FaHeadset size={32} />,
-       title: "پشتیبانی و مشاوره اختصاصی",
+      title: "پشتیبانی و مشاوره اختصاصی",
       description:
         "قبل از انتقال مبالغ بالا می‌توانید از مشاورهٔ رایگان کارشناسان ما برای کاهش ریسک و انتخاب بهترین روش استفاده کنید.",
     },
@@ -247,20 +247,20 @@ const WiseCharge = () => {
   return (
     <div>
       <HeroSection
-        heading="شارژ حساب وایز (Wise) در ایران — سریع، امن و با کارمزد مناسب"
+        heading="شارژ حساب وایز (Wise) در ایران   سریع، امن و با کارمزد مناسب"
         subheading="شارژ آنی حساب وایز با ارزی پلاس"
         description={`ارزی پلاس ارائه‌دهندهٔ سرویس شارژ حساب وایز در ایران است. با خدمات ما می‌توانید بدون نیاز به حساب ارزی، حساب وایز خود را شارژ کرده و به‌راحتی پول ارسال یا دریافت کنید. خدمات ما شامل پرداخت سریع، نرخ‌های شفاف و پشتیبانی تخصصی است که تجربهٔ امن و مطمئنی برای کاربران فراهم می‌کند.`}
         buttons={[
           {
             text: "شارژ سریع حساب وایز",
-            href: "/register",
+            href: "/services/charge-wise-account",
             variant: "secondary",
             icon: <FaExplosion />,
           },
         ]}
         media={{
           type: "image",
-          src: "https://arziPlus.s3.eu-north-1.amazonaws.com/Desktop/18-min.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=ASIAUQ73WRGQUUDOL5QN%2F20251012%2Feu-north-1%2Fs3%2Faws4_request&X-Amz-Date=20251012T095303Z&X-Amz-Expires=300&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEIL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCmV1LW5vcnRoLTEiRjBEAiBXtYOL4KzukItKW5cR06TECtEWmkaI3TidbrFQH86OXAIgKko%2FfYGv3y%2F9FnCTE8qnqOoB%2BlXOmAF%2FzAmZuVwGWz0q1gIIKxAAGgwzMTEzNzYxMjAyMjUiDB7Y3t%2Bar%2FCrii3AvSqzAnHLh6gk6p2Jez9yo%2F84PgH%2FWb9ZNf8PVjj72WI40Z1NNx7QfeywUw491EK56YJXmyyaWw1%2FlYLoI3GmmqVRcj%2BaBh5C%2FOWIkqul7vr4XkTksVLT4zkSXjhUK1mxRYi9%2BdZ3Qv5p1%2F1mlsgV2X%2FoYpYLjEMypFKfRYpJhZPbSQEhot28za3HCQZn0JZk8Ltf9uL6I1v%2BerRG%2Fsxh7NN7DbqXEEsjc%2BoiTbbq8m7xErr9z4u0y7%2BW4RixvFpE3qcMxPH5pPusGQuGDRHkilS%2FUo06dVDPnUFWJwRCIzgCUL6VleL3vZ5wopEKYEKKGyjOyZEzBRF%2BBxg7zq4FPxtXKWCew00a99w3HL%2BiHpANrdFGE7rkO58nr1R994Mpbok2a5tcUgjaVlb5wZNKI95w2OtwupMwkvKtxwY6rgKHUBs7LkdPKSSMrgcPgR%2B4pCCGtyONHpe5L4bq7JbROknolB%2BEwUtjNxTotEafRFRUwUrUQ7hEU0TCqHC64eOCl1DDw2MfmSIEUMEJmL7I8s%2Fr633kXmNzNGGL9V2n6bAnzt%2Bau4WLk7HjmQdrZ7UcvlWh6HHkGijd%2FcMgxA7fItq0DmkJJwNskemAFkXyuV2yfiGNtz0M8EY51KgHK4wM5jwEs6Q5Vex1cSeK1Zl%2B6UMGtWC7WKvfwOXToZmIe6qbk85rWVzUBudeRjgxnjhUss%2BCEe35uiU3CpB7Mt150hvn3QAYyq7bGZ1kVNHpWpRoIe3oauIBFyw9da0T0D0S9boJxFgrciFDI3aenGwAT7aCs9C1gbm7dZNSPCNLB3JOmx0pb47%2BLul%2BppYQjQ%3D%3D&X-Amz-Signature=74daed03c24e9dbc9ef422f2aea7f06802c5eadadf970fa8aeb2d23a479a92f2&X-Amz-SignedHeaders=host&response-content-disposition=inline",
+          src: "https://arziplus.storage.c2.liara.space/images/pages/18-min.png",
           alt: "شارژ حساب وایز در ارزی پلاس",
           width: 1200,
           height: 1200,
@@ -293,9 +293,9 @@ const WiseCharge = () => {
         heading="مزایا و کاربردها"
         description="با شارژ حساب وایز از ارزی پلاس می‌توانید انتقال وجه، دریافت درآمدهای ارزی و پرداخت‌های بین‌المللی را به‌راحتی انجام دهید. برخی از کاربردهای متداول عبارت‌اند از:"
         buttonText="شارژ حساب وایز"
-        buttonLink="/wise-topup"
+        buttonLink="/services/charge-wise-account"
         items={wiseItemsWhyus}
-         theme={themesWhyus.default}
+        theme={themesWhyus.default}
       />
       <TextBox
         heading="شارژ حساب وایز"
@@ -321,7 +321,7 @@ const WiseCharge = () => {
         buttons={[
           {
             text: "ثبت سفارش شارژ وایز",
-            href: "/wise-topup",
+            href: "/services/charge-wise-account",
             variant: "primary",
             icon: <FaShieldAlt />,
           },
@@ -397,7 +397,7 @@ const WiseCharge = () => {
         buttons={[
           {
             text: "تماس با پشتیبانی",
-            href: "/support",
+            href: "/contact",
             variant: "outline",
             icon: <FaEnvelope />,
           },
@@ -414,7 +414,7 @@ const WiseCharge = () => {
         description="شارژ حساب وایز با نرخ شفاف، سرعت بالا و پشتیبانی تخصصی — اکنون ثبت سفارش کنید."
         button={{
           text: "ثبت سفارش شارژ وایز",
-          href: "/wise-topup",
+          href: "/dashboard#services",
           variant: "primary",
           icon: <FaRocket />,
         }}

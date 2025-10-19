@@ -166,34 +166,35 @@ Take the Test: شروع آزمون پس از خرید
     {
       id: 1,
       icon: <FaGlobeAmericas size={32} />,
-       title: "پرداخت بین‌المللی آسان",
+      title: "پرداخت بین‌المللی آسان",
       description:
         "پرداخت‌های Duolingo بدون نیاز به کارت بین‌المللی انجام می‌شود.",
     },
     {
       id: 2,
       icon: <FaClock size={32} />,
-       title: "پرداخت سریع",
+      title: "پرداخت سریع",
       description:
         "پرداخت‌ها در کمترین زمان انجام می‌شوند و رسید ارسال می‌شود.",
     },
     {
       id: 3,
       icon: <FaPercentage size={32} />,
-       title: "کارمزد شفاف",
+      title: "کارمزد شفاف",
       description: "کارمزد پیش از پرداخت مشخص می‌شود و هزینه منصفانه است.",
     },
     {
       id: 4,
       icon: <FaLock size={32} />,
-       title: "امنیت کامل تراکنش‌ها",
+      title: "امنیت کامل تراکنش‌ها",
       description: "پرداخت‌ها از طریق حساب‌های امن و مطمئن انجام می‌شوند.",
     },
     {
       id: 5,
       icon: <FaHeadset size={32} />,
-       title: "پشتیبانی کامل",
-      description: "در تمام مراحل ثبت‌نام و پرداخت در کنار شما و  همراهتان هستیم.",
+      title: "پشتیبانی کامل",
+      description:
+        "در تمام مراحل ثبت‌نام و پرداخت در کنار شما و  همراهتان هستیم.",
     },
   ];
 
@@ -244,14 +245,14 @@ Take the Test: شروع آزمون پس از خرید
         buttons={[
           {
             text: "ثبت سفارش پرداخت Duolingo",
-            href: "/register",
+            href: "/services/duolingoPayment",
             variant: "secondary",
             icon: <FaExplosion />,
           },
         ]}
         media={{
           type: "image",
-          src: "https://arziPlus.s3.eu-north-1.amazonaws.com/Desktop/28-min.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=ASIAUQ73WRGQQGXA4BD5%2F20251012%2Feu-north-1%2Fs3%2Faws4_request&X-Amz-Date=20251012T105136Z&X-Amz-Expires=300&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEIP%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCmV1LW5vcnRoLTEiRzBFAiB0Q%2FI9DAVkjqrKWPvHRNowbGpG4gPdwsQb946g1Tn7uAIhAK5gPZMWjbt3dw1zznj1ls%2BAnPQFlFZMiRgpUIls2KOLKtYCCCwQABoMMzExMzc2MTIwMjI1IgwXUqZ0I0sp%2F8%2BQb6EqswJR95Ip01oNlxvWRcwZmLxGu0huE7YxJUI%2Bk8hQ4PZXCkwTn3lX4pb6oveGBsnxE%2F7ol0IXJy1LfNCfo1YLm13CPm7qtpOm3PeZ6O9vNU9kOCcRNuI80N8Va8Vna49o6Ni75tWJgcTZFY%2BBFjuCzYU7EIKLnDLoxT1zrgVibD%2FdfQQ4UG50ydcDVkjqS%2BaDTY1qVIEB3KVUyIA9A66cCnZ4fRTLLeHNAFTzqdpAXj55NCMnul32E%2BJF82%2B0gjbeMjgbIns3FYH03yv0W0JdfmuDQEDqs6n8bqz6CwwZEzN%2BkbWhke5S7duqyPnKh5YR%2BFubR859yMh60vuZLvDAoHGTxVml9HcpVrOWnltC9aDcAKxHBcRdNicQkVzT%2Fy9XTJiX2MqPSXya1g7uET1jGl%2FtL9noMJLyrccGOq0CbAhiXdGw8yGCm5x%2Bedf1iEj6B4FZukrPlTqA%2Bse%2BTde6IkePHEwGKmd2x5nf1oqTMMmJawLXfkZl883ypOIE%2FdIgbTpQ75tvjIi9tnGqvLZQrBY996vFwP00Jn9sQHvcF76Tus0ZmX8aizI47DnNof7%2BO8T0CG7ZkDOwrUzoz8ovbO7nXA5XucFrBfBJdxV2%2FC%2BxmpHUjXHq8ezI2vzWoTbugckLjGnFsANC962qaGzd%2B7xiOTNVg7N1VP%2BmOQ0FKGZu1a%2BxVCGpgSh5PW9WIqTxtBwhsMCOs%2BU1nP0NflwG7mT%2BsDdMdtIVd4oyEd9PKmSWsWlQsj5elChiXW7lQwuE5suLHps1fX7tzEzyCNjvp2GrooEYKvkmE7hfogwHvvYV2vgTAmK2qBUnbQ%3D%3D&X-Amz-Signature=e103769310ee43d9af02c8ffa9d36280c6ee78cd41ca325b5f7724697b2c0481&X-Amz-SignedHeaders=host&response-content-disposition=inline",
+          src: "https://arziplus.storage.c2.liara.space/images/pages/28-min.png",
           alt: "پرداخت هزینه آزمون Duolingo با ارزی پلاس",
           width: 1200,
           height: 800,
@@ -284,9 +285,9 @@ Take the Test: شروع آزمون پس از خرید
         heading="چرا پرداخت Duolingo را به ارزی پلاس بسپارم؟"
         description="پرداخت‌های بین‌المللی Duolingo با امنیت، سرعت و کارمزد شفاف انجام می‌شوند."
         buttonText="ثبت سفارش پرداخت Duolingo"
-        buttonLink="/duolingo-payment"
+        buttonLink="/services/duolingoPayment"
         items={duolingoWhyUs}
-         theme={themesWhyus.default}
+        theme={themesWhyus.default}
       />
 
       <TextBox
@@ -313,7 +314,7 @@ Take the Test: شروع آزمون پس از خرید
         buttons={[
           {
             text: "تماس با پشتیبانی",
-            href: "/support",
+            href: "/contact",
             variant: "outline",
             icon: <FaEnvelope />,
           },
@@ -330,7 +331,7 @@ Take the Test: شروع آزمون پس از خرید
         description="پرداخت امن، سریع و شفاف هزینه آزمون Duolingo. ثبت سفارش کنید تا تیم ما  انجام دهد."
         button={{
           text: "ثبت سفارش پرداخت Duolingo",
-          href: "/duolingo-payment",
+          href: "/dashboard#services",
           variant: "primary",
           icon: <FaRocket />,
         }}

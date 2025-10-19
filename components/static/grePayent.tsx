@@ -215,14 +215,14 @@ GRE Subject (تخصصی)
         buttons={[
           {
             text: "ثبت سفارش پرداخت GRE",
-            href: "/register",
+            href: "/services/grePayment",
             variant: "secondary",
             icon: <FaExplosion />,
           },
         ]}
         media={{
           type: "image",
-          src: "https://arziPlus.s3.eu-north-1.amazonaws.com/Desktop/29-min.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=ASIAUQ73WRGQ7SW6232U%2F20251012%2Feu-north-1%2Fs3%2Faws4_request&X-Amz-Date=20251012T105214Z&X-Amz-Expires=300&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEIP%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCmV1LW5vcnRoLTEiRzBFAiBGghnuUOjFJeo36X3z%2BbJeAvqGk4uiqBMUDLw32PzR%2FgIhALW0gMaCY1bK3XCrmk%2BeerYaPKl6fccEncdfe5J8DHRRKtYCCCwQABoMMzExMzc2MTIwMjI1Igy5lkxP9ifID38KgZ8qswKFoepWh1sFUAyYwIPUVt1g8pK%2Ft7wXgFAxxYtQUjd8ErGAdcY1lde6kMoWgUhfxmI3z4X1gA0GS9kr2xjwmA3ysO%2BP3JKxmZVHVjjPcooo7RoqcfMU1cpDXwvDPJ3sS40l3L%2BbY6A%2FqgIQNzxt9BrbVfcfYiJujknE%2BfbtjyeL2x0G7tqb4eFzLPIGRDGmbbIBzUQHei2XhHGx1nSYOu49hFgmAyRR8mW1zJ6dTysulIBZxJ0NyyfsKFxwnu94hStoOWzm7wbNoN64b3u2B%2F42WsbWGh43e5kgBR%2FsCpj1Px6p82omMWYq9oHw9LSFdC9L6LaIeVcCDoYHnLu1Hu9GTWhhNYd%2BuoeuzS2nLwQa1SkRkGxQYFrrYjM1eGxzcpJLHswQ3n9OcnsRBnDDzPLrxxGVMJLyrccGOq0CclX8BplaSOkGcEoQFMkizRynJW2ZBHgu1AkWVIKba3SjgwdG5cgGfihTO2asouJvcenSEI%2F5UapeIiSEXupT32kcMSDJQ%2FHodmrzn7gqVnB35eqrdoktZKwp9PMXmyTH%2ByDUtL1y72fRopAEyuMcKmzfqzRLAIazObm2KU1tnnd161GkhhvaJNUmQTekuDGPA%2B%2B68dRzqwVBbFI88i4UPaT9rjXs7OotUbZGtlRuq99QlUA8CHtT5QU%2FrbNOMHMUxUoR9BhcZewvWOC3e8P0I19VITbrdrcEz8U2ENqQv3qyxrKmoGAjwZ7incRGmlS%2BF62Ig6R5j3Cxw%2BK00behgbFcniC3Aaga4AOiNLOy%2BLnwaNA1CcQmoPTKEiywYl3Z5himB0%2F0ftACh%2FJsyA%3D%3D&X-Amz-Signature=e488c4cb8026719d5c526f95bf99cfba428352c4534fa1f69f3812e6a4b5e292&X-Amz-SignedHeaders=host&response-content-disposition=inline",
+          src: "https://arziplus.storage.c2.liara.space/images/pages/29-min.png",
           alt: "پرداخت هزینه آزمون GRE با ارزی پلاس",
           width: 1200,
           height: 800,
@@ -255,7 +255,7 @@ GRE Subject (تخصصی)
         heading="چرا پرداخت GRE را به ارزی پلاس بسپارم؟"
         description="پرداخت‌های بین‌المللی GRE با امنیت، سرعت و کارمزد شفاف انجام می‌شوند."
         buttonText="ثبت سفارش پرداخت GRE"
-        buttonLink="/gre-payment"
+        buttonLink="/services/grePayment"
         items={greWhyUs}
         buttonColor="bg-indigo-700 hover:bg-indigo-800 text-white"
         theme={themesWhyus.default}
@@ -285,7 +285,7 @@ GRE Subject (تخصصی)
         buttons={[
           {
             text: "تماس با پشتیبانی",
-            href: "/support",
+            href: "/contact",
             variant: "outline",
             icon: <FaEnvelope />,
           },
@@ -302,7 +302,7 @@ GRE Subject (تخصصی)
         description="پرداخت امن، سریع و شفاف هزینه آزمون GRE. ثبت سفارش کنید تا تیم ما انجام دهد."
         button={{
           text: "ثبت سفارش پرداخت GRE",
-          href: "/gre-payment",
+          href: "/dashboard#services",
           variant: "primary",
           icon: <FaRocket />,
         }}

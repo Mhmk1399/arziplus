@@ -192,35 +192,35 @@ Terms & Conditions را مطالعه و تأیید کنید
     {
       id: 1,
       icon: <FaGlobeAmericas size={32} />,
-       title: "پرداخت بین‌المللی بدون دردسر",
+      title: "پرداخت بین‌المللی بدون دردسر",
       description:
         "پرداخت‌های بین‌المللی IELTS را بدون نیاز به کارت خارجی انجام می‌دهیم.",
     },
     {
       id: 2,
       icon: <FaClock size={32} />,
-       title: "سرعت در انجام فرایند",
+      title: "سرعت در انجام فرایند",
       description:
         "پرداخت‌ها سریع انجام می‌شوند و رسید تایید فوری ارسال می‌شود.",
     },
     {
       id: 3,
       icon: <FaPercentage size={32} />,
-       title: "کارمزد شفاف و منصفانه",
+      title: "کارمزد شفاف و منصفانه",
       description:
         "نرخ و کارمزد پرداخت هزینه پیش از پرداخت در ارزی پلاس  مشخص می‌شود.",
     },
     {
       id: 4,
       icon: <FaLock size={32} />,
-       title: "امنیت کامل تراکنش‌ها",
+      title: "امنیت کامل تراکنش‌ها",
       description:
         "پرداخت‌ها از طریق حساب‌های امن و مطابق استاندارد انجام می‌شوند.",
     },
     {
       id: 5,
       icon: <FaHeadset size={32} />,
-       title: "پشتیبانی و مشاوره",
+      title: "پشتیبانی و مشاوره",
       description: "در تمام مراحل ثبت‌نام آیلتس در کنار شما و همراهتان هستیم.",
     },
   ];
@@ -276,14 +276,14 @@ Terms & Conditions را مطالعه و تأیید کنید
         buttons={[
           {
             text: "ثبت سفارش پرداخت آیلتس",
-            href: "/register",
+            href: "/services/IeltsPayment",
             variant: "secondary",
             icon: <FaExplosion />,
           },
         ]}
         media={{
           type: "image",
-          src: "https://arziPlus.s3.eu-north-1.amazonaws.com/Desktop/27-min.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=ASIAUQ73WRGQUSCRW3YJ%2F20251012%2Feu-north-1%2Fs3%2Faws4_request&X-Amz-Date=20251012T105036Z&X-Amz-Expires=300&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEIP%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCmV1LW5vcnRoLTEiRjBEAiB5PoofZZqeTG2zzskX%2BwWwXj11KkPdZBsSAzBKLbOERQIgAUkgk74qFtE%2FpnqQ%2BvugMyD89CEtjnt4P6Vf%2BW8bJvkq1gIILBAAGgwzMTEzNzYxMjAyMjUiDDHn0llIrg%2Bm9RydlyqzArInPf4nL8MiLZ9oqKTRF2KSAmIHlKI9UgA5fQgOfPY0xf0rjWKj6XIRbm7ah3YfTRkP558snufic0FYd%2BvHvjIEXA88%2BCmtoAZkDv%2BllozLOuJnwG0Vbdr8Bg55B4BlHD%2FuH7pYxSstEJybNH%2BPE3KQCJi2UKOcjTntykrJC1PBtxwF%2BYshq3qI3P7NhWxaIIilC4VvJvIHBIwGypnTlEg5HS2k6YpumD6oDRVVxtATMg3%2BA7NOLOBa%2FWWRTRKMMDJ560WOjYJGVHnNNB3pQGZE4Z691hjpzndmUQl9xeJpI4pKVQnWe959xOMJlAmqMBc6IKHP9LFSwrACFbyFYno7pAjBGEFbjxQyBPcgLKU57cM728%2BRocMV3aTNbpGPVf%2B%2F%2FVE12WoXC7fkfRWpn2O7qKEwkvKtxwY6rgJ0wlBM%2BjMzHoP2KREmfYDVv%2F87JXZgX1tYvkMurJlkXYI712aTYXfDv464PBrlj60sgB5wMqBPydr0Dyok0Sg99o4wRsVY5IGkn5qVoCUqhxaUkLybhghfBHV9YzNE9kHJ2xkb3UyvOmMqkIUbRI3cFe5Egr%2BF7pqR39%2BlQJ6QY2oWFIKMsmpS2kISzQVJygggZABxGzjs2m7Ll2yF8rRscn%2Bzx%2FEwdsiDT9DjlQuMm5R%2FUXJnFvhaVobmDNqy7c5XuyDYt7zI%2FHrwotugEdp2aajQzso3i%2BCsOuDW0DIfaumLp%2FpKfBJWJJvXzP6gQELRmmd2E1n1LjQCUCeKoqtXAAxc59HfOZ1rf2jgyK%2BfLYkyuyHVZkH4g8LW0KV1IeGabihUhh4rsbHh%2Bz3o3A%3D%3D&X-Amz-Signature=72b17b6352e8b30bc339ae50ffd624817639f49ac63ccbdf2283e75fa1fa0c07&X-Amz-SignedHeaders=host&response-content-disposition=inline",
+          src: "https://arziplus.storage.c2.liara.space/images/pages/27-min.png",
           alt: "پرداخت هزینه آزمون آیلتس با ارزی پلاس",
           width: 1200,
           height: 800,
@@ -316,9 +316,9 @@ Terms & Conditions را مطالعه و تأیید کنید
         heading="چرا پرداخت آیلتس را به ارزی پلاس بسپارم؟"
         description="پرداخت‌های بین‌المللی آیلتس با امنیت، سرعت و کارمزد شفاف انجام می‌شوند."
         buttonText="ثبت سفارش پرداخت آیلتس"
-        buttonLink="/ielts-payment"
+        buttonLink="/services/IeltsPayment"
         items={ieltsWhyUs}
-         theme={themesWhyus.default}
+        theme={themesWhyus.default}
       />
 
       <TextBox
@@ -345,7 +345,7 @@ Terms & Conditions را مطالعه و تأیید کنید
         buttons={[
           {
             text: "تماس با پشتیبانی",
-            href: "/support",
+            href: "/contact",
             variant: "outline",
             icon: <FaEnvelope />,
           },
@@ -362,7 +362,7 @@ Terms & Conditions را مطالعه و تأیید کنید
         description="پرداخت امن، سریع و شفاف هزینه آزمون آیلتس. ثبت سفارش کنید تا تیم ما انجام دهد."
         button={{
           text: "ثبت سفارش پرداخت آیلتس",
-          href: "/ielts-payment",
+          href: "/dashboard#services",
           variant: "primary",
           icon: <FaRocket />,
         }}

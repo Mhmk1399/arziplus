@@ -82,7 +82,6 @@ export default function NewNavbar() {
     const handleMouseEnter = () => {
       gsap.to(logo, {
         scale: 1.1,
-        rotation: 5,
         duration: 0.4,
         ease: "back.out(2)",
       });
@@ -91,7 +90,6 @@ export default function NewNavbar() {
     const handleMouseLeave = () => {
       gsap.to(logo, {
         scale: 1,
-        rotation: 0,
         duration: 0.4,
         ease: "back.out(2)",
       });
@@ -324,16 +322,19 @@ export default function NewNavbar() {
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="flex items-center justify-between h-20 lg:h-24">
             {/* Logo */}
-            <div ref={logoRef} className="flex items-center cursor-pointer">
-              <Image
-                src="/assets/images/logoArzi.webp"
-                width={100}
-                height={100}
-                alt="logo"
-                priority
-                className="transition-all duration-300"
-              />
-            </div>
+            <Link href="/">
+              {" "}
+              <div ref={logoRef} className="flex items-center cursor-pointer">
+                <Image
+                  src="/assets/images/loggo.png"
+                  width={70}
+                  height={70}
+                  alt="logo"
+                  priority
+                  className="transition-all duration-300"
+                />
+              </div>
+            </Link>
 
             {/* Desktop Menu */}
             <div className="hidden lg:flex items-center space-x-1 space-x-reverse">
@@ -362,30 +363,33 @@ export default function NewNavbar() {
 
             {/* Desktop CTA */}
             <div className="hidden lg:flex items-center gap-2">
-              <button
-                className="group p-3 rounded-xl bg-gradient-to-r from-[#FF7A00]/10 to-[#4DBFF0]/10 hover:from-[#FF7A00]/20 hover:to-[#4DBFF0]/20 backdrop-blur-sm transition-all duration-300 border border-[#FF7A00]/20 hover:border-[#FF7A00]/40 hover:scale-105"
-                suppressHydrationWarning
-              >
-                <svg
-                  className="w-5 h-5 text-[#FF7A00] group-hover:scale-110 transition-transform duration-300"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
+              <Link href="tel:091212312312">
+                {" "}
+                <button
+                  className="group p-3 rounded-xl cursor-pointer bg-gradient-to-r from-[#FF7A00]/10 to-[#4DBFF0]/10 hover:from-[#FF7A00]/20 hover:to-[#4DBFF0]/20 backdrop-blur-sm transition-all duration-300 border border-[#FF7A00]/20 hover:border-[#FF7A00]/40 hover:scale-105"
+                  suppressHydrationWarning
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
-                  />
-                </svg>
-              </button>
+                  <svg
+                    className="w-5 h-5 text-[#FF7A00] group-hover:scale-110 transition-transform duration-300"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
+                    />
+                  </svg>
+                </button>
+              </Link>
 
               {user ? (
                 <div className="relative user-dropdown">
                   <button
                     onClick={() => setShowUserDropdown(!showUserDropdown)}
-                    className="group relative px-4 py-3 font-bold text-sm text-[#0A1D37] overflow-hidden rounded-xl transition-all duration-300 hover:scale-105 bg-gradient-to-r from-[#FF7A00]/10 to-[#4DBFF0]/10 hover:from-[#FF7A00]/20 hover:to-[#4DBFF0]/20 border border-[#FF7A00]/20 hover:border-[#FF7A00]/40 flex items-center gap-2"
+                    className="group relative cursor-pointer px-4 py-3 font-bold text-sm text-[#0A1D37] overflow-hidden rounded-xl transition-all duration-300 hover:scale-105 bg-gradient-to-r from-[#FF7A00]/10 to-[#4DBFF0]/10 hover:from-[#FF7A00]/20 hover:to-[#4DBFF0]/20 border border-[#FF7A00]/20 hover:border-[#FF7A00]/40 flex items-center gap-2"
                     suppressHydrationWarning
                   >
                     <FaUser className="text-[#FF7A00]" />
@@ -410,7 +414,7 @@ export default function NewNavbar() {
                   </button>
 
                   {showUserDropdown && (
-                    <div className="absolute left-0 mt-2 w-48 bg-white/95 backdrop-blur-sm border border-[#FF7A00]/20 rounded-xl shadow-2xl shadow-[#FF7A00]/10 overflow-hidden z-50">
+                    <div className="absolute left-0 mt-2 w-48 bg-white/80 backdrop-blur-xl border border-[#FF7A00]/20 rounded-xl shadow-2xl shadow-[#FF7A00]/10 overflow-hidden z-50">
                       <Link
                         href="/dashboard"
                         onClick={() => setShowUserDropdown(false)}
@@ -592,14 +596,14 @@ export default function NewNavbar() {
 
       {/* Mobile Sidebar */}
       <div
-        className={`fixed inset-0 z-40 lg:hidden ${
+        className={`fixed inset-0 z-999 lg:hidden ${
           isMobileOpen ? "pointer-events-auto" : "pointer-events-none"
         }`}
         dir="rtl"
       >
         {/* Backdrop */}
         <div
-          className={`absolute inset-0 bg-gradient-to-br from-[#0A1D37]/90 to-[#0A1D37]/80 backdrop-blur-md transition-opacity duration-500 ${
+          className={`absolute inset-0 bg-gradient-to-br from-[#0A1D37]/20 to-[#0A1D37]/40 backdrop-blur-md transition-opacity duration-500 ${
             isMobileOpen ? "opacity-100" : "opacity-0"
           }`}
           onClick={toggleMobileMenu}
@@ -616,12 +620,16 @@ export default function NewNavbar() {
             {/* Mobile Header */}
             <div className="p-6 border-b border-gray-200">
               <div className="flex items-center justify-between">
-                <Image
-                  src="/assets/images/logoArzi.webp"
-                  width={80}
-                  height={80}
-                  alt="logo"
-                />
+                <Link href="/">
+                  {" "}
+                  <Image
+                    src="/assets/images/logoArzi.webp"
+                    width={80}
+                    height={80}
+                    alt="logo"
+                  />
+                </Link>
+
                 <button
                   onClick={toggleMobileMenu}
                   className="p-2 rounded-xl bg-gradient-to-r from-[#FF7A00]/10 to-[#4DBFF0]/10 hover:scale-110 transition-transform duration-300"
@@ -637,7 +645,7 @@ export default function NewNavbar() {
                 <div key={item.title} className="mobile-menu-item space-y-2">
                   <button
                     onClick={() => handleMobileItemClick(item.title)}
-                    className={`w-full flex items-center justify-between p-4 font-bold rounded-xl transition-all duration-300 ${
+                    className={`w-full flex items-center justify-between p-4 text-sm font-bold rounded-xl transition-all duration-300 ${
                       mobileActiveItem === item.title
                         ? "bg-gradient-to-r from-[#FF7A00] to-[#4DBFF0] text-white shadow-lg"
                         : "bg-gray-50 text-[#0A1D37] hover:bg-gray-100"
@@ -676,14 +684,14 @@ export default function NewNavbar() {
                               }
                               className="w-full flex items-center justify-between p-3 bg-white rounded-lg hover:bg-gray-50 transition-all duration-200 border border-gray-200"
                             >
-                              <div className="flex items-center space-x-2 space-x-reverse">
+                              <div className="flex items-center gap-1">
                                 {dropdown.icon && (
                                   <IconComponent
                                     icon={dropdown.icon as IconType}
-                                    className="text-base text-[#FF7A00]"
+                                    className="text-base mr-1 text-[#FF7A00]"
                                   />
                                 )}
-                                <span className="text-sm font-semibold text-[#0A1D37]">
+                                <span className="text-xs font-semibold text-[#0A1D37]">
                                   {dropdown.name}
                                 </span>
                               </div>
@@ -714,15 +722,15 @@ export default function NewNavbar() {
                                     key={subItem.name}
                                     href={subItem.href}
                                     onClick={toggleMobileMenu}
-                                    className="flex items-center space-x-2 space-x-reverse p-3 bg-gradient-to-r from-[#FF7A00]/5 to-[#4DBFF0]/5 hover:from-[#FF7A00]/10 hover:to-[#4DBFF0]/10 text-gray-700 hover:text-[#0A1D37] text-sm rounded-lg transition-all duration-200"
+                                    className="flex items-center gap-1 p-3 bg-gradient-to-r from-[#FF7A00]/5 to-[#4DBFF0]/5 hover:from-[#FF7A00]/10 hover:to-[#4DBFF0]/10 text-gray-700 hover:text-[#0A1D37] text-sm rounded-lg transition-all duration-200"
                                   >
                                     {subItem.icon && (
                                       <IconComponent
                                         icon={subItem.icon as IconType}
-                                        className="text-sm text-[#4DBFF0]"
+                                        className="text-sm ml-1 text-[#4DBFF0]"
                                       />
                                     )}
-                                    <span className="font-medium">
+                                    <span className="font-medium text-[10px]">
                                       {subItem.name}
                                     </span>
                                   </Link>
@@ -742,7 +750,7 @@ export default function NewNavbar() {
             <div className="p-6 border-t border-gray-200 space-y-3">
               {user ? (
                 <div className="space-y-3">
-                  <div className="flex items-center gap-3 p-4 bg-gradient-to-r from-[#FF7A00]/10 to-[#4DBFF0]/10 rounded-xl">
+                  <div className="flex items-center justify-center gap-3 p-4 bg-gradient-to-r from-[#FF7A00]/10 to-[#4DBFF0]/10 rounded-xl">
                     <FaUser className="text-[#FF7A00]" />
                     <span className="font-bold text-[#0A1D37]">
                       {getUserDisplayName()}

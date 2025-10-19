@@ -177,14 +177,14 @@ uni-assist واسطه‌ای ایده‌آل برای اپلای دانشگاه 
         buttons={[
           {
             text: "همین حالا پرداخت کن",
-            href: "/register",
-            variant: "primary",
+            href: "/services/UniAssistPayment",
+            variant: "secondary",
             icon: <FaExplosion />,
           },
         ]}
         media={{
           type: "image",
-          src: "https://arziPlus.s3.eu-north-1.amazonaws.com/Desktop/39-min.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=ASIAUQ73WRGQWT2PSCW2%2F20251012%2Feu-north-1%2Fs3%2Faws4_request&X-Amz-Date=20251012T105813Z&X-Amz-Expires=300&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEIP%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCmV1LW5vcnRoLTEiRzBFAiBHqcfDkCJLQ7bM4AV%2BcTcRG8MLUU1EFV3JoBikza8mlgIhAMec9vOpRsQoe1qrk7E%2FX9KchkFeBQKkQ91iMhirQgp9KtYCCCwQABoMMzExMzc2MTIwMjI1Igzix4ArWyH%2F0OAwCVQqswLleBBOXXmVwKqJxpS8%2F2rUBQ23nUHFMKlA%2BPaaPmcUVIXctBODN5LmH8NfdgdH1Lm5zRgJ%2F5w46QQMXxJMaPKSDX8rsRAAxsU5v9x%2BJP9AXrjeJPiOviyYFzF5XwHFQvux%2BeZGeGB6Wvd%2Fm7FsvCimixnMs0tYj%2BoKreJocnmQKTtLChPj%2FEu28qF6xHIdgZUSK6uvkwAn40%2F8C0r%2Fj%2BfgW0%2BOMsVbX%2F%2Bhd%2BOCAA5Y72DfWrYVKd5oFnQ0olWD%2BVO2EDJj7%2BdcLw5pwEQElAMPVClA8Nys%2B7Wu1mbrNPSxOwSYZ3nFj38TgRahgrOVD%2B7jQXzkAVnfN%2FjLwJ6ICe0lDckFFaXVpxu5D9pAAT4InSNDFziBXxMdZm6g0AMB5nGA1AFEbSNHDdyuxaPCWnv28dQuMJLyrccGOq0CCnv2ehe5GNQS9UKMphs7T35F7EfD745RAQtDY35UviZJs8y4fGgM5k2RudqgvXkqUw67%2Fk5eDmFdmD0w8w8GGQbBpvbAqlmv2tYGpkcMRk0s1JyRZWBrb1snq%2BCElVdfnS4qLbb%2BJPzzBMOfTVxOpjLNa81gVMOmmLEGHLWSsd5jNk%2FvvELECjNY1zI%2FDP6hIq%2FRYZ4w%2FtD4qG2HKDnDfkniwe%2FdrcSUKOvNuFrKKv%2BGVFZmmAg4MusIFwnR9Uv0pHA3TofYSopNHcGk7fgtP1e8eHgy888FfeaxgQ58knr9qWiNabaTDIru6RbbFgkXZ2omu0Cs8fz3l7j0Tbl7wLr6eULWBy6oHDydj4ohNh72zNMj0CoXmRhJbAsQT4qB5JJe3GqqrNB6f31zng%3D%3D&X-Amz-Signature=b0d6e21fd521c000ca4a17d3e434549676b540f989bf3f999edcc51b28380c75&X-Amz-SignedHeaders=host&response-content-disposition=inline",
+          src: "https://arziplus.storage.c2.liara.space/images/pages/39-min.png",
           alt: "پرداخت هزینه uni-assist با ارزی پلاس",
           width: 1200,
           height: 800,
@@ -217,9 +217,9 @@ uni-assist واسطه‌ای ایده‌آل برای اپلای دانشگاه 
         heading="مزایای پرداخت هزینه uni-assist با ارزی پلاس"
         description="پرداخت هزینه uni-assist رو به ارزی پلاس بسپار، چون اپلای رو به uni-assist بسپار، پرداخت هزینه‌اش رو به ما! اگه هدفت درس خوندن توی بهترین دانشگاه‌های آلمانه، پس منتظر چی هستی؟"
         buttonText="پرداخت کن"
-        buttonLink="/uni-assist-payment"
+        buttonLink="/services/UniAssistPayment"
         items={uniWhyUs}
-         theme={themesWhyus.default}
+        theme={themesWhyus.default}
       />
 
       <TextBox
@@ -246,7 +246,7 @@ uni-assist واسطه‌ای ایده‌آل برای اپلای دانشگاه 
         buttons={[
           {
             text: "پرداخت هزینه سفارت",
-            href: "/uk-visa-payment",
+            href: "/services/UniAssistPayment",
             variant: "green",
             icon: <FaShieldAlt />,
           },
@@ -285,7 +285,7 @@ uni-assist واسطه‌ای ایده‌آل برای اپلای دانشگاه 
         buttons={[
           {
             text: "تماس با پشتیبانی",
-            href: "/support",
+            href: "/contact",
             variant: "outline",
             icon: <FaEnvelope />,
           },
@@ -302,7 +302,7 @@ uni-assist واسطه‌ای ایده‌آل برای اپلای دانشگاه 
         description="   ارزی پلاس با سرعت، امنیت و کارمزد کم، هزینه uni-assist را مدیریت می‌کند."
         button={{
           text: "پرداخت کن",
-          href: "/uni-assist-payment",
+          href: "/dashboard#services",
           variant: "primary",
           icon: <FaRocket />,
         }}

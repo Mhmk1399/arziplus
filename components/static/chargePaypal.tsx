@@ -223,21 +223,21 @@ const PaypalCharge = () => {
     <div>
       {" "}
       <HeroSection
-        heading="شارژ آنی و مطمئن حساب پی‌پال در ایران با ارزی پلاس – پرداخت سریع و امن"
+        heading="شارژ آنی و مطمئن حساب پی‌پال در ایران با ارزی پلاس   پرداخت سریع و امن"
         subheading="شارژ آنی و مطمئن حساب پی‌پال"
         description="پی‌پال (PayPal) یکی از معتبرترین سیستم‌های پرداخت آنلاین در جهان است که میلیون‌ها کاربر برای خرید اینترنتی، انتقال وجه و دریافت درآمد دلاری از آن استفاده می‌کنند. اما برای کاربران ایرانی، به دلیل محدودیت‌های بانکی، شارژ مستقیم حساب پی‌پال ممکن نیست.
 با خدمات ارزی پلاس می‌توانید حساب پی‌پال خود را در کوتاه‌ترین زمان و با کمترین کارمزد شارژ کنید، بدون نگرانی از مسدود شدن یا بروز مشکل در حساب."
         buttons={[
           {
             text: "شارژ آنی و مطمئن حساب پی‌پال",
-            href: "/register",
+            href: "/services/charge-paypal-account",
             variant: "secondary",
             icon: <FaExplosion />,
           },
         ]}
         media={{
           type: "image",
-          src: "https://arziPlus.s3.eu-north-1.amazonaws.com/Desktop/19-min.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=ASIAUQ73WRGQ5L2LD2VE%2F20251012%2Feu-north-1%2Fs3%2Faws4_request&X-Amz-Date=20251012T104428Z&X-Amz-Expires=300&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEIP%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCmV1LW5vcnRoLTEiRjBEAiA0MLxgSIIoUN3W8JF95JsP29QAjfVzg%2Ft9wMbJp4qivgIgeCD51u6yTwDJkRostmxTP1kiI1Gwki%2FW1eDp3FqW43wq1gIILBAAGgwzMTEzNzYxMjAyMjUiDCVZ%2B7HCi0Xt8Y8nwyqzAtqH0AsJUAb5b%2Fzw5MwWdapiBX6kl1grhJh24QAeZEePaUQ8fnkqYARUpRonlmcGZaSD3TKxb0Ji1uTGWZR7p%2FkiDXeoQBXBGQU2oiGraIz46M6IlYd9F2FpcCDYl5paP4uDzYlFO3dcPq16Jmo9jxJdztzGb6z749K0IFKzX5VznV7YQ%2F1xl0TqduIssznSTqD7FY2beBW9x4epk3MTO5In9vgH9FRuMQGPq5U2ygMtH6eItCLyWchtxNKNhltfWiC6cZBJOZ6X%2FwBd6wGdEgT8ZusR4xg%2FYqM94FuQIka4FlJ3QLu5oS8CSxQ0VlcgYwRlLXk4ExsKcj4zeVwq2gFHpms7ppuI2dCPhA8QL0ljt7BBuPuZVDktcXyuszNM1KB2P4FFNWTRN2deE0PRec3TzywwkvKtxwY6rgJkr2xPFv0s8b7U2lDkbKcOmotJOn9%2BdD3J%2Bkxo7q2cs%2BBpLKGOyhd6ZyqJFIUeQyZEdV5xRZy2k4pSY1%2BJvY519DxuFLe3WXgh%2FYw8yVF%2F80cVSbVFLMoy7RJjWQTMKUdblgFhXBgSkR0mbD0ALTNQLlWwG2mdK%2F8VifIL2Wi5KUpwJw7uUayy7mugxhKGi546F9zS6P2hY0XEu3KMgmCrhHJAOmcK6xYkaoXxuWHU0QAvVQLpP2MO8ZlnolbnsP9%2F67yQbZZHYSXFqT6X%2FKVb0Dp9k7uOHNCeNGy8Vhk0qFHnsDPxbck4rGOvp1V%2B72Wo6JNbWpybz9NKd2qyJYGF4khp0Qa1XddPmTxMMQdR%2FQNNVb0pKxrXLQV5WSKVLwmzF25WXQzzLah9zjz3Eg%3D%3D&X-Amz-Signature=7267b8637c78a5fc79030043bcee00eeed16199207caead21fd9a753c1290b23&X-Amz-SignedHeaders=host&response-content-disposition=inline",
+          src: "https://arziplus.storage.c2.liara.space/images/pages/19-min.png",
           alt: "شارژ آنی و مطمئن حساب پی‌پال",
           width: 1200,
           height: 1200,
@@ -268,7 +268,7 @@ const PaypalCharge = () => {
         heading="کاربردهای شارژ پی‌پال"
         description="با شارژ حساب پی‌پال از طریق ارزی پلاس، می‌توانید از امکانات گسترده پرداخت و انتقال بین‌المللی بهره‌مند شوید:"
         buttonText="شارژ حساب پی‌پال"
-        buttonLink="/paypal-topup"
+        buttonLink="/services/charge-paypal-account"
         items={paypalItemsWhyus}
         buttonColor="bg-blue-700 hover:bg-blue-800 text-white"
         theme={themesWhyus.default}
@@ -280,7 +280,7 @@ const PaypalCharge = () => {
         buttons={[
           {
             text: "شارژ حساب پی‌پال با ارزی پلاس",
-            href: "/paypal-topup",
+            href: "/services/charge-paypal-account",
             variant: "primary",
             icon: <FaShieldAlt />,
           },
@@ -355,7 +355,7 @@ const PaypalCharge = () => {
         buttons={[
           {
             text: "ارسال سوال",
-            href: "/support",
+            href: "/contact",
             variant: "outline",
             icon: <FaEnvelope />,
           },
@@ -371,8 +371,8 @@ const PaypalCharge = () => {
         description="حساب پی‌پال شما به‌سرعت شارژ می‌شود تا بتوانید از خدمات بین‌المللی بهره‌مند شوید."
         button={{
           text: "ثبت سفارش شارژ پی‌پال",
-          href: "/paypal-topup",
-          variant: "primary",
+          href: "/dashboard#services",
+          variant: "ghost",
           icon: <FaRocket />,
         }}
         theme={ctaThemes.primary} // رنگ سبز مناسب برای خدمات مالی

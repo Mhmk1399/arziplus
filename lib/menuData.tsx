@@ -34,8 +34,9 @@ import {
   FaCloud,
   FaInfoCircle,
   FaPhoneAlt,
-  FaQuestionCircle,
   FaGavel,
+  FaDice,
+  FaTicketAlt,
 } from "react-icons/fa";
 import { MdVerifiedUser, MdChatBubble } from "react-icons/md";
 import { MenuItems } from "@/types/menu";
@@ -369,7 +370,7 @@ export const menuItems: MenuItems = [
           ],
         },
         {
-          name: "وریفای و ثبت نام سایت های فریلنسری",
+          name: "  ثبت نام سایت های فریلنسری",
           icon: FaUserCheck,
           childrens: [
             {
@@ -406,6 +407,17 @@ export const menuItems: MenuItems = [
             // },
           ],
         },
+        {
+          name: "لاتاری بین المللی",
+          icon: FaDice,
+          childrens: [
+            {
+              name: "لاتاری آمریکا (DV Lottery)",
+              href: "/lottery",
+              icon: FaTicketAlt,
+            },
+          ],
+        },
       ],
     },
   },
@@ -427,11 +439,7 @@ export const menuItems: MenuItems = [
               href: "/contact",
               icon: FaPhoneAlt,
             },
-            {
-              name: "سوالات متداول",
-              href: "/faq",
-              icon: FaQuestionCircle,
-            },
+
             {
               name: "شرایط و قوانین",
               href: "/terms-and-conditions",

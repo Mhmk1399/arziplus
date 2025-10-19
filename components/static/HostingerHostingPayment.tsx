@@ -194,14 +194,14 @@ const HostingerHostingPayment = () => {
         buttons={[
           {
             text: "همین حالا بخر",
-            href: "/register",
-            variant: "primary",
+            href: "/services/HostingerHostingPayment",
+            variant: "secondary",
             icon: <FaExplosion />,
           },
         ]}
         media={{
           type: "image",
-          src: "https://arziPlus.s3.eu-north-1.amazonaws.com/Desktop/40-min.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=ASIAUQ73WRGQY5IDPEGJ%2F20251012%2Feu-north-1%2Fs3%2Faws4_request&X-Amz-Date=20251012T105846Z&X-Amz-Expires=300&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEIP%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCmV1LW5vcnRoLTEiRjBEAiAdGEUeLZxvW0gWQVtswpNeK77ac5KJUuTBiOshGeuWggIgD%2FKvNtU%2F40A7WDtAKZ53xXA3PEXLMg%2BBrUqkvNS68Hoq1gIILBAAGgwzMTEzNzYxMjAyMjUiDBxaxMFdR%2FA14%2FoaFSqzAkfjMtnL81lYANM28rCm5yUoFNRYCyiV5j79Lafehweu8dcn0m3vyvM8GdB4BMuWf3K7HnPUiQXyMgCBoy2%2FdPgjjMjVRkGCx8S7xiFk1HYlDFg66G2fDre%2FOcc1lUI6w3sy4HAySmDdxvLH536y7fyINCn%2FBQ3LN8jca6dEWmqeEicDoOe%2Fl7kTLZmYIPawrwXH591RhguBqXNV8wNAgLFQcsJQ9OEHpJ0Lf778Rn6qR4BlalnujaRNuXvROD0f4YZrU9K83EpASNAuzWDKE6aBc9B8%2BVRs%2BBqe%2FIB8nP4PXDTXikymukjBHGgL48SgLsMbeg1MhhxAU%2F6dQRgDfzF0z%2BVyBVGG95cTmFDCsXg0h3j%2FQotiS0nacGvcudfMwZrqEW%2FQw39sVqIsrhvwtzSCBrwwkvKtxwY6rgK2Eh3w6Ix4l0IkJ4succ8oauzFKW%2BLhSjOzaoNuwRFmmO9aBXdg83vttMvO2BazpFjnY2PBd9%2B9dxxWxGGpQjAHeI%2FXSjguXBLSEkik1f6xcxWBHPE1ElyG0JRTpr%2BbFjVFyHdEGJksI5J8mtnUeNl60jLl%2BHS2t51Q2tvV7SE8w5qnPOPKehr%2FYQALrNrO7XqLni%2BfJqMWurGosNRC6YXLMyQXrR%2BHLz5yeNSSp6j%2BzZnNmIhS4CAW3CdbJrjx7MAVuKSD%2F8nVJsoV%2F%2Bn2%2FWvxOLWsyMLv6d4z67twosSzSLAYigtlhawWB5aWTJdv2xXQlw%2FiC%2FqFsPVf6Fc%2Bi315DC%2BPDrkTbFGpXx5p%2FELuUqn7SmJgKE2CEgaoHJbNxwjdf%2FbILHdYGpRkwP%2FXA%3D%3D&X-Amz-Signature=2532ce13f7242ff14ca61caf55881fb89edcfeaf00c3b9205326969a59466166&X-Amz-SignedHeaders=host&response-content-disposition=inline",
+          src: "https://arziplus.storage.c2.liara.space/images/pages/40-min.png",
           alt: "خرید هاست از Hostinger با ارزی پلاس",
           width: 1200,
           height: 800,
@@ -234,9 +234,9 @@ const HostingerHostingPayment = () => {
         heading="مزایای پرداخت هزینه خرید هاست از Hostinger در ارزی پلاس"
         description="هاست و دامنه دلخواهت رو از ارزی پلاس بخواه؛ چون..."
         buttonText="ثبت سفارش"
-        buttonLink="/hosting-payment"
+        buttonLink="/services/HostingerHostingPayment"
         items={hostingWhyUs}
-         theme={themesWhyus.default}
+        theme={themesWhyus.default}
       />
 
       <TextBox
@@ -263,8 +263,8 @@ const HostingerHostingPayment = () => {
         buttons={[
           {
             text: "ثبت سفارش پرداخت آزمون",
-            href: "/exams",
-            variant: "primary",
+            href: "/services/HostingerHostingPayment",
+            variant: "green",
             icon: <FaShield />,
           },
         ]}
@@ -308,7 +308,7 @@ const HostingerHostingPayment = () => {
         buttons={[
           {
             text: "تماس با پشتیبانی",
-            href: "/support",
+            href: "/contact",
             variant: "outline",
             icon: <FaEnvelope />,
           },
@@ -325,8 +325,8 @@ const HostingerHostingPayment = () => {
         description="   ارزی پلاس با سرعت، امنیت و کارمزد کم، هزینه هاست Hostinger را مدیریت می‌کند."
         button={{
           text: "ثبت سفارش",
-          href: "/hosting-payment",
-          variant: "primary",
+          href: "/dashboard#services",
+          variant: "ghost",
           icon: <FaRocket />,
         }}
         theme={ctaThemes.primary}

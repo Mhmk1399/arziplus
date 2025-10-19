@@ -390,14 +390,14 @@ const WiseOpening = () => {
         buttons={[
           {
             text: "افتتاح حساب وایز",
-            href: "/register",
+            href: "/services/opening-a-wise-account",
             variant: "secondary",
             icon: <FaExplosion />,
           },
         ]}
         media={{
           type: "image",
-          src: "https://arziPlus.s3.eu-north-1.amazonaws.com/Desktop/2-min.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=ASIAUQ73WRGQ5WZJGFDO%2F20251012%2Feu-north-1%2Fs3%2Faws4_request&X-Amz-Date=20251012T104531Z&X-Amz-Expires=300&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEIP%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCmV1LW5vcnRoLTEiRzBFAiB5FRxcEkY7jOstE7MIqVoDIIRrAsL0VY%2Fixo%2FpyBriHAIhAJ%2BP3BXvXcpyY4cNasEvK3VpJLwNNNn%2BLfFs1b0kc4maKtYCCCwQABoMMzExMzc2MTIwMjI1Igz1oyMHT4WDTQG%2F23AqswKoZdUsQRxMoFScuLDN%2BT1YQf3tfZINa7RDDrV75TIef9pEMteUpiVPoYJwhnZDPbT%2BJNtUJMxaa9GlLyOqtqVCxHJsqNpv5qJb%2FjhRgMC9ibb%2FEYS3F3Sd0z%2Bg%2F8vCrJaRbULHSUwulUbQagimUY%2B4xlWQjHFvlPeGh1HVoXsn7RtBEVtkufPywwcsJg3Jzr%2BF3ZDa6G25cYGWsj3hucFpvPGyEN%2BteyTG61m7WA2PRH2hGiks1KLSFj%2FP0d4vWec2N%2Fq1t18GHV5wD5s7w6AQoXf0a%2FMlVxSkhahekqSYWgy6uR%2FplWzSGKog%2BuCHS%2Bxodbq22y07QIOJq1GEEhCtDhDgr%2B3XM186juS9ydaMxTk1%2FWp6LFxZEgQq9bwEO%2BkM%2B1QwVovjWdb6HvmjF2nEh%2BQnMJLyrccGOq0Ctb%2F6inFx%2F4QHkyDwQviyOhANCtqvoFLNsj%2BrVjTdvaifcDErusigCx4YrfU8gqQkT7HFeqbBO4e0FTTCxqIHS8HPTQ3CLXxuW8EeswftE5VBDpiVmW8CjhvzLZa50fnYnZkdPYQdiN1IIOdP%2FYZYUaa3c9bS0jdGYHT7ab0%2B%2BQn7eb0mLV%2F0QHHZwDncAEvh37ABhDidKvEm3W6lxftLG8mbXzfL0rWTs%2Fn2OpWZk0zmpnW6dvCKR0aL14FbGbpeTOXgSjCWlFA%2BytSXoNbVbvp21kfEURZY2%2BXqRVb7zIameLcyLtkH8NkltqiiBA1WvPI6vErwcOX8alzCC9Br7%2BAbtrF1k9flbE7GN%2B5qA7jLI6Bs40SF%2BgUHFdjBv%2BqdDFwhwEVU%2F8Yy1j94pg%3D%3D&X-Amz-Signature=53b165391172550d7885b361f8cd713311d74378a7f38b63170c106c69043197&X-Amz-SignedHeaders=host&response-content-disposition=inline",
+          src: "https://arziplus.storage.c2.liara.space/images/pages/2-min.png",
           alt: "افتتاح حساب بانکی بین‌المللی وایز",
           width: 1200,
           height: 400,
@@ -428,7 +428,7 @@ const WiseOpening = () => {
         heading="کاربردهای حساب وایز"
         description="با افتتاح حساب وایز از طریق ارزی پلاس، می‌توانید به امکانات گسترده‌ای دسترسی داشته باشید:"
         buttonText="افتتاح حساب وایز"
-        buttonLink="/wise-account"
+        buttonLink="/services/opening-a-wise-account"
         items={wiseItemsWhyus}
         buttonColor="bg-[#FF7A00] hover:bg-[#FF7A00]/80 text-white"
         theme={themesWhyus.default}
@@ -445,7 +445,7 @@ const WiseOpening = () => {
         items={companyDocuments}
         theme={themesWhyus.dark}
         buttonText="افتتاح حساب وایز"
-        buttonLink="#"
+        buttonLink="/services/opening-a-wise-account"
         buttonColor="bg-[#4DBFF0] hover:bg-blue-700 text-white"
       />
       <StepsSection
@@ -469,7 +469,7 @@ const WiseOpening = () => {
         buttons={[
           {
             text: "افتتاح حساب وایز با ارزی پلاس",
-            href: "/wise-account",
+            href: "/services/opening-a-wise-account",
             variant: "secondary",
             icon: <FaShieldAlt />,
           },
@@ -540,7 +540,7 @@ const WiseOpening = () => {
         buttons={[
           {
             text: "ارسال سوال",
-            href: "/support",
+            href: "/contact",
             variant: "outline",
             icon: <FaEnvelope />,
           },
@@ -556,7 +556,7 @@ const WiseOpening = () => {
         description="با ارزی پلاس، تراکنش‌های بین‌المللی خود را سریع، امن و با کمترین کارمزد انجام دهید."
         button={{
           text: "ثبت درخواست افتتاح حساب وایز",
-          href: "/wise-register",
+          href: "/dashboard#services",
           variant: "primary",
           icon: <FaRocket />,
         }}

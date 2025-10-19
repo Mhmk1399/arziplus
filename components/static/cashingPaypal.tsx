@@ -1,5 +1,5 @@
 import { Metadata } from "next";
- 
+
 import {
   ctaThemes,
   faqThemes,
@@ -118,7 +118,8 @@ const CashingPaypal = () => {
       icon: <FaCoins size={32} />,
       iconColor: "bg-blue-900",
       title: "تسویه فروشگاه‌های بین‌المللی",
-      description: "نقد کردن درآمد فروش در eBay، Etsy و دیگر فروشگاه ها با ارزی پلاس.",
+      description:
+        "نقد کردن درآمد فروش در eBay، Etsy و دیگر فروشگاه ها با ارزی پلاس.",
     },
     {
       id: 3,
@@ -133,7 +134,8 @@ const CashingPaypal = () => {
       icon: <FaMedal size={32} />,
       iconColor: "bg-blue-900",
       title: "تبدیل درآمد دلاری به ریال",
-      description: "تبدیل سریع و مطمئن درآمد دلاری با بهترین نرخ بازار با ارزی پلاس.",
+      description:
+        "تبدیل سریع و مطمئن درآمد دلاری با بهترین نرخ بازار با ارزی پلاس.",
     },
   ];
   const cashingFaq = [
@@ -185,14 +187,14 @@ const CashingPaypal = () => {
         buttons={[
           {
             text: "ثبت درخواست نقد کردن پی‌پال",
-            href: "/cashing-paypal",
+            href: "/services/cashing-out-PayPal-balance",
             variant: "secondary",
             icon: <FaRocket />,
           },
         ]}
         media={{
           type: "image",
-          src: "https://arziPlus.s3.eu-north-1.amazonaws.com/Desktop/16-min.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=ASIAUQ73WRGQ5EELYY2J%2F20251012%2Feu-north-1%2Fs3%2Faws4_request&X-Amz-Date=20251012T095202Z&X-Amz-Expires=300&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEIL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCmV1LW5vcnRoLTEiRjBEAiByDo%2Br8MnXopjescgmieb9NBtPIPMq1BRLBn6YkJhjzgIgUbhr%2BAeHkW3Ra9RpWLR1h9KL%2BasevF92M9VrYIPHArgq1gIIKxAAGgwzMTEzNzYxMjAyMjUiDFGVAq9zVaxAgy2bEyqzAmncKDbdw69dT8tVE9jDgPaHfW2ayuLlsJ4mQp77mk74w8Fzxws0pIiFNSrB6qBV7sYtlxI3TkarD5IG2OPXubiAjeR6lDi6I4Xq0wSRlJ64lz%2BfFhwQv5kIGg%2FI%2FFjhqvkFrYWmqiRrm7ZbRH4yWXYcs5Jiu9lGs2lCKzATEIUT6ia1BQAOPHJS7t0FwGumm61HMqe9sZBMPbJPVN4w90QveZ9vDwFLBNv2FgIKpWsdovrSELeqbRGwR6h1priqzMGFq1P8s64%2Fl8ucp6f9mgJa%2FrT7MXgEkahsV%2Bc54UoHw7glFkBxJLCIfNXGLKiyrXaaiGXfvUCa8XqsipdS6G5FDWOyb0nuQ3lyAhhLYoQMIGZv3Edm1BaPQY%2B0kgsUN4MzDA2ktQVWvZxEPDWwH93xOGQwkvKtxwY6rgLbxHcmWh8w5PYbTIFEnmldYC2G7PlytUMhR5gBZRyY3O%2B%2BM20kfPVF%2FSR8m0nhZFy4eZAJzVDZKQHTpPE2ptPznODMqzizUha8RSrkmiDVD09H%2BOtMUYsnHaMx5hN8%2FVRi7nI4sOGZLCT12G7gwDcxhRaf%2Bn27RI1EcWXTmugnYUoFBSVm%2F1ugRfn06UO9BqV%2B5nB5jDrWfUJuf2D2TKFrsdxL%2FeRzYyu1ChYJ9PcKPu0c0lW3P4Meul5potNG9G8WBa4JRdvUAvkiwUreAvYzAoghOveZTGilHdz0gxhWQOyVF%2FOdHeMrfuqPmwaDqGlDnJvqb6B4maWgeEGgxx%2FKBkMTpxrEdoKr%2FGwzC7Zg4uEggGzkp3CMza10iHcyVVvDgzfHwe0igBaatCNudw%3D%3D&X-Amz-Signature=333705f2c51177d87dc72489633c1be6d3e55a96b0f069e4e59d4a7eeb15eb89&X-Amz-SignedHeaders=host&response-content-disposition=inline",
+          src: "https://arziplus.storage.c2.liara.space/images/pages/16-min.png",
           alt: "نقد کردن موجودی پی‌پال",
           width: 1200,
           height: 800,
@@ -223,13 +225,11 @@ const CashingPaypal = () => {
         heading="کاربردهای نقد کردن پی‌پال"
         description="دریافت درآمد از فریلنسری، فروشگاه‌ها و مشتریان خارجی:"
         buttonText="ثبت درخواست نقد کردن"
-        buttonLink="/cashing-paypal"
+        buttonLink="/services/cashing-out-PayPal-balance"
         items={cashingUseCases}
         buttonColor="bg-blue-800 hover:bg-blue-900 text-white"
         theme={themesWhyus.dark}
       />
-
-     
 
       <HeroSplitSection
         heading="چرا ارزی پلاس؟"
@@ -238,7 +238,7 @@ const CashingPaypal = () => {
         buttons={[
           {
             text: "ثبت درخواست نقد کردن",
-            href: "/cashing-paypal",
+            href: "/services/cashing-out-PayPal-balance",
             variant: "primary",
             icon: <FaShieldAlt />,
           },
@@ -280,7 +280,7 @@ const CashingPaypal = () => {
         buttons={[
           {
             text: "ارسال سوال",
-            href: "/support",
+            href: "/contact",
             variant: "outline",
             icon: <FaEnvelope />,
           },
@@ -297,7 +297,7 @@ const CashingPaypal = () => {
         description="با ارزی پلاس، درآمدتان سریع و مطمئن دریافت می‌شود."
         button={{
           text: "ثبت درخواست نقد کردن پی‌پال",
-          href: "/cashing-paypal",
+          href: "/dashboard#services",
           variant: "primary",
           icon: <FaRocket />,
         }}

@@ -243,20 +243,20 @@ const WisePayout = () => {
   return (
     <div>
       <HeroSection
-        heading="نقد درآمد وایز (Wise) در ایران — سریع، مطمئن و با کارمزد منصفانه"
+        heading="نقد درآمد وایز (Wise) در ایران   سریع، مطمئن و با کارمزد منصفانه"
         subheading="نقد کردن موجودی وایز با ارزی پلاس"
         description={`ارزی پلاس خدمات نقد درآمد وایز را برای تبدیل موجودی ارزی شما به ریال ارائه می‌دهد. با فرایندی ساده و شفاف می‌توانید درآمدهای ارزی خود را در کوتاه‌ترین زمان به حساب بانکی ایرانی منتقل کنید.`}
         buttons={[
           {
             text: "نقد سریع درآمد وایز",
-            href: "/register",
+            href: "/services/cashing-out-wise-account",
             variant: "secondary",
             icon: <FaExplosion />,
           },
         ]}
         media={{
           type: "image",
-          src: "/assets/images/chargeWise.png",
+          src: "https://arziplus.storage.c2.liara.space/images/pages/51-min.png",
           alt: "نقد درآمد وایز در ارزی پلاس",
           width: 1200,
           height: 1200,
@@ -289,9 +289,9 @@ const WisePayout = () => {
         heading="چرا ارزی پلاس برای نقد درآمد وایز؟"
         description="ارزی پلاس با فرایندهای استاندارد، تیم پشتیبانی مجرب و نرخ‌های شفاف، نقد درآمد وایز را به‌صورت امن و سریع انجام می‌دهد."
         buttonText="نقد درآمد وایز"
-        buttonLink="/wise-payout"
+        buttonLink="/services/cashing-out-wise-account"
         items={whyUsItems}
-         theme={themesWhyus.default}
+        theme={themesWhyus.default}
       />
       <TextBox
         heading="نقد کردن درآمد وایز"
@@ -316,7 +316,7 @@ const WisePayout = () => {
         buttons={[
           {
             text: "ثبت سفارش نقد درآمد",
-            href: "/wise-payout",
+            href: "/services/cashing-out-wise-account",
             variant: "primary",
             icon: <FaShieldAlt />,
           },
@@ -392,7 +392,7 @@ const WisePayout = () => {
         buttons={[
           {
             text: "تماس با پشتیبانی",
-            href: "/support",
+            href: "/contact",
             variant: "outline",
             icon: <FaEnvelope />,
           },
@@ -409,7 +409,7 @@ const WisePayout = () => {
         description="ثبت سفارش نقد درآمد وایز با نرخ رقابتی و پشتیبانی تخصصی. هم‌اکنون سفارش دهید."
         button={{
           text: "ثبت سفارش نقد درآمد وایز",
-          href: "/wise-payout",
+          href: "/dashboard#services",
           variant: "primary",
           icon: <FaRocket />,
         }}

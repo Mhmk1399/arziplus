@@ -7,12 +7,11 @@ import {
   FaWhatsapp,
   FaEnvelope,
   FaHeart,
-  FaCheckCircle,
 } from "react-icons/fa";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Link from "next/link";
-import { estedadBold } from "@/next-persian-fonts/estedad";
+import Image from "next/image";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
@@ -72,10 +71,13 @@ export default function Footer() {
   ];
 
   const services = [
-    "افتتاح حساب پیپال",
-    "شارژ حساب وایز",
-    "خرید ارز دیجیتال",
-    "پرداخت بین‌المللی",
+    { text: "افتتاح حساب پی پال", href: "/Opening-a-PayPal-account" },
+    {
+      text: "افتتاح حساب وایز",
+      href: "/opening-a-wise-account",
+    },
+    { text: "ثبت نام لاتاری", href: "/lottery" },
+    { text: "خرید اکانت هوش مصنوعی", href: "/buy-chatgpt-plus" },
   ];
 
   const handleSubscribe = (e: React.FormEvent) => {
@@ -172,19 +174,19 @@ export default function Footer() {
             >
               <div className="max-w-3xl mx-auto space-y-8">
                 {/* Brand Title */}
-                <h2
-                  className={`text-4xl md:text-5xl lg:text-5xl py-3 ${estedadBold.className} font-black tracking-tight`}
-                  style={{
-                    background:
-                      "linear-gradient(135deg, #FFFFFF 0%, #4DBFF0 50%, #FF7A00 100%)",
-                    WebkitBackgroundClip: "text",
-                    WebkitTextFillColor: "transparent",
-                    backgroundClip: "text",
-                    filter: "drop-shadow(0 0 20px rgba(77, 191, 240, 0.3))",
-                  }}
-                >
-                  ارزی پلاس
-                </h2>
+                <Link href="/">
+                  {" "}
+                  <div className="flex  mb-8 items-center justify-center cursor-pointer">
+                    <Image
+                      src="/assets/images/whitelogo.png"
+                      width={80}
+                      height={80}
+                      alt="logo"
+                      priority
+                      className="transition-all duration-300"
+                    />
+                  </div>
+                </Link>
 
                 {/* Description */}
                 <p className="text-[#A0A0A0] text-lg md:text-lg max-w-2xl mx-auto leading-relaxed">
@@ -246,9 +248,8 @@ export default function Footer() {
                       <Link
                         key={index}
                         href={link.href}
-                        className="quick-link group flex items-center gap-3 text-[#A0A0A0] hover:text-white transition-colors duration-300 text-lg"
+                        className="quick-link group flex items-end gap-3 text-[#A0A0A0] hover:text-white transition-colors duration-300 text-lg"
                       >
-                        <span className="w-2 h-2 rounded-full bg-[#FF7A00] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                         <span className="group-hover:tracking-wide transition-all duration-300">
                           {link.text}
                         </span>
@@ -271,8 +272,9 @@ export default function Footer() {
                         key={index}
                         className="group flex items-start gap-3 text-[#A0A0A0] hover:text-white transition-colors duration-300 text-lg cursor-pointer"
                       >
-                        <FaCheckCircle className="text-[#4DBFF0] mt-1 flex-shrink-0 group-hover:scale-110 transition-transform duration-300" />
-                        <span className="leading-relaxed">{service}</span>
+                        <Link href={service.href} className="leading-relaxed">
+                          {service.text}
+                        </Link>
                       </div>
                     ))}
                   </div>
@@ -326,7 +328,9 @@ export default function Footer() {
             <div className="py-8 border-t border-white/5">
               <div className="copyright-text text-center space-y-4">
                 <p className="text-[#A0A0A0] text-base md:text-lg">
-                  © ۱۴۰۴ ارزی پلاس. تمامی حقوق محفوظ است.
+                  ©{" "}
+                  {new Date().toLocaleDateString("fa-IR", { year: "numeric" })}{" "}
+                  ارزی پلاس. تمامی حقوق محفوظ است.
                 </p>
               </div>
             </div>

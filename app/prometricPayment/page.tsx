@@ -2,8 +2,8 @@
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "اکانت chatgpt plus",
-  description: "اکانت chatgpt plus",
+  title: "پرداخت هزینه آزمون پرومتریک   ویژه کادر درمان",
+  description: "پرداخت هزینه آزمون پرومتریک   ویژه کادر درمان",
 };
 const RegisterInternationalExams = () => {
   return (

@@ -284,14 +284,14 @@ Subclass 600
         buttons={[
           {
             text: "پرداخت هزینه سفارت",
-            href: "/australia-visa-payment",
+            href: "/services/Paying-for-the-Australia-Embassy",
             variant: "secondary",
             icon: <FaRocket />,
           },
         ]}
         media={{
           type: "image",
-          src: "https://arziPlus.s3.eu-north-1.amazonaws.com/Desktop/33-min.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=ASIAUQ73WRGQX4VNFDQW%2F20251012%2Feu-north-1%2Fs3%2Faws4_request&X-Amz-Date=20251012T105507Z&X-Amz-Expires=300&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEIP%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCmV1LW5vcnRoLTEiRjBEAiAffPKt7EMHQ7bwc2Vly7aGVPfvwV0rOdr6lBgsZBgLGwIgLHzmcBKke2WXZ%2F3LAdhkZltY3u8LXyTGyr%2B8pqbJYw8q1gIILBAAGgwzMTEzNzYxMjAyMjUiDEylVoXYzYkz69%2Bx2iqzAn%2BVjwDl7W3JzVW1D0GJrbOpGQ3AxQ65S5CSK6auAj%2Flw5WbiDQEQF%2FKHCi0DGe7pab61FLVw7hVnRQKyqvNhHtTiXIr%2FSauy0JXr0psEnbuO3rJ8XDTrtOec2BeBhRgrp%2FsToOtiJgb9PrGb25JaV1dytNDrIVe8LsyfQgXTJvFr8UiK7fJ%2Frz44ZChs9CiXexRbi6bkL2F5Td7cLdtAp6T2JpprYTaPDgTHKU3ylK3gjZejJO7qamlQgslOfJm6WIbRzVFBdvTAbP6u2wUHDuvFh9FCDN97Rx9LC8VqqfcI0gYXRBqWfNDka1gs%2B7rtKyDq7rK4WTHzUKJDWO0rL0PSpTrllR6gaIhsj6EGjMKilUHXfKx6eCxEcIIR8%2F8uU5ux%2FuLL%2FWmOv2onFx1RceKbFswkvKtxwY6rgI5fTOo2Po%2BMOH4i7K6Unh3TLUu8EyW2whAa6dxKKFNCR5%2BO5%2FYv56nebbkuIAZsl%2FJ7K9nTQftshiGFSpd9g6kxCAl2Q5DyEl2adIDXDpt5Zf9qjM1ANGoCX6JPDGUMKnQAIL%2Bjic6XaXy8HHlAJWvcszTM8wJT2SkJkKHt%2FlkukT6z1p52WUyoXCvEw1gAQFYn3IgjYRJ59HBqUx4PpQUYkCSs7B7EL0TtYu4c3sfoJYSs5HyBR7GZLz1FUiHVptIKNzso6CpBDUvP2cam0ysJYCu3XijefB1WQKoIUuWmGwFnZeG5N3HykvVgcT1sPMcPmwnXqvlLLNPEfMGPUaQjxcm2r3nwDMl59XMGW%2BvGjCwgpGL95V4QTpm8wHYp9gOgn6niMPOYL18MwuB4A%3D%3D&X-Amz-Signature=606a5bba375a58bc2dea8b1b3976d65ca8cd2bb36051e531e4cf664567cc7579&X-Amz-SignedHeaders=host&response-content-disposition=inline",
+          src: "https://arziplus.storage.c2.liara.space/images/pages/33-min.png",
           alt: "پرداخت هزینه سفارت استرالیا",
           width: 1200,
           height: 800,
@@ -320,7 +320,7 @@ Subclass 600
         heading="مزایای پرداخت با ارزی پلاس"
         description="بهترین قیمت، سرعت بالا، امنیت و پشتیبانی تخصصی"
         buttonText="پرداخت هزینه سفارت"
-        buttonLink="/australia-visa-payment"
+        buttonLink="/services/Paying-for-the-Australia-Embassy"
         items={whyUsItems}
         theme={themesWhyus.default}
       />
@@ -348,7 +348,7 @@ Subclass 600
         buttons={[
           {
             text: "پرداخت هزینه سفارت",
-            href: "/australia-visa-payment",
+            href: "/services/Paying-for-the-Australia-Embassy",
             variant: "red",
             icon: <FaShieldAlt />,
           },
@@ -387,7 +387,7 @@ Subclass 600
         buttons={[
           {
             text: "تماس با پشتیبانی",
-            href: "/support",
+            href: "/contact",
             variant: "outline",
             icon: <FaEnvelope />,
           },
@@ -403,7 +403,7 @@ Subclass 600
         description="با ارزی پلاس، پرداخت هزینه سفارت استرالیا سریع، امن و آسان است."
         button={{
           text: "پرداخت هزینه سفارت",
-          href: "/australia-visa-payment",
+          href: "/dashboard#services",
           variant: "ghost",
           icon: <FaRocket />,
         }}

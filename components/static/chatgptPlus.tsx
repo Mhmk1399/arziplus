@@ -175,7 +175,8 @@ const ChatGPTPlus = () => {
       id: 3,
       icon: <FaPercent size={32} />,
       title: "کارمزد منصفانه",
-      description: "کارمزد پرداخت در ارزی پلاس قبل از انجام تراکنش مشخص و شفاف است.",
+      description:
+        "کارمزد پرداخت در ارزی پلاس قبل از انجام تراکنش مشخص و شفاف است.",
     },
     {
       id: 4,
@@ -246,14 +247,14 @@ const ChatGPTPlus = () => {
         buttons={[
           {
             text: "ثبت سفارش ChatGPT Plus",
-            href: "/chatgpt-plus",
+            href: "/services/buy-chatgpt-plus",
             variant: "secondary",
             icon: <FaRocket />,
           },
         ]}
         media={{
           type: "image",
-          src: "https://arziPlus.s3.eu-north-1.amazonaws.com/Desktop/21-min.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=ASIAUQ73WRGQ576YKIGN%2F20251012%2Feu-north-1%2Fs3%2Faws4_request&X-Amz-Date=20251012T104638Z&X-Amz-Expires=300&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEIP%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCmV1LW5vcnRoLTEiRzBFAiEA12RjOyJtYgH7LTOm4yLawIUTKF7cPwt2%2F6cD92PljgICIDUDEJ06U4GcFhVMV1ToQwQHJSPSCcTeSVXLLw6aBYdpKtYCCCwQABoMMzExMzc2MTIwMjI1Igzakx4YYrxEP66Kkf4qswIrPnM82z6GKE6eW4NwzmU9nBmCQkqeboOwYMP9BLhx9rvCB8D63YN1NX5g0tSODs1ENNJfDX2fTMeV0dWxfuiUn4P70AFKw4p%2BAEL1yQqBOHGXXxS4V%2FUEb8IBUnY4dNp4VZP18bmb%2Fkv4ew70aj45FD5TcRL2YIFjczNaBtT2ybBtpUcHizSmLnYbxBJuRHWtIeMpJaOnRKAfsn2Oh%2FTN5KypRMn7KK8H3tD3lEBwIMvXM35YbQ5KKHcmfK3arY6qOTX5e6cgvFcWBZTPPMOmBB47yKs4xeTU7mjkePtuATgBquT8g2zSGEDg3BhXXoiQ2mxcKilnBa7aX%2BpqyyyathN%2Fzy4vtkPeUvM4ZY6udJklO%2BXg4DWs%2BuPHAoSaD9pACs40UoHSJn%2FobzB%2BtAVdVkw1MJLyrccGOq0CajJ012%2Ffdib1qgvwYNexZf5cAYxO1mTy%2FacLkC2%2BlEo%2F5z9zvhnjOJuw2hcFGHOLCD5rzft8lA1JQKwbeW0XQZhug%2B0nW5EcqkxBRtlpxaI%2FYIIpIPk9d9mwgIxbN%2BSwqL5kRmC5Fl2vN%2BFAuKGIl0N3Ra0Aw5QN1JWhiHv9gUd1xh%2BTIFFPIYrArQ%2FWAq4j6zlFgd%2BnTRllzCoz9TJKFQq2MVr02WdEuEgtj9OyQi0bgymOr3Gpdp%2BJbe7yC87EuDJrbaRGFAl2TpWLrbuu480Kr3cr1gMt8x2ALuO%2FZp0KSTQTQpQNaJgx4qjiHpfUclZJHlQzMJ3b1zefw5T%2F6PBqEVFzZHIQKvfhhDCh7CL%2FPnMvcE5vTjBKLLRn3rufdFttZmn1S6%2B6vE%2Bo9w%3D%3D&X-Amz-Signature=0e3677da1e8aa438bc6472b91eac8857945aa82c6afebbf183d86879b631a5af&X-Amz-SignedHeaders=host&response-content-disposition=inline",
+          src: "https://arziplus.storage.c2.liara.space/images/pages/21-min.png",
           alt: "خرید اکانت ChatGPT Plus",
           width: 1200,
           height: 800,
@@ -269,8 +270,7 @@ const ChatGPTPlus = () => {
           subheadingColor: "text-gray-500",
           descriptionColor: "text-gray-300",
           backgroundColor: "bg-indigo-700",
-                    featuresColor:"text-gray-600"
-
+          featuresColor: "text-gray-600",
         }}
       />
 
@@ -291,9 +291,9 @@ const ChatGPTPlus = () => {
         heading="چرا خرید ChatGPT Plus با ارزی پلاس؟"
         description="پرداخت سریع، امن و با کارمزد شفاف تنها بخشی از مزایای ماست."
         buttonText="ثبت سفارش ChatGPT Plus"
-        buttonLink="/chatgpt-plus"
+        buttonLink="/services/buy-chatgpt-plus"
         items={whyUsItems}
-         theme={themesWhyus.dark}
+        theme={themesWhyus.dark}
       />
       <TextBox
         heading="نکات کاربردی قبل از پرداخت ChatGPT Plus"
@@ -319,7 +319,7 @@ const ChatGPTPlus = () => {
         buttons={[
           {
             text: "ثبت سفارش ChatGPT Plus",
-            href: "/chatgpt-plus",
+            href: "/services/buy-chatgpt-plus",
             variant: "green",
             icon: <FaShieldAlt />,
           },
@@ -361,7 +361,7 @@ const ChatGPTPlus = () => {
         buttons={[
           {
             text: "ارسال سوال",
-            href: "/support",
+            href: "/contact",
             variant: "outline",
             icon: <FaEnvelope />,
           },
@@ -378,7 +378,7 @@ const ChatGPTPlus = () => {
         description="      به مدل پیشرفته GPT-5 دسترسی داشته باشید و تجربه‌ای حرفه‌ای     داشته باشید."
         button={{
           text: "ثبت سفارش ChatGPT Plus",
-          href: "/chatgpt-plus",
+          href: "/dashboard#services",
           variant: "ghost",
           icon: <FaRocket />,
         }}

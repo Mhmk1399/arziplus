@@ -140,14 +140,14 @@ const AirbnbPaymentPage = () => {
         buttons={[
           {
             text: "رزرو اقامتگاه",
-            href: "/airbnb-payment",
+            href: "/services/buy-Airbnb",
             variant: "secondary",
             icon: <FaRocket />,
           },
         ]}
         media={{
           type: "image",
-          src: "https://arziPlus.s3.eu-north-1.amazonaws.com/Desktop/35-min.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=ASIAUQ73WRGQ2WW34VA6%2F20251012%2Feu-north-1%2Fs3%2Faws4_request&X-Amz-Date=20251012T105625Z&X-Amz-Expires=300&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEIP%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCmV1LW5vcnRoLTEiSDBGAiEA7IHnT%2F1lv284EuhvVQZf4yF6WllV3ac0tT6isUZzK4MCIQCCEnm0oPDQXnvJobLQKB5rZiTvXWlyzfR71i%2FaGGdjLCrWAggsEAAaDDMxMTM3NjEyMDIyNSIML8PqESTt448c%2FdkDKrMC1ZBEvL3AlHlth9hXk1luJm8F%2BVf%2F6hkKeCGWY8jAXEJXx9%2BRiYChU2OlWsEzyJxMGRH1fCG%2FMEDVo1sqh98VOshPFDILQhJb43YKnVZSNETAq7oXkEecuYm0vVGkDFZzlF7VKOYvIVaXiANA86JxxU7Kpo4dLR20tvr2ls6yVb1iVHfCjhzekOvQ9S561H3lFuj3TZT1LmXd1XrH%2Bd%2BCBmR8EzX8cHTdRN6a3Fsz%2F7nxKb%2F7P2XNbT4WB60QQd516QCOospxcxvXyuCQgMz9YNo3LyZ71UGhDuLQkXLVdK5Gq1T7o5eYsGw6I4Wl7uKuBcJ6QaWKCH0LCsxhbG85LuILYpjQIh%2FmD7wiGgKK%2Fkxcpva5BmmG4Esuo848GgcsNCdymjz5Yd3Wn4qqSMmG104pSzCS8q3HBjqsAq9LaYV40ZQO%2BoZQl%2BOiysodYk5m7OPRqU5%2F3%2FujzNe14tF3dNop9030445vkhQWI%2F5P47EnohyjcHfbUyfnrX5FHBpR%2BLwwdAnEsiiz4WTOGJ%2FNPxJv4vUjB70X04K1fk0M%2F4hAuVCIUengmyay2NOiv7WqoVdTBWCk21KmArTqJRVqHnQv9H7NrDXh2ZSIHMt1ebRVGU3XiGGlJ4goCg72e%2Fb%2FG0wtJbBIblaXI3mzZrhUrI3Nlh63ets8cF8uKg%2FJ13chbLyBlIPb5wNXk%2Bpj4mKW9h%2Bsp0046aXEg1QVg%2BfTMrvMp%2BSB7e%2BKJmKysYJDAqYq4ZVWrvs5NnUBY6pexn4Kgp327Lo6Ky7FJpF5oo%2BEAC32Kkq8ONuQ8rvx2Z0kv%2B4SaT63WR5ngA%3D%3D&X-Amz-Signature=26f1e74065647fc5fcd6480423fcdc0972b2cc76504389d779dccaaddf0ce520&X-Amz-SignedHeaders=host&response-content-disposition=inline",
+          src: "https://arziplus.storage.c2.liara.space/images/pages/35-min.png",
           alt: "پرداخت هزینه Airbnb",
           width: 1200,
           height: 800,
@@ -178,9 +178,9 @@ const AirbnbPaymentPage = () => {
         heading="مزایای پرداخت با ارزی پلاس"
         description="سرعت، امنیت، قیمت مناسب و پشتیبانی حرفه‌ای"
         buttonText="رزرو اقامتگاه"
-        buttonLink="/airbnb-payment"
+        buttonLink="/services/buy-Airbnb"
         items={whyUsItems}
-         theme={themesWhyus.default}
+        theme={themesWhyus.default}
       />
 
       <HeroSplitSection
@@ -190,7 +190,7 @@ const AirbnbPaymentPage = () => {
         buttons={[
           {
             text: "رزرو اقامتگاه",
-            href: "/airbnb-payment",
+            href: "/services/buy-Airbnb",
             variant: "green",
             icon: <FaShieldAlt />,
           },
@@ -230,7 +230,7 @@ const AirbnbPaymentPage = () => {
         buttons={[
           {
             text: "تماس با پشتیبانی",
-            href: "/support",
+            href: "/contact",
             variant: "outline",
             icon: <FaEnvelope />,
           },
@@ -247,7 +247,7 @@ const AirbnbPaymentPage = () => {
         description="با ارزی پلاس، پرداخت هزینه Airbnb سریع، امن و آسان است."
         button={{
           text: "رزرو اقامتگاه",
-          href: "/airbnb-payment",
+          href: "/dashboard#services",
           variant: "ghost",
           icon: <FaRocket />,
         }}
