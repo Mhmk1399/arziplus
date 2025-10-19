@@ -141,7 +141,7 @@ const FileUploaderModal: React.FC<FileUploaderModalProps> = ({
     >
       <div className="bg-white rounded-2xl sm:rounded-3xl shadow-2xl max-w-3xl w-full max-h-[95vh] overflow-hidden animate-in zoom-in duration-300 border-2 border-[#4DBFF0]/20">
         {/* Header - Enhanced */}
-        <div className="bg-gradient-to-l from-[#FF7A00] to-[#4DBFF0] p-5 sm:p-6 lg:p-8">
+        <div className="bg-gradient-to-l from-[#0A1D37] to-[#4DBFF0] p-5 sm:p-6 lg:p-8">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3 sm:gap-4">
               <div className="w-12 h-12 sm:w-14 sm:h-14 bg-white/20 backdrop-blur-sm rounded-xl sm:rounded-2xl flex items-center justify-center">
@@ -211,7 +211,7 @@ const FileUploaderModal: React.FC<FileUploaderModalProps> = ({
                   transition-all duration-300
                   ${
                     dragActive
-                      ? "bg-gradient-to-r from-[#FF7A00] to-[#4DBFF0] scale-110"
+                      ? "bg-gradient-to-r from-[#0A1D37] to-[#4DBFF0] scale-110"
                       : "bg-[#4DBFF0]/10 group-hover:bg-[#4DBFF0]/20 group-hover:scale-110"
                   }
                 `}
@@ -378,7 +378,7 @@ const FileUploaderModal: React.FC<FileUploaderModalProps> = ({
                   <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
                     <button
                       onClick={() => handleSelectFile(file.url)}
-                      className="flex-1 flex items-center justify-center gap-2 bg-gradient-to-r from-[#4DBFF0] to-[#FF7A00] text-white px-6 py-3 rounded-xl font-bold hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-300"
+                      className="flex-1 flex items-center justify-center gap-2 bg-gradient-to-r from-[#4DBFF0] to-[#0A1D37] text-white px-6 py-3 rounded-xl font-bold hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-300"
                     >
                       <FaCheck className="text-lg" />
                       انتخاب این فایل

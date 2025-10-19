@@ -3,7 +3,6 @@ import React, { useState, useEffect } from "react";
 import {
   FaUser,
   FaUsers,
-  
   FaChild,
   FaArrowRight,
   FaArrowLeft,
@@ -19,6 +18,8 @@ import PersianDatePicker from "@/components/ui/PersianDatePicker";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
 import PaymentMethodSelector from "@/components/payment/PaymentMethodSelector";
 import CardPaymentModal from "@/components/payment/CardPaymentModal";
+import FileUploaderModal from "@/components/FileUploaderModal";
+import { modalContents } from "@/components/static/lottery/modalContent";
 
 // Types based on the lottery model
 interface FamilyInformation {
@@ -53,7 +54,6 @@ interface ContactInformations {
   activePhoneNumber: string;
   secondaryPhoneNumber: string;
   email: string;
-  password: string;
 }
 
 interface OtherInformations {
@@ -94,6 +94,8 @@ const LotteryMultiStepForm: React.FC = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showPaymentSelector, setShowPaymentSelector] = useState(false);
   const [showCardPaymentModal, setShowCardPaymentModal] = useState(false);
+  const [showFileUploader, setShowFileUploader] = useState(false);
+  const [showPhotoInfoModal, setShowPhotoInfoModal] = useState(false);
   const [walletBalance, setWalletBalance] = useState(0);
   const lotteryFee = 600000; // 600,000 tomans
   const [formData, setFormData] = useState<LotteryFormData>({
@@ -133,7 +135,6 @@ const LotteryMultiStepForm: React.FC = () => {
             activePhoneNumber: "",
             secondaryPhoneNumber: "",
             email: "",
-            password: "",
           },
         ],
         otherInformations: [
@@ -317,7 +318,7 @@ const LotteryMultiStepForm: React.FC = () => {
     receiptUrl?: string
   ) => {
     const token = localStorage.getItem("authToken");
-    
+
     const lotteryData = {
       ...formData,
       paymentMethod,
@@ -610,7 +611,7 @@ const LotteryMultiStepForm: React.FC = () => {
         <div className="grid md:grid-cols-2 gap-4">
           <input
             type="text"
-            placeholder="نام"
+            placeholder="نام (حتما انگلیسی وارد نمایید)"
             value={
               formData.registererInformations[0]?.initialInformations
                 .firstName || ""
@@ -622,11 +623,11 @@ const LotteryMultiStepForm: React.FC = () => {
                 e.target.value
               )
             }
-            className="p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all"
+            className="p-3 border outline-none border-gray-300 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all"
           />
           <input
             type="text"
-            placeholder="نام خانوادگی"
+            placeholder="نام خانوادگی (حتما انگلیسی وارد نمایید)"
             value={
               formData.registererInformations[0]?.initialInformations
                 .lastName || ""
@@ -638,7 +639,7 @@ const LotteryMultiStepForm: React.FC = () => {
                 e.target.value
               )
             }
-            className="p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all"
+            className="p-3 border outline-none border-gray-300 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all"
           />
           <select
             value={
@@ -652,7 +653,7 @@ const LotteryMultiStepForm: React.FC = () => {
                 e.target.value
               )
             }
-            className="p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all"
+            className="p-3  border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] outline-none transition-all"
           >
             <option value="">جنسیت</option>
             <option value="male">مرد</option>
@@ -680,11 +681,11 @@ const LotteryMultiStepForm: React.FC = () => {
                 e.target.value
               )
             }
-            className="p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all"
+            className="p-3 border outline-none border-gray-300 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all"
           />
           <input
             type="text"
-            placeholder="شهر"
+            placeholder="شهر (حتما انگلیسی وارد نمایید)"
             value={
               formData.registererInformations[0]?.initialInformations.city || ""
             }
@@ -695,11 +696,11 @@ const LotteryMultiStepForm: React.FC = () => {
                 e.target.value
               )
             }
-            className="p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all"
+            className="p-3 border outline-none border-gray-300 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all"
           />
           <input
             type="text"
-            placeholder="کشور شهروندی"
+            placeholder="کشور تابعیت"
             value={
               formData.registererInformations[0]?.initialInformations
                 .citizenshipCountry || ""
@@ -711,7 +712,7 @@ const LotteryMultiStepForm: React.FC = () => {
                 e.target.value
               )
             }
-            className="p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all md:col-span-2"
+            className="p-3 border outline-none border-gray-300 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all md:col-span-2"
           />
         </div>
       </div>
@@ -726,7 +727,7 @@ const LotteryMultiStepForm: React.FC = () => {
         <div className="grid md:grid-cols-2 gap-4">
           <input
             type="text"
-            placeholder="شماره تلفن اصلی"
+            placeholder="شماره موبایل فعال "
             value={
               formData.registererInformations[0]?.contactInformations[0]
                 ?.activePhoneNumber || ""
@@ -738,11 +739,11 @@ const LotteryMultiStepForm: React.FC = () => {
                 e.target.value
               )
             }
-            className="p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all"
+            className="p-3 border outline-none border-gray-300 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all"
           />
           <input
             type="text"
-            placeholder="شماره تلفن ثانویه"
+            placeholder="تکرار شماره موبایل فعال"
             value={
               formData.registererInformations[0]?.contactInformations[0]
                 ?.secondaryPhoneNumber || ""
@@ -754,7 +755,7 @@ const LotteryMultiStepForm: React.FC = () => {
                 e.target.value
               )
             }
-            className="p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all"
+            className="p-3 border outline-none border-gray-300 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all"
           />
           <input
             type="email"
@@ -770,23 +771,7 @@ const LotteryMultiStepForm: React.FC = () => {
                 e.target.value
               )
             }
-            className="p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all"
-          />
-          <input
-            type="password"
-            placeholder="رمز عبور"
-            value={
-              formData.registererInformations[0]?.contactInformations[0]
-                ?.password || ""
-            }
-            onChange={(e) =>
-              updateRegistererInfo(
-                "contactInformations",
-                "password",
-                e.target.value
-              )
-            }
-            className="p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all"
+            className="p-3 border outline-none border-gray-300 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all"
           />
         </div>
       </div>
@@ -813,7 +798,7 @@ const LotteryMultiStepForm: React.FC = () => {
                 e.target.value
               )
             }
-            className="p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all"
+            className="p-3 border outline-none border-gray-300 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all"
           />
           <input
             type="text"
@@ -829,11 +814,11 @@ const LotteryMultiStepForm: React.FC = () => {
                 e.target.value
               )
             }
-            className="p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all"
+            className="p-3 border outline-none border-gray-300 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all"
           />
           <input
             type="text"
-            placeholder="ایالت سکونت"
+            placeholder="استان سکونت"
             value={
               formData.registererInformations[0]?.residanceInformation[0]
                 ?.residanseState || ""
@@ -845,7 +830,7 @@ const LotteryMultiStepForm: React.FC = () => {
                 e.target.value
               )
             }
-            className="p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all"
+            className="p-3 border outline-none border-gray-300 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all"
           />
           <input
             type="text"
@@ -861,7 +846,7 @@ const LotteryMultiStepForm: React.FC = () => {
                 e.target.value
               )
             }
-            className="p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all"
+            className="p-3 border outline-none border-gray-300 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all"
           />
           <input
             type="text"
@@ -877,7 +862,7 @@ const LotteryMultiStepForm: React.FC = () => {
                 e.target.value
               )
             }
-            className="p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all md:col-span-2"
+            className="p-3 border outline-none border-gray-300 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all md:col-span-2"
           />
         </div>
       </div>
@@ -904,7 +889,7 @@ const LotteryMultiStepForm: React.FC = () => {
                 e.target.value
               )
             }
-            className="p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all"
+            className="p-3 border outline-none border-gray-300 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all"
           />
           <input
             type="text"
@@ -920,11 +905,9 @@ const LotteryMultiStepForm: React.FC = () => {
                 e.target.value
               )
             }
-            className="p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all"
+            className="p-3 border outline-none border-gray-300 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all"
           />
-          <input
-            type="text"
-            placeholder="آخرین مدرک تحصیلی"
+          <select
             value={
               formData.registererInformations[0]?.otherInformations[0]
                 ?.lastDegree || ""
@@ -936,11 +919,24 @@ const LotteryMultiStepForm: React.FC = () => {
                 e.target.value
               )
             }
-            className="p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all"
-          />
-          <input
-            type="text"
-            placeholder="شهروندی همسر"
+            className="p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all outline-none"
+          >
+            <option value="">آخرین مدرک تحصیلی را انتخاب کنید...</option>
+            <option value="1">پایین‌تر از دیپلم</option>
+            <option value="2">دیپلم فنی حرفه ای یا کاردانش</option>
+            <option value="3">دیپلم نظری</option>
+            <option value="4">پیش دانشگاهی</option>
+            <option value="5">دانشجوی کاردانی</option>
+            <option value="6">مدرک کاردانی</option>
+            <option value="7">دانشجوی کارشناسی</option>
+            <option value="8">مدرک کارشناسی</option>
+            <option value="9">دانشجوی کارشناسی ارشد</option>
+            <option value="10">مدرک کارشناسی ارشد</option>
+            <option value="11">دانشجوی دکتری</option>
+            <option value="12">مدرک دکتری</option>
+            <option value="13">بالاتر از دکترا</option>
+          </select>
+          <select
             value={
               formData.registererInformations[0]?.otherInformations[0]
                 ?.partnerCitizenShip || ""
@@ -952,24 +948,95 @@ const LotteryMultiStepForm: React.FC = () => {
                 e.target.value
               )
             }
-            className="p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all"
-          />
-          <input
-            type="text"
-            placeholder="آدرس تصویر"
-            value={
-              formData.registererInformations[0]?.otherInformations[0]
-                ?.imageUrl || ""
-            }
-            onChange={(e) =>
-              updateRegistererInfo(
-                "otherInformations",
-                "imageUrl",
-                e.target.value
-              )
-            }
-            className="p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all md:col-span-2"
-          />
+            className="p-3 outline-none border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all"
+          >
+            <option value="">انتخاب کنید...</option>
+            <option value="my spouse is not a resident of america">
+              همسر متقاضی، مقیم یا شهروند ایالات متحده نمی‌باشد.
+            </option>
+            <option value="my spouse live in america">
+              همسر متقاضی، مقیم یا شهروند ایالات متحده می‌باشد.
+            </option>
+          </select>
+          <div className="md:col-span-2">
+            <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-4">
+              <h4 className="text-lg font-bold text-[#0A1D37] mb-3 flex items-center gap-2">
+                📸 شرایط الزامی عکس لاتاری شما
+              </h4>
+              <div className="space-y-2 text-sm text-gray-700">
+                <p>• باید زاویه مستقیم به دوربین داشته باشید.</p>
+                <p>• عکس به شکل مربع و طول 600 پیکسل تا 1200 پیکسل مورد قبول است.</p>
+                <p>• زمینه عکس باید سفید یا مایل به سفید باشد.</p>
+                <p>• عکس باید رنگی باشد و عکس سیاه و سفید مردود است.</p>
+                <p>• عکس لاتاری باید بدون عینک و سمعک باشد.</p>
+                <p>• موی شما نباید روی صورت شما را بپوشاند.</p>
+                <p>• نیازی به معلوم بودن گوش ها نیست.</p>
+                <p>• عکس با حجاب هم برای مسلمانان و سایر ادیانی که حجاب در آنها تعریف شده است ممانعتی ندارد.</p>
+                <p>• گردی صورت باید کاملا واضح باشد و با چیزی پوشانده نشود.</p>
+                <p>• نیازی به چاپ عکس ندارید، عکس باید به صورت فایل دیجیتال به شما تحویل داده شود.</p>
+                <p>• عکس باید مربوط به شش ماه گذشته باشد. نباید سن عکس بیش از 6 ماه باشد.</p>
+                <p>• از عکسی که سال گذشته استفاده کردید نباید مجدد استفاده کنید.</p>
+              </div>
+              <button
+                onClick={() => setShowPhotoInfoModal(true)}
+                className="mt-3 px-4 py-2 bg-[#4DBFF0] text-white rounded-lg hover:bg-[#4DBFF0]/80 transition-colors text-sm font-medium"
+              >
+                اطلاعات بیشتر
+              </button>
+            </div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              تصویر شخصی
+            </label>
+            <div className="space-y-3">
+              {/* Image Preview */}
+              {formData.registererInformations[0]?.otherInformations[0]
+                ?.imageUrl && (
+                <div className="relative w-32 h-32 mx-auto">
+                  <img
+                    src={
+                      formData.registererInformations[0]?.otherInformations[0]
+                        ?.imageUrl
+                    }
+                    alt="تصویر شخصی"
+                    className="w-full h-full object-cover rounded-xl border-2 border-[#4DBFF0]/30"
+                  />
+                  <button
+                    onClick={() =>
+                      updateRegistererInfo("otherInformations", "imageUrl", "")
+                    }
+                    className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full text-xs hover:bg-red-600 transition-colors"
+                  >
+                    ×
+                  </button>
+                </div>
+              )}
+
+              {/* Upload Button */}
+              <button
+                type="button"
+                onClick={() => setShowFileUploader(true)}
+                className="w-full p-3 border-2 border-dashed border-[#4DBFF0] bg-[#4DBFF0]/5 rounded-xl hover:bg-[#4DBFF0]/10 transition-all duration-300 flex items-center justify-center gap-2 text-[#4DBFF0] font-medium"
+              >
+                <svg
+                  className="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
+                  />
+                </svg>
+                {formData.registererInformations[0]?.otherInformations[0]
+                  ?.imageUrl
+                  ? "تغییر تصویر"
+                  : "آپلود تصویر شخصی"}
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -1184,7 +1251,7 @@ const LotteryMultiStepForm: React.FC = () => {
                   <div
                     className={`w-12 h-12 rounded-xl flex items-center justify-center font-bold transition-all duration-300 ${
                       currentStep >= index
-                        ? "bg-gradient-to-r from-[#FF7A00] to-[#4DBFF0] text-white shadow-lg"
+                        ? "bg-gradient-to-r from-[#0A1D37] to-[#4DBFF0] text-white shadow-lg"
                         : "bg-gray-200 text-gray-500"
                     }`}
                   >
@@ -1224,10 +1291,159 @@ const LotteryMultiStepForm: React.FC = () => {
         </div>
 
         {/* Form Content */}
-        <div className="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden">
-          <div className="p-6 min-h-[500px]">{renderStepContent()}</div>
+        <div className="bg-white mb-4 rounded-2xl shadow-lg border border-gray-200 overflow-hidden">
+          <div className="p-6 h-fit ">{renderStepContent()}</div>
+        </div>
 
-          {/* Navigation */}
+        {/* Important Information Box */}
+        <div className="bg-gradient-to-r h-80 overflow-auto from-red-50 to-orange-50 rounded-2xl shadow-lg border border-red-200 p-6 mb-8">
+          <div className="space-y-6">
+            {/* Important Notice */}
+            <div className="bg-red-100 border-r-4 border-red-500 p-4 rounded-lg">
+              <h3 className="text-lg font-bold text-red-800 mb-2 flex items-center gap-2">
+                <span className="text-red-600">⚠️</span>
+                توجه مهم
+              </h3>
+              <p className="text-red-700 leading-relaxed">
+                پس از انجام پرداخت و تکمیل ثبت‌نام، امکان بازگشت وجه (اعم از
+                پرداخت آنلاین، کارت‌به‌کارت و سایر روش‌ها) وجود نخواهد داشت.
+                لطفاً پیش از پرداخت، تمامی اطلاعات را با دقت بررسی نمایید.
+              </p>
+            </div>
+
+            {/* Services Section */}
+            <div className="space-y-4">
+              <h3 className="text-xl font-bold text-[#0A1D37] mb-4 flex items-center gap-3">
+                <span className="text-[#FF7A00]">🎯</span>
+                خدمات قابل ارائه
+              </h3>
+              <p className="text-gray-700 leading-relaxed mb-4">
+                با توجه به حساسیت بالای فرآیند درخواست ویزا، ارزی پلاس در ازای
+                پرداخت شما خدمات زیر را ارائه می‌دهد:
+              </p>
+
+              <div className="grid gap-3">
+                <div className="flex items-start gap-3 p-3 bg-white rounded-lg border border-gray-200">
+                  <span className="text-green-500 mt-1">✓</span>
+                  <p className="text-gray-700">
+                    ثبت‌نام دقیق متقاضی در برنامه قرعه‌کشی ویزای تنوع نژادی
+                    آمریکا (DV Lottery) که در ایران با نام لاتاری گرین کارت
+                    شناخته می‌شود، توسط کارشناسان ارزی پلاس انجام خواهد شد.
+                  </p>
+                </div>
+
+                <div className="flex items-start gap-3 p-3 bg-white rounded-lg border border-gray-200">
+                  <span className="text-green-500 mt-1">✓</span>
+                  <p className="text-gray-700">
+                    در صورت نیاز، راهنمایی و پشتیبانی تلفنی یا پیامکی برای تکمیل
+                    صحیح اطلاعات ارائه می‌شود.
+                  </p>
+                </div>
+
+                <div className="flex items-start gap-3 p-3 bg-white rounded-lg border border-gray-200">
+                  <span className="text-green-500 mt-1">✓</span>
+                  <p className="text-gray-700">
+                    فرم‌های ثبت‌نام بررسی شده و در صورت وجود نقص یا اشتباه،
+                    اصلاح یا راهنمایی لازم ارائه خواهد شد.
+                  </p>
+                </div>
+
+                <div className="flex items-start gap-3 p-3 bg-white rounded-lg border border-gray-200">
+                  <span className="text-green-500 mt-1">✓</span>
+                  <p className="text-gray-700">
+                    اعلام نتایج لاتاری از طریق پیامک و ایمیل توسط تیم ارزی پلاس
+                    انجام می‌گیرد.
+                  </p>
+                </div>
+
+                <div className="flex items-start gap-3 p-3 bg-white rounded-lg border border-gray-200">
+                  <span className="text-green-500 mt-1">✓</span>
+                  <p className="text-gray-700">
+                    در صورت برنده شدن، با متقاضی تماس گرفته شده و توضیحات لازم
+                    برای ادامه مراحل ارائه خواهد شد.
+                  </p>
+                </div>
+
+                <div className="flex items-start gap-3 p-3 bg-white rounded-lg border border-gray-200">
+                  <span className="text-green-500 mt-1">✓</span>
+                  <p className="text-gray-700">
+                    تمامی اطلاعات ثبت‌نام و نتایج تا پایان دوره مالی مربوطه،
+                    برای حفظ امنیت در سرورهای ارزی پلاس نگهداری می‌شود.
+                  </p>
+                </div>
+
+                <div className="flex items-start gap-3 p-3 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg border border-blue-200">
+                  <span className="text-blue-500 mt-1">⭐</span>
+                  <p className="text-gray-700 font-medium">
+                    تجربه و تخصص ارزی پلاس در حوزه مهاجرت به آمریکا، مهم‌ترین
+                    ارزش افزوده خدمات ماست؛ با انتخاب ما یک ثبت‌نام اصولی و بدون
+                    خطا خواهید داشت.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Timeline Section */}
+            <div className="space-y-4">
+              <h3 className="text-xl font-bold text-[#0A1D37] mb-4 flex items-center gap-3">
+                <span className="text-[#4DBFF0]">⏰</span>
+                زمان‌بندی ارائه خدمات
+              </h3>
+              <div className="grid gap-3">
+                <div className="flex items-start gap-3 p-3 bg-white rounded-lg border border-gray-200">
+                  <span className="text-blue-500 mt-1">📅</span>
+                  <p className="text-gray-700">
+                    حدود یک ماه پیش از آغاز رسمی برنامه، کارشناسان ارزی پلاس با
+                    شما تماس گرفته و ثبت‌نام نهایی در مرکز کنسولی کنتاکی آمریکا
+                    انجام خواهد شد.
+                  </p>
+                </div>
+                <div className="flex items-start gap-3 p-3 bg-white rounded-lg border border-gray-200">
+                  <span className="text-blue-500 mt-1">📊</span>
+                  <p className="text-gray-700">
+                    حدود شش ماه پس از ثبت‌نام، با اعلام نتایج رسمی، نتیجه توسط
+                    تیم ارزی پلاس بررسی و به شما اطلاع داده می‌شود.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Requirements Section - Only show on first step */}
+            {visibleSteps[currentStep]?.id === 0 && (
+              <div className="space-y-4">
+                <h3 className="text-xl font-bold text-[#0A1D37] mb-4 flex items-center gap-3">
+                  <span className="text-[#FF7A00]">📋</span>
+                  شرایط لازم برای شرکت در برنامه
+                </h3>
+                <div className="bg-green-50 p-4 rounded-lg border border-green-200">
+                  <p className="text-green-800 leading-relaxed">
+                    تنها شرط ثبت‌نام، داشتن مدرک دیپلم دبیرستان یا حداقل دو سال
+                    سابقه کار در پنج سال گذشته است. هیچ محدودیتی از نظر سن یا مدرک
+                    زبان وجود ندارد.
+                  </p>
+                </div>
+              </div>
+            )}
+
+            {/* Privacy Section */}
+            <div className="space-y-4">
+              <h3 className="text-xl font-bold text-[#0A1D37] mb-4 flex items-center gap-3">
+                <span className="text-purple-500">🔒</span>
+                حریم خصوصی
+              </h3>
+              <div className="bg-purple-50 p-4 rounded-lg border border-purple-200">
+                <p className="text-purple-800 leading-relaxed">
+                  گروه ارزی پلاس متعهد است که اطلاعات شخصی متقاضیان را به‌صورت
+                  محرمانه حفظ کرده و از هرگونه استفاده خارج از چارچوب برنامه
+                  لاتاری گرین کارت آمریکا خودداری نماید.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Navigation */}
+        <div className="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden">
           <div className="border-t border-gray-200 p-6 bg-gray-50">
             <div className="flex justify-between items-center">
               <button
@@ -1278,9 +1494,9 @@ const LotteryMultiStepForm: React.FC = () => {
                       Math.min(visibleSteps.length - 1, currentStep + 1)
                     )
                   }
-                  className="flex items-center gap-2 px-6 py-3 rounded-xl font-medium bg-gradient-to-r from-[#FF7A00] to-[#4DBFF0] text-white hover:shadow-lg hover:scale-105 active:scale-95 transition-all duration-300"
+                  className="flex items-center gap-2 px-6 py-3 rounded-xl font-medium bg-gradient-to-r from-[#0A1D37] to-[#4DBFF0] text-white hover:shadow-lg hover:scale-105 active:scale-95 transition-all duration-300"
                 >
-                  بعدی
+                  موافقت و ثبت نام
                   <FaArrowLeft className="text-sm" />
                 </button>
               )}
@@ -1297,7 +1513,10 @@ const LotteryMultiStepForm: React.FC = () => {
               انتخاب روش پرداخت
             </h3>
             <p className="text-center text-gray-600 mb-6">
-              هزینه ثبت‌نام در قرعه‌کشی: <span className="font-bold text-[#FF7A00]">{lotteryFee.toLocaleString()} تومان</span>
+              هزینه ثبت‌نام در قرعه‌کشی:{" "}
+              <span className="font-bold text-[#FF7A00]">
+                {lotteryFee.toLocaleString()} تومان
+              </span>
             </p>
             <PaymentMethodSelector
               amount={lotteryFee}
@@ -1336,6 +1555,41 @@ const LotteryMultiStepForm: React.FC = () => {
           showToast.success("ثبت‌نام در قرعه‌کشی با موفقیت انجام شد");
         }}
       />
+
+      {/* File Uploader Modal */}
+      <FileUploaderModal
+        isOpen={showFileUploader}
+        onClose={() => setShowFileUploader(false)}
+        onFileUploaded={(fileUrl: string) => {
+          updateRegistererInfo("otherInformations", "imageUrl", fileUrl);
+          setShowFileUploader(false);
+        }}
+        title="آپلود تصویر شخصی"
+        acceptedTypes={[".jpg", ".jpeg", ".png", ".gif", ".webp"]}
+        maxFileSize={5 * 1024 * 1024} // 5MB
+      />
+
+      {/* Photo Information Modal */}
+      {showPhotoInfoModal && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg max-w-4xl max-h-[90vh] overflow-y-auto w-full">
+            <div className="sticky top-0 bg-white border-b border-gray-200 p-4 flex justify-between items-center">
+              <h3 className="text-xl font-bold text-[#0A1D37]">
+                {modalContents.step2.title}
+              </h3>
+              <button
+                onClick={() => setShowPhotoInfoModal(false)}
+                className="text-gray-500 hover:text-gray-700 text-2xl font-bold"
+              >
+                ×
+              </button>
+            </div>
+            <div className="p-6">
+              {modalContents.step2.content}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

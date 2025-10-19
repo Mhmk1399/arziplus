@@ -110,7 +110,7 @@ const PersianDatePicker: React.FC<PersianDatePickerProps> = ({
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className={`w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all text-right flex items-center justify-between ${
+        className={`w-full p-3 border outline-none border-gray-300 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all text-right flex items-center justify-between ${
           isDateComplete ? "text-gray-900" : "text-gray-500"
         }`}
       >

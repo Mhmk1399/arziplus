@@ -54,7 +54,6 @@ const lotterySchema = new mongoose.Schema({
           activePhoneNumber: { type: String },
           secondaryPhoneNumber: { type: String },
           email: { type: String },
-          password: { type: String },
         },
       ],
       otherInformations: [
