@@ -1,14 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import {
-  FaSearch,
-  FaEdit,
-  FaTrash,
-  FaEye,
-  FaUser,
-  FaCheck,
-} from "react-icons/fa";
+import { createPortal } from "react-dom";
+import { FaSearch, FaEdit, FaTrash, FaEye, FaUser } from "react-icons/fa";
 import { showToast } from "@/utilities/toast";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
 
@@ -103,12 +97,12 @@ const UsersList = () => {
   const [editForm, setEditForm] = useState({
     username: "",
     roles: [] as string[],
-    status: "",
+    status: "pending_verification",
     nationalCredentials: {
       firstName: "",
       lastName: "",
       nationalNumber: "",
-      status: "",
+      status: "pending_verification",
       rejectionNotes: "",
     },
     contactInfo: {
@@ -117,7 +111,7 @@ const UsersList = () => {
       homePhone: "",
       postalCode: "",
       address: "",
-      status: "",
+      status: "pending_verification",
       rejectionNotes: "",
     },
     profile: {
@@ -207,21 +201,26 @@ const UsersList = () => {
     setSubmitting(true);
     try {
       const token = localStorage.getItem("authToken");
+
+      const requestData = {
+        userId: selectedUser._id,
+        username: editForm.username,
+        roles: editForm.roles,
+        status: editForm.status,
+        nationalCredentials: editForm.nationalCredentials,
+        contactInfo: editForm.contactInfo,
+        profile: editForm.profile,
+      };
+
+      console.log("Sending user update data:", requestData);
+
       const response = await fetch("/api/users", {
         method: "PATCH",
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          userId: selectedUser._id,
-          username: editForm.username,
-          roles: editForm.roles,
-          status: editForm.status,
-          nationalCredentials: editForm.nationalCredentials,
-          contactInfo: editForm.contactInfo,
-          profile: editForm.profile,
-        }),
+        body: JSON.stringify(requestData),
       });
 
       if (!response.ok) {
@@ -245,17 +244,31 @@ const UsersList = () => {
           nationalCredentials: {
             ...selectedUser.nationalCredentials,
             ...editForm.nationalCredentials,
-            status: editForm.nationalCredentials.status as "accepted" | "rejected" | "pending_verification" | undefined,
+            status:
+              (editForm.nationalCredentials.status as
+                | "accepted"
+                | "rejected"
+                | "pending_verification"
+                | undefined) || "pending_verification",
           },
           contactInfo: {
             ...selectedUser.contactInfo,
             email: editForm.contactInfo.email,
             mobilePhone: editForm.contactInfo.mobilePhone,
-            homePhone: editForm.contactInfo.homePhone ? parseInt(editForm.contactInfo.homePhone, 10) : selectedUser.contactInfo?.homePhone,
-            postalCode: editForm.contactInfo.postalCode ? parseInt(editForm.contactInfo.postalCode, 10) : selectedUser.contactInfo?.postalCode || 0,
+            homePhone: editForm.contactInfo.homePhone
+              ? parseInt(editForm.contactInfo.homePhone, 10)
+              : selectedUser.contactInfo?.homePhone,
+            postalCode: editForm.contactInfo.postalCode
+              ? parseInt(editForm.contactInfo.postalCode, 10)
+              : selectedUser.contactInfo?.postalCode || 0,
             address: editForm.contactInfo.address,
             rejectionNotes: editForm.contactInfo.rejectionNotes,
-            status: editForm.contactInfo.status as "accepted" | "rejected" | "pending_verification" | undefined,
+            status:
+              (editForm.contactInfo.status as
+                | "accepted"
+                | "rejected"
+                | "pending_verification"
+                | undefined) || "pending_verification",
           },
           profile: {
             ...selectedUser.profile,
@@ -276,70 +289,6 @@ const UsersList = () => {
       );
     } finally {
       setSubmitting(false);
-    }
-  };
-
-  // Validate user (approve all credentials)
-  const handleValidateUser = async (userId: string) => {
-    try {
-      const token = localStorage.getItem("authToken");
-
-      // Update all credentials to accepted
-      const promises = [
-        // National credentials
-        fetch("/api/users/nationalverifications", {
-          method: "PATCH",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            userId,
-            status: "accepted",
-          }),
-        }),
-        // Contact info
-        fetch("/api/users/contact", {
-          method: "PATCH",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            userId,
-            status: "accepted",
-          }),
-        }),
-      ];
-
-      // Update banking info if exists
-      const user = users.find((u) => u._id === userId);
-      if (user?.bankingInfo && user.bankingInfo.length > 0) {
-        user.bankingInfo.forEach((bank) => {
-          promises.push(
-            fetch("/api/users/banckingifo", {
-              method: "PATCH",
-              headers: {
-                Authorization: `Bearer ${token}`,
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({
-                userId,
-                bankingInfoId: bank._id,
-                status: "accepted",
-              }),
-            })
-          );
-        });
-      }
-
-      await Promise.all(promises);
-
-      showToast.success("تمام اطلاعات کاربر تایید شد");
-      await fetchUsers();
-    } catch (err) {
-      console.error("Error validating user:", err);
-      showToast.error("خطا در تایید اطلاعات کاربر");
     }
   };
 
@@ -371,7 +320,6 @@ const UsersList = () => {
 
   // Force refresh user data
   const refreshUserData = async () => {
-    console.log("Manual refresh triggered");
     await fetchUsers();
   };
 
@@ -424,35 +372,6 @@ const UsersList = () => {
     return user.username || "نام نامشخص";
   };
 
-  const getValidationStatus = (user: User) => {
-    let total = 0;
-    let completed = 0;
-
-    // Check national credentials
-    if (user.nationalCredentials?.firstName) {
-      total++;
-      if (user.nationalCredentials.status === "accepted") completed++;
-    }
-
-    // Check contact info
-    if (user.contactInfo?.email) {
-      total++;
-      if (user.contactInfo.status === "accepted") completed++;
-    }
-
-    // Check banking info
-    if (user.bankingInfo && user.bankingInfo.length > 0) {
-      total++;
-      if (user.bankingInfo.some((bank) => bank.status === "accepted"))
-        completed++;
-    }
-
-    if (total === 0) return { text: "بدون اطلاعات", color: "gray" };
-    if (completed === total) return { text: "تکمیل شده", color: "green" };
-    if (completed === 0) return { text: "در انتظار", color: "yellow" };
-    return { text: "نیمه تکمیل", color: "orange" };
-  };
-
   const openUserDetails = (user: User) => {
     setSelectedUser(user);
     setShowUserDetails(true);
@@ -468,7 +387,7 @@ const UsersList = () => {
         firstName: user.nationalCredentials?.firstName || "",
         lastName: user.nationalCredentials?.lastName || "",
         nationalNumber: user.nationalCredentials?.nationalNumber || "",
-        status: user.nationalCredentials?.status || "",
+        status: user.nationalCredentials?.status || "pending_verification",
         rejectionNotes: user.nationalCredentials?.rejectionNotes || "",
       },
       contactInfo: {
@@ -477,7 +396,7 @@ const UsersList = () => {
         homePhone: user.contactInfo?.homePhone?.toString() || "",
         postalCode: user.contactInfo?.postalCode?.toString() || "",
         address: user.contactInfo?.address || "",
-        status: user.contactInfo?.status || "",
+        status: user.contactInfo?.status || "pending_verification",
         rejectionNotes: user.contactInfo?.rejectionNotes || "",
       },
       profile: {
@@ -651,9 +570,7 @@ const UsersList = () => {
                     <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
                       وضعیت
                     </th>
-                    <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      وضعیت احراز
-                    </th>
+
                     <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
                       تاریخ عضویت
                     </th>
@@ -664,7 +581,6 @@ const UsersList = () => {
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
                   {users.map((user) => {
-                    const validationStatus = getValidationStatus(user);
                     return (
                       <tr key={user._id} className="hover:bg-gray-50">
                         <td className="px-6 py-4 whitespace-nowrap">
@@ -696,13 +612,7 @@ const UsersList = () => {
                             {getStatusText(user.status)}
                           </span>
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <span
-                            className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border text-${validationStatus.color}-700 bg-${validationStatus.color}-100 border-${validationStatus.color}-300`}
-                          >
-                            {validationStatus.text}
-                          </span>
-                        </td>
+
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                           {new Date(user.createdAt).toLocaleDateString("fa-IR")}
                         </td>
@@ -722,15 +632,7 @@ const UsersList = () => {
                             >
                               <FaEdit />
                             </button>
-                            {validationStatus.text !== "تکمیل شده" && (
-                              <button
-                                onClick={() => handleValidateUser(user._id)}
-                                className="text-emerald-600 hover:text-emerald-900"
-                                title="تایید کل اطلاعات"
-                              >
-                                <FaCheck />
-                              </button>
-                            )}
+
                             <button
                               onClick={() => handleDeleteUser(user._id)}
                               className="text-red-600 hover:text-red-900"
@@ -783,1015 +685,959 @@ const UsersList = () => {
       </div>
 
       {/* User Details Modal */}
-      {showUserDetails && selectedUser && (
-        <div className="fixed inset-0 h-screen overflow-hidden bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-2 sm:p-4">
-          <div className="bg-white rounded-2xl w-full max-w-5xl max-h-screen overflow-hidden shadow-2xl border border-[#FF7A00]/20">
-            {/* Header */}
-            <div className="flex items-center justify-between p-4 sm:p-6 border-b bg-gray-50 border-[#FF7A00]/20">
-              <div className="flex items-center gap-3">
-                <div className="w-8 h-8 bg-[#FF7A00] rounded-full flex items-center justify-center">
-                  <FaUser className="text-white text-sm" />
+      {showUserDetails &&
+        selectedUser &&
+        typeof document !== "undefined" &&
+        createPortal(
+          <div
+            className="fixed inset-0 h-screen overflow-hidden bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-2 sm:p-4"
+            dir="rtl"
+          >
+            <div className="bg-white rounded-2xl w-full max-w-6xl max-h-screen overflow-hidden shadow-2xl border border-[#FF7A00]/20">
+              {/* Header */}
+              <div className="flex items-center justify-between p-4 sm:p-6 border-b bg-gray-50 border-[#FF7A00]/20">
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 bg-[#FF7A00] rounded-full flex items-center justify-center">
+                    <FaUser className="text-white text-sm" />
+                  </div>
+                  <h2 className="text-lg sm:text-xl font-bold text-[#0A1D37]">
+                    جزئیات کاربر
+                  </h2>
                 </div>
-                <h2 className="text-lg sm:text-xl font-bold text-[#0A1D37]">
-                  جزئیات کاربر
-                </h2>
-              </div>
-              <div className="flex items-center gap-2">
-                <button
-                  onClick={refreshUserData}
-                  className="p-2 hover:bg-[#FF7A00]/10 rounded-lg transition-colors text-gray-500 hover:text-[#FF7A00]"
-                  title="بروزرسانی اطلاعات"
-                >
-                  🔄
-                </button>
-                <button
-                  onClick={() => setShowUserDetails(false)}
-                  className="p-2 hover:bg-[#FF7A00]/10 rounded-lg transition-colors text-gray-500 hover:text-[#FF7A00]"
-                >
-                  ✕
-                </button>
-              </div>
-            </div>
-
-            {/* Content */}
-            <div className="p-4 sm:p-6 space-y-4 sm:space-y-6 overflow-y-auto max-h-[75vh]">
-              {/* Basic Info */}
-              <div className="bg-gray-50 rounded-xl p-4 border border-[#0A1D37]/10">
-                <h3 className="text-base sm:text-lg font-semibold text-[#0A1D37] mb-3 flex items-center gap-2">
-                  <span className="w-2 h-2 bg-[#FF7A00] rounded-full"></span>
-                  اطلاعات پایه
-                </h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-                  <div>
-                    <label className="text-xs sm:text-sm font-medium text-gray-600">
-                      نام کاربری
-                    </label>
-                    <div className="text-sm sm:text-base text-[#0A1D37] mt-1 font-mono bg-white px-3 py-2 rounded-lg border border-[#0A1D37]/10">
-                      {selectedUser.username || "تعریف نشده"}
-                    </div>
-                  </div>
-                  <div>
-                    <label className="text-xs sm:text-sm font-medium text-gray-600">
-                      نقش‌ها
-                    </label>
-                    <div className="text-sm sm:text-base text-[#0A1D37] mt-1">
-                      <div className="flex flex-wrap gap-1">
-                        {selectedUser.roles.map((role, index) => (
-                          <span
-                            key={index}
-                            className="inline-flex px-2 py-1 bg-[#FF7A00]/10 text-[#FF7A00] text-xs rounded-full border border-[#FF7A00]/20"
-                          >
-                            {getRoleText([role])}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                  <div>
-                    <label className="text-xs sm:text-sm font-medium text-gray-600">
-                      وضعیت حساب
-                    </label>
-                    <div className="mt-1">
-                      <span
-                        className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${getStatusColor(
-                          selectedUser.status
-                        )}`}
-                      >
-                        {getStatusText(selectedUser.status)}
-                      </span>
-                    </div>
-                  </div>
-                  <div>
-                    <label className="text-xs sm:text-sm font-medium text-gray-600">
-                      تاریخ عضویت
-                    </label>
-                    <div className="text-sm sm:text-base text-[#0A1D37] mt-1 bg-white px-3 py-2 rounded-lg border border-[#0A1D37]/10">
-                      {new Date(selectedUser.createdAt).toLocaleDateString(
-                        "fa-IR"
-                      )}
-                    </div>
-                  </div>
-                  <div>
-                    <label className="text-xs sm:text-sm font-medium text-gray-600">
-                      آخرین بروزرسانی
-                    </label>
-                    <div className="text-sm sm:text-base text-[#0A1D37] mt-1 bg-white px-3 py-2 rounded-lg border border-[#0A1D37]/10">
-                      {new Date(selectedUser.updatedAt).toLocaleDateString(
-                        "fa-IR"
-                      )}
-                    </div>
-                  </div>
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={refreshUserData}
+                    className="p-2 hover:bg-[#FF7A00]/10 rounded-lg transition-colors text-gray-500 hover:text-[#FF7A00]"
+                    title="بروزرسانی اطلاعات"
+                  >
+                    🔄
+                  </button>
+                  <button
+                    onClick={() => setShowUserDetails(false)}
+                    className="p-2 hover:bg-[#FF7A00]/10 rounded-lg transition-colors text-gray-500 hover:text-[#FF7A00]"
+                  >
+                    ✕
+                  </button>
                 </div>
               </div>
 
-              {/* National Credentials */}
-              <div className="bg-gray-50 rounded-xl p-4 border border-[#0A1D37]/10">
-                <h3 className="text-base sm:text-lg font-semibold text-[#0A1D37] mb-3 flex items-center gap-2">
-                  <span className="w-2 h-2 bg-[#FF7A00] rounded-full"></span>
-                  اطلاعات هویتی
-                </h3>
-                {selectedUser.nationalCredentials &&
-                Object.keys(selectedUser.nationalCredentials).length > 0 ? (
-                  <div className="space-y-3">
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
-                      <div>
-                        <label className="text-xs sm:text-sm font-medium text-gray-600">
-                          نام
-                        </label>
-                        <div className="text-sm sm:text-base text-gray-900 mt-1 bg-white px-2 py-1 rounded border">
-                          {selectedUser.nationalCredentials.firstName ||
-                            "تعریف نشده"}
-                        </div>
-                      </div>
-                      <div>
-                        <label className="text-xs sm:text-sm font-medium text-gray-600">
-                          نام خانوادگی
-                        </label>
-                        <div className="text-sm sm:text-base text-gray-900 mt-1 bg-white px-2 py-1 rounded border">
-                          {selectedUser.nationalCredentials.lastName ||
-                            "تعریف نشده"}
-                        </div>
-                      </div>
-                      <div>
-                        <label className="text-xs sm:text-sm font-medium text-gray-600">
-                          کد ملی
-                        </label>
-                        <div className="text-sm sm:text-base text-gray-900 mt-1 font-mono bg-white px-2 py-1 rounded border">
-                          {selectedUser.nationalCredentials.nationalNumber ||
-                            "تعریف نشده"}
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-                      <div>
-                        <label className="text-xs sm:text-sm font-medium text-gray-600">
-                          وضعیت تایید
-                        </label>
-                        <div className="mt-1">
-                          <span
-                            className={`inline-flex px-2 py-1 text-xs rounded-full ${
-                              selectedUser.nationalCredentials.status ===
-                              "accepted"
-                                ? "bg-green-100 text-green-800"
-                                : selectedUser.nationalCredentials.status ===
-                                  "rejected"
-                                ? "bg-red-100 text-red-800"
-                                : "bg-yellow-100 text-yellow-800"
-                            }`}
-                          >
-                            {selectedUser.nationalCredentials.status ===
-                            "accepted"
-                              ? "تایید شده"
-                              : selectedUser.nationalCredentials.status ===
-                                "rejected"
-                              ? "رد شده"
-                              : "در انتظار بررسی"}
-                          </span>
-                        </div>
-                      </div>
-                      {selectedUser.nationalCredentials.rejectionNotes && (
-                        <div>
-                          <label className="text-xs sm:text-sm font-medium text-gray-600">
-                            یادداشت رد
-                          </label>
-                          <div className="text-sm text-red-700 mt-1 bg-red-50 px-2 py-1 rounded border">
-                            {selectedUser.nationalCredentials.rejectionNotes}
-                          </div>
-                        </div>
-                      )}
-                    </div>
-
-                    {(selectedUser.nationalCredentials.nationalCardImageUrl ||
-                      selectedUser.nationalCredentials
-                        .verificationImageUrl) && (
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-                        {selectedUser.nationalCredentials
-                          .nationalCardImageUrl && (
-                          <div>
-                            <label className="text-xs sm:text-sm font-medium text-gray-600">
-                              تصویر کارت ملی
-                            </label>
-                            <div className="mt-1 bg-white p-2 rounded border">
-                              <img
-                                src={
-                                  selectedUser.nationalCredentials
-                                    .nationalCardImageUrl
-                                }
-                                alt="کارت ملی"
-                                className="w-full h-24 sm:h-32 object-cover rounded"
-                              />
-                            </div>
-                          </div>
-                        )}
-                        {selectedUser.nationalCredentials
-                          .verificationImageUrl && (
-                          <div>
-                            <label className="text-xs sm:text-sm font-medium text-gray-600">
-                              تصویر احراز هویت
-                            </label>
-                            <div className="mt-1 bg-white p-2 rounded border">
-                              <img
-                                src={
-                                  selectedUser.nationalCredentials
-                                    .verificationImageUrl
-                                }
-                                alt="احراز هویت"
-                                className="w-full h-24 sm:h-32 object-cover rounded"
-                              />
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                    )}
-                  </div>
-                ) : (
-                  <div className="text-center py-4 text-gray-500 bg-white rounded border">
-                    هیچ اطلاعات هویتی ثبت نشده است
-                  </div>
-                )}
-              </div>
-
-              {/* Contact Info */}
-              <div className="bg-gray-50 rounded-xl p-4 border border-[#0A1D37]/10">
-                <h3 className="text-base sm:text-lg font-semibold text-[#0A1D37] mb-3 flex items-center gap-2">
-                  <span className="w-2 h-2 bg-[#FF7A00] rounded-full"></span>
-                  اطلاعات تماس
-                </h3>
-                {selectedUser.contactInfo ? (
-                  <div className="space-y-3">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-                      <div>
-                        <label className="text-xs sm:text-sm font-medium text-gray-600">
-                          ایمیل
-                        </label>
-                        <div className="text-sm sm:text-base text-gray-900 mt-1 bg-white px-2 py-1 rounded border">
-                          {selectedUser.contactInfo.email || "تعریف نشده"}
-                        </div>
-                      </div>
-                      <div>
-                        <label className="text-xs sm:text-sm font-medium text-gray-600">
-                          شماره موبایل
-                        </label>
-                        <div className="text-sm sm:text-base text-gray-900 mt-1 font-mono bg-white px-2 py-1 rounded border">
-                          {selectedUser.contactInfo.mobilePhone || "تعریف نشده"}
-                        </div>
-                      </div>
-                      <div>
-                        <label className="text-xs sm:text-sm font-medium text-gray-600">
-                          تلفن ثابت
-                        </label>
-                        <div className="text-sm sm:text-base text-gray-900 mt-1 font-mono bg-white px-2 py-1 rounded border">
-                          {selectedUser.contactInfo.homePhone || "تعریف نشده"}
-                        </div>
-                      </div>
-                      <div>
-                        <label className="text-xs sm:text-sm font-medium text-gray-600">
-                          کد پستی
-                        </label>
-                        <div className="text-sm sm:text-base text-gray-900 mt-1 font-mono bg-white px-2 py-1 rounded border">
-                          {selectedUser.contactInfo.postalCode || "تعریف نشده"}
-                        </div>
-                      </div>
-                    </div>
-
-                    <div>
-                      <label className="text-xs sm:text-sm font-medium text-gray-600">
-                        آدرس
-                      </label>
-                      <div className="text-sm sm:text-base text-gray-900 mt-1 bg-white px-2 py-1 rounded border min-h-[2rem]">
-                        {selectedUser.contactInfo.address || "تعریف نشده"}
-                      </div>
-                    </div>
-
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-                      <div>
-                        <label className="text-xs sm:text-sm font-medium text-gray-600">
-                          وضعیت تایید
-                        </label>
-                        <div className="mt-1">
-                          <span
-                            className={`inline-flex px-2 py-1 text-xs rounded-full ${
-                              selectedUser.contactInfo.status === "accepted"
-                                ? "bg-green-100 text-green-800"
-                                : selectedUser.contactInfo.status === "rejected"
-                                ? "bg-red-100 text-red-800"
-                                : "bg-yellow-100 text-yellow-800"
-                            }`}
-                          >
-                            {selectedUser.contactInfo.status === "accepted"
-                              ? "تایید شده"
-                              : selectedUser.contactInfo.status === "rejected"
-                              ? "رد شده"
-                              : "در انتظار بررسی"}
-                          </span>
-                        </div>
-                      </div>
-                      {selectedUser.contactInfo.rejectionNotes && (
-                        <div>
-                          <label className="text-xs sm:text-sm font-medium text-gray-600">
-                            یادداشت رد
-                          </label>
-                          <div className="text-sm text-red-700 mt-1 bg-red-50 px-2 py-1 rounded border">
-                            {selectedUser.contactInfo.rejectionNotes}
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                ) : (
-                  <div className="text-center py-4 text-gray-500 bg-white rounded border">
-                    هیچ اطلاعات تماسی ثبت نشده است
-                  </div>
-                )}
-              </div>
-
-              {/* Banking Info */}
-              <div className="bg-gray-50 rounded-xl p-4 border border-[#0A1D37]/10">
-                <h3 className="text-base sm:text-lg font-semibold text-[#0A1D37] mb-3 flex items-center gap-2">
-                  <span className="w-2 h-2 bg-[#FF7A00] rounded-full"></span>
-                  اطلاعات بانکی
-                </h3>
-                {selectedUser.bankingInfo &&
-                selectedUser.bankingInfo.length > 0 ? (
-                  <div className="space-y-3">
-                    {selectedUser.bankingInfo.map((bank, index) => (
-                      <div
-                        key={bank._id || index}
-                        className="bg-white p-3 sm:p-4 rounded-lg border"
-                      >
-                        <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-3">
-                          <h4 className="font-medium text-gray-900 mb-2 sm:mb-0">
-                            حساب بانکی #{index + 1}
-                          </h4>
-                          <span
-                            className={`inline-flex px-2 py-1 text-xs rounded-full ${
-                              bank.status === "accepted"
-                                ? "bg-green-100 text-green-800"
-                                : bank.status === "rejected"
-                                ? "bg-red-100 text-red-800"
-                                : "bg-yellow-100 text-yellow-800"
-                            }`}
-                          >
-                            {bank.status === "accepted"
-                              ? "تایید شده"
-                              : bank.status === "rejected"
-                              ? "رد شده"
-                              : "در انتظار بررسی"}
-                          </span>
-                        </div>
-
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                          <div>
-                            <label className="text-xs font-medium text-gray-600">
-                              نام بانک
-                            </label>
-                            <div className="text-sm text-gray-900 mt-1 bg-gray-50 px-2 py-1 rounded">
-                              {bank.bankName || "تعریف نشده"}
-                            </div>
-                          </div>
-                          <div>
-                            <label className="text-xs font-medium text-gray-600">
-                              نام صاحب حساب
-                            </label>
-                            <div className="text-sm text-gray-900 mt-1 bg-gray-50 px-2 py-1 rounded">
-                              {bank.accountHolderName || "تعریف نشده"}
-                            </div>
-                          </div>
-                          <div>
-                            <label className="text-xs font-medium text-gray-600">
-                              شماره کارت
-                            </label>
-                            <div className="text-sm text-gray-900 mt-1 font-mono bg-gray-50 px-2 py-1 rounded">
-                              {bank.cardNumber || "تعریف نشده"}
-                            </div>
-                          </div>
-                          <div>
-                            <label className="text-xs font-medium text-gray-600">
-                              شماره شبا
-                            </label>
-                            <div className="text-sm text-gray-900 mt-1 font-mono bg-gray-50 px-2 py-1 rounded">
-                              {bank.shebaNumber || "تعریف نشده"}
-                            </div>
-                          </div>
-                        </div>
-
-                        {bank.rejectionNotes && (
-                          <div className="mt-3">
-                            <label className="text-xs font-medium text-gray-600">
-                              یادداشت رد
-                            </label>
-                            <div className="text-sm text-red-700 mt-1 bg-red-50 px-2 py-1 rounded border border-red-200">
-                              {bank.rejectionNotes}
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <div className="text-center py-4 text-gray-500 bg-white rounded border">
-                    هیچ اطلاعات بانکی ثبت نشده است
-                  </div>
-                )}
-              </div>
-
-              {/* Verification Status */}
-              <div className="bg-gray-50 rounded-xl p-4 border border-[#0A1D37]/10">
-                <h3 className="text-base sm:text-lg font-semibold text-[#0A1D37] mb-3 flex items-center gap-2">
-                  <span className="w-2 h-2 bg-[#FF7A00] rounded-full"></span>
-                  وضعیت تایید
-                </h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-                  <div className="bg-white p-3 rounded-lg border">
-                    <label className="text-xs sm:text-sm font-medium text-gray-600">
-                      تایید شماره تلفن
-                    </label>
-                    <div className="flex items-center justify-between mt-2">
-                      <span
-                        className={`px-2 py-1 text-xs rounded-full ${
-                          selectedUser.verifications?.phone?.isVerified
-                            ? "bg-green-100 text-green-800"
-                            : "bg-red-100 text-red-800"
-                        }`}
-                      >
-                        {selectedUser.verifications?.phone?.isVerified
-                          ? "تایید شده"
-                          : "تایید نشده"}
-                      </span>
-                      {selectedUser.verifications?.phone?.verifiedAt && (
-                        <span className="text-xs text-gray-500">
-                          {new Date(
-                            selectedUser.verifications.phone.verifiedAt
-                          ).toLocaleDateString("fa-IR")}
-                        </span>
-                      )}
-                    </div>
-                  </div>
-
-                  <div className="bg-white p-3 rounded-lg border">
-                    <label className="text-xs sm:text-sm font-medium text-gray-600">
-                      تایید هویت
-                    </label>
-                    <div className="mt-2 space-y-1">
-                      <span
-                        className={`inline-block px-2 py-1 text-xs rounded-full ${
-                          selectedUser.verifications?.identity?.status ===
-                          "approved"
-                            ? "bg-green-100 text-green-800"
-                            : selectedUser.verifications?.identity?.status ===
-                              "rejected"
-                            ? "bg-red-100 text-red-800"
-                            : selectedUser.verifications?.identity?.status ===
-                              "pending"
-                            ? "bg-yellow-100 text-yellow-800"
-                            : "bg-gray-100 text-gray-800"
-                        }`}
-                      >
-                        {selectedUser.verifications?.identity?.status ===
-                        "approved"
-                          ? "تایید شده"
-                          : selectedUser.verifications?.identity?.status ===
-                            "rejected"
-                          ? "رد شده"
-                          : selectedUser.verifications?.identity?.status ===
-                            "pending"
-                          ? "در انتظار بررسی"
-                          : "ارسال نشده"}
-                      </span>
-                      {selectedUser.verifications?.identity
-                        ?.rejectionReason && (
-                        <div className="text-xs text-red-600 mt-1">
-                          {selectedUser.verifications.identity.rejectionReason}
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Profile Information */}
-              {selectedUser.profile && (
+              {/* Content */}
+              <div className="p-4 sm:p-6 space-y-4 sm:space-y-6 overflow-y-auto max-h-[75vh]">
+                {/* Basic Info */}
                 <div className="bg-gray-50 rounded-xl p-4 border border-[#0A1D37]/10">
                   <h3 className="text-base sm:text-lg font-semibold text-[#0A1D37] mb-3 flex items-center gap-2">
                     <span className="w-2 h-2 bg-[#FF7A00] rounded-full"></span>
-                    اطلاعات پروفایل
+                    اطلاعات پایه
                   </h3>
-                  <div className="space-y-3">
-                    {selectedUser.profile.avatar && (
-                      <div>
-                        <label className="text-xs sm:text-sm font-medium text-gray-600">
-                          تصویر پروفایل
-                        </label>
-                        <div className="mt-1 bg-white p-2 rounded border">
-                          <img
-                            src={selectedUser.profile.avatar}
-                            alt="تصویر پروفایل"
-                            className="w-16 h-16 sm:w-20 sm:h-20 object-cover rounded-full mx-auto"
-                          />
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                    <div>
+                      <label className="text-xs sm:text-sm font-medium text-gray-600">
+                        نام کاربری
+                      </label>
+                      <div className="text-sm sm:text-base text-[#0A1D37] mt-1 font-mono bg-white px-3 py-2 rounded-lg border border-[#0A1D37]/10">
+                        {selectedUser.username || "تعریف نشده"}
+                      </div>
+                    </div>
+                    <div>
+                      <label className="text-xs sm:text-sm font-medium text-gray-600">
+                        نقش‌ها
+                      </label>
+                      <div className="text-sm sm:text-base text-[#0A1D37] mt-1">
+                        <div className="flex flex-wrap gap-1">
+                          {selectedUser.roles.map((role, index) => (
+                            <span
+                              key={index}
+                              className="inline-flex px-2 py-1 bg-[#FF7A00]/10 text-[#FF7A00] text-xs rounded-full border border-[#FF7A00]/20"
+                            >
+                              {getRoleText([role])}
+                            </span>
+                          ))}
                         </div>
                       </div>
-                    )}
-
-                    {selectedUser.profile.bio && (
-                      <div>
-                        <label className="text-xs sm:text-sm font-medium text-gray-600">
-                          بیوگرافی
-                        </label>
-                        <div className="text-sm text-gray-900 mt-1 bg-white px-2 py-1 rounded border min-h-[2rem]">
-                          {selectedUser.profile.bio}
-                        </div>
+                    </div>
+                    <div>
+                      <label className="text-xs sm:text-sm font-medium text-gray-600">
+                        وضعیت حساب
+                      </label>
+                      <div className="mt-1">
+                        <span
+                          className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${getStatusColor(
+                            selectedUser.status
+                          )}`}
+                        >
+                          {getStatusText(selectedUser.status)}
+                        </span>
                       </div>
-                    )}
-
-                    {selectedUser.profile.preferences && (
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                        <div>
-                          <label className="text-xs sm:text-sm font-medium text-gray-600">
-                            زبان
-                          </label>
-                          <div className="text-sm text-gray-900 mt-1 bg-white px-2 py-1 rounded border">
-                            {selectedUser.profile.preferences.language === "fa"
-                              ? "فارسی"
-                              : "انگلیسی"}
-                          </div>
-                        </div>
-
-                        <div>
-                          <label className="text-xs sm:text-sm font-medium text-gray-600">
-                            تنظیمات اعلانات
-                          </label>
-                          <div className="mt-1 space-y-1">
-                            <div className="flex items-center justify-between bg-white px-2 py-1 rounded border text-xs">
-                              <span>ایمیل:</span>
-                              <span
-                                className={
-                                  selectedUser.profile.preferences.notifications
-                                    ?.email
-                                    ? "text-green-600"
-                                    : "text-red-600"
-                                }
-                              >
-                                {selectedUser.profile.preferences.notifications
-                                  ?.email
-                                  ? "فعال"
-                                  : "غیرفعال"}
-                              </span>
-                            </div>
-                            <div className="flex items-center justify-between bg-white px-2 py-1 rounded border text-xs">
-                              <span>پیامک:</span>
-                              <span
-                                className={
-                                  selectedUser.profile.preferences.notifications
-                                    ?.sms
-                                    ? "text-green-600"
-                                    : "text-red-600"
-                                }
-                              >
-                                {selectedUser.profile.preferences.notifications
-                                  ?.sms
-                                  ? "فعال"
-                                  : "غیرفعال"}
-                              </span>
-                            </div>
-                            <div className="flex items-center justify-between bg-white px-2 py-1 rounded border text-xs">
-                              <span>اعلانات:</span>
-                              <span
-                                className={
-                                  selectedUser.profile.preferences.notifications
-                                    ?.push
-                                    ? "text-green-600"
-                                    : "text-red-600"
-                                }
-                              >
-                                {selectedUser.profile.preferences.notifications
-                                  ?.push
-                                  ? "فعال"
-                                  : "غیرفعال"}
-                              </span>
-                            </div>
-                          </div>
-                        </div>
+                    </div>
+                    <div>
+                      <label className="text-xs sm:text-sm font-medium text-gray-600">
+                        تاریخ عضویت
+                      </label>
+                      <div className="text-sm sm:text-base text-[#0A1D37] mt-1 bg-white px-3 py-2 rounded-lg border border-[#0A1D37]/10">
+                        {new Date(selectedUser.createdAt).toLocaleDateString(
+                          "fa-IR"
+                        )}
                       </div>
-                    )}
+                    </div>
+                    <div>
+                      <label className="text-xs sm:text-sm font-medium text-gray-600">
+                        آخرین بروزرسانی
+                      </label>
+                      <div className="text-sm sm:text-base text-[#0A1D37] mt-1 bg-white px-3 py-2 rounded-lg border border-[#0A1D37]/10">
+                        {new Date(selectedUser.updatedAt).toLocaleDateString(
+                          "fa-IR"
+                        )}
+                      </div>
+                    </div>
                   </div>
                 </div>
-              )}
-            </div>
 
-            {/* Footer */}
-            <div className="p-4 sm:p-6 border-t border-[#0A1D37]/10 bg-gray-50 flex flex-col sm:flex-row justify-end gap-3">
-              <button
-                onClick={() => setShowUserDetails(false)}
-                className="w-full sm:w-auto px-4 py-2 text-[#0A1D37] border border-[#0A1D37]/20 rounded-lg hover:bg-gray-100 transition-colors"
-              >
-                بستن
-              </button>
-              <button
-                onClick={() => {
-                  setShowUserDetails(false);
-                  openEditUser(selectedUser);
-                }}
-                className="w-full sm:w-auto px-4 py-2 bg-[#FF7A00] text-white rounded-lg hover:bg-[#FF7A00]/90 transition-colors"
-              >
-                ویرایش
-              </button>
+                {/* National Credentials */}
+                <div className="bg-gray-50 rounded-xl p-4 border border-[#0A1D37]/10">
+                  <h3 className="text-base sm:text-lg font-semibold text-[#0A1D37] mb-3 flex items-center gap-2">
+                    <span className="w-2 h-2 bg-[#FF7A00] rounded-full"></span>
+                    اطلاعات هویتی
+                  </h3>
+                  {selectedUser.nationalCredentials &&
+                  Object.keys(selectedUser.nationalCredentials).length > 0 ? (
+                    <div className="space-y-3">
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
+                        <div>
+                          <label className="text-xs sm:text-sm font-medium text-gray-600">
+                            نام
+                          </label>
+                          <div className="text-sm sm:text-base text-gray-900 mt-1 bg-white px-2 py-1 rounded border">
+                            {selectedUser.nationalCredentials.firstName ||
+                              "تعریف نشده"}
+                          </div>
+                        </div>
+                        <div>
+                          <label className="text-xs sm:text-sm font-medium text-gray-600">
+                            نام خانوادگی
+                          </label>
+                          <div className="text-sm sm:text-base text-gray-900 mt-1 bg-white px-2 py-1 rounded border">
+                            {selectedUser.nationalCredentials.lastName ||
+                              "تعریف نشده"}
+                          </div>
+                        </div>
+                        <div>
+                          <label className="text-xs sm:text-sm font-medium text-gray-600">
+                            کد ملی
+                          </label>
+                          <div className="text-sm sm:text-base text-gray-900 mt-1 font-mono bg-white px-2 py-1 rounded border">
+                            {selectedUser.nationalCredentials.nationalNumber ||
+                              "تعریف نشده"}
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                        <div>
+                          <label className="text-xs sm:text-sm font-medium text-gray-600">
+                            وضعیت تایید
+                          </label>
+                          <div className="mt-1">
+                            <span
+                              className={`inline-flex px-2 py-1 text-xs rounded-full ${
+                                selectedUser.nationalCredentials.status ===
+                                "accepted"
+                                  ? "bg-green-100 text-green-800"
+                                  : selectedUser.nationalCredentials.status ===
+                                    "rejected"
+                                  ? "bg-red-100 text-red-800"
+                                  : "bg-yellow-100 text-yellow-800"
+                              }`}
+                            >
+                              {selectedUser.nationalCredentials.status ===
+                              "accepted"
+                                ? "تایید شده"
+                                : selectedUser.nationalCredentials.status ===
+                                  "rejected"
+                                ? "رد شده"
+                                : "در انتظار بررسی"}
+                            </span>
+                          </div>
+                        </div>
+                        {selectedUser.nationalCredentials.rejectionNotes && (
+                          <div>
+                            <label className="text-xs sm:text-sm font-medium text-gray-600">
+                              یادداشت رد
+                            </label>
+                            <div className="text-sm text-red-700 mt-1 bg-red-50 px-2 py-1 rounded border">
+                              {selectedUser.nationalCredentials.rejectionNotes}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+
+                      {(selectedUser.nationalCredentials.nationalCardImageUrl ||
+                        selectedUser.nationalCredentials
+                          .verificationImageUrl) && (
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                          {selectedUser.nationalCredentials
+                            .nationalCardImageUrl && (
+                            <div>
+                              <label className="text-xs sm:text-sm font-medium text-gray-600">
+                                تصویر کارت ملی
+                              </label>
+                              <div className="mt-1 bg-white p-2 rounded border">
+                                <img
+                                  src={
+                                    selectedUser.nationalCredentials
+                                      .nationalCardImageUrl
+                                  }
+                                  alt="کارت ملی"
+                                  className="w-full h-24 sm:h-32 object-cover rounded"
+                                />
+                              </div>
+                            </div>
+                          )}
+                          {selectedUser.nationalCredentials
+                            .verificationImageUrl && (
+                            <div>
+                              <label className="text-xs sm:text-sm font-medium text-gray-600">
+                                تصویر احراز هویت
+                              </label>
+                              <div className="mt-1 bg-white p-2 rounded border">
+                                <img
+                                  src={
+                                    selectedUser.nationalCredentials
+                                      .verificationImageUrl
+                                  }
+                                  alt="احراز هویت"
+                                  className="w-full h-24 sm:h-32 object-cover rounded"
+                                />
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  ) : (
+                    <div className="text-center py-4 text-gray-500 bg-white rounded border">
+                      هیچ اطلاعات هویتی ثبت نشده است
+                    </div>
+                  )}
+                </div>
+
+                {/* Contact Info */}
+                <div className="bg-gray-50 rounded-xl p-4 border border-[#0A1D37]/10">
+                  <h3 className="text-base sm:text-lg font-semibold text-[#0A1D37] mb-3 flex items-center gap-2">
+                    <span className="w-2 h-2 bg-[#FF7A00] rounded-full"></span>
+                    اطلاعات تماس
+                  </h3>
+                  {selectedUser.contactInfo ? (
+                    <div className="space-y-3">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                        <div>
+                          <label className="text-xs sm:text-sm font-medium text-gray-600">
+                            ایمیل
+                          </label>
+                          <div className="text-sm sm:text-base text-gray-900 mt-1 bg-white px-2 py-1 rounded border">
+                            {selectedUser.contactInfo.email || "تعریف نشده"}
+                          </div>
+                        </div>
+                        <div>
+                          <label className="text-xs sm:text-sm font-medium text-gray-600">
+                            شماره موبایل
+                          </label>
+                          <div className="text-sm sm:text-base text-gray-900 mt-1 font-mono bg-white px-2 py-1 rounded border">
+                            {selectedUser.contactInfo.mobilePhone ||
+                              "تعریف نشده"}
+                          </div>
+                        </div>
+                        <div>
+                          <label className="text-xs sm:text-sm font-medium text-gray-600">
+                            تلفن ثابت
+                          </label>
+                          <div className="text-sm sm:text-base text-gray-900 mt-1 font-mono bg-white px-2 py-1 rounded border">
+                            {selectedUser.contactInfo.homePhone || "تعریف نشده"}
+                          </div>
+                        </div>
+                        <div>
+                          <label className="text-xs sm:text-sm font-medium text-gray-600">
+                            کد پستی
+                          </label>
+                          <div className="text-sm sm:text-base text-gray-900 mt-1 font-mono bg-white px-2 py-1 rounded border">
+                            {selectedUser.contactInfo.postalCode ||
+                              "تعریف نشده"}
+                          </div>
+                        </div>
+                      </div>
+
+                      <div>
+                        <label className="text-xs sm:text-sm font-medium text-gray-600">
+                          آدرس
+                        </label>
+                        <div className="text-sm sm:text-base text-gray-900 mt-1 bg-white px-2 py-1 rounded border min-h-[2rem]">
+                          {selectedUser.contactInfo.address || "تعریف نشده"}
+                        </div>
+                      </div>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                        <div>
+                          <label className="text-xs sm:text-sm font-medium text-gray-600">
+                            وضعیت تایید
+                          </label>
+                          <div className="mt-1">
+                            <span
+                              className={`inline-flex px-2 py-1 text-xs rounded-full ${
+                                selectedUser.contactInfo.status === "accepted"
+                                  ? "bg-green-100 text-green-800"
+                                  : selectedUser.contactInfo.status ===
+                                    "rejected"
+                                  ? "bg-red-100 text-red-800"
+                                  : "bg-yellow-100 text-yellow-800"
+                              }`}
+                            >
+                              {selectedUser.contactInfo.status === "accepted"
+                                ? "تایید شده"
+                                : selectedUser.contactInfo.status === "rejected"
+                                ? "رد شده"
+                                : "در انتظار بررسی"}
+                            </span>
+                          </div>
+                        </div>
+                        {selectedUser.contactInfo.rejectionNotes && (
+                          <div>
+                            <label className="text-xs sm:text-sm font-medium text-gray-600">
+                              یادداشت رد
+                            </label>
+                            <div className="text-sm text-red-700 mt-1 bg-red-50 px-2 py-1 rounded border">
+                              {selectedUser.contactInfo.rejectionNotes}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="text-center py-4 text-gray-500 bg-white rounded border">
+                      هیچ اطلاعات تماسی ثبت نشده است
+                    </div>
+                  )}
+                </div>
+
+                {/* Banking Info */}
+                <div className="bg-gray-50 rounded-xl p-4 border border-[#0A1D37]/10">
+                  <h3 className="text-base sm:text-lg font-semibold text-[#0A1D37] mb-3 flex items-center gap-2">
+                    <span className="w-2 h-2 bg-[#FF7A00] rounded-full"></span>
+                    اطلاعات بانکی
+                  </h3>
+                  {selectedUser.bankingInfo &&
+                  selectedUser.bankingInfo.length > 0 ? (
+                    <div className="space-y-3">
+                      {selectedUser.bankingInfo.map((bank, index) => (
+                        <div
+                          key={bank._id || index}
+                          className="bg-white p-3 sm:p-4 rounded-lg border"
+                        >
+                          <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-3">
+                            <h4 className="font-medium text-gray-900 mb-2 sm:mb-0">
+                              حساب بانکی #{index + 1}
+                            </h4>
+                            <span
+                              className={`inline-flex px-2 py-1 text-xs rounded-full ${
+                                bank.status === "accepted"
+                                  ? "bg-green-100 text-green-800"
+                                  : bank.status === "rejected"
+                                  ? "bg-red-100 text-red-800"
+                                  : "bg-yellow-100 text-yellow-800"
+                              }`}
+                            >
+                              {bank.status === "accepted"
+                                ? "تایید شده"
+                                : bank.status === "rejected"
+                                ? "رد شده"
+                                : "در انتظار بررسی"}
+                            </span>
+                          </div>
+
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div>
+                              <label className="text-xs font-medium text-gray-600">
+                                نام بانک
+                              </label>
+                              <div className="text-sm text-gray-900 mt-1 bg-gray-50 px-2 py-1 rounded">
+                                {bank.bankName || "تعریف نشده"}
+                              </div>
+                            </div>
+                            <div>
+                              <label className="text-xs font-medium text-gray-600">
+                                نام صاحب حساب
+                              </label>
+                              <div className="text-sm text-gray-900 mt-1 bg-gray-50 px-2 py-1 rounded">
+                                {bank.accountHolderName || "تعریف نشده"}
+                              </div>
+                            </div>
+                            <div>
+                              <label className="text-xs font-medium text-gray-600">
+                                شماره کارت
+                              </label>
+                              <div className="text-sm text-gray-900 mt-1 font-mono bg-gray-50 px-2 py-1 rounded">
+                                {bank.cardNumber || "تعریف نشده"}
+                              </div>
+                            </div>
+                            <div>
+                              <label className="text-xs font-medium text-gray-600">
+                                شماره شبا
+                              </label>
+                              <div className="text-sm text-gray-900 mt-1 font-mono bg-gray-50 px-2 py-1 rounded">
+                                {bank.shebaNumber || "تعریف نشده"}
+                              </div>
+                            </div>
+                          </div>
+
+                          {bank.rejectionNotes && (
+                            <div className="mt-3">
+                              <label className="text-xs font-medium text-gray-600">
+                                یادداشت رد
+                              </label>
+                              <div className="text-sm text-red-700 mt-1 bg-red-50 px-2 py-1 rounded border border-red-200">
+                                {bank.rejectionNotes}
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="text-center py-4 text-gray-500 bg-white rounded border">
+                      هیچ اطلاعات بانکی ثبت نشده است
+                    </div>
+                  )}
+                </div>
+
+                {/* Verification Status */}
+                <div className="bg-gray-50 rounded-xl p-4 border border-[#0A1D37]/10">
+                  <h3 className="text-base sm:text-lg font-semibold text-[#0A1D37] mb-3 flex items-center gap-2">
+                    <span className="w-2 h-2 bg-[#FF7A00] rounded-full"></span>
+                    وضعیت تایید
+                  </h3>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                    <div className="bg-white p-3 rounded-lg border">
+                      <label className="text-xs sm:text-sm font-medium text-gray-600">
+                        تایید شماره تلفن
+                      </label>
+                      <div className="flex items-center justify-between mt-2">
+                        <span
+                          className={`px-2 py-1 text-xs rounded-full ${
+                            selectedUser.verifications?.phone?.isVerified
+                              ? "bg-green-100 text-green-800"
+                              : "bg-red-100 text-red-800"
+                          }`}
+                        >
+                          {selectedUser.verifications?.phone?.isVerified
+                            ? "تایید شده"
+                            : "تایید نشده"}
+                        </span>
+                        {selectedUser.verifications?.phone?.verifiedAt && (
+                          <span className="text-xs text-gray-500">
+                            {new Date(
+                              selectedUser.verifications.phone.verifiedAt
+                            ).toLocaleDateString("fa-IR")}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+
+                    <div className="bg-white p-3 rounded-lg border">
+                      <label className="text-xs sm:text-sm font-medium text-gray-600">
+                        تایید هویت
+                      </label>
+                      <div className="mt-2 space-y-1">
+                        <span
+                          className={`inline-block px-2 py-1 text-xs rounded-full ${
+                            selectedUser.verifications?.identity?.status ===
+                            "approved"
+                              ? "bg-green-100 text-green-800"
+                              : selectedUser.verifications?.identity?.status ===
+                                "rejected"
+                              ? "bg-red-100 text-red-800"
+                              : selectedUser.verifications?.identity?.status ===
+                                "pending"
+                              ? "bg-yellow-100 text-yellow-800"
+                              : "bg-gray-100 text-gray-800"
+                          }`}
+                        >
+                          {selectedUser.verifications?.identity?.status ===
+                          "approved"
+                            ? "تایید شده"
+                            : selectedUser.verifications?.identity?.status ===
+                              "rejected"
+                            ? "رد شده"
+                            : selectedUser.verifications?.identity?.status ===
+                              "pending"
+                            ? "در انتظار بررسی"
+                            : "ارسال نشده"}
+                        </span>
+                        {selectedUser.verifications?.identity
+                          ?.rejectionReason && (
+                          <div className="text-xs text-red-600 mt-1">
+                            {
+                              selectedUser.verifications.identity
+                                .rejectionReason
+                            }
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Profile Information */}
+                {selectedUser.profile && (
+                  <div className="bg-gray-50 rounded-xl p-4 border border-[#0A1D37]/10">
+                    <h3 className="text-base sm:text-lg font-semibold text-[#0A1D37] mb-3 flex items-center gap-2">
+                      <span className="w-2 h-2 bg-[#FF7A00] rounded-full"></span>
+                      اطلاعات پروفایل
+                    </h3>
+                    <div className="space-y-3">
+                      {selectedUser.profile.avatar && (
+                        <div>
+                          <label className="text-xs sm:text-sm font-medium text-gray-600">
+                            تصویر پروفایل
+                          </label>
+                          <div className="mt-1 bg-white p-2 rounded border">
+                            <img
+                              src={selectedUser.profile.avatar}
+                              alt="تصویر پروفایل"
+                              className="w-16 h-16 sm:w-20 sm:h-20 object-cover rounded-full mx-auto"
+                            />
+                          </div>
+                        </div>
+                      )}
+
+                      {selectedUser.profile.bio && (
+                        <div>
+                          <label className="text-xs sm:text-sm font-medium text-gray-600">
+                            بیوگرافی
+                          </label>
+                          <div className="text-sm text-gray-900 mt-1 bg-white px-2 py-1 rounded border min-h-[2rem]">
+                            {selectedUser.profile.bio}
+                          </div>
+                        </div>
+                      )}
+
+                      {selectedUser.profile.preferences && (
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                          <div>
+                            <label className="text-xs sm:text-sm font-medium text-gray-600">
+                              زبان
+                            </label>
+                            <div className="text-sm text-gray-900 mt-1 bg-white px-2 py-1 rounded border">
+                              {selectedUser.profile.preferences.language ===
+                              "fa"
+                                ? "فارسی"
+                                : "انگلیسی"}
+                            </div>
+                          </div>
+
+                          <div>
+                            <label className="text-xs sm:text-sm font-medium text-gray-600">
+                              تنظیمات اعلانات
+                            </label>
+                            <div className="mt-1 space-y-1">
+                              <div className="flex items-center justify-between bg-white px-2 py-1 rounded border text-xs">
+                                <span>ایمیل:</span>
+                                <span
+                                  className={
+                                    selectedUser.profile.preferences
+                                      .notifications?.email
+                                      ? "text-green-600"
+                                      : "text-red-600"
+                                  }
+                                >
+                                  {selectedUser.profile.preferences
+                                    .notifications?.email
+                                    ? "فعال"
+                                    : "غیرفعال"}
+                                </span>
+                              </div>
+                              <div className="flex items-center justify-between bg-white px-2 py-1 rounded border text-xs">
+                                <span>پیامک:</span>
+                                <span
+                                  className={
+                                    selectedUser.profile.preferences
+                                      .notifications?.sms
+                                      ? "text-green-600"
+                                      : "text-red-600"
+                                  }
+                                >
+                                  {selectedUser.profile.preferences
+                                    .notifications?.sms
+                                    ? "فعال"
+                                    : "غیرفعال"}
+                                </span>
+                              </div>
+                              <div className="flex items-center justify-between bg-white px-2 py-1 rounded border text-xs">
+                                <span>اعلانات:</span>
+                                <span
+                                  className={
+                                    selectedUser.profile.preferences
+                                      .notifications?.push
+                                      ? "text-green-600"
+                                      : "text-red-600"
+                                  }
+                                >
+                                  {selectedUser.profile.preferences
+                                    .notifications?.push
+                                    ? "فعال"
+                                    : "غیرفعال"}
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Footer */}
+              <div className="p-4 sm:p-6 border-t border-[#0A1D37]/10 bg-gray-50 flex flex-col sm:flex-row justify-end gap-3">
+                <button
+                  onClick={() => setShowUserDetails(false)}
+                  className="w-full sm:w-auto px-4 py-2 text-[#0A1D37] border border-[#0A1D37]/20 rounded-lg hover:bg-gray-100 transition-colors"
+                >
+                  بستن
+                </button>
+                <button
+                  onClick={() => {
+                    setShowUserDetails(false);
+                    openEditUser(selectedUser);
+                  }}
+                  className="w-full sm:w-auto px-4 py-2 bg-[#FF7A00] text-white rounded-lg hover:bg-[#FF7A00]/90 transition-colors"
+                >
+                  ویرایش
+                </button>
+              </div>
             </div>
-          </div>
-        </div>
-      )}
+          </div>,
+          document.body
+        )}
 
       {/* Edit User Modal */}
-      {showEditUser && selectedUser && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-2xl max-w-4xl w-full h-[90vh] overflow-y-auto shadow-2xl border border-[#0A1D37]/10">
-            <div className="p-4 sm:p-6 border-b border-[#0A1D37]/10">
-              <h2 className="text-xl font-bold text-[#0A1D37] flex items-center gap-3">
-                <span className="w-3 h-3 bg-[#FF7A00] rounded-full"></span>
-                ویرایش کاربر
-              </h2>
-            </div>
+      {showEditUser &&
+        selectedUser &&
+        typeof document !== "undefined" &&
+        createPortal(
+          <div
+            className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4"
+            dir="rtl"
+          >
+            <div className="bg-white rounded-2xl max-w-6xl w-full h-[95vh] overflow-y-auto shadow-2xl border border-[#0A1D37]/10">
+              <div className="p-4 sm:p-6 border-b border-[#0A1D37]/10">
+                <h2 className="text-xl font-bold text-[#0A1D37] flex items-center gap-3">
+                  <span className="w-3 h-3 bg-[#FF7A00] rounded-full"></span>
+                  ویرایش کاربر
+                </h2>
+              </div>
 
-            <div className="p-4 sm:p-6 space-y-6">
-              {/* Basic Info Section */}
-              <div className="bg-gray-50 rounded-xl p-4 border border-[#0A1D37]/10">
-                <h3 className="text-base sm:text-lg font-semibold text-[#0A1D37] mb-3 flex items-center gap-2">
-                  <span className="w-2 h-2 bg-[#FF7A00] rounded-full"></span>
-                  اطلاعات پایه
-                </h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-[#0A1D37] mb-2">
-                      نام کاربری
-                    </label>
-                    <input
-                      type="text"
-                      value={editForm.username}
-                      onChange={(e) =>
-                        setEditForm((prev) => ({
-                          ...prev,
-                          username: e.target.value,
-                        }))
-                      }
-                      className="w-full px-3 py-2 border border-[#0A1D37]/20 rounded-lg focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-colors"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-[#0A1D37] mb-2">
-                      وضعیت
-                    </label>
-                    <select
-                      value={editForm.status}
-                      onChange={(e) =>
-                        setEditForm((prev) => ({
-                          ...prev,
-                          status: e.target.value,
-                        }))
-                      }
-                      className="w-full px-3 py-2 border border-[#0A1D37]/20 rounded-lg focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-colors"
-                    >
-                      <option value="active">فعال</option>
-                      <option value="suspended">معلق</option>
-                      <option value="banned">مسدود</option>
-                      <option value="pending_verification">
-                        در انتظار تایید
-                      </option>
-                    </select>
-                  </div>
-                </div>
-
-                <div className="mt-4">
-                  <label className="block text-sm font-medium text-[#0A1D37] mb-2">
-                    نقش‌ها
-                  </label>
-                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-                    {[
-                      "user",
-                      "admin",
-                      "super_admin",
-                      "moderator",
-                      "support",
-                    ].map((role) => (
-                      <label key={role} className="flex items-center">
-                        <input
-                          type="checkbox"
-                          checked={editForm.roles.includes(role)}
-                          onChange={(e) => {
-                            if (e.target.checked) {
-                              setEditForm((prev) => ({
-                                ...prev,
-                                roles: [...prev.roles, role],
-                              }));
-                            } else {
-                              setEditForm((prev) => ({
-                                ...prev,
-                                roles: prev.roles.filter((r) => r !== role),
-                              }));
-                            }
-                          }}
-                          className="ml-2 accent-[#FF7A00]"
-                        />
-                        <span className="text-sm">{getRoleText([role])}</span>
+              <div className="p-4 sm:p-6 space-y-6">
+                {/* Basic Info Section */}
+                <div className="bg-gray-50 rounded-xl p-4 border border-[#0A1D37]/10">
+                  <h3 className="text-base sm:text-lg font-semibold text-[#0A1D37] mb-3 flex items-center gap-2">
+                    <span className="w-2 h-2 bg-[#FF7A00] rounded-full"></span>
+                    اطلاعات پایه
+                  </h3>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-[#0A1D37] mb-2">
+                        نام کاربری
                       </label>
-                    ))}
-                  </div>
-                </div>
-              </div>
+                      <input
+                        type="text"
+                        value={editForm.username}
+                        onChange={(e) =>
+                          setEditForm((prev) => ({
+                            ...prev,
+                            username: e.target.value,
+                          }))
+                        }
+                        className="w-full px-3 py-2 border border-[#0A1D37]/20 rounded-lg focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-colors"
+                      />
+                    </div>
 
-              {/* National Credentials Section */}
-              <div className="bg-gray-50 rounded-xl p-4 border border-[#0A1D37]/10">
-                <h3 className="text-base sm:text-lg font-semibold text-[#0A1D37] mb-3 flex items-center gap-2">
-                  <span className="w-2 h-2 bg-[#FF7A00] rounded-full"></span>
-                  اطلاعات هویتی
-                </h3>
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-[#0A1D37] mb-2">
-                      نام
-                    </label>
-                    <input
-                      type="text"
-                      value={editForm.nationalCredentials.firstName}
-                      onChange={(e) =>
-                        setEditForm((prev) => ({
-                          ...prev,
-                          nationalCredentials: {
-                            ...prev.nationalCredentials,
-                            firstName: e.target.value,
-                          },
-                        }))
-                      }
-                      className="w-full px-3 py-2 border border-[#0A1D37]/20 rounded-lg focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-colors"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-[#0A1D37] mb-2">
-                      نام خانوادگی
-                    </label>
-                    <input
-                      type="text"
-                      value={editForm.nationalCredentials.lastName}
-                      onChange={(e) =>
-                        setEditForm((prev) => ({
-                          ...prev,
-                          nationalCredentials: {
-                            ...prev.nationalCredentials,
-                            lastName: e.target.value,
-                          },
-                        }))
-                      }
-                      className="w-full px-3 py-2 border border-[#0A1D37]/20 rounded-lg focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-colors"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-[#0A1D37] mb-2">
-                      کد ملی
-                    </label>
-                    <input
-                      type="text"
-                      value={editForm.nationalCredentials.nationalNumber}
-                      onChange={(e) =>
-                        setEditForm((prev) => ({
-                          ...prev,
-                          nationalCredentials: {
-                            ...prev.nationalCredentials,
-                            nationalNumber: e.target.value,
-                          },
-                        }))
-                      }
-                      className="w-full px-3 py-2 border border-[#0A1D37]/20 rounded-lg focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-colors font-mono"
-                    />
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
-                  <div>
-                    <label className="block text-sm font-medium text-[#0A1D37] mb-2">
-                      وضعیت تایید
-                    </label>
-                    <select
-                      value={editForm.nationalCredentials.status}
-                      onChange={(e) =>
-                        setEditForm((prev) => ({
-                          ...prev,
-                          nationalCredentials: {
-                            ...prev.nationalCredentials,
+                    <div>
+                      <label className="block text-sm font-medium text-[#0A1D37] mb-2">
+                        وضعیت
+                      </label>
+                      <select
+                        value={editForm.status}
+                        onChange={(e) =>
+                          setEditForm((prev) => ({
+                            ...prev,
                             status: e.target.value,
-                          },
-                        }))
-                      }
-                      className="w-full px-3 py-2 border border-[#0A1D37]/20 rounded-lg focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-colors"
-                    >
-                      <option value="">انتخاب کنید</option>
-                      <option value="accepted">تایید شده</option>
-                      <option value="rejected">رد شده</option>
-                      <option value="pending_verification">
-                        در انتظار بررسی
-                      </option>
-                    </select>
+                          }))
+                        }
+                        className="w-full px-3 py-2 border border-[#0A1D37]/20 rounded-lg focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-colors"
+                      >
+                        <option value="active">فعال</option>
+                        <option value="suspended">معلق</option>
+                        <option value="banned">مسدود</option>
+                        <option value="pending_verification">
+                          در انتظار تایید
+                        </option>
+                      </select>
+                    </div>
                   </div>
 
-                  <div>
+                  <div className="mt-4">
                     <label className="block text-sm font-medium text-[#0A1D37] mb-2">
-                      یادداشت رد
+                      نقش‌ها
+                    </label>
+                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                      {[
+                        "user",
+                        "admin",
+                        "super_admin",
+                        "moderator",
+                        "support",
+                      ].map((role) => (
+                        <label key={role} className="flex items-center">
+                          <input
+                            type="checkbox"
+                            checked={editForm.roles.includes(role)}
+                            onChange={(e) => {
+                              if (e.target.checked) {
+                                setEditForm((prev) => ({
+                                  ...prev,
+                                  roles: [...prev.roles, role],
+                                }));
+                              } else {
+                                setEditForm((prev) => ({
+                                  ...prev,
+                                  roles: prev.roles.filter((r) => r !== role),
+                                }));
+                              }
+                            }}
+                            className="ml-2 accent-[#FF7A00]"
+                          />
+                          <span className="text-sm">{getRoleText([role])}</span>
+                        </label>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                {/* National Credentials Section */}
+                <div className="bg-gray-50 rounded-xl p-4 border border-[#0A1D37]/10">
+                  <h3 className="text-base sm:text-lg font-semibold text-[#0A1D37] mb-3 flex items-center gap-2">
+                    <span className="w-2 h-2 bg-[#FF7A00] rounded-full"></span>
+                    اطلاعات هویتی
+                  </h3>
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-[#0A1D37] mb-2">
+                        نام
+                      </label>
+                      <input
+                        type="text"
+                        value={editForm.nationalCredentials.firstName}
+                        onChange={(e) =>
+                          setEditForm((prev) => ({
+                            ...prev,
+                            nationalCredentials: {
+                              ...prev.nationalCredentials,
+                              firstName: e.target.value,
+                            },
+                          }))
+                        }
+                        className="w-full px-3 py-2 border border-[#0A1D37]/20 rounded-lg focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-colors"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-[#0A1D37] mb-2">
+                        نام خانوادگی
+                      </label>
+                      <input
+                        type="text"
+                        value={editForm.nationalCredentials.lastName}
+                        onChange={(e) =>
+                          setEditForm((prev) => ({
+                            ...prev,
+                            nationalCredentials: {
+                              ...prev.nationalCredentials,
+                              lastName: e.target.value,
+                            },
+                          }))
+                        }
+                        className="w-full px-3 py-2 border border-[#0A1D37]/20 rounded-lg focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-colors"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-[#0A1D37] mb-2">
+                        کد ملی
+                      </label>
+                      <input
+                        type="text"
+                        value={editForm.nationalCredentials.nationalNumber}
+                        onChange={(e) =>
+                          setEditForm((prev) => ({
+                            ...prev,
+                            nationalCredentials: {
+                              ...prev.nationalCredentials,
+                              nationalNumber: e.target.value,
+                            },
+                          }))
+                        }
+                        className="w-full px-3 py-2 border border-[#0A1D37]/20 rounded-lg focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-colors font-mono"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
+                    <div>
+                      <label className="block text-sm font-medium text-[#0A1D37] mb-2">
+                        وضعیت تایید
+                      </label>
+                      <select
+                        value={editForm.nationalCredentials.status}
+                        onChange={(e) =>
+                          setEditForm((prev) => ({
+                            ...prev,
+                            nationalCredentials: {
+                              ...prev.nationalCredentials,
+                              status: e.target.value,
+                            },
+                          }))
+                        }
+                        className="w-full px-3 py-2 border border-[#0A1D37]/20 rounded-lg focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-colors"
+                      >
+                        <option value="">انتخاب کنید</option>
+                        <option value="accepted">تایید شده</option>
+                        <option value="rejected">رد شده</option>
+                        <option value="pending_verification">
+                          در انتظار بررسی
+                        </option>
+                      </select>
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-[#0A1D37] mb-2">
+                        یادداشت رد
+                      </label>
+                      <textarea
+                        value={editForm.nationalCredentials.rejectionNotes}
+                        onChange={(e) =>
+                          setEditForm((prev) => ({
+                            ...prev,
+                            nationalCredentials: {
+                              ...prev.nationalCredentials,
+                              rejectionNotes: e.target.value,
+                            },
+                          }))
+                        }
+                        className="w-full px-3 py-2 border border-[#0A1D37]/20 rounded-lg focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-colors resize-none"
+                        rows={2}
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Contact Info Section */}
+                <div className="bg-gray-50 rounded-xl p-4 border border-[#0A1D37]/10">
+                  <h3 className="text-base sm:text-lg font-semibold text-[#0A1D37] mb-3 flex items-center gap-2">
+                    <span className="w-2 h-2 bg-[#FF7A00] rounded-full"></span>
+                    اطلاعات تماس
+                  </h3>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-[#0A1D37] mb-2">
+                        ایمیل
+                      </label>
+                      <input
+                        type="email"
+                        value={editForm.contactInfo.email}
+                        onChange={(e) =>
+                          setEditForm((prev) => ({
+                            ...prev,
+                            contactInfo: {
+                              ...prev.contactInfo,
+                              email: e.target.value,
+                            },
+                          }))
+                        }
+                        className="w-full px-3 py-2 border border-[#0A1D37]/20 rounded-lg focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-colors"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-[#0A1D37] mb-2">
+                        شماره موبایل
+                      </label>
+                      <input
+                        type="tel"
+                        value={editForm.contactInfo.mobilePhone}
+                        onChange={(e) =>
+                          setEditForm((prev) => ({
+                            ...prev,
+                            contactInfo: {
+                              ...prev.contactInfo,
+                              mobilePhone: e.target.value,
+                            },
+                          }))
+                        }
+                        className="w-full px-3 py-2 border border-[#0A1D37]/20 rounded-lg focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-colors font-mono"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-[#0A1D37] mb-2">
+                        تلفن ثابت
+                      </label>
+                      <input
+                        type="tel"
+                        value={editForm.contactInfo.homePhone}
+                        onChange={(e) =>
+                          setEditForm((prev) => ({
+                            ...prev,
+                            contactInfo: {
+                              ...prev.contactInfo,
+                              homePhone: e.target.value,
+                            },
+                          }))
+                        }
+                        className="w-full px-3 py-2 border border-[#0A1D37]/20 rounded-lg focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-colors font-mono"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-[#0A1D37] mb-2">
+                        کد پستی
+                      </label>
+                      <input
+                        type="text"
+                        value={editForm.contactInfo.postalCode}
+                        onChange={(e) =>
+                          setEditForm((prev) => ({
+                            ...prev,
+                            contactInfo: {
+                              ...prev.contactInfo,
+                              postalCode: e.target.value,
+                            },
+                          }))
+                        }
+                        className="w-full px-3 py-2 border border-[#0A1D37]/20 rounded-lg focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-colors font-mono"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="mt-4">
+                    <label className="block text-sm font-medium text-[#0A1D37] mb-2">
+                      آدرس
                     </label>
                     <textarea
-                      value={editForm.nationalCredentials.rejectionNotes}
-                      onChange={(e) =>
-                        setEditForm((prev) => ({
-                          ...prev,
-                          nationalCredentials: {
-                            ...prev.nationalCredentials,
-                            rejectionNotes: e.target.value,
-                          },
-                        }))
-                      }
-                      className="w-full px-3 py-2 border border-[#0A1D37]/20 rounded-lg focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-colors resize-none"
-                      rows={2}
-                    />
-                  </div>
-                </div>
-              </div>
-
-              {/* Contact Info Section */}
-              <div className="bg-gray-50 rounded-xl p-4 border border-[#0A1D37]/10">
-                <h3 className="text-base sm:text-lg font-semibold text-[#0A1D37] mb-3 flex items-center gap-2">
-                  <span className="w-2 h-2 bg-[#FF7A00] rounded-full"></span>
-                  اطلاعات تماس
-                </h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-[#0A1D37] mb-2">
-                      ایمیل
-                    </label>
-                    <input
-                      type="email"
-                      value={editForm.contactInfo.email}
+                      value={editForm.contactInfo.address}
                       onChange={(e) =>
                         setEditForm((prev) => ({
                           ...prev,
                           contactInfo: {
                             ...prev.contactInfo,
-                            email: e.target.value,
-                          },
-                        }))
-                      }
-                      className="w-full px-3 py-2 border border-[#0A1D37]/20 rounded-lg focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-colors"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-[#0A1D37] mb-2">
-                      شماره موبایل
-                    </label>
-                    <input
-                      type="tel"
-                      value={editForm.contactInfo.mobilePhone}
-                      onChange={(e) =>
-                        setEditForm((prev) => ({
-                          ...prev,
-                          contactInfo: {
-                            ...prev.contactInfo,
-                            mobilePhone: e.target.value,
-                          },
-                        }))
-                      }
-                      className="w-full px-3 py-2 border border-[#0A1D37]/20 rounded-lg focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-colors font-mono"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-[#0A1D37] mb-2">
-                      تلفن ثابت
-                    </label>
-                    <input
-                      type="tel"
-                      value={editForm.contactInfo.homePhone}
-                      onChange={(e) =>
-                        setEditForm((prev) => ({
-                          ...prev,
-                          contactInfo: {
-                            ...prev.contactInfo,
-                            homePhone: e.target.value,
-                          },
-                        }))
-                      }
-                      className="w-full px-3 py-2 border border-[#0A1D37]/20 rounded-lg focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-colors font-mono"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-[#0A1D37] mb-2">
-                      کد پستی
-                    </label>
-                    <input
-                      type="text"
-                      value={editForm.contactInfo.postalCode}
-                      onChange={(e) =>
-                        setEditForm((prev) => ({
-                          ...prev,
-                          contactInfo: {
-                            ...prev.contactInfo,
-                            postalCode: e.target.value,
-                          },
-                        }))
-                      }
-                      className="w-full px-3 py-2 border border-[#0A1D37]/20 rounded-lg focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-colors font-mono"
-                    />
-                  </div>
-                </div>
-
-                <div className="mt-4">
-                  <label className="block text-sm font-medium text-[#0A1D37] mb-2">
-                    آدرس
-                  </label>
-                  <textarea
-                    value={editForm.contactInfo.address}
-                    onChange={(e) =>
-                      setEditForm((prev) => ({
-                        ...prev,
-                        contactInfo: {
-                          ...prev.contactInfo,
-                          address: e.target.value,
-                        },
-                      }))
-                    }
-                    className="w-full px-3 py-2 border border-[#0A1D37]/20 rounded-lg focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-colors resize-none"
-                    rows={3}
-                  />
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
-                  <div>
-                    <label className="block text-sm font-medium text-[#0A1D37] mb-2">
-                      وضعیت تایید
-                    </label>
-                    <select
-                      value={editForm.contactInfo.status}
-                      onChange={(e) =>
-                        setEditForm((prev) => ({
-                          ...prev,
-                          contactInfo: {
-                            ...prev.contactInfo,
-                            status: e.target.value,
-                          },
-                        }))
-                      }
-                      className="w-full px-3 py-2 border border-[#0A1D37]/20 rounded-lg focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-colors"
-                    >
-                      <option value="">انتخاب کنید</option>
-                      <option value="accepted">تایید شده</option>
-                      <option value="rejected">رد شده</option>
-                      <option value="pending_verification">
-                        در انتظار بررسی
-                      </option>
-                    </select>
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-[#0A1D37] mb-2">
-                      یادداشت رد
-                    </label>
-                    <textarea
-                      value={editForm.contactInfo.rejectionNotes}
-                      onChange={(e) =>
-                        setEditForm((prev) => ({
-                          ...prev,
-                          contactInfo: {
-                            ...prev.contactInfo,
-                            rejectionNotes: e.target.value,
-                          },
-                        }))
-                      }
-                      className="w-full px-3 py-2 border border-[#0A1D37]/20 rounded-lg focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-colors resize-none"
-                      rows={2}
-                    />
-                  </div>
-                </div>
-              </div>
-
-              {/* Profile Section */}
-              <div className="bg-gray-50 rounded-xl p-4 border border-[#0A1D37]/10">
-                <h3 className="text-base sm:text-lg font-semibold text-[#0A1D37] mb-3 flex items-center gap-2">
-                  <span className="w-2 h-2 bg-[#FF7A00] rounded-full"></span>
-                  اطلاعات پروفایل
-                </h3>
-                <div className="space-y-4">
-                  <div>
-                    <label className="block text-sm font-medium text-[#0A1D37] mb-2">
-                      بیوگرافی
-                    </label>
-                    <textarea
-                      value={editForm.profile.bio}
-                      onChange={(e) =>
-                        setEditForm((prev) => ({
-                          ...prev,
-                          profile: {
-                            ...prev.profile,
-                            bio: e.target.value,
+                            address: e.target.value,
                           },
                         }))
                       }
@@ -1800,137 +1646,217 @@ const UsersList = () => {
                     />
                   </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
                     <div>
                       <label className="block text-sm font-medium text-[#0A1D37] mb-2">
-                        زبان
+                        وضعیت تایید
                       </label>
                       <select
-                        value={editForm.profile.preferences.language}
+                        value={editForm.contactInfo.status}
                         onChange={(e) =>
                           setEditForm((prev) => ({
                             ...prev,
-                            profile: {
-                              ...prev.profile,
-                              preferences: {
-                                ...prev.profile.preferences,
-                                language: e.target.value,
-                              },
+                            contactInfo: {
+                              ...prev.contactInfo,
+                              status: e.target.value,
                             },
                           }))
                         }
                         className="w-full px-3 py-2 border border-[#0A1D37]/20 rounded-lg focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-colors"
                       >
-                        <option value="fa">فارسی</option>
-                        <option value="en">انگلیسی</option>
+                        <option value="">انتخاب کنید</option>
+                        <option value="accepted">تایید شده</option>
+                        <option value="rejected">رد شده</option>
+                        <option value="pending_verification">
+                          در انتظار بررسی
+                        </option>
                       </select>
                     </div>
 
                     <div>
                       <label className="block text-sm font-medium text-[#0A1D37] mb-2">
-                        تنظیمات اعلانات
+                        یادداشت رد
                       </label>
-                      <div className="space-y-2">
-                        <label className="flex items-center">
-                          <input
-                            type="checkbox"
-                            checked={
-                              editForm.profile.preferences.notifications.email
-                            }
-                            onChange={(e) =>
-                              setEditForm((prev) => ({
-                                ...prev,
-                                profile: {
-                                  ...prev.profile,
-                                  preferences: {
-                                    ...prev.profile.preferences,
-                                    notifications: {
-                                      ...prev.profile.preferences.notifications,
-                                      email: e.target.checked,
+                      <textarea
+                        value={editForm.contactInfo.rejectionNotes}
+                        onChange={(e) =>
+                          setEditForm((prev) => ({
+                            ...prev,
+                            contactInfo: {
+                              ...prev.contactInfo,
+                              rejectionNotes: e.target.value,
+                            },
+                          }))
+                        }
+                        className="w-full px-3 py-2 border border-[#0A1D37]/20 rounded-lg focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-colors resize-none"
+                        rows={2}
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Profile Section */}
+                <div className="bg-gray-50 rounded-xl p-4 border border-[#0A1D37]/10">
+                  <h3 className="text-base sm:text-lg font-semibold text-[#0A1D37] mb-3 flex items-center gap-2">
+                    <span className="w-2 h-2 bg-[#FF7A00] rounded-full"></span>
+                    اطلاعات پروفایل
+                  </h3>
+                  <div className="space-y-4">
+                    <div>
+                      <label className="block text-sm font-medium text-[#0A1D37] mb-2">
+                        بیوگرافی
+                      </label>
+                      <textarea
+                        value={editForm.profile.bio}
+                        onChange={(e) =>
+                          setEditForm((prev) => ({
+                            ...prev,
+                            profile: {
+                              ...prev.profile,
+                              bio: e.target.value,
+                            },
+                          }))
+                        }
+                        className="w-full px-3 py-2 border border-[#0A1D37]/20 rounded-lg focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-colors resize-none"
+                        rows={3}
+                      />
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-sm font-medium text-[#0A1D37] mb-2">
+                          زبان
+                        </label>
+                        <select
+                          value={editForm.profile.preferences.language}
+                          onChange={(e) =>
+                            setEditForm((prev) => ({
+                              ...prev,
+                              profile: {
+                                ...prev.profile,
+                                preferences: {
+                                  ...prev.profile.preferences,
+                                  language: e.target.value,
+                                },
+                              },
+                            }))
+                          }
+                          className="w-full px-3 py-2 border border-[#0A1D37]/20 rounded-lg focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-colors"
+                        >
+                          <option value="fa">فارسی</option>
+                          <option value="en">انگلیسی</option>
+                        </select>
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-medium text-[#0A1D37] mb-2">
+                          تنظیمات اعلانات
+                        </label>
+                        <div className="space-y-2">
+                          <label className="flex items-center">
+                            <input
+                              type="checkbox"
+                              checked={
+                                editForm.profile.preferences.notifications.email
+                              }
+                              onChange={(e) =>
+                                setEditForm((prev) => ({
+                                  ...prev,
+                                  profile: {
+                                    ...prev.profile,
+                                    preferences: {
+                                      ...prev.profile.preferences,
+                                      notifications: {
+                                        ...prev.profile.preferences
+                                          .notifications,
+                                        email: e.target.checked,
+                                      },
                                     },
                                   },
-                                },
-                              }))
-                            }
-                            className="ml-2 accent-[#FF7A00]"
-                          />
-                          <span className="text-sm">ایمیل</span>
-                        </label>
-                        <label className="flex items-center">
-                          <input
-                            type="checkbox"
-                            checked={
-                              editForm.profile.preferences.notifications.sms
-                            }
-                            onChange={(e) =>
-                              setEditForm((prev) => ({
-                                ...prev,
-                                profile: {
-                                  ...prev.profile,
-                                  preferences: {
-                                    ...prev.profile.preferences,
-                                    notifications: {
-                                      ...prev.profile.preferences.notifications,
-                                      sms: e.target.checked,
+                                }))
+                              }
+                              className="ml-2 accent-[#FF7A00]"
+                            />
+                            <span className="text-sm">ایمیل</span>
+                          </label>
+                          <label className="flex items-center">
+                            <input
+                              type="checkbox"
+                              checked={
+                                editForm.profile.preferences.notifications.sms
+                              }
+                              onChange={(e) =>
+                                setEditForm((prev) => ({
+                                  ...prev,
+                                  profile: {
+                                    ...prev.profile,
+                                    preferences: {
+                                      ...prev.profile.preferences,
+                                      notifications: {
+                                        ...prev.profile.preferences
+                                          .notifications,
+                                        sms: e.target.checked,
+                                      },
                                     },
                                   },
-                                },
-                              }))
-                            }
-                            className="ml-2 accent-[#FF7A00]"
-                          />
-                          <span className="text-sm">پیامک</span>
-                        </label>
-                        <label className="flex items-center">
-                          <input
-                            type="checkbox"
-                            checked={
-                              editForm.profile.preferences.notifications.push
-                            }
-                            onChange={(e) =>
-                              setEditForm((prev) => ({
-                                ...prev,
-                                profile: {
-                                  ...prev.profile,
-                                  preferences: {
-                                    ...prev.profile.preferences,
-                                    notifications: {
-                                      ...prev.profile.preferences.notifications,
-                                      push: e.target.checked,
+                                }))
+                              }
+                              className="ml-2 accent-[#FF7A00]"
+                            />
+                            <span className="text-sm">پیامک</span>
+                          </label>
+                          <label className="flex items-center">
+                            <input
+                              type="checkbox"
+                              checked={
+                                editForm.profile.preferences.notifications.push
+                              }
+                              onChange={(e) =>
+                                setEditForm((prev) => ({
+                                  ...prev,
+                                  profile: {
+                                    ...prev.profile,
+                                    preferences: {
+                                      ...prev.profile.preferences,
+                                      notifications: {
+                                        ...prev.profile.preferences
+                                          .notifications,
+                                        push: e.target.checked,
+                                      },
                                     },
                                   },
-                                },
-                              }))
-                            }
-                            className="ml-2 accent-[#FF7A00]"
-                          />
-                          <span className="text-sm">اعلانات</span>
-                        </label>
+                                }))
+                              }
+                              className="ml-2 accent-[#FF7A00]"
+                            />
+                            <span className="text-sm">اعلانات</span>
+                          </label>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
 
-            <div className="p-4 sm:p-6 border-t border-[#0A1D37]/10 flex justify-end gap-3">
-              <button
-                onClick={() => setShowEditUser(false)}
-                className="px-4 py-2 text-[#0A1D37] border border-[#0A1D37]/20 rounded-lg hover:bg-gray-50 transition-colors"
-              >
-                انصراف
-              </button>
-              <button
-                onClick={handleUpdateUser}
-                disabled={submitting}
-                className="px-4 py-2 bg-[#FF7A00] text-white rounded-lg hover:bg-[#FF7A00]/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-              >
-                {submitting ? "در حال بروزرسانی..." : "ذخیره تغییرات"}
-              </button>
+              <div className="p-4 sm:p-6 border-t border-[#0A1D37]/10 flex justify-end gap-3">
+                <button
+                  onClick={() => setShowEditUser(false)}
+                  className="px-4 py-2 text-[#0A1D37] border border-[#0A1D37]/20 rounded-lg hover:bg-gray-50 transition-colors"
+                >
+                  انصراف
+                </button>
+                <button
+                  onClick={handleUpdateUser}
+                  disabled={submitting}
+                  className="px-4 py-2 bg-[#FF7A00] text-white rounded-lg hover:bg-[#FF7A00]/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                >
+                  {submitting ? "در حال بروزرسانی..." : "ذخیره تغییرات"}
+                </button>
+              </div>
             </div>
-          </div>
-        </div>
-      )}
+          </div>,
+          document.body
+        )}
     </div>
   );
 };

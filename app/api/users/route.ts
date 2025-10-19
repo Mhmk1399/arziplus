@@ -14,6 +14,8 @@ interface updatedData{
   "profile.avatar"?: string;
   "profile.bio"?: string;
   "profile.preferences"?: any;
+  nationalCredentials?: any;
+  contactInfo?: any;
 }
 interface query {
   _id?: string;
@@ -128,9 +130,9 @@ export async function PATCH(request: NextRequest) {
       return NextResponse.json({ error: "غیر مجاز" }, { status: 401 });
     }
 
-    const { userId, username, password, roles, status, profile } = await request.json();
+    const { userId, username, password, roles, status, profile, nationalCredentials, contactInfo } = await request.json();
     
-    console.log("Received profile data:", profile);
+    console.log("Received update data:", { username, roles, status, profile, nationalCredentials, contactInfo });
 
     if (!userId) {
       return NextResponse.json(
@@ -220,6 +222,28 @@ export async function PATCH(request: NextRequest) {
         updateData["profile.preferences"] = profile.preferences;
         console.log("Added preferences to updateData:", profile.preferences);
       }
+    }
+
+    // National credentials update (admins can update)
+    if (nationalCredentials && isAdmin) {
+      const processedCredentials = { ...nationalCredentials };
+      // Set default status if empty or invalid
+      if (!processedCredentials.status || processedCredentials.status === "") {
+        processedCredentials.status = "pending_verification";
+      }
+      updateData.nationalCredentials = processedCredentials;
+      console.log("Added nationalCredentials to updateData:", processedCredentials);
+    }
+
+    // Contact info update (admins can update)
+    if (contactInfo && isAdmin) {
+      const processedContactInfo = { ...contactInfo };
+      // Set default status if empty or invalid
+      if (!processedContactInfo.status || processedContactInfo.status === "") {
+        processedContactInfo.status = "pending_verification";
+      }
+      updateData.contactInfo = processedContactInfo;
+      console.log("Added contactInfo to updateData:", processedContactInfo);
     }
 
     // Roles update (only admins can change roles)
