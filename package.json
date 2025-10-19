@@ -1,15 +1,13 @@
 {
-  "name": "arziPlus",
+  "name": "arziplus",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build --turbopack",
     "start": "next start",
-    "lint": "eslint",
-    "validate-sitemap": "node scripts/validate-sitemap.js",
-    "validate-schemas": "node scripts/validate-schemas.js"
-  },
+    "lint": "eslint"
+    },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.906.0",
     "@aws-sdk/s3-request-presigner": "^3.906.0",

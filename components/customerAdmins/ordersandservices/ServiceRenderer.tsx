@@ -538,7 +538,7 @@ const ServiceRenderer: React.FC<ServiceRendererProps> = ({
                                 height={120}
                                 className="object-cover group-hover:scale-110 transition-transform duration-300"
                                 unoptimized={true}
-                                onError={(e) => {
+                                onError={() => {
                                   console.error("ServiceRenderer mobile - Failed to load service image:", service.image);
                                 }}
                               />
@@ -620,7 +620,7 @@ const ServiceRenderer: React.FC<ServiceRendererProps> = ({
                               height={96}
                               className="w-1/2 h-1/2 mx-auto object-cover group-hover:scale-110 transition-transform duration-300"
                               unoptimized={true}
-                              onError={(e) => {
+                              onError={() => {
                                 console.error("ServiceRenderer desktop - Failed to load service image:", service.image);
                               }}
                             />

@@ -25,7 +25,7 @@ import WhyUsSection from "../global/whyUs";
 import FAQSection from "../global/faqSection";
 import CTABanner from "../global/ctaBanner";
 import TextBox from "../global/textBox";
-import { FaLock, FaTools } from "react-icons/fa";
+import { FaLock } from "react-icons/fa";
 import HeroSplitSection from "../global/heroSplitSection";
 
 const JokerDomainPayment = () => {
