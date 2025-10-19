@@ -699,8 +699,8 @@ const HomePage = () => {
         buttons={[
           {
             text: "شروع کنید",
-            href: "/register",
-            variant: "primary",
+            href: "/services",
+            variant: "secondary",
             icon: <FaRocket />,
           },
           {
@@ -712,7 +712,7 @@ const HomePage = () => {
         ]}
         media={{
           type: "image",
-          src: "/assets/images/logoArzi.webp",
+          src: "/assets/images/loggo.png",
           alt: "ارزی پلاس",
           width: 600,
           height: 600,

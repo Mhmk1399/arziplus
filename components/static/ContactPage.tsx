@@ -98,7 +98,7 @@ const ContactPage = () => {
     <div>
       <HeroSection
         heading="تماس با ارزی پلاس"
-        subheading="همیشه در دسترس شما هستیم 🌍"
+        subheading="همیشه در دسترس شما هستیم"
         description="در ارزی پلاس، ارتباط با شما فقط یک گزینه نیست، بلکه بخشی از تعهد ماست.
 تیم پشتیبانی ما همیشه آماده پاسخگویی به پرسشها، درخواستها و راهنمایی در خصوص خدمات بینالمللی است — از پرداخت هزینه آزمونها گرفته تا افتتاح حساب بانکی خارجی یا ثبت شرکت در کشورهای معتبر.
 
@@ -106,14 +106,14 @@ const ContactPage = () => {
         buttons={[
           {
             text: "شروع",
-            href: "/chat",
-            variant: "primary",
+            href: "/",
+            variant: "secondary",
             icon: <FaExplosion />,
           },
         ]}
         media={{
           type: "image",
-          src: "https://arziPlus.s3.eu-north-1.amazonaws.com/Desktop/53-min.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=ASIAUQ73WRGQ4T67A6JS%2F20251012%2Feu-north-1%2Fs3%2Faws4_request&X-Amz-Date=20251012T110613Z&X-Amz-Expires=300&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEIP%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCmV1LW5vcnRoLTEiRzBFAiEAkvYH%2BmhAwfPH1TelSJueYbwHgp2aquFhruhP%2Bqmu7zkCIGt1Jhm1R1Zm%2FDqhZs8KbOLRTzAQE4J8uNuyHPyI7FsKKtYCCCwQABoMMzExMzc2MTIwMjI1Igwg%2Fu3e6zq2qeFFmF4qswIYuQuEXhoBRN%2FOgvmZCGczqnjNiClyns9RuhaLhQXn7oaA7%2F3k9DGl5NgQl90Ee3F7I0ho3372RGLAOxcYO6JA0hC76J8DuCr%2F3S343rm%2Fh03MFY8T6L6yh%2F6BhXAAD4x5ENiC4uPXJPNWVoB8lGbvnAyTB1oTh%2Bt47f0w%2Ba3C0E4wFsflJj2VzIeUsYDEu%2Bf6Jgc8I8252lN3cKpiX5cXqqbfKz06Ga%2FDCzmYHjuxesqC%2BLJxgUj9%2BLUFgOPzAFNzLOF9%2F3XPH4sXqznW9v26koziAWAIjgYK8Qyk%2F3J3WcsMjCfM6ezXPJzG6lbzoTjK0MWSeJg1EpneoOwkEZ7AOVIKK9gcIiwfX2NLrDvTCjtLB3g00eP%2B3qbR3EH61Wnq%2F43PzuBeJBe11QU1YBUcoVRlMJLyrccGOq0CyNWPUNsn88dxEonjuYdU8%2BcP8CLd2o%2BizdtVyWQZWnrspMEV%2FyhXriTKtMYHofxlCAEzpS2q55WV5sGWlLrZx9Ob8PRBvzzLX64Jak3jVXkt%2FzAxC3FVtI5rGSXPHJVk1IAnD9o3vfrsG0zGbPS3eGEAnXGofXECWNVMOuTZEPk1DAKSLyPKzpYoGyN8wBfH94Py5lS4%2FfSlVaRxT6p1ywoZFSvUaAyWULg6FWb7B5bPE6ma7h3nq31pAb%2B7ztCPnezmKNVjx0rebxqjlxFdQxIWQMfu3SDyRq%2FyUuOrbLLgqFydIiyNCkWp7vwaLBWHPOtqFTsGZ6El1dTv628bMBfbN9n8joW08RX2aSnT4VlsRjhACITEx%2FKbD5dvDWwGgExUN3aUVtAU4LnpWA%3D%3D&X-Amz-Signature=298995cbee57fe814f28fa799fe1fb9964e84a8d8e6b7142ed234572fcc64fc0&X-Amz-SignedHeaders=host&response-content-disposition=inline",
+          src: "https://arziplus.storage.c2.liara.space/images/pages/53-min.png",
           alt: "ارتباط با ارزی پلاس",
           width: 1200,
           height: 800,
@@ -132,7 +132,7 @@ const ContactPage = () => {
         heading="💬 چرا کاربران ارزی پلاس ما را انتخاب میکنند؟"
         description="مزایای منحصربهفرد پشتیبانی ارزی پلاس که ما را از سایرین متمایز میکند."
         buttonText="درخواست مشاوره"
-        buttonLink="/consultation"
+        buttonLink="/"
         items={whyChooseUs}
         buttonColor="#0A1D37 hover:bg-indigo-800 text-white"
         theme={themesWhyus.default}
@@ -181,7 +181,7 @@ const ContactPage = () => {
         buttons={[
           {
             text: "سوالات بیشتر",
-            href: "/faq",
+            href: "/",
             variant: "outline",
             icon: <FaEnvelope />,
           },
@@ -195,11 +195,11 @@ const ContactPage = () => {
 
       <CTABanner
         heading="آماده همکاری با ارزی پلاس هستید؟"
-        description="با ما تماس بگیرید و خدمات سفارشی را دریافت کنید. ارزی پلاس، شریک قابل اعتماد شما در پرداختهای جهانی."
+        description="با ما تماس بگیرید و خدمات سفارشی را دریافت کنید.     ."
         button={{
           text: "تماس بگیرید",
-          href: "/chat",
-          variant: "primary",
+          href: "/contact",
+          variant: "ghost",
           icon: <FaRocket />,
         }}
         theme={ctaThemes.primary}
