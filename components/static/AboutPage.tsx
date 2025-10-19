@@ -267,14 +267,14 @@ const AboutPage = () => {
         buttons={[
           {
             text: "شروع همکاری",
-            href: "/register",
-            variant: "primary",
+            href: "/",
+            variant: "secondary",
             icon: <FaExplosion />,
           },
         ]}
         media={{
           type: "image",
-          src: "https://arziPlus.s3.eu-north-1.amazonaws.com/Desktop/52-min.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=ASIAUQ73WRGQRMW2TZ6Q%2F20251012%2Feu-north-1%2Fs3%2Faws4_request&X-Amz-Date=20251012T110544Z&X-Amz-Expires=300&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEIP%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCmV1LW5vcnRoLTEiRzBFAiAJOhJC3JqmqcFU5dcvkdwLgAEaNn%2Fp%2BkjRPEkNcM2YDAIhANi6e7OwDchX6FqVPHT0vuqSz7us5m8VMwioA7CK0aWUKtYCCCwQABoMMzExMzc2MTIwMjI1IgxP633J5pDI4XxhSeEqswIzYraBsy5zXpg7jCRz8VLx6bPbY5r1qO86s9ps%2F%2BoRleN9uwWVxX9YFWpLfJeirzOZFx%2F5TVXgLJM1mJ1O3rF4Zm7V%2BS9hntmXP0w%2Fo4MOB9hl8O8%2BVhUn1B9wpEOgOX38cgilM0JCjV3JpWqX543AeWKT%2FWdU4SaMZ3u%2BX2ACEpWpgzyZeKg9nWL7cKQKZzdoS2jVNNR8iwvpkqoKINdH%2F8%2B6Y9rZIjxwd5wprpD2Duldf3P10Tgun%2FUI9hl6Rzyy%2FMhjz41vx1uc%2FOghReDLNqYmwf3VRVxihpYrOAEs%2FgyyMc0jJRGKvF0BQeJIsi2eyc5VGlL5SOI3ZqYTE5NREG%2Fv8muF%2Br8S%2B609Uz7KAlWRFnNPZE%2Bi6UQ5ogDV6JdK500jD0gPlArCbyEFJdx8VsnsMJLyrccGOq0C9E4GpJioSb%2BJ%2B4%2FmcnZ3gAd4eue%2BYMBm0exsKfHjClWHE4sbwuYW3KBxyoYgwVm3SnWJhOoUcuzOPWVoKT7TJ9oTO9IxGUK0%2BacsN128nA%2FL3J2Aej1XWb93VeXLc8QFBA9Z7pCbLRsAR4gcrVyeWcqGmxdNzyFgb0ZXFxluRDlR7RifyuSFatH4zbKlw%2FJYf1QnoHft6KjKWiu2wj7LAWro8nWBskrU5WMZR2GgJUBUYuxGf35SwE2k2Pnks32NjnxhI4H%2FUkMQL5pLHeVCadcSDghYPyQv5IWLp5hLSTt85udsTwTohv6IeQOXJpxwBoNriB%2BEl4gtsOScZsFTpg0KL4ZWROBCkFBCnexGLJKRqt2avRcKs4nN0gYYTUxjRsB4mVzRtEWHbB58Tw%3D%3D&X-Amz-Signature=d53042402edc99e1e629a3b2197a03e1342374594a73f1a8f812ef5382fd4bee&X-Amz-SignedHeaders=host&response-content-disposition=inline",
+          src: "https://arziplus.storage.c2.liara.space/images/pages/52-min.png",
           alt: "درباره ارزی پلاس",
           width: 2000,
           height: 1200,
@@ -300,7 +300,7 @@ const AboutPage = () => {
         heading="🌍 خدمات ارزی پلاس"
         description="ارزی پلاس یک پلتفرم جامع خدمات ارزی و بین‌المللی است که با پشتیبانی تخصصی و سیستم امن پرداخت، امکانات زیر را ارائه می‌دهد:"
         buttonText="مشاهده تمام خدمات"
-        buttonLink="/services"
+        buttonLink="/"
         items={servicesData}
         buttonColor="#0A1D37 hover:bg-indigo-800 text-white"
         theme={themesWhyus.default}

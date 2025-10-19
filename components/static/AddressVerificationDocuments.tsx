@@ -123,14 +123,14 @@ const AddressVerificationDocuments = () => {
         buttons={[
           {
             text: "درخواست مدرک تایید آدرس",
-            href: "/register",
-            variant: "primary",
+            href: "/services/AddressVerificationDocuments",
+            variant: "secondary",
             icon: <FaExplosion />,
           },
         ]}
         media={{
           type: "image",
-          src: "https://arziPlus.s3.eu-north-1.amazonaws.com/Desktop/49-min.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=ASIAUQ73WRGQYFLQHJ5D%2F20251012%2Feu-north-1%2Fs3%2Faws4_request&X-Amz-Date=20251012T110656Z&X-Amz-Expires=300&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEIP%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCmV1LW5vcnRoLTEiRzBFAiEA%2FUABvA5plHk8vNWnUP0p97hbjqx0cVwR43qPwyqOXVECIAv6qfPKymQocp15dm5SGmT6xwMwh1pZlOIpNq5IYxuoKtYCCCwQABoMMzExMzc2MTIwMjI1IgwT6KoWGvgpRS%2BUrxkqswL%2FhEKQDOh3trY02Q4d3gc3UQa4eAwKX2xiYDefYIKC5117GWiKcFRTWaL1%2BEdpfqqTyH4JOXYfmpV%2FauAD9TNDJz8Zt4kBZyqZP8xldBwmgRLJUyEIc7zvurh%2BZj9eozgK1dIRsbXFpxEloxnHheiCMg%2B5IcWjh93keISV1gfijR1uEtr%2Fg9urvlbncRP2sBq1d%2FmGN5BtUNifRTQvlSr3Cbu8LeLSAAjdKuCoHTdKYmNt6rpVfo1ZwMxjDSkkMYaatWjMoYyFiK5iJXL6Q7Ti0BoXJKD5R3X91p95G2MCjUzVnsDEiQz7HpEq43rLtGdbu0s3Pj9exN9m%2BHEGOmaxDZZVmvUMMbbUWJOBEE7p%2FkuNAPbqJLUkxcjYAIH%2Bg0eRVskg9tNHWx%2Fc8kdYv0SDo2PDMJLyrccGOq0CUNx3Ac0JKX4IO1h0P%2B5b5qCLRADj6QMAxOk5bcg2%2BnQRoFSaiSaZmNavtRvJf59Ai3y9TZHNVf8Os05%2B2MyxzmiqeA1Ipo%2Bz0f0b7RqDQFi4jkSBMmTDhI%2FJzQPO0%2FWO5UJxNUUtx6e4VL5YKuGpCzPcDbdhOjhWfUKUGcGTnO7hiiyHN587kcWmY3CkqRI2PQAoQ%2BRpt7j%2B7%2FL1k8wK8tlecUAHDaXVTKPFH2RoCbFDumRWio4fnm222XfeQw8xyZE11%2FrFwpFaKbVyQy5S7vfYqR77hxdW0z7IMkH9TsL1vBmZAwv06GzDudAvWDaTLGLFiYFG19DQiq1vas%2Bx8ZWNQnDcGZofG9tMF0gS5EC5keCEkbWUc9J2rYVAn5wv8nk485j%2F5Oy5p6%2FSGw%3D%3D&X-Amz-Signature=5e59b8f3beba902fce71501758bfa2e488f553f40a2bfb8d07f0db69aee832b7&X-Amz-SignedHeaders=host&response-content-disposition=inline",
+          src: "https://arziplus.storage.c2.liara.space/images/pages/49-min.png",
           alt: "مدارک تایید آدرس با ارزی پلاس",
           width: 1200,
           height: 800,
@@ -163,7 +163,7 @@ const AddressVerificationDocuments = () => {
         heading="خدمات تایید آدرس مجموعه ارزی پلاس"
         description="ارائه پرینت حساب بانکی جهت تایید محل سکونت تمام اطلاعات وارد شده به نام فرد متقاضی و بر اساس اطلاعات پاسپورت وی می باشد قبض و پرینت حساب بانکی در حال حاضر از کشورهای مالزی و اسپانیا صادر می شود مزایای خرید مدارک تایید آدرس از ارزی پلاس هزینه مناسب تحویل سریع امکان شارژ سیم کارت توسط ارزی پلاس نماینده فروش مدارک تایید آدرس با بیش از ده سال سابقه"
         buttonText="درخواست مدرک"
-        buttonLink="/address-verification"
+        buttonLink="/services/AddressVerificationDocuments"
         items={verificationWhyUs}
         theme={themesWhyus.default}
       />
@@ -191,9 +191,9 @@ const AddressVerificationDocuments = () => {
         description="ارزی پلاس با سابقه چندین ساله، تضمین امنیت تراکنش‌ها و نرخ رقابتی، بهترین گزینه برای نقد کردن پی‌پال است."
         buttons={[
           {
-            text: "ثبت درخواست نقد کردن",
-            href: "/cashing-paypal",
-            variant: "primary",
+            text: "ثبت درخواست    ",
+            href: "/services/AddressVerificationDocuments",
+            variant: "green",
             icon: <FaShieldAlt />,
           },
         ]}
@@ -250,8 +250,8 @@ const AddressVerificationDocuments = () => {
         description="ارزی پلاس مدارک وریفای آدرس از مالزی و اسپانیا را با هویت واقعی صادر می‌کند  ."
         button={{
           text: "درخواست مدرک تایید آدرس",
-          href: "/address-verification",
-          variant: "primary",
+          href: "/dashboard#services",
+          variant: "ghost",
           icon: <FaRocket />,
         }}
         theme={ctaThemes.primary}

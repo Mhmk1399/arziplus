@@ -80,6 +80,7 @@ export default function HeroSection({
   const statsRef = useRef<HTMLDivElement>(null);
   const backgroundRef = useRef<HTMLDivElement>(null);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [imageError, setImageError] = useState(false);
   const {
     headingColor = "text-[#0A1D37]",
     subheadingColor = "text-[#A0A0A0]",
@@ -332,14 +333,51 @@ export default function HeroSection({
     }
 
     return (
-      <Image
-        src={media.src}
-        alt={media.alt || "Hero Image"}
-        width={media.width || 600}
-        height={media.height || 600}
-        className="w-full h-full  lg:h-80 rounded-2xl object-contain"
-        priority
-      />
+      <div className="relative h-48 sm:h-56 lg:h-80 w-full overflow-hidden rounded-2xl">
+        {!imageError && media.src ? (
+          <Image
+            src={media.src}
+            alt={media.alt || "Hero Image"}
+            fill
+            className="object-contain transition-transform duration-500 group-hover:scale-110"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            unoptimized={true}
+            priority
+            onError={() => {
+              console.error("Failed to load hero image with Next.js Image:", media.src);
+              setImageError(true);
+            }}
+          />
+        ) : media.src ? (
+          <img
+            src={media.src}
+            alt={media.alt || "Hero Image"}
+            className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110"
+            onError={(e) => {
+              console.error("Failed to load hero image with img tag:", media.src);
+              const img = e.target as HTMLImageElement;
+              img.style.display = "none";
+            }}
+          />
+        ) : (
+          <Image
+            src="/assets/images/loggo.png"
+            alt={media.alt || "Hero Image"}
+            fill
+            className="object-contain transition-transform duration-500 group-hover:scale-110"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          />
+        )}
+
+        {/* Fallback Text */}
+        {!media.src && (
+          <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-[#FF7A00]/20 to-[#4DBFF0]/20">
+            <div className="text-4xl sm:text-5xl lg:text-6xl text-[#0A1D37]/10 font-bold">
+              {heading.charAt(0)}
+            </div>
+          </div>
+        )}
+      </div>
     );
   };
 
