@@ -181,7 +181,7 @@ const UserWrapper: React.FC<AdminWrapperProps> = ({
         : currentUser.firstName || "مدیر محترم";
 
     return (
-      <div className=" backdrop-blur-sm  rounded-2xl p-6 mb-8">
+      <div className=" backdrop-blur-sm  rounded-2xl p-1 sm:p-6 mb-8">
         <div className="flex items-center justify-between flex-wrap gap-4">
           <div className="flex items-center gap-4">
             <div className="w-12 h-12  rounded-full flex items-center justify-center">
@@ -301,7 +301,7 @@ const UserWrapper: React.FC<AdminWrapperProps> = ({
 
   return (
     <div className={`min-h-screen  ${className}`} dir="rtl">
-      <div className="container mx-auto px-4 py-8">
+      <div className=" mx-auto p-0 sm:px-4 sm:py-8">
         {/* Admin Welcome Section */}
         {renderAdminWelcome()}
 

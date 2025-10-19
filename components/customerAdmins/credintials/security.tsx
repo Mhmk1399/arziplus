@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   FaShieldAlt,
   FaUser,
@@ -7,13 +7,16 @@ import {
   FaEye,
   FaEyeSlash,
   FaExclamationTriangle,
-   FaKey,
+  FaKey,
   FaCheckCircle,
   FaTimesCircle,
-  FaInfoCircle,
   FaSpinner,
+  FaCamera,
+  FaUserCircle,
 } from "react-icons/fa";
- import { showToast } from "@/utilities/toast";
+import { showToast } from "@/utilities/toast";
+import FileUploaderModal from "@/components/FileUploaderModal";
+import Image from "next/image";
 
 interface SecurityData {
   username: string;
@@ -21,6 +24,18 @@ interface SecurityData {
   confirmPassword: string;
   status: "active" | "suspended" | "banned" | "pending_verification";
   roles: ("user" | "admin" | "super_admin" | "moderator" | "support")[];
+  profile: {
+    avatar: string;
+    bio: string;
+    preferences: {
+      language: "fa" | "en";
+      notifications: {
+        email: boolean;
+        sms: boolean;
+        push: boolean;
+      };
+    };
+  };
 }
 
 interface VerificationStatus {
@@ -58,6 +73,19 @@ const Security = ({
     confirmPassword: "",
     status: initialData?.status || "pending_verification",
     roles: initialData?.roles || ["user"],
+    profile: {
+      avatar: initialData?.profile?.avatar || "",
+      bio: initialData?.profile?.bio || "",
+      preferences: {
+        language: initialData?.profile?.preferences?.language || "fa",
+        notifications: {
+          email:
+            initialData?.profile?.preferences?.notifications?.email ?? true,
+          sms: initialData?.profile?.preferences?.notifications?.sms ?? true,
+          push: initialData?.profile?.preferences?.notifications?.push ?? true,
+        },
+      },
+    },
   });
 
   const [errors, setErrors] = useState<
@@ -67,6 +95,55 @@ const Security = ({
   const [isSaved, setIsSaved] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  const [isFileModalOpen, setIsFileModalOpen] = useState(false);
+
+  // Load current user data on component mount
+  useEffect(() => {
+    const loadUserData = async () => {
+      try {
+        const token = localStorage.getItem("authToken");
+        if (!token) return;
+
+        const response = await fetch("/api/auth/me", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (response.ok) {
+          const userData = await response.json();
+          const user = userData.user;
+
+          console.log("Loaded user data:", user);
+
+          setFormData((prev) => ({
+            ...prev,
+            username: user.username || "",
+            status: user.status || "pending_verification",
+            roles: user.roles || ["user"],
+            profile: {
+              avatar: user.profile?.avatar || "",
+              bio: user.profile?.bio || "",
+              preferences: {
+                language: user.profile?.preferences?.language || "fa",
+                notifications: {
+                  email:
+                    user.profile?.preferences?.notifications?.email ?? true,
+                  sms: user.profile?.preferences?.notifications?.sms ?? true,
+                  push: user.profile?.preferences?.notifications?.push ?? true,
+                },
+              },
+            },
+          }));
+        }
+      } catch (error) {
+        console.error("Error loading user data:", error);
+      }
+    };
+
+    loadUserData();
+  }, []);
 
   // Validation functions
   const validateUsername = (username: string): boolean => {
@@ -130,20 +207,64 @@ const Security = ({
   };
 
   const handleInputChange = (
-    field: keyof SecurityData | "confirmPassword",
-    value: string | string[]
+    field: keyof SecurityData | "confirmPassword" | string,
+    value: string | string[] | boolean
   ) => {
     if (field === "confirmPassword") {
       setFormData((prev) => ({ ...prev, confirmPassword: value as string }));
+    } else if (field.startsWith("profile.")) {
+      const profileField = field.split(".")[1];
+      if (profileField === "avatar" || profileField === "bio") {
+        setFormData((prev) => ({
+          ...prev,
+          profile: {
+            ...prev.profile,
+            [profileField]: value as string,
+          },
+        }));
+      } else if (profileField === "language") {
+        setFormData((prev) => ({
+          ...prev,
+          profile: {
+            ...prev.profile,
+            preferences: {
+              ...prev.profile.preferences,
+              language: value as "fa" | "en",
+            },
+          },
+        }));
+      } else if (profileField.startsWith("notifications.")) {
+        const notificationField = profileField.split(".")[1];
+        setFormData((prev) => ({
+          ...prev,
+          profile: {
+            ...prev.profile,
+            preferences: {
+              ...prev.profile.preferences,
+              notifications: {
+                ...prev.profile.preferences.notifications,
+                [notificationField]: value as boolean,
+              },
+            },
+          },
+        }));
+      }
     } else {
       setFormData((prev) => ({ ...prev, [field]: value }));
+      console.log(formData);
     }
     setIsSaved(false);
 
     // Clear error for this field
-    if (errors[field]) {
+    if (errors[field as keyof typeof errors]) {
       setErrors((prev) => ({ ...prev, [field]: undefined }));
     }
+  };
+
+  const handleFileUploaded = (fileUrl: string) => {
+    handleInputChange("profile.avatar", fileUrl);
+    setIsFileModalOpen(false);
+    showToast.success("تصویر پروفایل با موفقیت آپلود شد!");
   };
 
   const handleSave = async () => {
@@ -172,6 +293,18 @@ const Security = ({
         password: formData.password || undefined,
         roles: formData.roles,
         status: formData.status,
+        profile: {
+          avatar: formData.profile.avatar,
+          bio: formData.profile.bio,
+          preferences: {
+            language: formData.profile.preferences.language,
+            notifications: {
+              email: formData.profile.preferences.notifications.email,
+              sms: formData.profile.preferences.notifications.sms,
+              push: formData.profile.preferences.notifications.push,
+            },
+          },
+        },
       };
 
       console.log("Sending security data:", requestData);
@@ -212,13 +345,10 @@ const Security = ({
   const passwordStrength = getPasswordStrength(formData.password);
 
   return (
-    <div
-      className="w-full min-h-screen   sm:p-4 lg:p-6"
-      dir="rtl"
-    >
+    <div className="w-full min-h-screen sm:p-4 lg:p-6" dir="rtl">
       <div className="max-w-5xl mx-auto">
         {/* Main Form */}
-        <div className="  rounded-2xl sm:rounded-3xl shadow-lg border-2 border-gray-100 overflow-hidden">
+        <div className="bg-white rounded-2xl sm:rounded-3xl shadow-lg border-2 border-gray-100 overflow-hidden">
           <div className="bg-gradient-to-r from-[#4DBFF0]/10 to-[#0A1D37]/5 px-4 sm:px-6 lg:px-8 py-4 sm:py-5 border-b border-gray-100">
             <h3 className="text-base sm:text-lg lg:text-xl font-bold text-[#0A1D37] flex items-center gap-2 sm:gap-3">
               <div className="w-8 h-8 sm:w-10 sm:h-10 bg-white rounded-xl flex items-center justify-center shadow-sm">
@@ -228,55 +358,98 @@ const Security = ({
             </h3>
           </div>
 
-          <div className="p-2 sm:p-6 lg:p-8 space-y-6 sm:space-y-8">
-            {/* Username */}
-            <div className="space-y-3">
-              <label className="flex items-center gap-2 text-sm sm:text-base font-bold text-[#0A1D37]">
-                <FaUser className="text-[#4DBFF0] text-sm sm:text-base" />
-                <span>نام کاربری</span>
-                <span className="text-red-500 text-lg">*</span>
-              </label>
-              <div className="relative">
-                <input
-                  type="text"
-                  value={formData.username}
-                  onChange={(e) =>
-                    handleInputChange("username", e.target.value)
-                  }
-                  placeholder="نام کاربری منحصر به فرد"
-                  className={`w-full px-4 sm:px-5 py-3 sm:py-4 pr-12 sm:pr-14 rounded-xl sm:rounded-2xl border-2 transition-all duration-300 text-sm sm:text-base ${
-                    errors.username
-                      ? "border-red-300 bg-red-50 focus:ring-2 focus:ring-red-500/30"
-                      : formData.username && validateUsername(formData.username)
-                      ? "border-green-300 bg-green-50 focus:ring-2 focus:ring-green-500/30"
-                      : "border-gray-200 bg-gray-50 focus:ring-2 focus:ring-[#4DBFF0]/30 focus:border-[#4DBFF0]"
-                  }`}
-                  dir="ltr"
-                />
-                <div className="absolute right-4 sm:right-5 top-1/2 transform -translate-y-1/2">
-                  {errors.username ? (
-                    <FaTimesCircle className="text-red-500 text-base sm:text-lg" />
-                  ) : formData.username &&
-                    validateUsername(formData.username) ? (
-                    <FaCheckCircle className="text-green-500 text-base sm:text-lg" />
-                  ) : (
-                    <FaUser className="text-gray-400 text-base sm:text-lg" />
-                  )}
+          <div className="p-4 sm:p-6 lg:p-8 space-y-6 sm:space-y-8">
+            {/* Profile Section */}
+            <div className="bg-gradient-to-br from-blue-50 to-indigo-50/30 rounded-2xl sm:rounded-3xl p-4 sm:p-6 border-2 border-blue-100">
+              <div className="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6">
+                <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-r from-blue-500/20 to-indigo-500/10 rounded-xl flex items-center justify-center">
+                  <FaUserCircle className="text-blue-600 text-sm sm:text-base" />
+                </div>
+                <div>
+                  <h4 className="text-base sm:text-lg font-bold text-[#0A1D37]">
+                    پروفایل کاربری
+                  </h4>
+                  <p className="text-xs sm:text-sm text-gray-600">
+                    تصویر، بیوگرافی و تنظیمات شخصی
+                  </p>
                 </div>
               </div>
-              {errors.username ? (
-                <div className="flex items-center gap-2 text-red-600 text-xs sm:text-sm bg-red-50 p-3 rounded-xl border border-red-200">
-                  <FaExclamationTriangle className="text-sm flex-shrink-0" />
-                  <span>{errors.username}</span>
+
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
+                {/* Avatar Section */}
+                <div className="space-y-3">
+                  <label className="flex items-center gap-2 text-sm sm:text-base font-bold text-[#0A1D37]">
+                    <FaCamera className="text-blue-500 text-sm sm:text-base" />
+                    <span>تصویر پروفایل</span>
+                  </label>
+
+                  <div className="flex items-center gap-4">
+                    {/* Avatar Display */}
+                    <div className="relative w-20 h-20 sm:w-24 sm:h-24 rounded-full overflow-hidden border-4 border-blue-200 bg-gradient-to-br from-blue-100 to-indigo-100">
+                      {formData.profile.avatar ? (
+                        <Image
+                          src={formData.profile.avatar}
+                          alt="تصویر پروفایل"
+                          fill
+                          className="object-cover"
+                          unoptimized={true}
+                        />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center">
+                          <FaUserCircle className="text-blue-400 text-3xl sm:text-4xl" />
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Upload Button */}
+                    <div className="flex-1">
+                      <button
+                        type="button"
+                        onClick={() => setIsFileModalOpen(true)}
+                        className="w-full px-4 py-3 bg-white border-2 border-blue-200 rounded-xl hover:border-blue-300 hover:bg-blue-50 transition-all duration-300 flex items-center justify-center gap-2 text-sm sm:text-base font-medium text-blue-700"
+                      >
+                        <FaCamera className="text-sm" />
+                        <span>انتخاب تصویر</span>
+                      </button>
+                      {formData.profile.avatar && (
+                        <button
+                          type="button"
+                          onClick={() =>
+                            handleInputChange("profile.avatar", "")
+                          }
+                          className="w-full mt-2 px-4 py-2 bg-red-50 border border-red-200 rounded-lg hover:bg-red-100 transition-all duration-300 text-xs sm:text-sm font-medium text-red-600"
+                        >
+                          حذف تصویر
+                        </button>
+                      )}
+                    </div>
+                  </div>
                 </div>
-              ) : (
-                <div className="flex items-start gap-2 text-gray-600 text-xs sm:text-sm bg-blue-50 p-3 rounded-xl border border-blue-200">
-                  <FaInfoCircle className="text-[#4DBFF0] text-sm flex-shrink-0 mt-0.5" />
-                  <span>
-                    نام کاربری باید 3-30 کاراکتر و شامل حروف، اعداد و _ باشد
-                  </span>
+
+                {/* Bio Section */}
+                <div className="space-y-3">
+                  <label className="flex items-center gap-2 text-sm sm:text-base font-bold text-[#0A1D37]">
+                    <FaUser className="text-blue-500 text-sm sm:text-base" />
+                    <span>بیوگرافی</span>
+                    <span className="text-gray-400 text-xs sm:text-sm font-normal">
+                      (حداکثر 500 کاراکتر)
+                    </span>
+                  </label>
+                  <textarea
+                    value={formData.profile.bio}
+                    onChange={(e) =>
+                      handleInputChange("profile.bio", e.target.value)
+                    }
+                    placeholder="درباره خود بنویسید..."
+                    maxLength={500}
+                    rows={4}
+                    className="w-full px-4 sm:px-5 py-3 sm:py-4 rounded-xl sm:rounded-2xl border-2 border-gray-200 bg-white focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition-all duration-300 text-sm sm:text-base resize-none"
+                  />
+                  <div className="text-xs text-gray-500 text-left">
+                    {formData.profile.bio.length}/500
+                  </div>
                 </div>
-              )}
+              </div>
             </div>
 
             {/* Password Section */}
@@ -334,7 +507,6 @@ const Security = ({
                         <FaEye className="text-base sm:text-lg" />
                       )}
                     </button>
-                  
                   </div>
 
                   {/* Password Strength Indicator */}
@@ -432,38 +604,6 @@ const Security = ({
             </div>
 
             {/* Security Tips */}
-            <div className="bg-blue-50 border-2 border-blue-200 rounded-2xl sm:rounded-3xl p-4 sm:p-6">
-              <div className="flex items-start gap-3 sm:gap-4">
-               
-                <div className="flex-1">
-                  <h4 className="text-sm sm:text-base font-bold text-blue-800 mb-2 sm:mb-3">
-                    نکات امنیتی مهم  
-                  </h4>
-                  <ul className="space-y-2 text-xs sm:text-sm text-blue-700">
-                    <li className="flex items-start gap-2">
-                      <FaCheckCircle className="text-blue-600 text-sm flex-shrink-0 mt-0.5" />
-                      <span>
-                        از رمز عبور قوی استفاده کنید (حداقل 6 کاراکتر)
-                      </span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <FaCheckCircle className="text-blue-600 text-sm flex-shrink-0 mt-0.5" />
-                      <span>
-                        ترکیبی از حروف بزرگ، کوچک و اعداد استفاده کنید
-                      </span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <FaCheckCircle className="text-blue-600 text-sm flex-shrink-0 mt-0.5" />
-                      <span>رمز عبور خود را با دیگران به اشتراک نگذارید</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <FaCheckCircle className="text-blue-600 text-sm flex-shrink-0 mt-0.5" />
-                      <span>به صورت دوره‌ای رمز عبور خود را تغییر دهید</span>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
           </div>
 
           {/* Action Buttons */}
@@ -501,6 +641,16 @@ const Security = ({
           </div>
         </div>
       </div>
+
+      {/* File Upload Modal */}
+      <FileUploaderModal
+        isOpen={isFileModalOpen}
+        onClose={() => setIsFileModalOpen(false)}
+        onFileUploaded={handleFileUploaded}
+        acceptedTypes={[".jpg", ".jpeg", ".png", ".gif", ".webp"]}
+        maxFileSize={5 * 1024 * 1024} // 5MB
+        title="آپلود تصویر پروفایل"
+      />
     </div>
   );
 };

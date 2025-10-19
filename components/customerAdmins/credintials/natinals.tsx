@@ -327,7 +327,7 @@ const NationalCredentials = ({
               <h2
                 className={`text-xl  lg:text-2xl font-bold text-[#0A1D37] mb-1 ${estedadBold.className}`}
               >
-                مدارک احراز هویت  
+                مدارک احراز هویت
               </h2>
               <p className="text-xs sm:text-sm lg:text-base text-gray-600">
                 اطلاعات شخصی و مدارک هویتی خود را وارد کنید
@@ -419,6 +419,43 @@ const NationalCredentials = ({
             </div>
           </div>
         )}
+        {/* Help Text */}
+        <div className="mt-6 sm:mt-8 bg-gradient-to-br mb-4 from-emerald-50 to-emerald-100/50 rounded-2xl sm:rounded-3xl p-5 sm:p-6 lg:p-8 border-2 border-emerald-200 shadow-sm">
+          <div className="flex items-start gap-3 sm:gap-4 mb-4">
+            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-emerald-500 rounded-xl flex items-center justify-center flex-shrink-0 shadow-md">
+              <FaInfoCircle className="text-white text-base sm:text-lg" />
+            </div>
+            <div>
+              <h3 className="text-base sm:text-lg font-bold text-emerald-900 mb-2">
+                راهنمای تکمیل فرم
+              </h3>
+            </div>
+          </div>
+          <ul className="text-xs sm:text-sm text-emerald-800 space-y-2 mr-14 sm:mr-16">
+            <li className="flex items-start gap-2">
+              <FaCheckCircle className="text-emerald-600 text-sm flex-shrink-0 mt-0.5" />
+              <span>نام و نام خانوادگی باید مطابق کارت ملی باشد</span>
+            </li>
+            <li className="flex items-start gap-2">
+              <FaCheckCircle className="text-emerald-600 text-sm flex-shrink-0 mt-0.5" />
+              <span>کد ملی باید معتبر و 10 رقمی باشد</span>
+            </li>
+            <li className="flex items-start gap-2">
+              <FaCheckCircle className="text-emerald-600 text-sm flex-shrink-0 mt-0.5" />
+              <span>تصویر کارت ملی باید واضح و خوانا باشد</span>
+            </li>
+            <li className="flex items-start gap-2">
+              <FaCheckCircle className="text-emerald-600 text-sm flex-shrink-0 mt-0.5" />
+              <span>
+                برای تصویر احراز هویت، سلفی با کارت ملی در کنار صورت بگیرید
+              </span>
+            </li>
+            <li className="flex items-start gap-2">
+              <FaCheckCircle className="text-emerald-600 text-sm flex-shrink-0 mt-0.5" />
+              <span>حجم فایل‌ها نباید بیش از 10 مگابایت باشد</span>
+            </li>
+          </ul>
+        </div>
 
         {/* Form */}
         <div className="bg-white rounded-2xl sm:rounded-3xl shadow-lg border-2 border-gray-100 overflow-hidden">
@@ -638,44 +675,6 @@ const NationalCredentials = ({
               </button>
             </div>
           </div>
-        </div>
-
-        {/* Help Text */}
-        <div className="mt-6 sm:mt-8 bg-gradient-to-br from-emerald-50 to-emerald-100/50 rounded-2xl sm:rounded-3xl p-5 sm:p-6 lg:p-8 border-2 border-emerald-200 shadow-sm">
-          <div className="flex items-start gap-3 sm:gap-4 mb-4">
-            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-emerald-500 rounded-xl flex items-center justify-center flex-shrink-0 shadow-md">
-              <FaInfoCircle className="text-white text-base sm:text-lg" />
-            </div>
-            <div>
-              <h3 className="text-base sm:text-lg font-bold text-emerald-900 mb-2">
-                راهنمای تکمیل فرم  
-              </h3>
-            </div>
-          </div>
-          <ul className="text-xs sm:text-sm text-emerald-800 space-y-2 mr-14 sm:mr-16">
-            <li className="flex items-start gap-2">
-              <FaCheckCircle className="text-emerald-600 text-sm flex-shrink-0 mt-0.5" />
-              <span>نام و نام خانوادگی باید مطابق کارت ملی باشد</span>
-            </li>
-            <li className="flex items-start gap-2">
-              <FaCheckCircle className="text-emerald-600 text-sm flex-shrink-0 mt-0.5" />
-              <span>کد ملی باید معتبر و 10 رقمی باشد</span>
-            </li>
-            <li className="flex items-start gap-2">
-              <FaCheckCircle className="text-emerald-600 text-sm flex-shrink-0 mt-0.5" />
-              <span>تصویر کارت ملی باید واضح و خوانا باشد</span>
-            </li>
-            <li className="flex items-start gap-2">
-              <FaCheckCircle className="text-emerald-600 text-sm flex-shrink-0 mt-0.5" />
-              <span>
-                برای تصویر احراز هویت، سلفی با کارت ملی در کنار صورت بگیرید
-              </span>
-            </li>
-            <li className="flex items-start gap-2">
-              <FaCheckCircle className="text-emerald-600 text-sm flex-shrink-0 mt-0.5" />
-              <span>حجم فایل‌ها نباید بیش از 10 مگابایت باشد</span>
-            </li>
-          </ul>
         </div>
       </div>
 

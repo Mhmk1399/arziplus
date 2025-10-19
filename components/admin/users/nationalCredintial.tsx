@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { FaSearch, FaCheck, FaTimes, FaEye, FaFilter, FaIdCard, FaUser, FaImage } from "react-icons/fa";
 import { showToast } from "@/utilities/toast";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
@@ -115,8 +116,8 @@ const NationalCredentialAdmin = () => {
         },
         body: JSON.stringify({
           userId: selectedCredential._id,
-          status: reviewStatus,
-          rejectionNotes: reviewStatus === "rejected" ? rejectionNotes : "",
+          status: reviewStatus === "accepted" ? "approved" : "rejected",
+          rejectionReason: reviewStatus === "rejected" ? rejectionNotes : "",
         }),
       });
 
@@ -411,8 +412,8 @@ const NationalCredentialAdmin = () => {
       </div>
 
       {/* Details Modal */}
-      {showDetailsModal && selectedCredential && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+      {showDetailsModal && selectedCredential &&  typeof document !== 'undefined' && createPortal(
+        <div className="fixed inset-0 bg-white/10 backdrop-blur-2xl flex items-center justify-center z-50 p-4" dir="rtl">
           <div className="bg-white rounded-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto">
             <div className="p-6 border-b">
               <h2 className="text-xl font-bold text-gray-900">جزئیات اطلاعات هویتی</h2>
@@ -453,7 +454,7 @@ const NationalCredentialAdmin = () => {
                     <img
                       src={selectedCredential.nationalCredentials.nationalCardImageUrl}
                       alt="کارت ملی"
-                      className="w-full h-40 object-cover"
+                      className="w-full h-78 object-cover"
                     />
                   </div>
                 </div>
@@ -466,7 +467,7 @@ const NationalCredentialAdmin = () => {
                     <img
                       src={selectedCredential.nationalCredentials.verificationImageUrl}
                       alt="احراز هویت"
-                      className="w-full h-40 object-cover"
+                      className="w-full h-78 object-cover"
                     />
                   </div>
                 </div>
@@ -502,13 +503,14 @@ const NationalCredentialAdmin = () => {
               )}
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
 
       {/* Review Modal */}
-      {showReviewModal && selectedCredential && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-2xl max-w-xl w-full">
+      {showReviewModal && selectedCredential && typeof document !== 'undefined' && createPortal(
+        <div className="fixed inset-0 bg-black/10 backdrop-blur-2xl  flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-2xl shadow-md border-[#FF7A00] border-2   max-w-xl w-full">
             <div className="p-6 border-b">
               <h2 className="text-xl font-bold text-gray-900">بررسی اطلاعات هویتی</h2>
             </div>
@@ -577,12 +579,13 @@ const NationalCredentialAdmin = () => {
               </button>
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
 
       {/* Image Modal */}
       {showImageModal && selectedImage && (
-        <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4">
+        <div className="fixed inset-0 bg-black/10 backdrop-blur-2xl flex items-center justify-center z-50 p-4">
           <div className="relative max-w-4xl max-h-[90vh]">
             <button
               onClick={() => setShowImageModal(false)}
