@@ -223,7 +223,7 @@ const FileUploaderModal: React.FC<FileUploaderModalProps> = ({
                     ${
                       dragActive
                         ? "text-white"
-                        : "text-[#4DBFF0] group-hover:text-[#FF7A00]"
+                        : "text-[#4DBFF0] group-hover:text-[#0A1D37]"
                     }
                   `}
                   />
@@ -278,7 +278,7 @@ const FileUploaderModal: React.FC<FileUploaderModalProps> = ({
                   ${
                     isUploading
                       ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-                      : "bg-gradient-to-l from-[#FF7A00] to-[#4DBFF0] text-white hover:shadow-2xl hover:scale-105 active:scale-95"
+                      : "bg-gradient-to-l from-[#0A1D37] to-[#4DBFF0] text-white hover:shadow-2xl hover:scale-105 active:scale-95"
                   }
                 `}
               >
@@ -305,7 +305,7 @@ const FileUploaderModal: React.FC<FileUploaderModalProps> = ({
                     </span>
                   </div>
                 </div>
-                <span className="text-2xl font-bold bg-gradient-to-l from-[#FF7A00] to-[#4DBFF0] bg-clip-text text-transparent">
+                <span className="text-2xl font-bold bg-gradient-to-l from-[#0A1D37] to-[#4DBFF0] bg-clip-text text-transparent">
                   {uploadProgress}%
                 </span>
               </div>
@@ -313,7 +313,7 @@ const FileUploaderModal: React.FC<FileUploaderModalProps> = ({
               {/* Progress Bar */}
               <div className="relative w-full bg-gray-200 rounded-full h-3 overflow-hidden">
                 <div
-                  className="absolute top-0 left-0 h-full bg-gradient-to-r from-[#4DBFF0] to-[#FF7A00] rounded-full transition-all duration-500 ease-out"
+                  className="absolute top-0 left-0 h-full bg-gradient-to-r from-[#4DBFF0] to-[#0A1D37] rounded-full transition-all duration-500 ease-out"
                   style={{ width: `${uploadProgress}%` }}
                 >
                   <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-shimmer"></div>

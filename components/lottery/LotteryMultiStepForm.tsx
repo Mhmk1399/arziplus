@@ -97,7 +97,7 @@ const LotteryMultiStepForm: React.FC = () => {
   const [showFileUploader, setShowFileUploader] = useState(false);
   const [showPhotoInfoModal, setShowPhotoInfoModal] = useState(false);
   const [walletBalance, setWalletBalance] = useState(0);
-  const lotteryFee = 600000; // 600,000 tomans
+
   const [formData, setFormData] = useState<LotteryFormData>({
     famillyInformations: [
       {
@@ -223,6 +223,8 @@ const LotteryMultiStepForm: React.FC = () => {
     setShowPaymentSelector(true);
   };
 
+  const lotteryFee = 500000 + ((formData.famillyInformations[0]?.numberOfChildren || 0) * 150000);
+  
   // Handle wallet payment
   const handleWalletPayment = async () => {
     setIsSubmitting(true);

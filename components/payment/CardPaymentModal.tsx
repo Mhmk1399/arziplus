@@ -34,10 +34,9 @@ const CardPaymentModal: React.FC<CardPaymentModalProps> = ({
 
   // Bank card information (this could be fetched from admin settings)
   const bankCardInfo = {
-    cardNumber: "6037-9974-5555-1234", // This should come from admin settings
-    cardHolder: "ارزی پلاس",
-    bankName: "بانک ملی ایران",
-    iban: "IR123456789012345678901234",
+    cardNumber: "6219 8610 8820 2881", // This should come from admin settings
+    bankName: "بانک سامان",
+    iban: "IR730560081080003050252001",
   };
 
   const handleFileUploaded = (fileUrl: string) => {
@@ -83,7 +82,7 @@ const CardPaymentModal: React.FC<CardPaymentModalProps> = ({
       >
         <div className="bg-white rounded-2xl sm:rounded-3xl max-w-lg w-full max-h-[95vh] overflow-hidden shadow-2xl animate-in zoom-in duration-300">
           {/* Modal Header - Enhanced */}
-          <div className="bg-gradient-to-l from-[#FF7A00] to-[#4DBFF0] p-5 sm:p-6 lg:p-8">
+          <div className="bg-gradient-to-l from-[#0A1D37] to-[#4DBFF0] p-5 sm:p-6 lg:p-8">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3 sm:gap-4">
                 <div className="w-12 h-12 sm:w-14 sm:h-14 bg-white/20 backdrop-blur-sm rounded-xl sm:rounded-2xl flex items-center justify-center">
@@ -128,8 +127,8 @@ const CardPaymentModal: React.FC<CardPaymentModalProps> = ({
                 <span className="text-[#0A1D37]/70 text-sm sm:text-base font-medium">
                   مبلغ قابل پرداخت:
                 </span>
-                <div className="bg-white px-4 py-2 rounded-xl border-2 border-[#FF7A00]/30">
-                  <span className="text-xl sm:text-2xl font-bold bg-gradient-to-l from-[#FF7A00] to-[#4DBFF0] bg-clip-text text-transparent">
+                <div className="bg-white px-4 py-2 rounded-xl border-2 border-[#0A1D37]">
+                  <span className="text-xl sm:text-2xl font-bold bg-gradient-to-l from-[#0A1D37] to-[#4DBFF0] bg-clip-text text-transparent">
                     {amount.toLocaleString()}
                   </span>
                   <span className="text-sm sm:text-base font-bold text-[#0A1D37] mr-1">
@@ -142,7 +141,7 @@ const CardPaymentModal: React.FC<CardPaymentModalProps> = ({
             {/* Bank Card Information - Enhanced */}
             <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl sm:rounded-2xl p-4 sm:p-5 border-2 border-gray-300 shadow-lg">
               <div className="flex items-center gap-2 mb-4 sm:mb-5">
-                <div className="w-10 h-10 bg-gradient-to-r from-[#FF7A00] to-[#4DBFF0] rounded-xl flex items-center justify-center">
+                <div className="w-10 h-10 bg-gradient-to-r from-[#0A1D37] to-[#4DBFF0] rounded-xl flex items-center justify-center">
                   <FaCreditCard className="text-white text-lg" />
                 </div>
                 <h3 className="font-bold text-[#0A1D37] text-base sm:text-lg">
@@ -173,16 +172,9 @@ const CardPaymentModal: React.FC<CardPaymentModalProps> = ({
                 </div>
 
                 {/* Card Holder & Bank - Grid */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-                  <div className="bg-white rounded-xl p-4 border-2 border-gray-200">
-                    <p className="text-xs text-[#0A1D37]/60 mb-2 font-medium">
-                      صاحب حساب:
-                    </p>
-                    <p className="font-bold text-[#0A1D37] text-sm sm:text-base">
-                      {bankCardInfo.cardHolder}
-                    </p>
-                  </div>
-                  <div className="bg-white rounded-xl p-4 border-2 border-gray-200 flex items-start gap-2">
+                <div className="grid grid-cols-1 sm:grid-cols-1  gap-3 sm:gap-4">
+                  
+                  <div className="bg-white mx-auto rounded-xl p-4 border-2 border-gray-200 flex items-start gap-2">
                     <FaUniversity className="text-blue-500 mt-0.5" />
                     <div>
                       <p className="text-xs text-[#0A1D37]/60 mb-2 font-medium">
@@ -198,18 +190,18 @@ const CardPaymentModal: React.FC<CardPaymentModalProps> = ({
             </div>
 
             {/* Instructions - Enhanced */}
-            <div className="bg-gradient-to-br from-amber-50 to-yellow-50 border-2 border-amber-300 rounded-xl sm:rounded-2xl p-4 sm:p-5 shadow-md">
+            <div className="bg-gradient-to-br from-[#0A1D37]/30 to-[#4DBFF0]/20 border-2 border-[#4DBFF0]/10 rounded-xl sm:rounded-2xl p-4 sm:p-5 shadow-md">
               <div className="flex items-center gap-2 mb-3 sm:mb-4">
-                <div className="w-8 h-8 bg-amber-500 rounded-lg flex items-center justify-center">
+                <div className="w-8 h-8 bg-[#0A1D37] rounded-lg flex items-center justify-center">
                   <span className="text-white text-lg">📋</span>
                 </div>
-                <h4 className="font-bold text-amber-800 text-sm sm:text-base">
+                <h4 className="font-bold text-[#0A1D37] text-sm sm:text-base">
                   دستورالعمل پرداخت
                 </h4>
               </div>
-              <ol className="text-xs sm:text-sm text-amber-700 space-y-2 mr-2">
+              <ol className="text-xs sm:text-sm text-[#0A1D37] space-y-2 mr-2">
                 <li className="flex items-start gap-2">
-                  <span className="flex-shrink-0 w-6 h-6 bg-amber-500 text-white rounded-full flex items-center justify-center text-xs font-bold">
+                  <span className="flex-shrink-0 w-6 h-6 bg-[#0A1D37] text-white rounded-full flex items-center justify-center text-xs font-bold">
                     1
                   </span>
                   <span className="flex-1 pt-0.5">
@@ -221,7 +213,7 @@ const CardPaymentModal: React.FC<CardPaymentModalProps> = ({
                   </span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="flex-shrink-0 w-6 h-6 bg-amber-500 text-white rounded-full flex items-center justify-center text-xs font-bold">
+                  <span className="flex-shrink-0 w-6 h-6 bg-[#0A1D37] text-white rounded-full flex items-center justify-center text-xs font-bold">
                     2
                   </span>
                   <span className="flex-1 pt-0.5">
@@ -229,7 +221,7 @@ const CardPaymentModal: React.FC<CardPaymentModalProps> = ({
                   </span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="flex-shrink-0 w-6 h-6 bg-amber-500 text-white rounded-full flex items-center justify-center text-xs font-bold">
+                  <span className="flex-shrink-0 w-6 h-6 bg-[#0A1D37] text-white rounded-full flex items-center justify-center text-xs font-bold">
                     3
                   </span>
                   <span className="flex-1 pt-0.5">
@@ -238,7 +230,7 @@ const CardPaymentModal: React.FC<CardPaymentModalProps> = ({
                   </span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="flex-shrink-0 w-6 h-6 bg-amber-500 text-white rounded-full flex items-center justify-center text-xs font-bold">
+                  <span className="flex-shrink-0 w-6 h-6 bg-[#0A1D37] text-white rounded-full flex items-center justify-center text-xs font-bold">
                     4
                   </span>
                   <span className="flex-1 pt-0.5">
@@ -334,7 +326,7 @@ const CardPaymentModal: React.FC<CardPaymentModalProps> = ({
               disabled={!receiptUrl || isSubmitting}
               className={`flex-1 py-3 sm:py-4 px-4 rounded-xl font-bold transition-all duration-300 text-sm sm:text-base ${
                 receiptUrl && !isSubmitting
-                  ? "bg-gradient-to-l from-[#FF7A00] to-[#4DBFF0] text-white hover:shadow-2xl hover:scale-[1.02] active:scale-95"
+                  ? "bg-gradient-to-l from-[#0A1D37] to-[#4DBFF0] text-white hover:shadow-2xl hover:scale-[1.02] active:scale-95"
                   : "bg-gray-300 text-gray-500 cursor-not-allowed opacity-60"
               }`}
             >
