@@ -11,6 +11,9 @@ interface updatedData{
   password?: string;
   roles?: string[];
   status?: string;
+  "profile.avatar"?: string;
+  "profile.bio"?: string;
+  "profile.preferences"?: any;
 }
 interface query {
   _id?: string;
@@ -125,7 +128,9 @@ export async function PATCH(request: NextRequest) {
       return NextResponse.json({ error: "غیر مجاز" }, { status: 401 });
     }
 
-    const { userId, username, password, roles, status } = await request.json();
+    const { userId, username, password, roles, status, profile } = await request.json();
+    
+    console.log("Received profile data:", profile);
 
     if (!userId) {
       return NextResponse.json(
@@ -154,6 +159,7 @@ export async function PATCH(request: NextRequest) {
 
     // Prepare update data
     const updateData: updatedData = {};
+    console.log(updateData)
 
     // Username validation and update
     if (username) {
@@ -197,6 +203,23 @@ export async function PATCH(request: NextRequest) {
 
       const salt = await bcrypt.genSalt(10);
       updateData.password = await bcrypt.hash(password, salt);
+    }
+
+    // Profile update (users can update their own profile)
+    if (profile && isOwnProfile) {
+      console.log("Processing profile update for own profile");
+      if (profile.avatar) {
+        updateData["profile.avatar"] = profile.avatar;
+        console.log("Added avatar to updateData:", profile.avatar);
+      }
+      if (profile.bio) {
+        updateData["profile.bio"] = profile.bio;
+        console.log("Added bio to updateData:", profile.bio);
+      }
+      if (profile.preferences) {
+        updateData["profile.preferences"] = profile.preferences;
+        console.log("Added preferences to updateData:", profile.preferences);
+      }
     }
 
     // Roles update (only admins can change roles)
@@ -245,11 +268,12 @@ export async function PATCH(request: NextRequest) {
     }
 
     // Update user
+    console.log("Final updateData before DB update:", updateData);
     const updatedUser = await User.findByIdAndUpdate(
       userId,
       { $set: updateData },
       { new: true, runValidators: true }
-    ).select("-password");
+    );
 
     return NextResponse.json({
       message: "اطلاعات با موفقیت به‌روزرسانی شد",
