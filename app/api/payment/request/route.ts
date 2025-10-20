@@ -99,7 +99,7 @@ export async function POST(request: NextRequest) {
     await payment.save();
 
     // Prepare callback URL
-    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
+    const baseUrl = (process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000').replace(/\/$/, ''); // Remove trailing slash
     const callbackUrl = `${baseUrl}/api/payment/callback`;
 
     // Request payment from ZarinPal

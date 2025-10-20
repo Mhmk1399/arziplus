@@ -23,11 +23,12 @@ export async function GET(request: NextRequest) {
     console.log(
       `Payment callback received: Authority=${authority}, Status=${status}`
     );
+    console.log(`Full callback URL: ${request.url}`);
+    console.log(`Request headers:`, Object.fromEntries(request.headers.entries()));
 
     if (!authority) {
-      return NextResponse.redirect(
-        new URL("/payment/failed?error=missing_authority", request.url)
-      );
+      const baseUrl = (process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000').replace(/\/$/, '');
+      return NextResponse.redirect(`${baseUrl}/payment/failed?error=missing_authority`);
     }
 
     await connect();
@@ -47,18 +48,15 @@ export async function GET(request: NextRequest) {
 
       if (verifiedPayment) {
         // Payment already verified, redirect to success
+        const baseUrl = (process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000').replace(/\/$/, '');
         return NextResponse.redirect(
-          new URL(
-            `/payment/success?Authority=${authority}&Status=OK&duplicate=true`,
-            request.url
-          )
+          `${baseUrl}/payment/success?Authority=${authority}&Status=OK&duplicate=true`
         );
       }
 
       // No payment found at all
-      return NextResponse.redirect(
-        new URL("/payment/failed?error=payment_not_found", request.url)
-      );
+      const baseUrl = (process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000').replace(/\/$/, '');
+      return NextResponse.redirect(`${baseUrl}/payment/failed?error=payment_not_found`);
     }
 
     // Check if payment was cancelled or failed
@@ -67,21 +65,17 @@ export async function GET(request: NextRequest) {
       payment.zarinpalMessage = "پرداخت توسط کاربر لغو شد";
       await payment.save();
 
+      const baseUrl = (process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000').replace(/\/$/, '');
       return NextResponse.redirect(
-        new URL(
-          `/payment/failed?Authority=${authority}&Status=${status}&error=cancelled`,
-          request.url
-        )
+        `${baseUrl}/payment/failed?Authority=${authority}&Status=${status}&error=cancelled`
       );
     }
 
     // Check if already verified
     if (payment.status === "verified") {
+      const baseUrl = (process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000').replace(/\/$/, '');
       return NextResponse.redirect(
-        new URL(
-          `/payment/success?Authority=${authority}&Status=OK&duplicate=true`,
-          request.url
-        )
+        `${baseUrl}/payment/success?Authority=${authority}&Status=OK&duplicate=true`
       );
     }
 
@@ -109,12 +103,17 @@ export async function GET(request: NextRequest) {
 
         await payment.save();
 
-        // Check if this is a service payment
+        // Check payment type from metadata
+        console.log(`Payment metadata:`, payment.metadata);
+        console.log(`Payment serviceId:`, payment.serviceId);
+        
         const isServicePayment =
           payment.metadata?.type === "service_payment" && payment.serviceId;
         
         // Check if this is a lottery payment
         const isLotteryPayment = payment.metadata?.type === "lottery_payment";
+        
+        console.log(`Payment type - Service: ${isServicePayment}, Lottery: ${isLotteryPayment}`);
 
         if (isServicePayment) {
           // Handle service payment - create service request
@@ -234,52 +233,42 @@ export async function GET(request: NextRequest) {
           `Payment verified successfully: ${authority}, redirecting to success page`
         );
 
+        // Get the base URL for redirect (ensure no double slash)
+        const baseUrl = (process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000').replace(/\/$/, '');
+        
         // Redirect based on payment type
         if (isServicePayment) {
-          return NextResponse.redirect(
-            new URL(
-              `/payment/success?Authority=${authority}&Status=OK&type=service&service=${encodeURIComponent(
-                payment.metadata?.serviceTitle || ""
-              )}`,
-              request.url
-            )
-          );
+          const redirectUrl = `${baseUrl}/payment/success?Authority=${authority}&Status=OK&type=service&service=${encodeURIComponent(
+            payment.metadata?.serviceTitle || ""
+          )}`;
+          console.log(`Redirecting to service success: ${redirectUrl}`);
+          return NextResponse.redirect(redirectUrl);
         } else if (isLotteryPayment) {
-          return NextResponse.redirect(
-            new URL(
-              `/payment/success?Authority=${authority}&Status=OK&type=lottery`,
-              request.url
-            )
-          );
+          const redirectUrl = `${baseUrl}/payment/success?Authority=${authority}&Status=OK&type=lottery`;
+          console.log(`Redirecting to lottery success: ${redirectUrl}`);
+          return NextResponse.redirect(redirectUrl);
         } else {
-          return NextResponse.redirect(
-            new URL(
-              `/payment/success?Authority=${authority}&Status=OK&type=wallet`,
-              request.url
-            )
-          );
+          const redirectUrl = `${baseUrl}/payment/success?Authority=${authority}&Status=OK&type=wallet`;
+          console.log(`Redirecting to wallet success: ${redirectUrl}`);
+          return NextResponse.redirect(redirectUrl);
         }
       } else if (verifyResponse.data.code === 101) {
         // Already verified
         payment.status = "verified";
         await payment.save();
 
+        const baseUrl = (process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000').replace(/\/$/, '');
         return NextResponse.redirect(
-          new URL(
-            `/payment/success?Authority=${authority}&Status=OK&duplicate=true`,
-            request.url
-          )
+          `${baseUrl}/payment/success?Authority=${authority}&Status=OK&duplicate=true`
         );
       } else {
         // Payment failed verification
         payment.status = "failed";
         await payment.save();
 
+        const baseUrl = (process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000').replace(/\/$/, '');
         return NextResponse.redirect(
-          new URL(
-            `/payment/failed?Authority=${authority}&Status=NOK&code=${verifyResponse.data.code}`,
-            request.url
-          )
+          `${baseUrl}/payment/failed?Authority=${authority}&Status=NOK&code=${verifyResponse.data.code}`
         );
       }
     } catch (verifyError) {
@@ -290,17 +279,14 @@ export async function GET(request: NextRequest) {
       payment.zarinpalMessage = "خطا در تایید پرداخت";
       await payment.save();
 
+      const baseUrl = (process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000').replace(/\/$/, '');
       return NextResponse.redirect(
-        new URL(
-          `/payment/failed?Authority=${authority}&Status=NOK&error=verify_error`,
-          request.url
-        )
+        `${baseUrl}/payment/failed?Authority=${authority}&Status=NOK&error=verify_error`
       );
     }
   } catch (error) {
     console.log("Payment callback error:", error);
-    return NextResponse.redirect(
-      new URL("/payment/failed?error=server_error", request.url)
-    );
+    const baseUrl = (process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000').replace(/\/$/, '');
+    return NextResponse.redirect(`${baseUrl}/payment/failed?error=server_error`);
   }
 }
