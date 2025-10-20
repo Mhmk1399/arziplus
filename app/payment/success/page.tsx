@@ -71,7 +71,7 @@ const PaymentSuccessPage: React.FC = () => {
     }
 
     // Special handling for different payment types - redirect to dashboard
-    if (paymentType === 'lottery' || paymentType === 'wallet' || paymentType === 'service') {
+    if (paymentType === 'lottery' || paymentType === 'wallet' || paymentType === 'service' || paymentType === 'hozori') {
       console.log(`${paymentType} payment detected, redirecting to dashboard`);
       setTimeout(() => {
         router.push('/dashboard');
@@ -253,7 +253,7 @@ ${paymentDetails.zarinpalResponse?.refId ? `شماره مرجع: ${paymentDetail
   }
 
   // Special handling for specific payment types
-  if (paymentType === 'lottery' || paymentType === 'wallet' || paymentType === 'service') {
+  if (paymentType === 'lottery' || paymentType === 'wallet' || paymentType === 'service' || paymentType === 'hozori') {
     const getPaymentTypeTitle = () => {
       switch (paymentType) {
         case 'lottery':
@@ -262,6 +262,8 @@ ${paymentDetails.zarinpalResponse?.refId ? `شماره مرجع: ${paymentDetail
           return 'شارژ کیف پول موفق';
         case 'service':
           return 'پرداخت سرویس موفق';
+        case 'hozori':
+          return 'رزرو وقت حضوری موفق';
         default:
           return 'پرداخت موفق';
       }
@@ -275,6 +277,8 @@ ${paymentDetails.zarinpalResponse?.refId ? `شماره مرجع: ${paymentDetail
           return 'کیف پول شما با موفقیت شارژ شد';
         case 'service':
           return 'پرداخت سرویس شما با موفقیت انجام شد';
+        case 'hozori':
+          return 'وقت حضوری شما با موفقیت رزرو شد';
         default:
           return 'پرداخت شما با موفقیت انجام شد';
       }

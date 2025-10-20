@@ -453,13 +453,14 @@ const LotteryMultiStepForm: React.FC = () => {
 
   // Authentication check - redirect if not logged in
   useEffect(() => {
-    if (!isLoggedIn) {
+    // Only check authentication after loading is complete
+    if (!loading && !isLoggedIn) {
       showToast.error("برای دسترسی به این صفحه باید وارد حساب کاربری خود شوید");
       setTimeout(() => {
         router.push("/auth/sms");
       }, 2000);
     }
-  }, [isLoggedIn, router]);
+  }, [isLoggedIn, loading, router]);
 
   // Loading state while checking authentication
   if (loading) {
@@ -473,8 +474,8 @@ const LotteryMultiStepForm: React.FC = () => {
     );
   }
 
-  // Not logged in state
-  if (!isLoggedIn) {
+  // Not logged in state - only show after loading is complete
+  if (!loading && !isLoggedIn) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50 flex items-center justify-center">
         <div className="text-center">
