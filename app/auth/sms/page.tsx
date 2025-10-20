@@ -1,12 +1,27 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { FaPhone, FaKey, FaSpinner } from "react-icons/fa";
 import { showToast } from "@/utilities/toast";
 import { estedadBold } from "@/next-persian-fonts/estedad";
 
-export default function SMSAuthPage() {
+// Loading component for Suspense fallback
+function SMSAuthLoading() {
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-blue-600 via-purple-700 to-indigo-800 flex items-center justify-center p-4">
+      <div className="bg-white rounded-3xl shadow-2xl p-8 w-full max-w-md">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">در حال بارگذاری...</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// Main SMS Auth component that uses useSearchParams
+function SMSAuthContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [step, setStep] = useState<"phone" | "verification">("phone");
@@ -497,5 +512,14 @@ export default function SMSAuthPage() {
         }
       `}</style>
     </section>
+  );
+}
+
+// Main page component with Suspense wrapper
+export default function SMSAuthPage() {
+  return (
+    <Suspense fallback={<SMSAuthLoading />}>
+      <SMSAuthContent />
+    </Suspense>
   );
 }

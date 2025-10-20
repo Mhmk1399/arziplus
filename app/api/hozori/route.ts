@@ -23,6 +23,11 @@ interface CreateHozoriBody {
 interface HozoriQueryFilter {
   userId?: string;
   status?: string;
+  $or?: Array<{
+    name?: { $regex: string; $options: string };
+    lastname?: { $regex: string; $options: string };
+    phoneNumber?: { $regex: string; $options: string };
+  }>;
 }
 
 export async function POST(request: NextRequest) {
@@ -145,15 +150,18 @@ export async function POST(request: NextRequest) {
     let appointmentDate: Date;
     try {
       console.log("Parsing date:", body.Date);
-      
+
       // Parse date string (YYYY-MM-DD) and create UTC date to avoid timezone issues
-      if (typeof body.Date === 'string' && body.Date.match(/^\d{4}-\d{2}-\d{2}$/)) {
-        const [year, month, day] = body.Date.split('-').map(Number);
+      if (
+        typeof body.Date === "string" &&
+        body.Date.match(/^\d{4}-\d{2}-\d{2}$/)
+      ) {
+        const [year, month, day] = body.Date.split("-").map(Number);
         appointmentDate = new Date(Date.UTC(year, month - 1, day, 12, 0, 0)); // Set to noon UTC to avoid timezone shifts
       } else {
         appointmentDate = new Date(body.Date);
       }
-      
+
       console.log("Parsed date:", appointmentDate);
       if (isNaN(appointmentDate.getTime())) {
         throw new Error("Invalid date");
@@ -172,7 +180,9 @@ export async function POST(request: NextRequest) {
 
     // Check if the selected date is not in the past
     const today = new Date();
-    const todayUTC = new Date(Date.UTC(today.getFullYear(), today.getMonth(), today.getDate(), 12, 0, 0));
+    const todayUTC = new Date(
+      Date.UTC(today.getFullYear(), today.getMonth(), today.getDate(), 12, 0, 0)
+    );
 
     console.log("Date validation - Today UTC:", todayUTC);
     console.log("Date validation - Appointment:", appointmentDate);
@@ -360,7 +370,7 @@ export async function GET(request: NextRequest) {
     const search = searchParams.get("search");
 
     // Build query filter
-    const filter: any = {};
+    const filter: HozoriQueryFilter = {};
 
     // For admin requests, don't filter by userId
     // For regular users, filter by their userId

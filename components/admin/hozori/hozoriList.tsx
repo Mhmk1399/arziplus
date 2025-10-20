@@ -75,7 +75,8 @@ const HozoriAdminList = () => {
   const [pageSize, setPageSize] = useState(10);
 
   // Modal states
-  const [selectedReservation, setSelectedReservation] = useState<HozoriReservation | null>(null);
+  const [selectedReservation, setSelectedReservation] =
+    useState<HozoriReservation | null>(null);
   const [showReservationDetails, setShowReservationDetails] = useState(false);
   const [showEditReservation, setShowEditReservation] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
@@ -126,7 +127,11 @@ const HozoriAdminList = () => {
   };
 
   // Update reservation status
-  const updateReservationStatus = async (id: string, status: string, adminNotes?: string) => {
+  const updateReservationStatus = async (
+    id: string,
+    status: string,
+    adminNotes?: string
+  ) => {
     setSubmitting(true);
 
     try {
@@ -153,7 +158,9 @@ const HozoriAdminList = () => {
       fetchReservations();
       setShowEditReservation(false);
     } catch (err) {
-      showToast.error(err instanceof Error ? err.message : "خطا در به‌روزرسانی");
+      showToast.error(
+        err instanceof Error ? err.message : "خطا در به‌روزرسانی"
+      );
     } finally {
       setSubmitting(false);
     }
@@ -227,17 +234,36 @@ const HozoriAdminList = () => {
   // Get status badge
   const getStatusBadge = (status: string) => {
     const statusConfig = {
-      pending: { label: "در انتظار", color: "bg-yellow-100 text-yellow-800", icon: FaHourglassHalf },
-      confirmed: { label: "تأیید شده", color: "bg-green-100 text-green-800", icon: FaCheckCircle },
-      completed: { label: "تکمیل شده", color: "bg-blue-100 text-blue-800", icon: FaCheck },
-      cancelled: { label: "لغو شده", color: "bg-red-100 text-red-800", icon: FaTimesCircle },
+      pending: {
+        label: "در انتظار",
+        color: "bg-yellow-100 text-yellow-800",
+        icon: FaHourglassHalf,
+      },
+      confirmed: {
+        label: "تأیید شده",
+        color: "bg-green-100 text-green-800",
+        icon: FaCheckCircle,
+      },
+      completed: {
+        label: "تکمیل شده",
+        color: "bg-blue-100 text-blue-800",
+        icon: FaCheck,
+      },
+      cancelled: {
+        label: "لغو شده",
+        color: "bg-red-100 text-red-800",
+        icon: FaTimesCircle,
+      },
     };
 
-    const config = statusConfig[status as keyof typeof statusConfig] || statusConfig.pending;
+    const config =
+      statusConfig[status as keyof typeof statusConfig] || statusConfig.pending;
     const Icon = config.icon;
 
     return (
-      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${config.color}`}>
+      <span
+        className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${config.color}`}
+      >
         <Icon className="w-3 h-3 mr-1" />
         {config.label}
       </span>
@@ -252,10 +278,14 @@ const HozoriAdminList = () => {
       card: { label: "کارت", color: "bg-green-100 text-green-800" },
     };
 
-    const config = paymentConfig[paymentType as keyof typeof paymentConfig] || paymentConfig.direct;
+    const config =
+      paymentConfig[paymentType as keyof typeof paymentConfig] ||
+      paymentConfig.direct;
 
     return (
-      <span className={`inline-flex items-center px-2 py-1 rounded text-xs font-medium ${config.color}`}>
+      <span
+        className={`inline-flex items-center px-2 py-1 rounded text-xs font-medium ${config.color}`}
+      >
         {config.label}
       </span>
     );
@@ -431,7 +461,9 @@ const HozoriAdminList = () => {
                       <div className="space-y-1">
                         <div className="flex items-center">
                           <FaHeart className="w-3 h-3 mr-1 text-gray-400" />
-                          {reservation.maridgeStatus === "married" ? "متأهل" : "مجرد"}
+                          {reservation.maridgeStatus === "married"
+                            ? "متأهل"
+                            : "مجرد"}
                         </div>
                         <div className="flex items-center">
                           <FaChild className="w-3 h-3 mr-1 text-gray-400" />
@@ -531,7 +563,10 @@ const HozoriAdminList = () => {
                     >
                       قبلی
                     </button>
-                    {Array.from({ length: pagination.totalPages }, (_, i) => i + 1)
+                    {Array.from(
+                      { length: pagination.totalPages },
+                      (_, i) => i + 1
+                    )
                       .slice(
                         Math.max(0, currentPage - 3),
                         Math.min(pagination.totalPages, currentPage + 2)
@@ -568,7 +603,9 @@ const HozoriAdminList = () => {
       {!loading && !error && reservations.length === 0 && (
         <div className="text-center py-12">
           <FaUsers className="mx-auto h-12 w-12 text-gray-400" />
-          <h3 className="mt-2 text-sm font-medium text-gray-900">رزروی یافت نشد</h3>
+          <h3 className="mt-2 text-sm font-medium text-gray-900">
+            رزروی یافت نشد
+          </h3>
           <p className="mt-1 text-sm text-gray-500">
             {searchTerm || statusFilter
               ? "با فیلترهای اعمال شده، رزروی یافت نشد"
@@ -601,15 +638,21 @@ const HozoriAdminList = () => {
                 <div className="grid grid-cols-2 gap-4 text-sm">
                   <div>
                     <span className="text-gray-600">نام:</span>
-                    <span className="font-medium mr-2">{selectedReservation.name}</span>
+                    <span className="font-medium mr-2">
+                      {selectedReservation.name}
+                    </span>
                   </div>
                   <div>
                     <span className="text-gray-600">نام خانوادگی:</span>
-                    <span className="font-medium mr-2">{selectedReservation.lastname}</span>
+                    <span className="font-medium mr-2">
+                      {selectedReservation.lastname}
+                    </span>
                   </div>
                   <div>
                     <span className="text-gray-600">شماره تلفن:</span>
-                    <span className="font-medium mr-2">{selectedReservation.phoneNumber}</span>
+                    <span className="font-medium mr-2">
+                      {selectedReservation.phoneNumber}
+                    </span>
                   </div>
                 </div>
               </div>
@@ -624,12 +667,16 @@ const HozoriAdminList = () => {
                   <div>
                     <span className="text-gray-600">وضعیت تأهل:</span>
                     <span className="font-medium mr-2">
-                      {selectedReservation.maridgeStatus === "married" ? "متأهل" : "مجرد"}
+                      {selectedReservation.maridgeStatus === "married"
+                        ? "متأهل"
+                        : "مجرد"}
                     </span>
                   </div>
                   <div>
                     <span className="text-gray-600">تعداد فرزندان:</span>
-                    <span className="font-medium mr-2">{selectedReservation.childrensCount} نفر</span>
+                    <span className="font-medium mr-2">
+                      {selectedReservation.childrensCount} نفر
+                    </span>
                   </div>
                 </div>
               </div>
@@ -643,11 +690,15 @@ const HozoriAdminList = () => {
                 <div className="grid grid-cols-2 gap-4 text-sm">
                   <div>
                     <span className="text-gray-600">تاریخ:</span>
-                    <span className="font-medium mr-2">{formatDate(selectedReservation.Date)}</span>
+                    <span className="font-medium mr-2">
+                      {formatDate(selectedReservation.Date)}
+                    </span>
                   </div>
                   <div>
                     <span className="text-gray-600">زمان:</span>
-                    <span className="font-medium mr-2">{selectedReservation.time}</span>
+                    <span className="font-medium mr-2">
+                      {selectedReservation.time}
+                    </span>
                   </div>
                 </div>
               </div>
@@ -665,7 +716,9 @@ const HozoriAdminList = () => {
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-600">تاریخ پرداخت:</span>
-                    <span className="font-medium">{formatDate(selectedReservation.paymentDate)}</span>
+                    <span className="font-medium">
+                      {formatDate(selectedReservation.paymentDate)}
+                    </span>
                   </div>
                   {selectedReservation.paymentImage && (
                     <div>
@@ -688,17 +741,19 @@ const HozoriAdminList = () => {
                 <h4 className="font-semibold text-gray-900 mb-3">وضعیت رزرو</h4>
                 <div className="space-y-2">
                   <div className="flex items-center justify-between">
-                    <div>
-                      {getStatusBadge(selectedReservation.status)}
-                    </div>
+                    <div>{getStatusBadge(selectedReservation.status)}</div>
                     <div className="text-sm text-gray-600">
                       ثبت شده در: {formatDate(selectedReservation.createdAt)}
                     </div>
                   </div>
-                  {(selectedReservation as any).adminNotes && (
+                  {(selectedReservation as HozoriReservation).adminNotes && (
                     <div className="bg-blue-50 p-3 rounded-lg">
-                      <div className="text-sm font-medium text-blue-900 mb-1">یادداشت مدیر:</div>
-                      <div className="text-sm text-blue-800">{(selectedReservation as any).adminNotes}</div>
+                      <div className="text-sm font-medium text-blue-900 mb-1">
+                        یادداشت مدیر:
+                      </div>
+                      <div className="text-sm text-blue-800">
+                        {(selectedReservation as HozoriReservation).adminNotes}
+                      </div>
                     </div>
                   )}
                 </div>
@@ -747,7 +802,9 @@ const HozoriAdminList = () => {
                 </label>
                 <select
                   value={editForm.status}
-                  onChange={(e) => setEditForm({ ...editForm, status: e.target.value })}
+                  onChange={(e) =>
+                    setEditForm({ ...editForm, status: e.target.value })
+                  }
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#4DBFF0] focus:border-transparent"
                 >
                   <option value="pending">در انتظار</option>
@@ -763,7 +820,9 @@ const HozoriAdminList = () => {
                 </label>
                 <textarea
                   value={editForm.adminNotes}
-                  onChange={(e) => setEditForm({ ...editForm, adminNotes: e.target.value })}
+                  onChange={(e) =>
+                    setEditForm({ ...editForm, adminNotes: e.target.value })
+                  }
                   rows={3}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#4DBFF0] focus:border-transparent"
                   placeholder="یادداشت اختیاری مدیر..."
@@ -779,7 +838,13 @@ const HozoriAdminList = () => {
                 انصراف
               </button>
               <button
-                onClick={() => updateReservationStatus(selectedReservation._id, editForm.status, editForm.adminNotes)}
+                onClick={() =>
+                  updateReservationStatus(
+                    selectedReservation._id,
+                    editForm.status,
+                    editForm.adminNotes
+                  )
+                }
                 disabled={submitting}
                 className="px-4 py-2 bg-[#4DBFF0] text-white rounded-lg hover:bg-[#4DBFF0]/90 transition-colors disabled:opacity-50"
               >

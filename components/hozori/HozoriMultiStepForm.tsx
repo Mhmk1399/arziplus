@@ -435,7 +435,10 @@ const HozoriMultiStepForm: React.FC = () => {
     return result;
   };
 
-  const updateFormData = (field: keyof HozoriFormData, value: any) => {
+  const updateFormData = (
+    field: keyof HozoriFormData,
+    value: string | number | { year: string; month: string; day: string }
+  ) => {
     setFormData((prev) => ({
       ...prev,
       [field]: value,
@@ -686,7 +689,7 @@ const HozoriMultiStepForm: React.FC = () => {
           <h3 className="text-lg font-bold text-[#0A1D37] mb-6 flex items-center gap-3">
             <FaCheck className="text-[#0A1D37]" />
             تایید اطلاعات و محاسبه هزینه
-            <br/>
+            <br />
             ثبت نام حضوری + عکاسی هر نفر
           </h3>
 
