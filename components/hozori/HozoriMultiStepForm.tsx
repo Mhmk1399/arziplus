@@ -669,7 +669,7 @@ const HozoriMultiStepForm: React.FC = () => {
   const renderConfirmationStep = () => {
     // Calculate fees
     const baseFee = 800000;
-    const childrenFee = formData.childrensCount * 150000;
+    const childrenFee = formData.childrensCount * 200000;
     const totalFee = baseFee + childrenFee;
     const prepaid = 200000;
 
