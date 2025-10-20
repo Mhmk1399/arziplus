@@ -75,9 +75,9 @@ export default function FAQSection({
     headingColor = "text-[#FFFFFF]",
     questionColor = "text-[#FFFFFF]",
     answerColor = "text-[#A0A0A0]",
-    iconColor = "text-[#FF7A00]",
-    // borderColor = "border-[#FF7A00]/20",
-    activeColor = "text-[#FF7A00]",
+    iconColor = "text-[#0A1D37]",
+    // borderColor = "border-[#0A1D37]/20",
+    activeColor = "text-[#0A1D37]",
   } = theme;
 
   // فیلتر کردن FAQ items
@@ -231,9 +231,9 @@ export default function FAQSection({
               height: `${8 + (i % 4) * 6}px`,
               background: `linear-gradient(45deg, 
                 ${
-                  i % 3 === 0 ? "#FF7A00" : i % 3 === 1 ? "#4DBFF0" : "#FFFFFF"
+                  i % 3 === 0 ? "#0A1D37" : i % 3 === 1 ? "#4DBFF0" : "#FFFFFF"
                 }, 
-                ${i % 3 === 0 ? "#FF7A00" : i % 3 === 1 ? "#4DBFF0" : "#FFFFFF"}
+                ${i % 3 === 0 ? "#0A1D37" : i % 3 === 1 ? "#4DBFF0" : "#FFFFFF"}
               )`,
               borderRadius: i % 2 === 0 ? "50%" : "6px",
               filter: "blur(1px)",
@@ -245,8 +245,8 @@ export default function FAQSection({
 
         {/* Geometric Shapes */}
         <div className="absolute top-20 right-16 w-24 h-24 border border-[#4DBFF0]/20 rounded-full animate-spin-slow"></div>
-        <div className="absolute bottom-20 left-16 w-20 h-20 border-2 border-[#FF7A00]/20 rotate-45 animate-pulse"></div>
-        <div className="absolute top-1/3 left-1/4 w-16 h-16 bg-gradient-to-br from-[#FF7A00]/10 to-[#4DBFF0]/10 rounded-lg rotate-12 animate-bounce"></div>
+        <div className="absolute bottom-20 left-16 w-20 h-20 border-2 border-[#0A1D37]/20 rotate-45 animate-pulse"></div>
+        <div className="absolute top-1/3 left-1/4 w-16 h-16 bg-gradient-to-br from-[#0A1D37]/10 to-[#4DBFF0]/10 rounded-lg rotate-12 animate-bounce"></div>
       </div>
 
       {/* Glass Morphism Overlay */}
@@ -265,7 +265,7 @@ export default function FAQSection({
                       onClick={() => setSelectedCategory("all")}
                       className={`md:px-6 px-3 py-1 md:py-3 cursor-pointer rounded-full text-sm font-bold transition-all duration-300 transform hover:scale-105 ${
                         selectedCategory === "all"
-                          ? `bg-gradient-to-r from-[#FF7A00] to-[#4DBFF0] text-[#FFFFFF] shadow-lg`
+                          ? `bg-gradient-to-r from-[#0A1D37] to-[#4DBFF0] text-[#FFFFFF] shadow-lg`
                           : `bg-white/10 text-[#A0A0A0] hover:bg-white/20 hover:text-[#FFFFFF] border border-white/20`
                       } backdrop-blur-sm`}
                     >
@@ -277,7 +277,7 @@ export default function FAQSection({
                         onClick={() => setSelectedCategory(category!)}
                         className={`md:px-6 px-3 py-1 md:py-3 cursor-pointer rounded-full text-[10px] md:text-sm text-nowrap font-bold transition-all duration-300 transform hover:scale-105 ${
                           selectedCategory === category
-                            ? `bg-gradient-to-r from-[#FF7A00] to-[#4DBFF0] text-[#FFFFFF] shadow-lg`
+                            ? `bg-gradient-to-r from-[#0A1D37] to-[#4DBFF0] text-[#FFFFFF] shadow-lg`
                             : `bg-white/10 text-[#A0A0A0] hover:bg-white/20 hover:text-[#0A1D37] border border-white/20`
                         } backdrop-blur-sm`}
                       >
@@ -293,7 +293,7 @@ export default function FAQSection({
                   filteredItems.map((item) => (
                     <div
                       key={item.id}
-                      className="group relative rounded-2xl md:rounded-3xl bg-gradient-to-br from-white/10 via-white/5 to-transparent backdrop-blur-xl border border-white/20 shadow-sm hover:shadow-3xl hover:border-[#FF7A00]/30 transition-all duration-500"
+                      className="group relative rounded-2xl md:rounded-3xl bg-gradient-to-br from-white/10 via-white/5 to-transparent backdrop-blur-xl border border-white/20 shadow-sm hover:shadow-3xl hover:border-[#0A1D37]/30 transition-all duration-500"
                     >
                       {/* Subtle Pattern Overlay */}
                       <div
@@ -318,7 +318,7 @@ export default function FAQSection({
                             {item.question}
                           </h3>
                           {item.category && (
-                            <span className="inline-block mr-2  px-3 py-1 bg-gradient-to-r from-[#FF7A00]/20 to-[#4DBFF0]/20 text-[#FF7A00] text-xs font-medium rounded-full border border-[#FF7A00]/30">
+                            <span className="inline-block mr-2  px-3 py-1 bg-gradient-to-r from-[#0A1D37]/20 to-[#4DBFF0]/20 text-[#0A1D37] text-xs font-medium rounded-full border border-[#0A1D37]/30">
                               {item.category}
                             </span>
                           )}
@@ -327,14 +327,14 @@ export default function FAQSection({
                         {/* Enhanced Toggle Icon */}
                         <div className="mr-4 flex-shrink-0">
                           <div
-                            className={`w-8 h-8 md:w-10 md:h-10 rounded-full bg-gradient-to-r from-[#FF7A00]/20 to-[#4DBFF0]/20 flex items-center justify-center border border-[#FF7A00]/30 transform transition-all duration-500 ${
+                            className={`w-8 h-8 md:w-10 md:h-10 rounded-full bg-gradient-to-r from-[#0A1D37]/20 to-[#4DBFF0]/20 flex items-center justify-center border border-[#0A1D37]/30 transform transition-all duration-500 ${
                               openItem === item.id
-                                ? "rotate-180 bg-gradient-to-r from-[#FF7A00]/40 to-[#4DBFF0]/40 scale-110"
+                                ? "rotate-180 bg-gradient-to-r from-[#0A1D37]/40 to-[#4DBFF0]/40 scale-110"
                                 : "rotate-0"
                             } group-hover:scale-110`}
                           >
                             <svg
-                              className="w-4 h-4 md:w-5 md:h-5 text-[#FF7A00] transition-all duration-300"
+                              className="w-4 h-4 md:w-5 md:h-5 text-[#0A1D37] transition-all duration-300"
                               fill="none"
                               stroke="currentColor"
                               viewBox="0 0 24 24"
@@ -360,7 +360,7 @@ export default function FAQSection({
                       >
                         <div className="px-4 md:px-6 pb-4 md:pb-6">
                           <div
-                            className={`text-sm md:text-base ${answerColor} leading-relaxed pt-4 border-t border-[#FF7A00]/20 relative transition-all duration-200`}
+                            className={`text-sm md:text-base ${answerColor} leading-relaxed pt-4 border-t border-[#0A1D37]/20 relative transition-all duration-200`}
                           >
                             {/* Answer content with better spacing */}
                             <div className="space-y-3">{item.answer}</div>
@@ -369,14 +369,14 @@ export default function FAQSection({
                       </div>
 
                       {/* Glow Effect on Hover */}
-                      <div className="absolute -inset-1 rounded-2xl md:rounded-3xl bg-gradient-to-r from-[#FF7A00]/20 via-[#4DBFF0]/20 to-[#FF7A00]/20 blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10"></div>
+                      <div className="absolute -inset-1 rounded-2xl md:rounded-3xl bg-gradient-to-r from-[#0A1D37]/20 via-[#4DBFF0]/20 to-[#0A1D37]/20 blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10"></div>
                     </div>
                   ))
                 ) : (
                   <div className="text-center py-16 md:py-20">
-                    <div className="relative inline-flex items-center justify-center w-20 h-20 md:w-24 md:h-24 rounded-full bg-gradient-to-br from-[#FF7A00]/20 to-[#4DBFF0]/20 backdrop-blur-sm border border-[#FF7A00]/30 mb-6">
+                    <div className="relative inline-flex items-center justify-center w-20 h-20 md:w-24 md:h-24 rounded-full bg-gradient-to-br from-[#0A1D37]/20 to-[#4DBFF0]/20 backdrop-blur-sm border border-[#0A1D37]/30 mb-6">
                       <svg
-                        className="w-10 h-10 md:w-12 md:h-12 text-[#FF7A00]"
+                        className="w-10 h-10 md:w-12 md:h-12 text-[#0A1D37]"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -400,7 +400,7 @@ export default function FAQSection({
                     {searchTerm && (
                       <button
                         onClick={() => setSearchTerm("")}
-                        className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-[#FF7A00] to-[#4DBFF0] text-[#FFFFFF] rounded-full font-medium hover:scale-105 transition-transform duration-200"
+                        className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-[#0A1D37] to-[#4DBFF0] text-[#FFFFFF] rounded-full font-medium hover:scale-105 transition-transform duration-200"
                       >
                         <svg
                           className="w-4 h-4"
@@ -425,9 +425,9 @@ export default function FAQSection({
               {/* Enhanced Results Count */}
               {searchTerm && filteredItems.length > 0 && (
                 <div className="mt-8 text-center">
-                  <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-[#FF7A00]/20 to-[#4DBFF0]/20 backdrop-blur-sm border border-[#FF7A00]/30">
+                  <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-[#0A1D37]/20 to-[#4DBFF0]/20 backdrop-blur-sm border border-[#0A1D37]/30">
                     <svg
-                      className="w-4 h-4 text-[#FF7A00]"
+                      className="w-4 h-4 text-[#0A1D37]"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -468,7 +468,7 @@ export default function FAQSection({
               {svgIcon && (
                 <div className="relative z-10 animate-text mb-6">
                   <div
-                    className={`inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-[#FF7A00]/20 to-[#4DBFF0]/20 ${iconColor} backdrop-blur-sm border border-[#FF7A00]/30 shadow-lg`}
+                    className={`inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-[#0A1D37]/20 to-[#4DBFF0]/20 ${iconColor} backdrop-blur-sm border border-[#0A1D37]/30 shadow-lg`}
                   >
                     {svgIcon}
                   </div>
@@ -479,7 +479,7 @@ export default function FAQSection({
                 className={`animate-text text-2xl md:text-3xl lg:text-4xl md:leading-12 ${estedadBold.className} ${headingColor} mb-6 relative z-10`}
                 style={{
                   background:
-                    "linear-gradient(135deg, #FFFFFF 0%, #4DBFF0 50%, #FF7A00 100%)",
+                    "linear-gradient(135deg, #FFFFFF 0%, #4DBFF0 50%, #0A1D37 100%)",
                   WebkitBackgroundClip: "text",
                   WebkitTextFillColor: "transparent",
                   backgroundClip: "text",
@@ -507,11 +507,11 @@ export default function FAQSection({
                     placeholder="جستجو در سوالات..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    className="w-full placeholder:text-[#A0A0A0] text-[#000] px-6 py-4 pr-14 bg-white/10 border border-[#FF7A00]/30 rounded-2xl focus:ring-2 focus:ring-[#4DBFF0] focus:border-[#4DBFF0] focus:outline-none backdrop-blur-sm transition-all duration-300 hover:bg-white/15"
+                    className="w-full placeholder:text-[#A0A0A0] text-[#000] px-6 py-4 pr-14 bg-white/10 border border-[#0A1D37]/30 rounded-2xl focus:ring-2 focus:ring-[#4DBFF0] focus:border-[#4DBFF0] focus:outline-none backdrop-blur-sm transition-all duration-300 hover:bg-white/15"
                   />
                   <div className="absolute right-4 top-1/2 transform -translate-y-1/2">
                     <svg
-                      className="w-5 h-5 text-[#FF7A00]"
+                      className="w-5 h-5 text-[#0A1D37]"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"

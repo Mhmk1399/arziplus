@@ -80,7 +80,6 @@ const PaypalCharge = () => {
     {
       id: 1,
       icon: <FaShoppingCart size={32} />,
-      iconColor: "bg-blue-700",
       title: "خرید از فروشگاه‌های خارجی",
       description:
         "امکان خرید آنلاین از فروشگاه‌های بین‌المللی مثل Amazon، eBay و AliExpress با حساب پی‌پال شارژ شده.",
@@ -88,7 +87,6 @@ const PaypalCharge = () => {
     {
       id: 2,
       icon: <FaFileInvoiceDollar size={32} />,
-      iconColor: "bg-blue-700",
       title: "پرداخت آزمون‌های بین‌المللی",
       description:
         "پرداخت هزینه آزمون‌های بین‌المللی مانند IELTS، TOEFL و GRE به‌سادگی و بدون محدودیت.",
@@ -96,7 +94,6 @@ const PaypalCharge = () => {
     {
       id: 3,
       icon: <FaDesktop size={32} />,
-      iconColor: "bg-blue-700",
       title: "پرداخت نرم‌افزار و سرویس‌ها",
       description:
         "پرداخت اشتراک سرویس‌های آنلاین و نرم‌افزارها مانند Netflix، Adobe و ChatGPT با حساب پی‌پال شارژ شده.",
@@ -104,7 +101,6 @@ const PaypalCharge = () => {
     {
       id: 4,
       icon: <FaExchangeAlt size={32} />,
-      iconColor: "bg-blue-700",
       title: "انتقال وجه به حساب‌های دیگر",
       description:
         "امکان انتقال سریع و امن وجه به سایر حساب‌های پی‌پال دیگر با کارمزد مناسب.",
@@ -112,7 +108,6 @@ const PaypalCharge = () => {
     {
       id: 5,
       icon: <FaHandshake size={32} />,
-      iconColor: "bg-blue-700",
       title: "تسویه‌حساب با مشتریان و فریلنسرها",
       description:
         "استفاده از پی‌پال برای تسویه حساب با مشتریان یا همکاران فریلنسر به‌صورت آسان و امن.",
@@ -141,83 +136,6 @@ const PaypalCharge = () => {
       category: "سرعت و زمان",
     },
   ];
-  const faqIcons = {
-    question: (
-      <svg
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-        className="w-full h-full"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-        />
-      </svg>
-    ),
-    help: (
-      <svg
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-        className="w-full h-full"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192L5.636 18.364M12 2.25a9.75 9.75 0 109.75 9.75A9.75 9.75 0 0012 2.25z"
-        />
-      </svg>
-    ),
-    support: (
-      <svg
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-        className="w-full h-full"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M18.364 5.636a9 9 0 010 12.728m0 0l-2.829-2.829m2.829 2.829L21 21M15.536 8.464a5 5 0 010 7.072m0 0l-2.829-2.829m-4.243 2.829a4.978 4.978 0 01-1.414-2.83m-1.414 5.658a9 9 0 01-2.167-9.238m7.824 2.167a1 1 0 111.414 1.414m-1.414-1.414L3 3"
-        />
-      </svg>
-    ),
-    info: (
-      <svg
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-        className="w-full h-full"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-        />
-      </svg>
-    ),
-    chat: (
-      <svg
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-        className="w-full h-full"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
-        />
-      </svg>
-    ),
-  };
 
   return (
     <div>
@@ -270,7 +188,6 @@ const PaypalCharge = () => {
         buttonText="شارژ حساب پی‌پال"
         buttonLink="/services/charge-paypal-account"
         items={paypalItemsWhyus}
-        buttonColor="bg-blue-700 hover:bg-blue-800 text-white"
         theme={themesWhyus.default}
       />
       <HeroSplitSection
@@ -350,7 +267,6 @@ const PaypalCharge = () => {
       <FAQSection
         heading="سؤالات متداول"
         description="پاسخ به پرسش‌های رایج درباره خدمات شارژ پی‌پال و مدیریت حساب‌های بین‌المللی با ارزی پلاس"
-        svgIcon={faqIcons.info}
         faqItems={paypalFaqData}
         buttons={[
           {

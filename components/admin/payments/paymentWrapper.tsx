@@ -36,7 +36,7 @@ const PaymentWrapper: React.FC = () => {
               onClick={() => setActiveTab(tab.id)}
               className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${
                 activeTab === tab.id
-                  ? "bg-[#FF7A00] text-white"
+                  ? "bg-[#0A1D37] text-white"
                   : "text-[#0A1D37] hover:bg-gray-100"
               }`}
             >

@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { ArrowLeft, Clock } from "lucide-react";
 import { COLORS } from "../lottery";
+import Link from "next/link";
 
 const HeroSection = () => {
   const [timeLeft, setTimeLeft] = useState({
@@ -137,23 +138,28 @@ const HeroSection = () => {
 
         {/* دکمه‌ها */}
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
-          <button
-            className="md:px-8 md:py-4 px-4 py-2 rounded-lg font-bold text-sm md:text-lg cursor-pointer   transition-all duration-300 shadow-lg flex items-center gap-2"
-            style={{ backgroundColor: COLORS.accent, color: COLORS.white }}
-          >
-            ورود به ثبت‌نام آنلاین
-            <ArrowLeft className="w-5 h-5" />
-          </button>
-          <button
-            className="md:px-8 md:py-4 px-4 py-2 rounded-lg font-bold text-sm md:text-lg cursor-pointer  transition-all duration-300 shadow-lg flex items-center gap-2"
-            style={{
-              backgroundColor: "transparent",
-              color: COLORS.white,
-              border: `2px solid ${COLORS.white}`,
-            }}
-          >
-            رزرو وقت حضوری
-          </button>
+          <Link href="/lottery/form">
+            <button
+              className="md:px-8 md:py-4 px-4 py-2 bg-white rounded-lg font-bold text-sm md:text-lg cursor-pointer   transition-all duration-300 shadow-lg flex items-center gap-2"
+              style={{ color: COLORS.accent }}
+            >
+              ورود به ثبت‌نام آنلاین
+              <ArrowLeft className="w-5 h-5" />
+            </button>{" "}
+          </Link>
+          <Link href="/lottery/present">
+            {" "}
+            <button
+              className="md:px-8 md:py-4 px-4 py-2 rounded-lg font-bold text-sm md:text-lg cursor-pointer  transition-all duration-300 shadow-lg flex items-center gap-2"
+              style={{
+                backgroundColor: "transparent",
+                color: COLORS.white,
+                border: `2px solid ${COLORS.white}`,
+              }}
+            >
+              رزرو وقت حضوری
+            </button>
+          </Link>
         </div>
 
         {/* تایمر شمارش معکوس */}
@@ -180,10 +186,7 @@ const HeroSection = () => {
                 className="text-center p-3 rounded-lg backdrop-blur-sm"
                 style={{ backgroundColor: "rgba(255,255,255,0.1)" }}
               >
-                <div
-                  className="text-2xl font-bold"
-                  style={{ color: COLORS.accent }}
-                >
+                <div className="text-2xl font-bold text-white/80">
                   {item.value}
                 </div>
                 <div

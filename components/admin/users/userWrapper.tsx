@@ -126,28 +126,28 @@ const UserWrapper: React.FC<AdminWrapperProps> = ({
     {
       title: "کل کاربران",
       value: adminStats.totalUsers,
-      icon: <FaUsers className="text-2xl text-[#FF7A00]" />,
+      icon: <FaUsers className="text-2xl text-[#0A1D37]" />,
       color: "",
       bgColor: "bg-gray-50",
     },
     {
       title: "کاربران فعال",
       value: adminStats.activeUsers,
-      icon: <FaUsers className="text-2xl text-[#FF7A00]" />,
+      icon: <FaUsers className="text-2xl text-[#0A1D37]" />,
       color: "",
       bgColor: "bg-gray-50",
     },
     {
       title: "در انتظار احراز هویت",
       value: adminStats.pendingCredentials,
-      icon: <FaIdCard className="text-2xl text-[#FF7A00]" />,
+      icon: <FaIdCard className="text-2xl text-[#0A1D37]" />,
       color: "",
       bgColor: "bg-gray-50",
     },
     {
       title: "در انتظار تایید بانکی",
       value: adminStats.pendingBanking,
-      icon: <FaUniversity className="text-2xl text-[#FF7A00]" />,
+      icon: <FaUniversity className="text-2xl text-[#0A1D37]" />,
       color: "",
       bgColor: "bg-gray-50",
     },
@@ -185,7 +185,7 @@ const UserWrapper: React.FC<AdminWrapperProps> = ({
         <div className="flex items-center justify-between flex-wrap gap-4">
           <div className="flex items-center gap-4">
             <div className="w-12 h-12  rounded-full flex items-center justify-center">
-              <FaCog className="text-[#FF7A00] text-xl" />
+              <FaCog className="text-[#0A1D37] text-xl" />
             </div>
             <div>
               <h2 className="sm:text-2xl text-base font-bold mb-2 text-[#0A1D37]">
@@ -317,7 +317,7 @@ const UserWrapper: React.FC<AdminWrapperProps> = ({
                 onClick={() => handleTabChange(tab.id)}
                 className={`relative flex items-center justify-center gap-3 px-6 py-4 rounded-xl font-medium transition-all duration-300 ${
                   activeTab === tab.id
-                    ? "border-[#FF7A00] border bg-gray-50 text-[#0A1D37] shadow-lg scale-105"
+                    ? "border-[#0A1D37] border bg-gray-50 text-[#0A1D37] shadow-lg scale-105"
                     : "text-gray-700  hover:scale-105"
                 }`}
               >

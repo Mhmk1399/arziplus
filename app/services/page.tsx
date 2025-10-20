@@ -117,7 +117,7 @@ const ServiceCard = ({ service }: { service: Service }) => {
 
         {/* Fallback Text */}
         {!service.image && (
-          <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-[#FF7A00]/20 to-[#4DBFF0]/20">
+          <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-[#0A1D37]/20 to-[#4DBFF0]/20">
             <div className="text-4xl sm:text-5xl lg:text-6xl text-[#0A1D37]/10 font-bold">
               {service.title.charAt(0)}
             </div>
@@ -158,7 +158,7 @@ const ServiceCard = ({ service }: { service: Service }) => {
       {/* CTA Button */}
       <div className="p-3 sm:p-4 lg:p-5 bg-gradient-to-br from-gray-50 to-white">
         <Link href={`/services/${service.slug}`}>
-          <button className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-[#FF7A00] to-[#FF7A00]/90 hover:from-[#FF7A00]/90 hover:to-[#FF7A00] text-white font-bold py-3 sm:py-3.5 lg:py-4 px-4 sm:px-5 lg:px-6 rounded-xl sm:rounded-2xl transition-all duration-300 shadow-md hover:shadow-xl transform hover:scale-[1.02] active:scale-95">
+          <button className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-[#0A1D37] to-[#0A1D37]/90 hover:from-[#0A1D37]/90 hover:to-[#0A1D37] text-white font-bold py-3 sm:py-3.5 lg:py-4 px-4 sm:px-5 lg:px-6 rounded-xl sm:rounded-2xl transition-all duration-300 shadow-md hover:shadow-xl transform hover:scale-[1.02] active:scale-95">
             <span className="text-sm sm:text-base">ثبت درخواست</span>
             <FaArrowLeft className="text-xs sm:text-sm" />
           </button>
@@ -285,10 +285,10 @@ const CategorySection = ({
             >
               {category}
             </h2>
-            <div className="w-16 sm:w-20 lg:w-24 h-1 bg-gradient-to-l from-[#FF7A00] to-[#4DBFF0] rounded-full" />
+            <div className="w-16 sm:w-20 lg:w-24 h-1 bg-gradient-to-l from-[#0A1D37] to-[#4DBFF0] rounded-full" />
           </div>
-          <div className="flex items-center gap-2 bg-gradient-to-r from-[#FF7A00]/10 to-[#4DBFF0]/10 px-3 sm:px-4 py-2 rounded-xl">
-            <FaStar className="text-[#FF7A00] text-sm sm:text-base" />
+          <div className="flex items-center gap-2 bg-gradient-to-r from-[#0A1D37]/10 to-[#4DBFF0]/10 px-3 sm:px-4 py-2 rounded-xl">
+            <FaStar className="text-[#0A1D37] text-sm sm:text-base" />
             <span className="text-xs sm:text-sm font-bold text-[#0A1D37]">
               {services.length} خدمت
             </span>
@@ -359,19 +359,19 @@ const CategorySection = ({
           <div className="flex lg:hidden justify-center gap-1.5 mt-4">
             <div
               className={`h-1.5 rounded-full transition-all duration-300 ${
-                canScrollLeft ? "w-6 bg-gray-300" : "w-8 bg-[#FF7A00]"
+                canScrollLeft ? "w-6 bg-gray-300" : "w-8 bg-[#0A1D37]"
               }`}
             />
             <div
               className={`h-1.5 rounded-full transition-all duration-300 ${
                 !canScrollLeft && !canScrollRight
-                  ? "w-8 bg-[#FF7A00]"
+                  ? "w-8 bg-[#0A1D37]"
                   : "w-6 bg-gray-300"
               }`}
             />
             <div
               className={`h-1.5 rounded-full transition-all duration-300 ${
-                canScrollRight ? "w-6 bg-gray-300" : "w-8 bg-[#FF7A00]"
+                canScrollRight ? "w-6 bg-gray-300" : "w-8 bg-[#0A1D37]"
               }`}
             />
           </div>
@@ -433,7 +433,7 @@ export default function ServicesPage() {
           </p>
           <button
             onClick={() => window.location.reload()}
-            className="px-6 py-3 bg-gradient-to-r from-[#FF7A00] to-[#FF7A00]/90 text-white rounded-xl font-bold hover:shadow-lg transition-all duration-300 hover:scale-105"
+            className="px-6 py-3 bg-gradient-to-r from-[#0A1D37] to-[#0A1D37]/90 text-white rounded-xl font-bold hover:shadow-lg transition-all duration-300 hover:scale-105"
           >
             تلاش مجدد
           </button>
@@ -450,7 +450,7 @@ export default function ServicesPage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-12 sm:mb-16 lg:mb-20">
-          <div className="inline-block mb-4 sm:mb-6 px-4 sm:px-6 py-2 sm:py-3 bg-gradient-to-r from-[#FF7A00]/10 to-[#4DBFF0]/10 rounded-full">
+          <div className="inline-block mb-4 sm:mb-6 px-4 sm:px-6 py-2 sm:py-3 bg-gradient-to-r from-[#0A1D37]/10 to-[#4DBFF0]/10 rounded-full">
             <span className="text-sm sm:text-base font-bold text-[#0A1D37]">
                 خدمات حرفه‌ای ارزی
             </span>
@@ -473,15 +473,15 @@ export default function ServicesPage() {
                 placeholder="جستجو در خدمات..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full px-5 sm:px-6 py-3 sm:py-4 lg:py-5 pr-12 sm:pr-14 bg-white backdrop-blur-sm border-2 border-gray-200 rounded-2xl sm:rounded-3xl text-[#0A1D37] placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#FF7A00]/30 focus:border-[#FF7A00] transition-all duration-300 shadow-sm hover:shadow-md text-sm sm:text-base"
+                className="w-full px-5 sm:px-6 py-3 sm:py-4 lg:py-5 pr-12 sm:pr-14 bg-white backdrop-blur-sm border-2 border-gray-200 rounded-2xl sm:rounded-3xl text-[#0A1D37] placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#0A1D37]/30 focus:border-[#0A1D37] transition-all duration-300 shadow-sm hover:shadow-md text-sm sm:text-base"
               />
               <div className="absolute right-4 sm:right-5 top-1/2 transform -translate-y-1/2">
-                <FaSearch className="text-base sm:text-lg text-gray-400 group-focus-within:text-[#FF7A00] transition-colors duration-300" />
+                <FaSearch className="text-base sm:text-lg text-gray-400 group-focus-within:text-[#0A1D37] transition-colors duration-300" />
               </div>
               {searchTerm && (
                 <button
                   onClick={() => setSearchTerm("")}
-                  className="absolute left-4 sm:left-5 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-[#FF7A00] transition-colors duration-200"
+                  className="absolute left-4 sm:left-5 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-[#0A1D37] transition-colors duration-200"
                 >
                   <svg
                     className="w-5 h-5"
@@ -517,7 +517,7 @@ export default function ServicesPage() {
         {isLoading && (
           <div className="flex flex-col items-center justify-center py-16 sm:py-20 lg:py-24">
             <div className="relative w-16 h-16 sm:w-20 sm:h-20 mb-6">
-              <div className="absolute inset-0 bg-gradient-to-r from-[#FF7A00] to-[#4DBFF0] rounded-2xl animate-pulse"></div>
+              <div className="absolute inset-0 bg-gradient-to-r from-[#0A1D37] to-[#4DBFF0] rounded-2xl animate-pulse"></div>
               <div className="absolute inset-0 flex items-center justify-center">
                 <FaSpinner className="animate-spin text-2xl sm:text-3xl text-white" />
               </div>
@@ -563,7 +563,7 @@ export default function ServicesPage() {
             {searchTerm && (
               <button
                 onClick={() => setSearchTerm("")}
-                className="px-6 py-3 bg-gradient-to-r from-[#FF7A00] to-[#FF7A00]/90 text-white rounded-xl font-bold hover:shadow-lg transition-all duration-300 hover:scale-105"
+                className="px-6 py-3 bg-gradient-to-r from-[#0A1D37] to-[#0A1D37]/90 text-white rounded-xl font-bold hover:shadow-lg transition-all duration-300 hover:scale-105"
               >
                 پاک کردن جستجو
               </button>

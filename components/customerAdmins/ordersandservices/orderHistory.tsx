@@ -290,7 +290,7 @@ export default function CustomerRequestsTable({
         dir="rtl"
       >
         <div className="text-center p-6 sm:p-8 lg:p-12 bg-white rounded-3xl shadow-xl max-w-md border border-gray-100">
-          <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-r from-[#4DBFF0]/20 to-[#FF7A00]/20 rounded-2xl flex items-center justify-center mx-auto mb-4 sm:mb-6">
+          <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-r from-[#4DBFF0]/20 to-[#0A1D37]/20 rounded-2xl flex items-center justify-center mx-auto mb-4 sm:mb-6">
             <span className="text-3xl sm:text-4xl">🔐</span>
           </div>
           <h3 className="text-xl sm:text-2xl font-bold text-[#0A1D37] mb-3 sm:mb-4">
@@ -301,7 +301,7 @@ export default function CustomerRequestsTable({
           </p>
           <a
             href="/auth/sms"
-            className="inline-flex items-center gap-2 px-6 py-3 sm:py-4 bg-gradient-to-r from-[#4DBFF0] to-[#FF7A00] text-white rounded-xl sm:rounded-2xl hover:shadow-xl transition-all duration-300 hover:scale-105 font-bold text-sm sm:text-base"
+            className="inline-flex items-center gap-2 px-6 py-3 sm:py-4 bg-gradient-to-r from-[#4DBFF0] to-[#0A1D37] text-white rounded-xl sm:rounded-2xl hover:shadow-xl transition-all duration-300 hover:scale-105 font-bold text-sm sm:text-base"
           >
             ورود / ثبت نام
           </a>
@@ -333,7 +333,7 @@ export default function CustomerRequestsTable({
             {/* New Request Button - Desktop */}
             <a
               href="/services-client"
-              className="hidden sm:inline-flex items-center gap-2 px-4 lg:px-6 py-2.5 lg:py-3 bg-gradient-to-r from-[#4DBFF0] to-[#FF7A00] text-white rounded-xl lg:rounded-2xl hover:shadow-xl transition-all duration-300 hover:scale-105 font-bold text-sm lg:text-base whitespace-nowrap"
+              className="hidden sm:inline-flex items-center gap-2 px-4 lg:px-6 py-2.5 lg:py-3 bg-gradient-to-r from-[#4DBFF0] to-[#0A1D37] text-white rounded-xl lg:rounded-2xl hover:shadow-xl transition-all duration-300 hover:scale-105 font-bold text-sm lg:text-base whitespace-nowrap"
             >
               <FaPlus className="text-sm" />
               <span>درخواست جدید</span>
@@ -358,11 +358,11 @@ export default function CustomerRequestsTable({
               <FaFilter className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-sm pointer-events-none" />
             </div>
 
-            <div className="flex items-center gap-2 px-4 py-2.5 sm:py-3 bg-gradient-to-r from-[#4DBFF0]/10 to-[#FF7A00]/10 rounded-xl border border-[#4DBFF0]/20">
+            <div className="flex items-center gap-2 px-4 py-2.5 sm:py-3 bg-gradient-to-r from-[#4DBFF0]/10 to-[#0A1D37]/10 rounded-xl border border-[#4DBFF0]/20">
               <span className="text-sm sm:text-base font-bold text-[#0A1D37]">
                 مجموع:
               </span>
-              <span className="text-sm sm:text-base font-bold text-[#FF7A00]">
+              <span className="text-sm sm:text-base font-bold text-[#0A1D37]">
                 {total} درخواست
               </span>
             </div>
@@ -373,7 +373,7 @@ export default function CustomerRequestsTable({
         {loading ? (
           <div className="flex flex-col items-center justify-center py-16 sm:py-20 lg:py-24">
             <div className="relative w-16 h-16 sm:w-20 sm:h-20 mb-6">
-              <div className="absolute inset-0 bg-gradient-to-r from-[#4DBFF0] to-[#FF7A00] rounded-2xl animate-pulse"></div>
+              <div className="absolute inset-0 bg-gradient-to-r from-[#4DBFF0] to-[#0A1D37] rounded-2xl animate-pulse"></div>
               <div className="absolute inset-0 flex items-center justify-center">
                 <FaSpinner className="animate-spin text-2xl sm:text-3xl text-white" />
               </div>
@@ -385,7 +385,7 @@ export default function CustomerRequestsTable({
           </div>
         ) : requests.length === 0 ? (
           <div className="text-center py-12 sm:py-16 lg:py-20 px-4">
-            <div className="w-20 h-20 sm:w-24 sm:h-24 bg-gradient-to-r from-[#4DBFF0]/20 to-[#FF7A00]/20 rounded-2xl flex items-center justify-center mx-auto mb-6">
+            <div className="w-20 h-20 sm:w-24 sm:h-24 bg-gradient-to-r from-[#4DBFF0]/20 to-[#0A1D37]/20 rounded-2xl flex items-center justify-center mx-auto mb-6">
               <span className="text-4xl sm:text-5xl">📋</span>
             </div>
             <h3 className="text-xl sm:text-2xl font-bold text-[#0A1D37] mb-3 sm:mb-4">
@@ -400,7 +400,7 @@ export default function CustomerRequestsTable({
             </p>
             <a
               href="/services-client"
-              className="inline-flex items-center gap-2 px-6 py-3 sm:py-4 bg-gradient-to-r from-[#4DBFF0] to-[#FF7A00] text-white rounded-xl sm:rounded-2xl hover:shadow-xl transition-all duration-300 hover:scale-105 font-bold text-sm sm:text-base"
+              className="inline-flex items-center gap-2 px-6 py-3 sm:py-4 bg-gradient-to-r from-[#4DBFF0] to-[#0A1D37] text-white rounded-xl sm:rounded-2xl hover:shadow-xl transition-all duration-300 hover:scale-105 font-bold text-sm sm:text-base"
             >
               <FaPlus className="text-sm" />
               <span>ثبت درخواست جدید</span>
@@ -415,7 +415,7 @@ export default function CustomerRequestsTable({
                   className="bg-white rounded-2xl sm:rounded-3xl shadow-sm hover:shadow-xl border border-gray-100 overflow-hidden transition-all duration-300 hover:scale-[1.02] flex flex-col"
                 >
                   {/* Header */}
-                  <div className="bg-gradient-to-r from-[#4DBFF0]/10 to-[#FF7A00]/10 px-4 sm:px-5 lg:px-6 py-4 sm:py-5 border-b border-gray-100">
+                  <div className="bg-gradient-to-r from-[#4DBFF0]/10 to-[#0A1D37]/10 px-4 sm:px-5 lg:px-6 py-4 sm:py-5 border-b border-gray-100">
                     <div className="flex items-start justify-between gap-3 mb-3">
                       <div className="flex items-center gap-2 sm:gap-3 flex-1 min-w-0">
                         {request.service.icon && (
@@ -462,7 +462,7 @@ export default function CustomerRequestsTable({
                       <div className="space-y-2.5">
                         <div className="flex items-center justify-between gap-2 p-2.5 sm:p-3 bg-gray-50 rounded-lg">
                           <div className="flex items-center gap-2 text-gray-600">
-                            <FaMoneyBillWave className="text-sm sm:text-base text-[#FF7A00]" />
+                            <FaMoneyBillWave className="text-sm sm:text-base text-[#0A1D37]" />
                             <span className="text-xs sm:text-sm">مبلغ:</span>
                           </div>
                           <span className="font-bold text-[#0A1D37] text-sm sm:text-base">
@@ -599,7 +599,7 @@ export default function CustomerRequestsTable({
                         </button>
                         <button
                           onClick={() => openResponseModal(request)}
-                          className="flex-1 flex items-center justify-center gap-2 px-3 sm:px-4 py-2.5 sm:py-3 text-sm bg-gradient-to-r from-[#4DBFF0] to-[#FF7A00] text-white rounded-xl hover:shadow-lg transition-all font-bold"
+                          className="flex-1 flex items-center justify-center gap-2 px-3 sm:px-4 py-2.5 sm:py-3 text-sm bg-gradient-to-r from-[#4DBFF0] to-[#0A1D37] text-white rounded-xl hover:shadow-lg transition-all font-bold"
                         >
                           <FaReply className="text-xs sm:text-sm" />
                           <span>پاسخ</span>
@@ -625,7 +625,7 @@ export default function CustomerRequestsTable({
                   <span>قبلی</span>
                 </button>
 
-                <div className="flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-[#4DBFF0]/10 to-[#FF7A00]/10 rounded-xl border border-[#4DBFF0]/20">
+                <div className="flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-[#4DBFF0]/10 to-[#0A1D37]/10 rounded-xl border border-[#4DBFF0]/20">
                   <span className="text-sm sm:text-base font-bold text-[#0A1D37]">
                     صفحه {currentPage} از {totalPages}
                   </span>
@@ -649,7 +649,7 @@ export default function CustomerRequestsTable({
         {/* Mobile Floating Action Button */}
         <a
           href="/services-client"
-          className="fixed bottom-6 left-6 sm:hidden w-14 h-14 bg-gradient-to-r from-[#4DBFF0] to-[#FF7A00] rounded-full shadow-2xl flex items-center justify-center z-40 hover:scale-110 active:scale-95 transition-all duration-300"
+          className="fixed bottom-6 left-6 sm:hidden w-14 h-14 bg-gradient-to-r from-[#4DBFF0] to-[#0A1D37] rounded-full shadow-2xl flex items-center justify-center z-40 hover:scale-110 active:scale-95 transition-all duration-300"
         >
           <FaPlus className="text-white text-xl" />
         </a>
@@ -659,7 +659,7 @@ export default function CustomerRequestsTable({
       {showDetailModal && selectedRequest && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-2xl sm:rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl">
-            <div className="sticky top-0 bg-gradient-to-r from-[#4DBFF0]/10 to-[#FF7A00]/10 p-4 sm:p-6 border-b border-gray-100 backdrop-blur-sm z-10">
+            <div className="sticky top-0 bg-gradient-to-r from-[#4DBFF0]/10 to-[#0A1D37]/10 p-4 sm:p-6 border-b border-gray-100 backdrop-blur-sm z-10">
               <div className="flex items-center justify-between">
                 <h2
                   className={`text-lg sm:text-xl lg:text-2xl ${estedadBold.className} text-[#0A1D37]`}
@@ -764,7 +764,7 @@ export default function CustomerRequestsTable({
             <div className="sticky bottom-0 p-4 sm:p-6 border-t border-gray-100 bg-white/95 backdrop-blur-sm flex justify-end">
               <button
                 onClick={() => setShowDetailModal(false)}
-                className="px-6 sm:px-8 py-3 sm:py-3.5 bg-gradient-to-r from-[#4DBFF0] to-[#FF7A00] text-white rounded-xl sm:rounded-2xl hover:shadow-xl transition-all font-bold text-sm sm:text-base"
+                className="px-6 sm:px-8 py-3 sm:py-3.5 bg-gradient-to-r from-[#4DBFF0] to-[#0A1D37] text-white rounded-xl sm:rounded-2xl hover:shadow-xl transition-all font-bold text-sm sm:text-base"
               >
                 بستن
               </button>
@@ -830,7 +830,7 @@ export default function CustomerRequestsTable({
               <button
                 onClick={handleSubmitResponse}
                 disabled={submittingResponse || !customerResponse.trim()}
-                className="w-full sm:w-auto px-6 sm:px-8 py-3 bg-gradient-to-r from-[#4DBFF0] to-[#FF7A00] text-white rounded-xl hover:shadow-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed font-bold flex items-center justify-center gap-2"
+                className="w-full sm:w-auto px-6 sm:px-8 py-3 bg-gradient-to-r from-[#4DBFF0] to-[#0A1D37] text-white rounded-xl hover:shadow-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed font-bold flex items-center justify-center gap-2"
               >
                 {submittingResponse ? (
                   <>
@@ -853,7 +853,7 @@ export default function CustomerRequestsTable({
       {showServiceRenderer && selectedRequest && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-2xl sm:rounded-3xl max-w-4xl w-full max-h-[90vh] overflow-y-auto shadow-2xl">
-            <div className="sticky top-0 bg-gradient-to-r from-[#4DBFF0]/10 to-[#FF7A00]/10 p-4 sm:p-6 border-b border-gray-100 backdrop-blur-sm z-10">
+            <div className="sticky top-0 bg-gradient-to-r from-[#4DBFF0]/10 to-[#0A1D37]/10 p-4 sm:p-6 border-b border-gray-100 backdrop-blur-sm z-10">
               <div className="flex items-center justify-between mb-4">
                 <div>
                   <h2

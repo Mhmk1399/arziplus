@@ -251,7 +251,7 @@ const BankingInfoAdmin = () => {
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="text-center mb-8">
-          <div className="w-16 h-16 bg-gradient-to-r from-[#FF7A00] to-[#4DBFF0] rounded-full flex items-center justify-center mx-auto mb-4">
+          <div className="w-16 h-16 bg-gradient-to-r from-[#0A1D37] to-[#4DBFF0] rounded-full flex items-center justify-center mx-auto mb-4">
             <FaUniversity className="text-white text-2xl" />
           </div>
           <h1 className="text-3xl font-bold text-[#0A1D37] mb-2">
@@ -265,13 +265,13 @@ const BankingInfoAdmin = () => {
           <div className="flex flex-wrap gap-4 items-center">
             <div className="flex-1 min-w-64">
               <div className="relative">
-                <FaSearch className="absolute right-4 top-1/2 transform -translate-y-1/2 text-[#FF7A00]" />
+                <FaSearch className="absolute right-4 top-1/2 transform -translate-y-1/2 text-[#0A1D37]" />
                 <input
                   type="text"
                   placeholder="جستجو بر اساس نام، شماره کارت یا شبا..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full pr-12 pl-4 py-4 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all"
+                  className="w-full pr-12 pl-4 py-4 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] transition-all"
                 />
               </div>
             </div>
@@ -279,7 +279,7 @@ const BankingInfoAdmin = () => {
             <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
-              className="px-4 py-4 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all"
+              className="px-4 py-4 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] transition-all"
             >
               <option value="">همه وضعیت‌ها</option>
               <option value="pending_verification">در انتظار بررسی</option>
@@ -289,7 +289,7 @@ const BankingInfoAdmin = () => {
 
             <button
               onClick={() => fetchBankingData()}
-              className="flex items-center gap-2 px-6 py-4 bg-gradient-to-r from-[#FF7A00] to-[#4DBFF0] text-white rounded-xl hover:shadow-lg transition-all"
+              className="flex items-center gap-2 px-6 py-4 bg-gradient-to-r from-[#0A1D37] to-[#4DBFF0] text-white rounded-xl hover:shadow-lg transition-all"
             >
               <FaFilter />
               اعمال فیلتر
@@ -464,7 +464,7 @@ const BankingInfoAdmin = () => {
           <div className="bg-white/90 backdrop-blur-sm border border-gray-200/50 rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl">
             <div className="p-6 border-b border-gray-200/50">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-gradient-to-r from-[#FF7A00] to-[#4DBFF0] rounded-full flex items-center justify-center">
+                <div className="w-10 h-10 bg-gradient-to-r from-[#0A1D37] to-[#4DBFF0] rounded-full flex items-center justify-center">
                   <FaUniversity className="text-white" />
                 </div>
                 <div>
@@ -499,7 +499,7 @@ const BankingInfoAdmin = () => {
               {/* Banking Details Grid */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="bg-white/80 backdrop-blur-sm border border-gray-200/50 rounded-xl p-4">
-                  <label className="text-sm font-medium text-[#FF7A00] flex items-center gap-2">
+                  <label className="text-sm font-medium text-[#0A1D37] flex items-center gap-2">
                     <FaUniversity className="text-xs" />
                     نام بانک
                   </label>
@@ -508,7 +508,7 @@ const BankingInfoAdmin = () => {
                   </div>
                 </div>
                 <div className="bg-white/80 backdrop-blur-sm border border-gray-200/50 rounded-xl p-4">
-                  <label className="text-sm font-medium text-[#FF7A00] flex items-center gap-2">
+                  <label className="text-sm font-medium text-[#0A1D37] flex items-center gap-2">
                     <FaUser className="text-xs" />
                     نام صاحب حساب
                   </label>
@@ -517,7 +517,7 @@ const BankingInfoAdmin = () => {
                   </div>
                 </div>
                 <div className="bg-white/80 backdrop-blur-sm border border-gray-200/50 rounded-xl p-4">
-                  <label className="text-sm font-medium text-[#FF7A00]">
+                  <label className="text-sm font-medium text-[#0A1D37]">
                     شماره کارت
                   </label>
                   <div className="text-[#0A1D37] font-mono font-semibold mt-1">
@@ -527,7 +527,7 @@ const BankingInfoAdmin = () => {
                   </div>
                 </div>
                 <div className="bg-white/80 backdrop-blur-sm border border-gray-200/50 rounded-xl p-4">
-                  <label className="text-sm font-medium text-[#FF7A00]">
+                  <label className="text-sm font-medium text-[#0A1D37]">
                     شماره شبا
                   </label>
                   <div className="text-[#0A1D37] font-mono font-semibold mt-1">
@@ -538,7 +538,7 @@ const BankingInfoAdmin = () => {
 
               {/* Status Card */}
               <div className="bg-white/80 backdrop-blur-sm border border-gray-200/50 rounded-xl p-4">
-                <label className="text-sm font-medium text-[#FF7A00] mb-3 block">
+                <label className="text-sm font-medium text-[#0A1D37] mb-3 block">
                   وضعیت اطلاعات
                 </label>
                 <div className="flex items-center gap-3">
@@ -589,7 +589,7 @@ const BankingInfoAdmin = () => {
                       selectedBankingInfo.bankingInfo
                     );
                   }}
-                  className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-[#FF7A00] to-[#4DBFF0] text-white rounded-xl hover:shadow-lg transition-all"
+                  className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-[#0A1D37] to-[#4DBFF0] text-white rounded-xl hover:shadow-lg transition-all"
                 >
                   <FaCheck className="text-sm" />
                   بررسی و تایید

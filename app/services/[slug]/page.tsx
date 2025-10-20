@@ -96,7 +96,7 @@ const ServiceHelperModal = ({
     >
       <div className="bg-white rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl">
         {/* Modal Header */}
-        <div className="bg-gradient-to-l from-[#FF7A00] to-[#4DBFF0] p-6 rounded-t-3xl">
+        <div className="bg-gradient-to-l from-[#0A1D37] to-[#4DBFF0] p-6 rounded-t-3xl">
           <div className="flex items-center gap-3">
             <FaInfoCircle className="text-white text-2xl" />
             <h2
@@ -117,7 +117,7 @@ const ServiceHelperModal = ({
           <div className="flex justify-center mt-8">
             <button
               onClick={onClose}
-              className="flex items-center gap-2 bg-gradient-to-l from-[#FF7A00] to-[#4DBFF0] text-white font-bold py-4 px-8 rounded-xl hover:opacity-90 transition-all duration-300 transform hover:scale-105 shadow-lg"
+              className="flex items-center gap-2 bg-gradient-to-l from-[#0A1D37] to-[#4DBFF0] text-white font-bold py-4 px-8 rounded-xl hover:opacity-90 transition-all duration-300 transform hover:scale-105 shadow-lg"
             >
               <FaCheckCircle />
               با دقت مطالعه کردم، ادامه
@@ -147,7 +147,7 @@ const ServiceSummary = ({ service }: { service: Service }) => {
             <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
           </div>
         ) : (
-          <div className="h-48 bg-gradient-to-br from-[#FF7A00] to-[#4DBFF0] flex items-center justify-center">
+          <div className="h-48 bg-gradient-to-br from-[#0A1D37] to-[#4DBFF0] flex items-center justify-center">
             {service.icon ? (
               <div className="text-6xl text-white">{service.icon}</div>
             ) : (
@@ -183,7 +183,7 @@ const ServiceSummary = ({ service }: { service: Service }) => {
           <h3 className="text-lg font-medium text-[#0A1D37] mb-3">
             هزینه خدمت:
           </h3>
-          <div className="bg-gradient-to-l from-[#FF7A00]/10 to-[#4DBFF0]/10 rounded-xl p-4 border border-[#4DBFF0]/30">
+          <div className="bg-gradient-to-l from-[#0A1D37]/10 to-[#4DBFF0]/10 rounded-xl p-4 border border-[#4DBFF0]/30">
             <div className="flex items-center justify-between">
               <span className="text-[#0A1D37]/70">مبلغ:</span>
               <span className="text-2xl font-bold text-[#0A1D37]">
@@ -521,7 +521,7 @@ export default function ServiceDetailPage() {
                 <button
                   type="button"
                   onClick={() => handleFileUploadClick(field.name)}
-                  className="px-6 py-3 hover:bg-gradient-to-r from-[#4DBFF0] to-[#FF7A00] text-[#0A1D37] hover:text-white border border-[#4DBFF0] rounded-xl font-medium hover:from-[#4DBFF0]/80 hover:to-[#FF7A00]/80 transition-all duration-300 whitespace-nowrap"
+                  className="px-6 py-3 hover:bg-gradient-to-r from-[#4DBFF0] to-[#0A1D37] text-[#0A1D37] hover:text-white border border-[#4DBFF0] rounded-xl font-medium hover:from-[#4DBFF0]/80 hover:to-[#0A1D37]/80 transition-all duration-300 whitespace-nowrap"
                 >
                   📁 آپلود فایل
                 </button>
@@ -547,7 +547,7 @@ export default function ServiceDetailPage() {
                     <button
                       type="button"
                       onClick={() => handleInputChange(field.name, "")}
-                      className="text-[#FF7A00] border border-[#FF7A00] p-2 rounded-md hover:text-[#FF7A00]/80 text-sm"
+                      className="text-[#0A1D37] border border-[#0A1D37] p-2 rounded-md hover:text-[#0A1D37]/80 text-sm"
                     >
                       حذف
                     </button>
@@ -593,7 +593,7 @@ export default function ServiceDetailPage() {
       <div key={field.name} className="space-y-2">
         <label className="block text-[#0A1D37] font-medium">
           {field.label || field.name}
-          {field.required && <span className="text-[#FF7A00] ml-1">*</span>}
+          {field.required && <span className="text-[#0A1D37] ml-1">*</span>}
         </label>
         {field.description && (
           <p className="text-[#0A1D37]/60 text-sm">{field.description}</p>
@@ -819,7 +819,7 @@ export default function ServiceDetailPage() {
             خدمت مورد نظر شما وجود ندارد یا در حال حاضر فعال نیست
           </p>
           <Link href="/services">
-            <button className="flex items-center gap-2 bg-gradient-to-l from-[#FF7A00] to-[#4DBFF0] text-white font-bold py-3 px-6 rounded-xl hover:opacity-90 transition-opacity mx-auto">
+            <button className="flex items-center gap-2 bg-gradient-to-l from-[#0A1D37] to-[#4DBFF0] text-white font-bold py-3 px-6 rounded-xl hover:opacity-90 transition-opacity mx-auto">
               <FaArrowRight />
               بازگشت به خدمات
             </button>
@@ -847,7 +847,7 @@ export default function ServiceDetailPage() {
             <div className="lg:col-span-2">
               <div className="bg-white/90 backdrop-blur-sm rounded-3xl shadow-xl border border-[#4DBFF0]/20 overflow-hidden">
                 {/* Form Header */}
-                <div className="bg-gradient-to-l from-[#FF7A00] to-[#4DBFF0] p-6">
+                <div className="bg-gradient-to-l from-[#0A1D37] to-[#4DBFF0] p-6">
                   <h2
                     className={`text-2xl font-bold text-white ${estedadBold.className}`}
                   >
@@ -862,7 +862,7 @@ export default function ServiceDetailPage() {
                 <div className="p-6">
                   {/* User Info Display */}
                   {currentUser && (
-                    <div className="mb-6 p-4 bg-gradient-to-l from-[#4DBFF0]/10 to-[#FF7A00]/10 rounded-xl border border-[#4DBFF0]/30">
+                    <div className="mb-6 p-4 bg-gradient-to-l from-[#4DBFF0]/10 to-[#0A1D37]/10 rounded-xl border border-[#4DBFF0]/30">
                       <p className="text-[#0A1D37]/70 text-sm mb-1">
                         درخواست توسط:
                       </p>
@@ -902,7 +902,7 @@ export default function ServiceDetailPage() {
                         className={`flex items-center gap-3 px-8 py-4 rounded-xl font-bold text-lg transition-all duration-300 ${
                           submitting || !currentUser
                             ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-                            : "bg-gradient-to-l from-[#FF7A00] to-[#4DBFF0] text-white hover:opacity-90 transform hover:scale-105 shadow-lg"
+                            : "bg-gradient-to-l from-[#0A1D37] to-[#4DBFF0] text-white hover:opacity-90 transform hover:scale-105 shadow-lg"
                         }`}
                       >
                         {submitting ? (

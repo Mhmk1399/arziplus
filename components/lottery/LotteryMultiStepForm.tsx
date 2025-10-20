@@ -913,9 +913,9 @@ const LotteryMultiStepForm: React.FC = () => {
 
   const renderFamilyInfoStep = () => (
     <div className="space-y-6">
-      <div className="bg-gradient-to-r from-[#FF7A00]/10 to-[#4DBFF0]/10 p-6 rounded-2xl border border-gray-200">
+      <div className="bg-gradient-to-r from-[#0A1D37]/10 to-[#4DBFF0]/10 p-6 rounded-2xl border border-gray-200">
         <h3 className="text-lg font-bold text-[#0A1D37] mb-4 flex items-center gap-3">
-          <FaUsers className="text-[#FF7A00]" />
+          <FaUsers className="text-[#0A1D37]" />
           اطلاعات خانوادگی
         </h3>
 
@@ -963,12 +963,10 @@ const LotteryMultiStepForm: React.FC = () => {
               onChange={(e) =>
                 updateFamilyInfo("numberOfChildren", parseInt(e.target.value))
               }
-              className="w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all"
-              required
-            >
+               className="w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] transition-all"
+               className="w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all"
               {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((num) => (
                 <option key={num} value={num}>
-                  {num} فرزند
                 </option>
               ))}
             </select>
@@ -1035,7 +1033,7 @@ const LotteryMultiStepForm: React.FC = () => {
       {/* Initial Informations */}
       <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-6 rounded-2xl border border-gray-200">
         <h3 className="text-lg font-bold text-[#0A1D37] mb-4 flex items-center gap-3">
-          <FaUser className="text-[#FF7A00]" />
+          <FaUser className="text-[#0A1D37]" />
           اطلاعات اولیه
         </h3>
 
@@ -1270,7 +1268,7 @@ const LotteryMultiStepForm: React.FC = () => {
                 e.target.value
               )
             }
-            className="p-3 border outline-none border-gray-300 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all"
+            className="p-3 border outline-none border-gray-300 rounded-xl focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] transition-all"
           />
           <input
             type="text"
@@ -1286,7 +1284,7 @@ const LotteryMultiStepForm: React.FC = () => {
                 e.target.value
               )
             }
-            className="p-3 border outline-none border-gray-300 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all"
+            className="p-3 border outline-none border-gray-300 rounded-xl focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] transition-all"
           />
           <input
             type="email"
@@ -1302,7 +1300,7 @@ const LotteryMultiStepForm: React.FC = () => {
                 e.target.value
               )
             }
-            className="p-3 border outline-none border-gray-300 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all"
+            className="p-3 border outline-none border-gray-300 rounded-xl focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] transition-all"
           />
         </div>
       </div>
@@ -1329,7 +1327,7 @@ const LotteryMultiStepForm: React.FC = () => {
                 e.target.value
               )
             }
-            className="p-3 border outline-none border-gray-300 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all"
+            className="p-3 border outline-none border-gray-300 rounded-xl focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] transition-all"
           />
           <input
             type="text"
@@ -1345,7 +1343,7 @@ const LotteryMultiStepForm: React.FC = () => {
                 e.target.value
               )
             }
-            className="p-3 border outline-none border-gray-300 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all"
+            className="p-3 border outline-none border-gray-300 rounded-xl focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] transition-all"
           />
           <input
             type="text"
@@ -1361,7 +1359,7 @@ const LotteryMultiStepForm: React.FC = () => {
                 e.target.value
               )
             }
-            className="p-3 border outline-none border-gray-300 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all"
+            className="p-3 border outline-none border-gray-300 rounded-xl focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] transition-all"
           />
           <input
             type="text"
@@ -1377,7 +1375,7 @@ const LotteryMultiStepForm: React.FC = () => {
                 e.target.value
               )
             }
-            className="p-3 border outline-none border-gray-300 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all"
+            className="p-3 border outline-none border-gray-300 rounded-xl focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] transition-all"
           />
           <input
             type="text"
@@ -1393,7 +1391,7 @@ const LotteryMultiStepForm: React.FC = () => {
                 e.target.value
               )
             }
-            className="p-3 border outline-none border-gray-300 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all md:col-span-2"
+            className="p-3 border outline-none border-gray-300 rounded-xl focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] transition-all md:col-span-2"
           />
         </div>
       </div>
@@ -1420,7 +1418,7 @@ const LotteryMultiStepForm: React.FC = () => {
                 e.target.value
               )
             }
-            className="p-3 border outline-none border-gray-300 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all"
+            className="p-3 border outline-none border-gray-300 rounded-xl focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] transition-all"
           />
           <input
             type="text"
@@ -1436,7 +1434,7 @@ const LotteryMultiStepForm: React.FC = () => {
                 e.target.value
               )
             }
-            className="p-3 border outline-none border-gray-300 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all"
+            className="p-3 border outline-none border-gray-300 rounded-xl focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] transition-all"
           />
           <select
             value={
@@ -1450,7 +1448,7 @@ const LotteryMultiStepForm: React.FC = () => {
                 e.target.value
               )
             }
-            className="p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all outline-none"
+            className="p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] transition-all outline-none"
           >
             <option value="">آخرین مدرک تحصیلی را انتخاب کنید...</option>
             <option value="1">پایین‌تر از دیپلم</option>
@@ -1479,7 +1477,7 @@ const LotteryMultiStepForm: React.FC = () => {
                 e.target.value
               )
             }
-            className="p-3 outline-none border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all"
+            className="p-3 outline-none border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] transition-all"
           >
             <option value="">انتخاب کنید...</option>
             <option value="my spouse is not a resident of america">
@@ -1934,7 +1932,7 @@ const LotteryMultiStepForm: React.FC = () => {
                 onChange={(e) =>
                   updateChildInfo(index, "firstName", e.target.value)
                 }
-                className="p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all"
+                className="p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] transition-all"
               />
               <input
                 type="text"
@@ -1943,14 +1941,14 @@ const LotteryMultiStepForm: React.FC = () => {
                 onChange={(e) =>
                   updateChildInfo(index, "lastName", e.target.value)
                 }
-                className="p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all"
+                className="p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] transition-all"
               />
               <select
                 value={child.initialInformations.gender || ""}
                 onChange={(e) =>
                   updateChildInfo(index, "gender", e.target.value)
                 }
-                className="p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all"
+                className="p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] transition-all"
               >
                 <option value="">جنسیت</option>
                 <option value="male">پسر</option>
@@ -1971,14 +1969,14 @@ const LotteryMultiStepForm: React.FC = () => {
                 onChange={(e) =>
                   updateChildInfo(index, "country", e.target.value)
                 }
-                className="p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all"
+                className="p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] transition-all"
               />
               <input
                 type="text"
                 placeholder="شهر"
                 value={child.initialInformations.city || ""}
                 onChange={(e) => updateChildInfo(index, "city", e.target.value)}
-                className="p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all"
+                className="p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] transition-all"
               />
               <input
                 type="text"
@@ -1987,7 +1985,7 @@ const LotteryMultiStepForm: React.FC = () => {
                 onChange={(e) =>
                   updateChildInfo(index, "citizenshipCountry", e.target.value)
                 }
-                className="p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all md:col-span-2"
+                className="p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] transition-all md:col-span-2"
               />
             </div>
           </div>
@@ -2058,7 +2056,7 @@ const LotteryMultiStepForm: React.FC = () => {
                   <div
                     className={`h-1 flex-1 mx-2 sm:mx-4 rounded-full transition-all duration-300 ${
                       currentStep > index
-                        ? "bg-gradient-to-r from-[#FF7A00] to-[#4DBFF0]"
+                        ? "bg-gradient-to-r from-[#0A1D37] to-[#4DBFF0]"
                         : "bg-gray-200"
                     }`}
                   />
@@ -2252,7 +2250,7 @@ const LotteryMultiStepForm: React.FC = () => {
                   className={`w-full sm:w-auto flex items-center justify-center gap-2 px-4 sm:px-8 py-2 sm:py-3 rounded-xl font-medium transition-all duration-300 ${
                     isSubmitting
                       ? "bg-gray-400 cursor-not-allowed"
-                      : "bg-gradient-to-r from-[#FF7A00] to-[#4DBFF0] text-white hover:shadow-lg hover:scale-105 active:scale-95"
+                      : "bg-gradient-to-r from-[#0A1D37] to-[#4DBFF0] text-white hover:shadow-lg hover:scale-105 active:scale-95"
                   }`}
                 >
                   {isSubmitting ? (
@@ -2292,7 +2290,7 @@ const LotteryMultiStepForm: React.FC = () => {
             </h3>
             <p className="text-center text-gray-600 mb-6">
               هزینه ثبت‌نام در قرعه‌کشی:{" "}
-              <span className="font-bold text-[#FF7A00]">
+              <span className="font-bold text-[#0A1D37]">
                 {lotteryFee.toLocaleString()} تومان
               </span>
             </p>

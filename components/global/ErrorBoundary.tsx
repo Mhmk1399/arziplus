@@ -50,7 +50,7 @@ class ErrorBoundary extends Component<Props, State> {
             <div className="space-y-3">
               <button
                 onClick={() => window.location.reload()}
-                className="w-full px-6 py-3 bg-gradient-to-r from-[#FF7A00] to-[#4DBFF0] text-white rounded-xl font-bold hover:shadow-lg transition-all duration-300 hover:scale-105"
+                className="w-full px-6 py-3 bg-gradient-to-r from-[#0A1D37] to-[#4DBFF0] text-white rounded-xl font-bold hover:shadow-lg transition-all duration-300 hover:scale-105"
               >
                 تلاش مجدد
               </button>

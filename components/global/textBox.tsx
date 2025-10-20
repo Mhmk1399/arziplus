@@ -214,7 +214,7 @@ export default function TextBox({
         /* Custom Scrollbar Styles */
         .custom-scrollbar {
           scrollbar-width: thin;
-          scrollbar-color: #ff7a00 transparent;
+          scrollbar-color: #0A1D37 transparent;
           scroll-behavior: smooth;
         }
 
@@ -227,7 +227,7 @@ export default function TextBox({
         }
 
         .custom-scrollbar::-webkit-scrollbar-thumb {
-          background: linear-gradient(135deg, #ff7a00, #4dbff0);
+          background: linear-gradient(135deg, #0A1D37, #4dbff0);
           border-radius: 20px;
           border: 2px solid transparent;
           background-clip: content-box;

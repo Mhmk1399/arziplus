@@ -12,12 +12,15 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
 
 export default function Footer() {
+  const pathname = usePathname();
+
   const footerRef = useRef<HTMLDivElement>(null);
   const consultationRef = useRef<HTMLDivElement>(null);
   const mainFooterRef = useRef<HTMLDivElement>(null);
@@ -52,14 +55,29 @@ export default function Footer() {
   }, [showBackToTop]);
 
   const socialLinks = [
-    { icon: FaTelegram, href: "#", label: "تلگرام", color: "#0088cc" },
-    { icon: FaInstagram, href: "#", label: "اینستاگرام", color: "#E4405F" },
-    { icon: FaWhatsapp, href: "#", label: "واتساپ", color: "#25D366" },
+    {
+      icon: FaTelegram,
+      href: "https://t.me/Arzi_Plus",
+      label: "تلگرام",
+      color: "#0088cc",
+    },
+    {
+      icon: FaInstagram,
+      href: "https://www.instagram.com/arziplus.co?igsh=MXN2c21icHhpZXU3MA%3D%3D&utm_source=qr",
+      label: "اینستاگرام",
+      color: "#E4405F",
+    },
+    {
+      icon: FaWhatsapp,
+      href: "https://wa.me/message/BMUIYPPM3P3GI1",
+      label: "واتساپ",
+      color: "#25D366",
+    },
     {
       icon: FaEnvelope,
-      href: "mailto:info@exchange.com",
+      href: "mailto:info@arziplus.com",
       label: "ایمیل",
-      color: "#FF7A00",
+      color: "#0A1D37",
     },
   ];
 
@@ -106,6 +124,10 @@ export default function Footer() {
     }
   };
 
+  if (pathname === "/dashboard" || pathname.startsWith("/dashboard")) {
+    return null;
+  }
+
   return (
     <footer ref={footerRef} className="relative overflow-hidden" dir="rtl">
       {/* Luxury Background with Gradient */}
@@ -145,7 +167,7 @@ export default function Footer() {
                   left: 0,
                   right: 0,
                   background: `linear-gradient(90deg, transparent, ${
-                    i % 2 === 0 ? "#FF7A00" : "#4DBFF0"
+                    i % 2 === 0 ? "#0A1D37" : "#4DBFF0"
                   }, transparent)`,
                 }}
               />
@@ -157,7 +179,7 @@ export default function Footer() {
             <div className="w-full h-full border border-[#4DBFF0]/20 rounded-full" />
           </div>
           <div className="absolute bottom-0 left-0 w-32 h-32 pulse-circle">
-            <div className="w-full h-full border-2 border-[#FF7A00]/20 rotate-45" />
+            <div className="w-full h-full border-2 border-[#0A1D37]/20 rotate-45" />
           </div>
         </div>
 
@@ -198,11 +220,11 @@ export default function Footer() {
 
                 {/* CTA Phone Button */}
                 <a
-                  href="tel:+989123456789"
-                  className="group inline-flex items-center gap-4 px-10 py-5 rounded-2xl bg-gradient-to-r from-[#FF7A00] to-[#4DBFF0] text-white font-bold text-lg shadow-[0_10px_40px_rgba(255,122,0,0.3)] hover:shadow-[0_15px_50px_rgba(255,122,0,0.4)] transition-all duration-75 hover:scale-105 hover:-translate-y-1"
+                  href="tel:09991202049"
+                  className="group inline-flex items-center gap-4 px-10 py-5 rounded-2xl bg-gradient-to-r from-[#0A1D37] to-[#4DBFF0] text-white font-bold text-lg  transition-all duration-75 hover:scale-105 hover:-translate-y-1"
                 >
                   <FaPhone className="text-xl group-hover:rotate-12 transition-transform duration-300" />
-                  <span className="tracking-wider">۰۹۱۲-۳۴۵-۶۷۸۹</span>
+                  <span className="tracking-wider">09991202049</span>
                 </a>
 
                 {/* Social Links */}
@@ -216,13 +238,13 @@ export default function Footer() {
                     >
                       <a
                         href={social.href}
-                        className="group relative p-4 rounded-xl   hover:border-[#FF7A00]/50 transition-all duration-300 hover:scale-110  "
+                        className="group relative p-4 rounded-xl   hover:border-[#0A1D37]/50 transition-all duration-300 hover:scale-110  "
                         title={social.label}
                       >
-                        <social.icon className="text-2xl text-white/80 group-hover:text-[#FF7A00] transition-colors duration-300" />
+                        <social.icon className="text-2xl text-white/80 group-hover:text-[#0A1D37] transition-colors duration-300" />
 
                         {/* Tooltip */}
-                        <span className="absolute top-2 left-1/2 -translate-x-1/2 px-3 py-1 bg-[#FF7A00] text-white text-xs rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap pointer-events-none">
+                        <span className="absolute top-2 left-1/2 -translate-x-1/2 px-3 py-1 bg-[#0A1D37] text-white text-xs rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap pointer-events-none">
                           {social.label}
                         </span>
                       </a>
@@ -238,7 +260,7 @@ export default function Footer() {
                 {/* Quick Links */}
                 <div ref={quickLinksRef} className="footer-section space-y-8">
                   <div className="space-y-2">
-                    <div className="w-12 h-1 bg-gradient-to-r from-[#FF7A00] to-[#4DBFF0] rounded-full mb-4" />
+                    <div className="w-12 h-1 bg-gradient-to-r from-[#0A1D37] to-[#4DBFF0] rounded-full mb-4" />
                     <h4 className="text-white text-2xl font-bold">
                       دسترسی سریع
                     </h4>
@@ -261,7 +283,7 @@ export default function Footer() {
                 {/* Services */}
                 <div className="footer-section space-y-8">
                   <div className="space-y-2">
-                    <div className="w-12 h-1 bg-gradient-to-r from-[#4DBFF0] to-[#FF7A00] rounded-full mb-4" />
+                    <div className="w-12 h-1 bg-gradient-to-r from-[#4DBFF0] to-[#0A1D37] rounded-full mb-4" />
                     <h4 className="text-white text-2xl font-bold">
                       خدمات ویژه
                     </h4>
@@ -283,7 +305,7 @@ export default function Footer() {
                 {/* Newsletter */}
                 <div ref={newsletterRef} className="footer-section space-y-8">
                   <div className="space-y-2">
-                    <div className="w-12 h-1 bg-gradient-to-r from-[#FF7A00] to-[#4DBFF0] rounded-full mb-4" />
+                    <div className="w-12 h-1 bg-gradient-to-r from-[#0A1D37] to-[#4DBFF0] rounded-full mb-4" />
                     <h4 className="text-white text-2xl font-bold">خبرنامه</h4>
                   </div>
 
@@ -302,13 +324,13 @@ export default function Footer() {
                         required
                         disabled={subscribed}
                       />
-                      <FaEnvelope className="absolute left-5 top-1/2 -translate-y-1/2 text-[#FF7A00]/50 group-focus-within:text-[#FF7A00] transition-colors duration-300" />
+                      <FaEnvelope className="absolute left-5 top-1/2 -translate-y-1/2 text-[#0A1D37]/50 group-focus-within:text-[#0A1D37] transition-colors duration-300" />
                     </div>
 
                     <button
                       type="submit"
                       disabled={subscribed}
-                      className="form-element w-full py-4 rounded-2xl bg-gradient-to-r from-[#FF7A00] to-[#4DBFF0] text-white font-bold text-lg shadow-[0_8px_30px_rgba(255,122,0,0.25)] hover:shadow-[0_12px_40px_rgba(255,122,0,0.35)] hover:scale-[1.02] hover:-translate-y-0.5 transition-all duration-300 disabled:opacity-70 disabled:cursor-not-allowed disabled:hover:scale-100 disabled:hover:translate-y-0"
+                      className="form-element w-full py-4 rounded-2xl bg-gradient-to-r from-[#0A1D37] to-[#4DBFF0] text-white font-bold text-lg    hover:scale-[1.02] hover:-translate-y-0.5 transition-all duration-300 disabled:opacity-70 disabled:cursor-not-allowed disabled:hover:scale-100 disabled:hover:translate-y-0"
                     >
                       {subscribed ? (
                         <span className="flex items-center justify-center gap-3">

@@ -21,6 +21,26 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="fa">
+      <head>
+        <link
+          rel="apple-touch-icon"
+          sizes="180x180"
+          href="/apple-touch-icon.png"
+        />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="32x32"
+          href="/favicon-32x32.png"
+        />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="16x16"
+          href="/favicon-16x16.png"
+        />
+        <link rel="manifest" href="/site.webmanifest" />
+      </head>
       <body
         className={` ${estedad.className} antialiased relative`}
         style={{
@@ -40,7 +60,7 @@ export default function RootLayout({
         <div className="fixed bottom-2 left-2 flex flex-col gap-1 z-50">
           {/* Telegram Button */}
           <Link
-            href="https://t.me/YOUR_TELEGRAM_USERNAME"
+            href="https://t.me/ArziPlus"
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center justify-center w-14 h-14 bg-gradient-to-br from-blue-500/40 to-blue-600/40 hover:from-blue-500 hover:to-blue-800 backdrop-blur-sm text-white rounded-full shadow-lg hover:scale-110 hover:shadow-xl transition-all duration-300"
@@ -50,7 +70,7 @@ export default function RootLayout({
 
           {/* WhatsApp Button */}
           <Link
-            href="https://wa.me/YOUR_NUMBER" // شماره رو با فرمت بین‌المللی بزن مثل 989123456789+
+            href="https://wa.me/message/BMUIYPPM3P3GI1" // شماره رو با فرمت بین‌المللی بزن مثل 989123456789+
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center justify-center w-14 h-14 bg-gradient-to-br from-green-400/40 to-green-600/40 hover:from-green-500 hover:to-green-800 backdrop-blur-sm text-white rounded-full shadow-lg hover:scale-110 hover:shadow-xl transition-all duration-300"

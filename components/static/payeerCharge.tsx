@@ -1,4 +1,3 @@
- 
 import {
   ctaThemes,
   faqThemes,
@@ -107,8 +106,6 @@ const PayeerCharge = () => {
     },
   ];
 
-
-
   const payeerFaqData = [
     {
       id: "1",
@@ -129,24 +126,6 @@ const PayeerCharge = () => {
       category: "خدمات",
     },
   ];
-
-  const faqIcons = {
-    info: (
-      <svg
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-        className="w-full h-full"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-        />
-      </svg>
-    ),
-  };
 
   return (
     <div>
@@ -201,8 +180,6 @@ const PayeerCharge = () => {
         theme={themesWhyus.dark}
       />
 
-    
-
       <HeroSplitSection
         heading="چرا ارزی پلاس؟"
         subHeading="امنیت و تجربه حرفه‌ای در خدمات پایر"
@@ -254,7 +231,6 @@ const PayeerCharge = () => {
       <FAQSection
         heading="سؤالات متداول"
         description="پاسخ به پرسش‌های پرتکرار درباره شارژ پایر"
-        svgIcon={faqIcons.info}
         faqItems={payeerFaqData}
         buttons={[
           {
@@ -280,7 +256,7 @@ const PayeerCharge = () => {
           variant: "primary",
           icon: <FaRocket />,
         }}
-        theme={ctaThemes.gradient}
+        theme={ctaThemes.primary}
         height={50}
       />
     </div>

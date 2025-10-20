@@ -165,11 +165,11 @@ export default function HeroSplitSection({
 
     switch (button.variant) {
       case "primary":
-        return `${baseClasses} bg-gradient-to-r from-[#FF7A00] to-[#4DBFF0] text-[#FFFFFF] hover:from-[#FF7A00]/80 hover:to-[#4DBFF0]/80 hover:shadow-[#FF7A00]/50`;
+        return `${baseClasses} bg-gradient-to-r from-[#0A1D37] to-[#4DBFF0] text-[#FFFFFF] hover:from-[#0A1D37]/80 hover:to-[#4DBFF0]/80 hover:shadow-[#0A1D37]/50`;
       case "purple":
-        return `${baseClasses} bg-gradient-to-r from-[#4DBFF0] to-[#FF7A00] text-[#FFFFFF] hover:from-[#4DBFF0]/80 hover:to-[#FF7A00]/80 hover:shadow-[#4DBFF0]/50`;
+        return `${baseClasses} bg-gradient-to-r from-[#4DBFF0] to-[#0A1D37] text-[#FFFFFF] hover:from-[#4DBFF0]/80 hover:to-[#0A1D37]/80 hover:shadow-[#4DBFF0]/50`;
       case "red":
-        return `${baseClasses} bg-[#FF7A00] text-[#FFFFFF] hover:bg-[#FF7A00]/80 hover:shadow-[#FF7A00]/50`;
+        return `${baseClasses} bg-[#0A1D37] text-[#FFFFFF] hover:bg-[#0A1D37]/80 hover:shadow-[#0A1D37]/50`;
       case "secondary":
         return `${baseClasses} bg-[#0A1D37] text-[#FFFFFF] hover:bg-[#0A1D37]/80 hover:shadow-[#0A1D37]/50`;
       case "green":
@@ -177,7 +177,7 @@ export default function HeroSplitSection({
       case "outline":
         return `${baseClasses} border-2 border-[#4DBFF0] text-[#4DBFF0] hover:bg-[#4DBFF0] hover:text-[#FFFFFF] bg-white/5`;
       default:
-        return `${baseClasses} bg-gradient-to-r from-[#FF7A00] to-[#4DBFF0] text-[#FFFFFF] hover:from-[#FF7A00]/80 hover:to-[#4DBFF0]/80`;
+        return `${baseClasses} bg-gradient-to-r from-[#0A1D37] to-[#4DBFF0] text-[#FFFFFF] hover:from-[#0A1D37]/80 hover:to-[#4DBFF0]/80`;
     }
   };
 
@@ -207,9 +207,9 @@ export default function HeroSplitSection({
               height: `${12 + (i % 3) * 8}px`,
               background: `linear-gradient(45deg, 
                 ${
-                  i % 3 === 0 ? "#FF7A00" : i % 3 === 1 ? "#4DBFF0" : "#0A1D37"
+                  i % 3 === 0 ? "#0A1D37" : i % 3 === 1 ? "#4DBFF0" : "#0A1D37"
                 }, 
-                ${i % 3 === 0 ? "#FF7A00" : i % 3 === 1 ? "#4DBFF0" : "#0A1D37"}
+                ${i % 3 === 0 ? "#0A1D37" : i % 3 === 1 ? "#4DBFF0" : "#0A1D37"}
               )`,
               borderRadius: i % 2 === 0 ? "50%" : "8px",
               filter: "blur(1px)",
@@ -219,7 +219,7 @@ export default function HeroSplitSection({
 
         {/* Geometric Shapes */}
         <div className="absolute top-20 right-20 w-32 h-32 border border-[#4DBFF0]/10 rounded-full animate-spin-slow"></div>
-        <div className="absolute bottom-20 left-20 w-24 h-24 border-2 border-[#FF7A00]/10 rotate-45 animate-pulse"></div>
+        <div className="absolute bottom-20 left-20 w-24 h-24 border-2 border-[#0A1D37]/10 rotate-45 animate-pulse"></div>
       </div>
 
       {/* Glass Morphism Overlay */}
@@ -246,11 +246,11 @@ export default function HeroSplitSection({
             />
 
             {/* Glow Effect */}
-            <div className="absolute -inset-4 rounded-3xl bg-gradient-to-r from-[#FF7A00]/20 via-[#4DBFF0]/20 to-[#0A1D37]/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10"></div>
+            <div className="absolute -inset-4 rounded-3xl bg-gradient-to-r from-[#0A1D37]/20 via-[#4DBFF0]/20 to-[#0A1D37]/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10"></div>
           </div>
 
           {/* Floating Accent Elements */}
-          <div className="absolute -top-4 -right-4 w-8 h-8 bg-gradient-to-br from-[#FF7A00] to-[#4DBFF0] rounded-full opacity-80 animate-pulse shadow-lg"></div>
+          <div className="absolute -top-4 -right-4 w-8 h-8 bg-gradient-to-br from-[#0A1D37] to-[#4DBFF0] rounded-full opacity-80 animate-pulse shadow-lg"></div>
           <div className="absolute -bottom-4 -left-4 w-6 h-6 bg-gradient-to-br from-[#4DBFF0] to-[#0A1D37] rounded-full opacity-60 animate-bounce shadow-lg"></div>
         </div>
 
@@ -275,8 +275,8 @@ export default function HeroSplitSection({
           {/* Content with Animations */}
           {subHeading && (
             <div className="animate-text">
-              <span className="inline-flex items-center px-6 py-3 rounded-full text-xs md:text-sm font-medium bg-gradient-to-r from-[#FF7A00]/20 to-[#4DBFF0]/20 text-[#0A1D37] border border-[#FF7A00]/30 backdrop-blur-sm p ">
-                <div className="w-2 h-2 ml-2 bg-gradient-to-r from-[#FF7A00] to-[#4DBFF0] rounded-full  animate-pulse"></div>
+              <span className="inline-flex items-center px-6 py-3 rounded-full text-xs md:text-sm font-medium bg-gradient-to-r from-[#0A1D37]/20 to-[#4DBFF0]/20 text-[#0A1D37] border border-[#0A1D37]/30 backdrop-blur-sm p ">
+                <div className="w-2 h-2 ml-2 bg-gradient-to-r from-[#0A1D37] to-[#4DBFF0] rounded-full  animate-pulse"></div>
                 {subHeading}
               </span>
             </div>
@@ -286,7 +286,7 @@ export default function HeroSplitSection({
             className={`animate-text text-2xl md:text-4xl lg:text-5xl ${estedadBold.className} text-center md:text-right font-extrabold leading-tight`}
             style={{
               background:
-                "linear-gradient(135deg, #0A1D37 0%, #4DBFF0 50%, #FF7A00 100%)",
+                "linear-gradient(135deg, #0A1D37 0%, #4DBFF0 50%, #0A1D37 100%)",
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
               backgroundClip: "text",
@@ -306,10 +306,10 @@ export default function HeroSplitSection({
               {features.map((feature, index) => (
                 <li
                   key={feature.id}
-                  className="group flex items-center gap-4 p-4 rounded-2xl bg-gradient-to-r from-white/5 via-white/10 to-white/5 backdrop-blur-sm border border-[#FF7A00]/20 hover:border-[#4DBFF0]/40 transition-all duration-300 hover:shadow-lg hover:shadow-[#FF7A00]/10"
+                  className="group flex items-center gap-4 p-4 rounded-2xl bg-gradient-to-r from-white/5 via-white/10 to-white/5 backdrop-blur-sm border border-[#0A1D37]/20 hover:border-[#4DBFF0]/40 transition-all duration-300 hover:shadow-lg hover:shadow-[#0A1D37]/10"
                   style={{ animationDelay: `${index * 0.1}s` }}
                 >
-                  <div className="flex-shrink-0 w-10 h-10 rounded-full bg-gradient-to-r from-[#FF7A00] to-[#4DBFF0] flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
+                  <div className="flex-shrink-0 w-10 h-10 rounded-full bg-gradient-to-r from-[#0A1D37] to-[#4DBFF0] flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
                     {feature.icon ? (
                       <span className="text-white text-lg">{feature.icon}</span>
                     ) : (

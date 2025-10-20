@@ -110,7 +110,7 @@ const PersianDatePicker: React.FC<PersianDatePickerProps> = ({
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className={`w-full p-3 border outline-none border-gray-300 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all text-right flex items-center justify-between ${
+        className={`w-full p-3 border outline-none border-gray-300 rounded-xl focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] transition-all text-right flex items-center justify-between ${
           isDateComplete ? "text-gray-900" : "text-gray-500"
         }`}
       >
@@ -129,7 +129,7 @@ const PersianDatePicker: React.FC<PersianDatePickerProps> = ({
               <select
                 value={tempDate.year}
                 onChange={(e) => handleDateChange("year", e.target.value)}
-                className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] text-sm"
+                className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] text-sm"
               >
                 <option value="">سال</option>
                 {years.map((year) => (
@@ -148,7 +148,7 @@ const PersianDatePicker: React.FC<PersianDatePickerProps> = ({
               <select
                 value={tempDate.month}
                 onChange={(e) => handleDateChange("month", e.target.value)}
-                className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] text-sm"
+                className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] text-sm"
               >
                 <option value="">ماه</option>
                 {PERSIAN_MONTHS.map((month) => (
@@ -167,7 +167,7 @@ const PersianDatePicker: React.FC<PersianDatePickerProps> = ({
               <select
                 value={tempDate.day}
                 onChange={(e) => handleDateChange("day", e.target.value)}
-                className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] text-sm"
+                className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] text-sm"
                 disabled={!tempDate.month || !tempDate.year}
               >
                 <option value="">روز</option>
@@ -194,7 +194,7 @@ const PersianDatePicker: React.FC<PersianDatePickerProps> = ({
             <button
               type="button"
               onClick={() => setIsOpen(false)}
-              className="px-4 py-1 text-sm bg-[#FF7A00] text-white rounded-lg hover:bg-[#FF7A00]/90 transition-colors"
+              className="px-4 py-1 text-sm bg-[#0A1D37] text-white rounded-lg hover:bg-[#0A1D37]/90 transition-colors"
             >
               تایید
             </button>

@@ -510,7 +510,7 @@ const NationalCredentialAdmin = () => {
       {/* Review Modal */}
       {showReviewModal && selectedCredential && typeof document !== 'undefined' && createPortal(
         <div className="fixed inset-0 bg-black/10 backdrop-blur-2xl  flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-2xl shadow-md border-[#FF7A00] border-2   max-w-xl w-full">
+          <div className="bg-white rounded-2xl shadow-md border-[#0A1D37] border-2   max-w-xl w-full">
             <div className="p-6 border-b">
               <h2 className="text-xl font-bold text-gray-900">بررسی اطلاعات هویتی</h2>
             </div>

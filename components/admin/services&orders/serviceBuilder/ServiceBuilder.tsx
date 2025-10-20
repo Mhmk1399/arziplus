@@ -218,10 +218,10 @@ const ServiceBuilder: React.FC<ServiceBuilderProps> = ({
               height: `${6 + (i % 3) * 4}px`,
               background: `linear-gradient(45deg, 
                 ${
-                  i % 3 === 0 ? "#FF7A00" : i % 3 === 1 ? "#4DBFF0" : "#0A1D37"
+                  i % 3 === 0 ? "#0A1D37" : i % 3 === 1 ? "#4DBFF0" : "#0A1D37"
                 }, 
                 ${
-                  i % 3 === 0 ? "#FF7A00" : i % 3 === 1 ? "#4DBFF0" : "#0A1D37"
+                  i % 3 === 0 ? "#0A1D37" : i % 3 === 1 ? "#4DBFF0" : "#0A1D37"
                 })`,
               filter: "blur(1px)",
               animationDelay: `${i * 0.5}s`,
@@ -232,8 +232,8 @@ const ServiceBuilder: React.FC<ServiceBuilderProps> = ({
 
         {/* Geometric Shapes */}
         <div className="absolute top-20 right-20 w-32 h-32 border border-[#4DBFF0]/20 rounded-full animate-spin-slow"></div>
-        <div className="absolute bottom-32 left-16 w-24 h-24 border-2 border-[#FF7A00]/20 rotate-45 animate-pulse"></div>
-        <div className="absolute top-1/3 left-1/4 w-16 h-16 bg-gradient-to-br from-[#FF7A00]/10 to-[#4DBFF0]/10 rounded-lg rotate-12 animate-float"></div>
+        <div className="absolute bottom-32 left-16 w-24 h-24 border-2 border-[#0A1D37]/20 rotate-45 animate-pulse"></div>
+        <div className="absolute top-1/3 left-1/4 w-16 h-16 bg-gradient-to-br from-[#0A1D37]/10 to-[#4DBFF0]/10 rounded-lg rotate-12 animate-float"></div>
       </div>
 
       {/* Glass Morphism Overlay */}
@@ -351,7 +351,7 @@ const ServiceBuilder: React.FC<ServiceBuilderProps> = ({
                         <button
                           type="button"
                           onClick={onImageUploadClick}
-                          className="px-6 py-3 border-[#4DBFF0] text-[#0A1D37] border hover:bg-[#0A1D37]/10  rounded-lg font-medium hover:from-[#4DBFF0]/80 hover:to-[#FF7A00]/80 transition-all duration-300 whitespace-nowrap"
+                          className="px-6 py-3 border-[#4DBFF0] text-[#0A1D37] border hover:bg-[#0A1D37]/10  rounded-lg font-medium hover:from-[#4DBFF0]/80 hover:to-[#0A1D37]/80 transition-all duration-300 whitespace-nowrap"
                         >
                           📁 آپلود تصویر
                         </button>
@@ -404,7 +404,7 @@ const ServiceBuilder: React.FC<ServiceBuilderProps> = ({
                     onChange={(e) =>
                       handleInputChange("wallet", e.target.checked.toString())
                     }
-                    className="w-5 h-5 text-purple-600 bg-white/10 border-[#4DBFF0] rounded focus:ring-[#FF7A00] focus:ring-2"
+                    className="w-5 h-5 text-purple-600 bg-white/10 border-[#4DBFF0] rounded focus:ring-[#0A1D37] focus:ring-2"
                   />
                   <span className="text-[#0A1D37]">نیاز به کیف پول دارد</span>
                 </label>
@@ -415,13 +415,13 @@ const ServiceBuilder: React.FC<ServiceBuilderProps> = ({
             {/* Form Fields Builder */}
             <div className="bg-white/5 rounded-xl p-6 border border-[#4DBFF0]">
               <div className="flex items-center justify-between mb-6">
-                <h2 className="group relative overflow-hidden px-6 py-3  text-[#0A1D37] font-medium rounded-xl hover:from-[#FF7A00]/80 hover:to-[#4DBFF0]/80 transition-all duration-500 shadow-lg hover:shadow-[#FF7A00]/30 border border-[#4DBFF0] backdrop-blur-sm">
+                <h2 className="group relative overflow-hidden px-6 py-3  text-[#0A1D37] font-medium rounded-xl hover:from-[#0A1D37]/80 hover:to-[#4DBFF0]/80 transition-all duration-500 shadow-lg hover:shadow-[#0A1D37]/30 border border-[#4DBFF0] backdrop-blur-sm">
                   فیلدهای فرم
                 </h2>
                 <button
                   type="button"
                   onClick={addNewField}
-                  className="group relative overflow-hidden px-6 py-3  text-[#0A1D37] font-medium rounded-xl hover:from-[#FF7A00]/80 hover:to-[#4DBFF0]/80 transition-all duration-500 shadow-lg hover:shadow-[#FF7A00]/30 border border-[#4DBFF0] backdrop-blur-sm"
+                  className="group relative overflow-hidden px-6 py-3  text-[#0A1D37] font-medium rounded-xl hover:from-[#0A1D37]/80 hover:to-[#4DBFF0]/80 transition-all duration-500 shadow-lg hover:shadow-[#0A1D37]/30 border border-[#4DBFF0] backdrop-blur-sm"
                 >
                   {/* Animated Background Gradient */}
                   <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-out"></div>
@@ -485,7 +485,7 @@ const ServiceBuilder: React.FC<ServiceBuilderProps> = ({
               <button
                 type="button"
                 onClick={onCancel}
-                className="px-6 py-3 text-[#0A1D37] bg-white/10 border border-[#FF7A00] rounded-lg hover:bg-white/20 transition-all duration-300"
+                className="px-6 py-3 text-[#0A1D37] bg-white/10 border border-[#0A1D37] rounded-lg hover:bg-white/20 transition-all duration-300"
               >
                 انصراف
               </button>

@@ -92,10 +92,10 @@ const PaymentMethodSelector: React.FC<PaymentMethodSelectorProps> = ({
         >
           روش پرداخت را انتخاب کنید
         </h3>
-        <div className="inline-block bg-gradient-to-r from-[#FF7A00]/10 to-[#4DBFF0]/10 px-6 py-3 rounded-full">
+        <div className="inline-block bg-gradient-to-r from-[#0A1D37]/10 to-[#4DBFF0]/10 px-6 py-3 rounded-full">
           <p className="text-[#0A1D37]/80 text-sm sm:text-base">
             مبلغ قابل پرداخت:{" "}
-            <span className="font-bold text-[#FF7A00] text-;g">
+            <span className="font-bold text-[#0A1D37] text-;g">
               {amount.toLocaleString()}
             </span>{" "}
             تومان
@@ -262,7 +262,7 @@ const PaymentMethodSelector: React.FC<PaymentMethodSelectorProps> = ({
             ${
               selectedMethod
                 ? `
-                bg-gradient-to-l from-[#FF7A00] to-[#4DBFF0] 
+                bg-gradient-to-l from-[#0A1D37] to-[#4DBFF0] 
                 text-white 
                 hover:opacity-90 
                 hover:shadow-2xl

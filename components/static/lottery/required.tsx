@@ -55,7 +55,7 @@ const Requirements = () => {
         </div>
       </div>
       <a
-        href="#"
+        href="/lottery/form"
         className="flex justify-center w-fit p-3 rounded-xl mx-auto mt-12 items-center gap-2 font-medium duration-500 hover:scale-105 hover:gap-3 transition-all"
         style={{ color: COLORS.white, backgroundColor: COLORS.primary }}
       >

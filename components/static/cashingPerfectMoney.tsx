@@ -121,23 +121,7 @@ const CashingPerfect = () => {
     },
   ];
 
-  const faqIcons = {
-    info: (
-      <svg
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-        className="w-full h-full"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-        />
-      </svg>
-    ),
-  };
+ 
 
   return (
     <div>
@@ -239,8 +223,7 @@ const CashingPerfect = () => {
       <FAQSection
         heading="سؤالات متداول"
         description="پرسش‌های پرتکرار درباره نقد کردن موجودی پرفکت‌مانی"
-        svgIcon={faqIcons.info}
-        faqItems={cashingFaq}
+         faqItems={cashingFaq}
         buttons={[
           {
             text: "ارسال سوال",
@@ -265,7 +248,7 @@ const CashingPerfect = () => {
           variant: "primary",
           icon: <FaRocket />,
         }}
-        theme={ctaThemes.light}
+        theme={ctaThemes.primary}
         height={50}
       />
     </div>

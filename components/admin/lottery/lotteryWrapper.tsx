@@ -29,7 +29,7 @@ const LotteryAdminWrapper = () => {
         {/* Header */}
         <div className="py-6 border-b border-gray-200 mb-6">
           <div className="flex items-center gap-4 mb-6">
-            <div className="w-12 h-12 bg-gradient-to-r from-[#FF7A00] to-[#4DBFF0] rounded-2xl flex items-center justify-center shadow-lg">
+            <div className="w-12 h-12 bg-gradient-to-r from-[#0A1D37] to-[#4DBFF0] rounded-2xl flex items-center justify-center shadow-lg">
               <FaUsers className="text-white text-xl" />
             </div>
             <div>
@@ -50,15 +50,15 @@ const LotteryAdminWrapper = () => {
                 onClick={() => setActiveTab(tab.id)}
                 className={`flex items-center gap-3 px-6 py-3 rounded-xl transition-all duration-300 whitespace-nowrap ${
                   activeTab === tab.id
-                    ? "bg-gradient-to-r from-[#FF7A00]/15 to-[#4DBFF0]/15 border-2 border-[#FF7A00]/30 text-[#0A1D37] shadow-lg transform scale-[1.02]"
+                    ? "bg-gradient-to-r from-[#0A1D37]/15 to-[#4DBFF0]/15 border-2 border-[#0A1D37]/30 text-[#0A1D37] shadow-lg transform scale-[1.02]"
                     : "hover:bg-gray-50 text-gray-700 hover:text-[#0A1D37] hover:shadow-md hover:scale-[1.01] border-2 border-transparent"
                 }`}
               >
                 <div
                   className={`flex-shrink-0 p-2 rounded-lg ${
                     activeTab === tab.id
-                      ? "text-[#FF7A00] bg-white/70 shadow-md"
-                      : "text-gray-500 group-hover:text-[#FF7A00] group-hover:bg-[#FF7A00]/10"
+                      ? "text-[#0A1D37] bg-white/70 shadow-md"
+                      : "text-gray-500 group-hover:text-[#0A1D37] group-hover:bg-[#0A1D37]/10"
                   } transition-all duration-300`}
                 >
                   {tab.icon}

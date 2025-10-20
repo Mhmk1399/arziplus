@@ -270,7 +270,7 @@ const Dashboard: React.FC = () => {
         dir="rtl"
       >
         <div className="text-center space-y-4">
-          <div className="w-20 h-20 bg-gradient-to-r from-[#FF7A00] to-[#4DBFF0] rounded-2xl flex items-center justify-center mx-auto shadow-2xl animate-pulse">
+          <div className="w-20 h-20 bg-gradient-to-r from-[#0A1D37] to-[#4DBFF0] rounded-2xl flex items-center justify-center mx-auto shadow-2xl animate-pulse">
             <FaCog className="text-white text-3xl animate-spin" />
           </div>
           <p className="text-[#0A1D37] font-bold text-lg">در حال بارگذاری...</p>
@@ -304,10 +304,10 @@ const Dashboard: React.FC = () => {
         }`}
       >
         {/* Sidebar Header */}
-        <div className="p-6 border-b border-gray-200/50 bg-gradient-to-r from-[#FF7A00]/5 to-[#4DBFF0]/5">
+        <div className="p-6 border-b border-gray-200/50 bg-gradient-to-r from-[#0A1D37]/5 to-[#4DBFF0]/5">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <div className="w-14 h-14 bg-gradient-to-r from-[#FF7A00] to-[#4DBFF0] rounded-2xl flex items-center justify-center shadow-lg transform hover:scale-105 transition-transform duration-200">
+              <div className="w-14 h-14 bg-gradient-to-r from-[#0A1D37] to-[#4DBFF0] rounded-2xl flex items-center justify-center shadow-lg transform hover:scale-105 transition-transform duration-200">
                 <FaHome className="text-white text-xl" />
               </div>
               <div>
@@ -360,18 +360,18 @@ const Dashboard: React.FC = () => {
                 }}
                 className={`w-full flex items-center gap-4 p-4 rounded-2xl transition-all duration-300 group relative overflow-hidden ${
                   selectedMenuItem === item.id
-                    ? "bg-gradient-to-r from-[#FF7A00]/15 to-[#4DBFF0]/15 border-2 border-[#FF7A00]/30 text-[#0A1D37] shadow-lg transform scale-[1.02]"
+                    ? "bg-gradient-to-r from-[#0A1D37]/15 to-[#4DBFF0]/15 border-2 border-[#0A1D37]/30 text-[#0A1D37] shadow-lg transform scale-[1.02]"
                     : "hover:bg-gray-50 text-gray-700 hover:text-[#0A1D37] hover:shadow-md hover:scale-[1.01] border-2 border-transparent"
                 }`}
               >
                 {selectedMenuItem === item.id && (
-                  <div className="absolute inset-0 bg-gradient-to-r from-[#FF7A00]/5 to-[#4DBFF0]/5 rounded-2xl animate-pulse" />
+                  <div className="absolute inset-0 bg-gradient-to-r from-[#0A1D37]/5 to-[#4DBFF0]/5 rounded-2xl animate-pulse" />
                 )}
                 <div
                   className={`flex-shrink-0 relative z-10 p-2.5 rounded-xl ${
                     selectedMenuItem === item.id
-                      ? "text-[#FF7A00] bg-white/70 shadow-md"
-                      : "text-gray-500 group-hover:text-[#FF7A00] group-hover:bg-[#FF7A00]/10"
+                      ? "text-[#0A1D37] bg-white/70 shadow-md"
+                      : "text-gray-500 group-hover:text-[#0A1D37] group-hover:bg-[#0A1D37]/10"
                   } transition-all duration-300`}
                 >
                   {item.icon}
@@ -399,8 +399,8 @@ const Dashboard: React.FC = () => {
                   <FaChevronLeft
                     className={`text-sm transition-all duration-300 ${
                       selectedMenuItem === item.id
-                        ? "rotate-90 text-[#FF7A00]"
-                        : "text-gray-400 group-hover:text-[#FF7A00] group-hover:translate-x-[-2px]"
+                        ? "rotate-90 text-[#0A1D37]"
+                        : "text-gray-400 group-hover:text-[#0A1D37] group-hover:translate-x-[-2px]"
                     }`}
                   />
                 </div>
@@ -436,19 +436,19 @@ const Dashboard: React.FC = () => {
               {/* Toggle Button */}
               <button
                 onClick={toggleSidebar}
-                className="p-3 hover:bg-gradient-to-r hover:from-[#FF7A00]/10 hover:to-[#4DBFF0]/10 rounded-xl transition-all duration-300 hover:scale-105 active:scale-95 group border-2 border-transparent hover:border-[#FF7A00]/20 shadow-sm hover:shadow-md"
+                className="p-3 hover:bg-gradient-to-r hover:from-[#0A1D37]/10 hover:to-[#4DBFF0]/10 rounded-xl transition-all duration-300 hover:scale-105 active:scale-95 group border-2 border-transparent hover:border-[#0A1D37]/20 shadow-sm hover:shadow-md"
                 title={sidebarOpen ? "بستن منو" : "باز کردن منو"}
               >
                 <div className="relative w-5 h-5 flex items-center justify-center">
                   <FaBars
-                    className={`text-[#0A1D37] text-lg group-hover:text-[#FF7A00] transition-all duration-300 absolute ${
+                    className={`text-[#0A1D37] text-lg group-hover:text-[#0A1D37] transition-all duration-300 absolute ${
                       sidebarOpen
                         ? "opacity-0 rotate-90"
                         : "opacity-100 rotate-0"
                     }`}
                   />
                   <FaChevronRight
-                    className={`text-[#FF7A00] text-lg transition-all duration-300 absolute ${
+                    className={`text-[#0A1D37] text-lg transition-all duration-300 absolute ${
                       sidebarOpen
                         ? "opacity-100 rotate-0"
                         : "opacity-0 -rotate-90"
@@ -468,15 +468,15 @@ const Dashboard: React.FC = () => {
             </div>
 
             <div className="flex items-center gap-3 lg:gap-4 flex-shrink-0">
-              <button className="relative p-3 hover:bg-gradient-to-r hover:from-[#FF7A00]/10 hover:to-[#4DBFF0]/10 rounded-xl transition-all duration-300 hover:scale-105 active:scale-95 group border border-transparent hover:border-[#FF7A00]/20">
-                <FaBell className="text-gray-600 text-lg group-hover:text-[#FF7A00] transition-colors" />
+              <button className="relative p-3 hover:bg-gradient-to-r hover:from-[#0A1D37]/10 hover:to-[#4DBFF0]/10 rounded-xl transition-all duration-300 hover:scale-105 active:scale-95 group border border-transparent hover:border-[#0A1D37]/20">
+                <FaBell className="text-gray-600 text-lg group-hover:text-[#0A1D37] transition-colors" />
                 <div className="absolute -top-1 -right-1 w-5 h-5 bg-gradient-to-r from-red-500 to-red-600 rounded-full flex items-center justify-center shadow-lg">
                   <span className="text-white text-xs font-bold">3</span>
                 </div>
               </button>
               <Link
                 href="/"
-                className="flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-[#FF7A00] to-[#4DBFF0] rounded-xl text-white font-bold text-sm hover:shadow-lg transition-all duration-300 hover:scale-105 active:scale-95"
+                className="flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-[#0A1D37] to-[#4DBFF0] rounded-xl text-white font-bold text-sm hover:shadow-lg transition-all duration-300 hover:scale-105 active:scale-95"
               >
                 <FaHome className="text-base" />
                 <span className="hidden sm:inline">صفحه اصلی</span>
@@ -493,8 +493,8 @@ const Dashboard: React.FC = () => {
                 <div className="mb-6">
                   <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
                     <div className="flex items-center gap-4 mb-2">
-                      <div className="w-12 h-12 bg-gradient-to-r from-[#FF7A00]/10 to-[#4DBFF0]/10 rounded-xl flex items-center justify-center">
-                        <FaWallet className="text-[#FF7A00] text-xl" />
+                      <div className="w-12 h-12 bg-gradient-to-r from-[#0A1D37]/10 to-[#4DBFF0]/10 rounded-xl flex items-center justify-center">
+                        <FaWallet className="text-[#0A1D37] text-xl" />
                       </div>
                       <div>
                         <h2 className="text-2xl font-bold text-[#0A1D37]">
@@ -534,7 +534,7 @@ const Dashboard: React.FC = () => {
       {!sidebarOpen && (
         <button
           onClick={toggleSidebar}
-          className="lg:hidden fixed bottom-6 right-6 w-14 h-14 bg-gradient-to-r from-[#FF7A00] to-[#4DBFF0] rounded-full shadow-2xl flex items-center justify-center z-40 hover:scale-110 active:scale-95 transition-all duration-300 animate-bounce"
+          className="lg:hidden fixed bottom-6 right-6 w-14 h-14 bg-gradient-to-r from-[#0A1D37] to-[#4DBFF0] rounded-full shadow-2xl flex items-center justify-center z-40 hover:scale-110 active:scale-95 transition-all duration-300 animate-bounce"
         >
           <FaBars className="text-white text-xl" />
         </button>

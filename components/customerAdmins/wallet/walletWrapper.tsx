@@ -155,9 +155,9 @@ const WalletWrapper: React.FC<WalletWrapperProps> = ({
       value: walletStats.currentBalance.toLocaleString(),
       suffix: "تومان",
       icon: <FaWallet className="text-xl sm:text-2xl" />,
-      bgColor: "bg-gradient-to-br from-[#FF7A00]/5 to-[#FF7A00]/10",
-      iconBg: "bg-gradient-to-r from-[#FF7A00]/20 to-[#FF7A00]/10",
-      iconColor: "text-[#FF7A00]",
+      bgColor: "bg-gradient-to-br from-[#0A1D37]/5 to-[#0A1D37]/10",
+      iconBg: "bg-gradient-to-r from-[#0A1D37]/20 to-[#0A1D37]/10",
+      iconColor: "text-[#0A1D37]",
       textColor: "text-[#0A1D37]",
     },
     {
@@ -274,7 +274,7 @@ const WalletWrapper: React.FC<WalletWrapperProps> = ({
       >
         <div className="text-center space-y-4">
           <div className="relative w-20 h-20 sm:w-24 sm:h-24 mx-auto">
-            <div className="absolute inset-0 bg-gradient-to-r from-[#FF7A00] to-[#FF7A00]/50 rounded-2xl animate-pulse"></div>
+            <div className="absolute inset-0 bg-gradient-to-r from-[#0A1D37] to-[#0A1D37]/50 rounded-2xl animate-pulse"></div>
             <div className="absolute inset-0 flex items-center justify-center">
               <FaRedo className="animate-spin text-3xl sm:text-4xl text-white" />
             </div>
@@ -372,7 +372,7 @@ const WalletWrapper: React.FC<WalletWrapperProps> = ({
                 onClick={() => handleTabChange(tab.id)}
                 className={`relative flex  items-center justify-center gap-2 sm:gap-3 px-1 sm:px-5 lg:px-6 py-3 sm:py-4 rounded-xl sm:rounded-xl lg:rounded-2xl font-medium transition-all duration-300 group ${
                   activeTab === tab.id
-                    ? "border-2 border-[#FF7A00] bg-gradient-to-br from-[#FF7A00]/5 to-[#FF7A00]/10 text-[#0A1D37] shadow-md scale-[1.02]"
+                    ? "border-2 border-[#0A1D37] bg-gradient-to-br from-[#0A1D37]/5 to-[#0A1D37]/10 text-[#0A1D37] shadow-md scale-[1.02]"
                     : "border-2 border-transparent text-gray-700 hover:bg-gray-50 hover:scale-[1.02] hover:shadow-sm"
                 }`}
               >
@@ -380,8 +380,8 @@ const WalletWrapper: React.FC<WalletWrapperProps> = ({
                 <div
                   className={`transition-all hidden lg:block duration-300 ${
                     activeTab === tab.id
-                      ? "text-[#FF7A00] scale-110"
-                      : "text-gray-500 group-hover:text-[#FF7A00] group-hover:scale-110"
+                      ? "text-[#0A1D37] scale-110"
+                      : "text-gray-500 group-hover:text-[#0A1D37] group-hover:scale-110"
                   }`}
                 >
                   {tab.icon}
@@ -429,7 +429,7 @@ const WalletWrapper: React.FC<WalletWrapperProps> = ({
             onClick={() => handleTabChange("dashboard")}
             className={`p-4 rounded-full shadow-2xl transition-all duration-300 ${
               activeTab === "dashboard"
-                ? "bg-gradient-to-r from-[#FF7A00] to-[#FF7A00]/80 text-white scale-110"
+                ? "bg-gradient-to-r from-[#0A1D37] to-[#0A1D37]/80 text-white scale-110"
                 : "bg-white text-gray-700 hover:scale-105"
             }`}
           >
@@ -439,7 +439,7 @@ const WalletWrapper: React.FC<WalletWrapperProps> = ({
             onClick={() => handleTabChange("incomes")}
             className={`p-4 rounded-full shadow-2xl transition-all duration-300 relative ${
               activeTab === "incomes"
-                ? "bg-gradient-to-r from-[#FF7A00] to-[#FF7A00]/80 text-white scale-110"
+                ? "bg-gradient-to-r from-[#0A1D37] to-[#0A1D37]/80 text-white scale-110"
                 : "bg-white text-gray-700 hover:scale-105"
             }`}
           >
@@ -454,7 +454,7 @@ const WalletWrapper: React.FC<WalletWrapperProps> = ({
             onClick={() => handleTabChange("withdraws")}
             className={`p-4 rounded-full shadow-2xl transition-all duration-300 ${
               activeTab === "withdraws"
-                ? "bg-gradient-to-r from-[#FF7A00] to-[#FF7A00]/80 text-white scale-110"
+                ? "bg-gradient-to-r from-[#0A1D37] to-[#0A1D37]/80 text-white scale-110"
                 : "bg-white text-gray-700 hover:scale-105"
             }`}
           >
