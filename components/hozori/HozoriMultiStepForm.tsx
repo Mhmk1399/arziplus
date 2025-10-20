@@ -774,14 +774,66 @@ const HozoriMultiStepForm: React.FC = () => {
               </svg>
               محاسبه هزینه
             </h4>
-            <div className="space-y-2 text-sm">
-              <div className="flex justify-between">
-                <span className="text-gray-900">مبلغ:</span>
-                <span className="font-medium">
-                  {prepaid.toLocaleString()} {""} تومان به عنوان بیعانه رزرو وقت
-                  دریافت و مبلغ {totalFee - prepaid} در روز ثبت نام حضوری در
-                  مجموعه تسویه میشود.{" "}
-                </span>
+            <div className="space-y-4 text-sm">
+              <div className="bg-white p-4 rounded-lg border border-gray-200">
+                <div className="flex justify-between items-center mb-3">
+                  <span className="text-gray-700 font-medium">
+                    مبلغ بیعانه:
+                  </span>
+                  <span className="font-bold text-lg text-[#FF7A00]">
+                    {prepaid.toLocaleString()} تومان
+                  </span>
+                </div>
+                <p className="text-gray-600 text-xs leading-relaxed">
+                  مبلغ {totalFee - prepaid} تومان باقیمانده در روز ثبت نام حضوری
+                  در مجموعه تسویه میشود.
+                </p>
+              </div>
+
+              {/* Important Notes */}
+              <div className="bg-red-50 border border-red-200 p-4 rounded-lg">
+                <h5 className="font-bold text-red-800 mb-3 flex items-center">
+                  <svg
+                    className="w-4 h-4 mr-2"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                  نکات مهم:
+                </h5>
+                <div className="space-y-2 text-red-700 text-xs leading-relaxed">
+                  <p className="flex items-start">
+                    <span className="inline-block w-1.5 h-1.5 bg-red-500 rounded-full mt-2 mr-2 flex-shrink-0"></span>
+                    <span>
+                      حضور تمام اعضا ثبت نامی در روز مشخص شده به همراه کارت ملی
+                      و در ساعت انتخاب شده الزامی می باشد.
+                    </span>
+                  </p>
+                  <p className="flex items-start">
+                    <span className="inline-block w-1.5 h-1.5 bg-red-500 rounded-full mt-2 mr-2 flex-shrink-0"></span>
+                    <span>
+                      لطفاً در انتخاب زمان خود دقت نمایید، مبلغ بیعانه برای رزرو
+                      وقت می باشد.
+                    </span>
+                  </p>
+                  <p className="flex items-start">
+                    <span className="inline-block w-1.5 h-1.5 bg-red-500 rounded-full mt-2 mr-2 flex-shrink-0"></span>
+                    <span>در صورت عدم مراجعه، بیعانه مسترد نمی گردد.</span>
+                  </p>
+                  <p className="flex items-start">
+                    <span className="inline-block w-1.5 h-1.5 bg-red-500 rounded-full mt-2 mr-2 flex-shrink-0"></span>
+                    <span>مراجعه خارج از زمان پذیرفته نمی شود.</span>
+                  </p>
+                  <p className="flex items-start">
+                    <span className="inline-block w-1.5 h-1.5 bg-red-500 rounded-full mt-2 mr-2 flex-shrink-0"></span>
+                    <span>هزینه با احتساب هزینه دلاری رسمی می باشد.</span>
+                  </p>
+                </div>
               </div>
             </div>
           </div>
