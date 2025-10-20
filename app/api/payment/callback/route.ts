@@ -112,6 +112,9 @@ export async function GET(request: NextRequest) {
         // Check if this is a service payment
         const isServicePayment =
           payment.metadata?.type === "service_payment" && payment.serviceId;
+        
+        // Check if this is a lottery payment
+        const isLotteryPayment = payment.metadata?.type === "lottery_payment";
 
         if (isServicePayment) {
           // Handle service payment - create service request
@@ -145,6 +148,37 @@ export async function GET(request: NextRequest) {
           } catch (serviceError) {
             console.log("Error creating service request:", serviceError);
             // Don't fail the payment if service request creation fails
+          }
+        } else if (isLotteryPayment) {
+          // Handle lottery payment - create lottery registration
+          try {
+            const Lottery = (await import("@/models/lottery")).default;
+
+            // Parse lottery data from metadata
+            const lotteryData = payment.metadata?.lotteryData
+              ? JSON.parse(payment.metadata.lotteryData)
+              : {};
+
+            const lottery = new Lottery({
+              ...lotteryData,
+              userId: payment.userId,
+              paymentMethod: "direct",
+              paymentAmount: payment.amount,
+              isPaid: true,
+              paymentId: payment._id,
+              authority: payment.authority,
+              refId: payment.refId,
+              paymentDate: new Date(),
+              // No patmentImage for direct payments as they don't upload receipts
+            });
+
+            await lottery.save();
+            console.log(
+              `Lottery registration created for payment: ${authority}, user: ${payment.userId}`
+            );
+          } catch (lotteryError) {
+            console.log("Error creating lottery registration:", lotteryError);
+            // Don't fail the payment if lottery creation fails
           }
         } else {
           // Handle wallet top-up
@@ -207,6 +241,13 @@ export async function GET(request: NextRequest) {
               `/payment/success?Authority=${authority}&Status=OK&type=service&service=${encodeURIComponent(
                 payment.metadata?.serviceTitle || ""
               )}`,
+              request.url
+            )
+          );
+        } else if (isLotteryPayment) {
+          return NextResponse.redirect(
+            new URL(
+              `/payment/success?Authority=${authority}&Status=OK&type=lottery`,
               request.url
             )
           );

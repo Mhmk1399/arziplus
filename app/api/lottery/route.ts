@@ -97,6 +97,8 @@ interface CreateLotteryBody {
   paymentAmount: number;
   isPaid?: boolean;
   receiptUrl?: string;
+  patmentImage?: string;
+  paymentDate?: Date;
 }
 
 // Type for PUT request body
@@ -184,6 +186,13 @@ interface UpdateLotteryBody {
       imageUrl: string;
     }>;
   }>;
+  // Payment information (for updates)
+  paymentMethod?: "wallet" | "direct" | "card";
+  paymentAmount?: number;
+  isPaid?: boolean;
+  receiptUrl?: string;
+  patmentImage?: string;
+  paymentDate?: Date;
 }
 
 // GET - Retrieve lottery registrations with filters and pagination
@@ -334,6 +343,8 @@ export async function POST(request: NextRequest) {
       paymentAmount: body.paymentAmount,
       isPaid: body.isPaid || false,
       receiptUrl: body.receiptUrl,
+      patmentImage: body.patmentImage, // Payment receipt image for card payments
+      paymentDate: body.paymentDate || new Date(),
     });
 
     await lottery.save();

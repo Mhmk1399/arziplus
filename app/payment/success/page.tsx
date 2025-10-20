@@ -50,6 +50,7 @@ const PaymentSuccessPage: React.FC = () => {
   
   const authority = searchParams.get('Authority');
   const status = searchParams.get('Status');
+  const paymentType = searchParams.get('type');
 
   useEffect(() => {
     // Wait for user loading to complete before checking authentication
@@ -61,7 +62,7 @@ const PaymentSuccessPage: React.FC = () => {
     }
 
     // Debug logging
-    console.log('Success page params:', { authority, status });
+    console.log('Success page params:', { authority, status, type: paymentType });
 
     if (!authority) {
       console.log('No authority found, redirecting to failed');
@@ -69,10 +70,18 @@ const PaymentSuccessPage: React.FC = () => {
       return;
     }
 
+    // Special handling for different payment types - redirect to dashboard
+    if (paymentType === 'lottery' || paymentType === 'wallet' || paymentType === 'service') {
+      console.log(`${paymentType} payment detected, redirecting to dashboard`);
+      setTimeout(() => {
+        router.push('/dashboard');
+      }, 3000); // Show success message for 3 seconds then redirect
+    }
+
     // Don't require status to be exactly 'OK' - just check if authority exists
     // The status will be determined by fetching payment details from our database
     fetchPaymentDetails();
-  }, [authority, status, isLoggedIn, userLoading, router]);
+  }, [authority, status, paymentType, isLoggedIn, userLoading, router]);
 
   const fetchPaymentDetails = async () => {
     if (!authority) return;
@@ -241,6 +250,78 @@ ${paymentDetails.zarinpalResponse?.refId ? `شماره مرجع: ${paymentDetail
   // Redirect if not logged in (after loading is complete)
   if (!isLoggedIn || !currentUser) {
     return null; // Component will unmount due to router.push in useEffect
+  }
+
+  // Special handling for specific payment types
+  if (paymentType === 'lottery' || paymentType === 'wallet' || paymentType === 'service') {
+    const getPaymentTypeTitle = () => {
+      switch (paymentType) {
+        case 'lottery':
+          return 'ثبت نام قرعه کشی موفق';
+        case 'wallet':
+          return 'شارژ کیف پول موفق';
+        case 'service':
+          return 'پرداخت سرویس موفق';
+        default:
+          return 'پرداخت موفق';
+      }
+    };
+
+    const getPaymentTypeMessage = () => {
+      switch (paymentType) {
+        case 'lottery':
+          return 'ثبت نام شما در قرعه کشی با موفقیت انجام شد';
+        case 'wallet':
+          return 'کیف پول شما با موفقیت شارژ شد';
+        case 'service':
+          return 'پرداخت سرویس شما با موفقیت انجام شد';
+        default:
+          return 'پرداخت شما با موفقیت انجام شد';
+      }
+    };
+
+    return (
+      <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-md mx-auto">
+          <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
+            <div className="text-center">
+              <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-green-100">
+                <svg className="h-6 w-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                </svg>
+              </div>
+              <h2 className="mt-6 text-3xl font-extrabold text-gray-900">
+                {getPaymentTypeTitle()}
+              </h2>
+              <div className="mt-4 space-y-4">
+                <p className="text-lg text-gray-600">
+                  {getPaymentTypeMessage()}
+                </p>
+                <p className="text-sm text-gray-500">
+                  در حال انتقال به داشبورد...
+                </p>
+                <div className="bg-gray-50 p-4 rounded-lg">
+                  <div className="text-right">
+                    <div>
+                      <span className="text-sm font-medium text-gray-500">کد پیگیری:</span>
+                      <span className="text-sm text-gray-900 mr-2">{authority}</span>
+                    </div>
+                  </div>
+                </div>
+                <div className="mt-6">
+                  <button
+                    onClick={() => router.push('/dashboard')}
+                    className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                  >
+                    رفتن به داشبورد
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   if (loading) {

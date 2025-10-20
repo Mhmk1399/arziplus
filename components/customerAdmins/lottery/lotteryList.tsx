@@ -4,6 +4,8 @@ import { useCurrentUser } from "@/hooks/useCurrentUser";
 import {
   FaTicketAlt,
   FaEye,
+  FaEdit,
+  FaSave,
   FaPlus,
   FaClock,
   FaCheck,
@@ -17,7 +19,11 @@ import {
   FaIdCard,
   FaExclamationTriangle,
   FaCheckCircle,
+  FaCreditCard,
+  FaMoneyBillWave,
+  FaReceipt,
 } from "react-icons/fa";
+import { showToast } from "@/utilities/toast";
 
 interface LotteryRegistration {
   _id: string;
@@ -38,6 +44,14 @@ interface LotteryRegistration {
     numberOfChildren: number;
     towPeopleRegistration: boolean;
   }>;
+  // Payment information
+  paymentMethod?: "card" | "direct";
+  paymentAmount?: number;
+  paymentDate?: string;
+  receiptUrl?: string;
+  authority?: string;
+  refId?: string;
+  isPaid?: boolean;
   registererInformations: Array<{
     initialInformations: {
       firstName: string;
@@ -134,6 +148,9 @@ const CustomerLotteryList = () => {
   const [selectedLottery, setSelectedLottery] =
     useState<LotteryRegistration | null>(null);
   const [showLotteryDetails, setShowLotteryDetails] = useState(false);
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [editData, setEditData] = useState<LotteryRegistration | null>(null);
+  const [isUpdating, setIsUpdating] = useState(false);
   const [stats, setStats] = useState<LotteryStats>({
     totalRequests: 0,
     pendingRequests: 0,
@@ -246,6 +263,61 @@ const CustomerLotteryList = () => {
   const openLotteryDetails = (lottery: LotteryRegistration) => {
     setSelectedLottery(lottery);
     setShowLotteryDetails(true);
+    setIsEditMode(false);
+  };
+
+  const startEdit = (lottery: LotteryRegistration) => {
+    setEditData({ ...lottery });
+    setIsEditMode(true);
+  };
+
+  const cancelEdit = () => {
+    setEditData(null);
+    setIsEditMode(false);
+  };
+
+  const saveEdit = async () => {
+    if (!editData || !currentUser) {
+      showToast.error("خطا در ذخیره اطلاعات");
+      return;
+    }
+
+    setIsUpdating(true);
+    try {
+      const token = localStorage.getItem("authToken");
+      const response = await fetch("/api/lottery", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          id: editData._id,
+          famillyInformations: editData.famillyInformations,
+          registererInformations: editData.registererInformations,
+          registererPartnerInformations: editData.registererPartnerInformations,
+          registererChildformations: editData.registererChildformations,
+        }),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok || !result.success) {
+        throw new Error(result.message || "خطا در به‌روزرسانی اطلاعات");
+      }
+
+      showToast.success("اطلاعات با موفقیت به‌روزرسانی شد");
+      setSelectedLottery(result.data);
+      setIsEditMode(false);
+      await fetchLotteries(); // Refresh the list
+    } catch (error) {
+      console.error("Update error:", error);
+      showToast.error(
+        error instanceof Error ? error.message : "خطا در به‌روزرسانی"
+      );
+    } finally {
+      setIsUpdating(false);
+    }
   };
 
   if (!isLoggedIn) {
@@ -459,6 +531,22 @@ const CustomerLotteryList = () => {
                     <span className="hidden sm:inline">مشاهده جزئیات</span>
                     <span className="sm:hidden">جزئیات</span>
                   </button>
+
+                  {/* Edit Button - Only show for pending or in_review status */}
+                  {(lottery.status === "pending" ||
+                    lottery.status === "in_review") && (
+                    <button
+                      onClick={() => {
+                        openLotteryDetails(lottery);
+                        startEdit(lottery);
+                      }}
+                      className="flex items-center gap-2 px-5 py-2.5 text-[#0A1D37] hover:text-white bg-[#0A1D37]/10 hover:bg-gradient-to-r hover:from-[#0A1D37] hover:to-[#4DBFF0] rounded-xl transition-all duration-300 font-medium text-sm  hover:border-transparent hover:shadow-lg"
+                    >
+                      <FaEdit className="text-base" />
+                      <span className="hidden sm:inline">ویرایش</span>
+                      <span className="sm:hidden">ویرایش</span>
+                    </button>
+                  )}
                 </div>
               </div>
 
@@ -512,19 +600,61 @@ const CustomerLotteryList = () => {
                 </div>
                 <div>
                   <h2 className="text-lg sm:text-xl lg:text-2xl font-bold text-[#0A1D37]">
-                    جزئیات ثبت‌نام لاتاری
+                    {isEditMode
+                      ? "ویرایش ثبت‌نام لاتاری"
+                      : "جزئیات ثبت‌نام لاتاری"}
                   </h2>
                   <p className="text-xs sm:text-sm text-gray-600 mt-0.5">
                     کد پیگیری: {selectedLottery._id.slice(-8)}
                   </p>
                 </div>
               </div>
-              <button
-                onClick={() => setShowLotteryDetails(false)}
-                className="w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center hover:bg-red-50 rounded-xl transition-colors text-gray-500 hover:text-red-600 border border-transparent hover:border-red-200"
-              >
-                <FaTimes className="text-xl" />
-              </button>
+              <div className="flex items-center gap-2">
+                {/* Edit Mode Controls */}
+                {(selectedLottery.status === "pending" ||
+                  selectedLottery.status === "in_review") && (
+                  <>
+                    {isEditMode ? (
+                      <>
+                        <button
+                          onClick={saveEdit}
+                          disabled={isUpdating}
+                          className="flex items-center gap-2 px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors disabled:opacity-50 text-sm"
+                        >
+                          <FaSave className="text-sm" />
+                          {isUpdating ? "در حال ذخیره..." : "ذخیره"}
+                        </button>
+                        <button
+                          onClick={cancelEdit}
+                          disabled={isUpdating}
+                          className="flex items-center gap-2 px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors disabled:opacity-50 text-sm"
+                        >
+                          <FaTimes className="text-sm" />
+                          انصراف
+                        </button>
+                      </>
+                    ) : (
+                      <button
+                        onClick={() => startEdit(selectedLottery)}
+                        className="flex items-center gap-2 px-4 py-2 bg-[#0A1D37] text-white rounded-lg hover:bg-[#0A1D37]/90 transition-colors text-sm"
+                      >
+                        <FaEdit className="text-sm" />
+                        ویرایش
+                      </button>
+                    )}
+                  </>
+                )}
+                <button
+                  onClick={() => {
+                    setShowLotteryDetails(false);
+                    setIsEditMode(false);
+                    setEditData(null);
+                  }}
+                  className="w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center hover:bg-red-50 rounded-xl transition-colors text-gray-500 hover:text-red-600 border border-transparent hover:border-red-200"
+                >
+                  <FaTimes className="text-xl" />
+                </button>
+              </div>
             </div>
 
             {/* Modal Content - Scrollable */}
@@ -596,6 +726,151 @@ const CustomerLotteryList = () => {
                 )}
               </div>
 
+              {/* Payment Information */}
+              <div className="bg-gradient-to-br from-green-50 to-blue-50 rounded-xl sm:rounded-2xl p-5 sm:p-6 border-2 border-green-200">
+                <h3 className="text-base sm:text-lg font-bold text-[#0A1D37] mb-4 flex items-center gap-2">
+                  <FaCreditCard className="text-green-500 text-xl" />
+                  اطلاعات پرداخت
+                </h3>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                  <div className="bg-white p-4 rounded-xl border border-green-200">
+                    <p className="text-xs sm:text-sm text-gray-600 mb-2">
+                      وضعیت پرداخت
+                    </p>
+                    <span
+                      className={`inline-flex items-center gap-2 px-3 py-1.5 text-xs sm:text-sm font-bold rounded-full border ${
+                        selectedLottery.isPaid
+                          ? "text-green-700 bg-green-100 border-green-300"
+                          : "text-red-700 bg-red-100 border-red-300"
+                      }`}
+                    >
+                      {selectedLottery.isPaid ? (
+                        <FaCheck className="text-green-500" />
+                      ) : (
+                        <FaTimes className="text-red-500" />
+                      )}
+                      {selectedLottery.isPaid ? "پرداخت شده" : "پرداخت نشده"}
+                    </span>
+                  </div>
+
+                  {selectedLottery.paymentMethod && (
+                    <div className="bg-white p-4 rounded-xl border border-green-200">
+                      <p className="text-xs sm:text-sm text-gray-600 mb-2">
+                        روش پرداخت
+                      </p>
+                      <div className="flex items-center gap-2">
+                        {selectedLottery.paymentMethod === "card" ? (
+                          <FaCreditCard className="text-blue-500 text-lg" />
+                        ) : (
+                          <FaMoneyBillWave className="text-green-500 text-lg" />
+                        )}
+                        <p className="text-sm sm:text-base font-bold text-[#0A1D37]">
+                          {selectedLottery.paymentMethod === "card"
+                            ? "کارت به کارت"
+                            : "پرداخت مستقیم (زرین‌پال)"}
+                        </p>
+                      </div>
+                    </div>
+                  )}
+
+                  {selectedLottery.paymentAmount && (
+                    <div className="bg-white p-4 rounded-xl border border-green-200">
+                      <p className="text-xs sm:text-sm text-gray-600 mb-2">
+                        مبلغ پرداخت
+                      </p>
+                      <p className="text-sm sm:text-base font-bold text-[#0A1D37]">
+                        {selectedLottery.paymentAmount.toLocaleString("fa-IR")}{" "}
+                        تومان
+                      </p>
+                    </div>
+                  )}
+
+                  {selectedLottery.paymentDate && (
+                    <div className="bg-white p-4 rounded-xl border border-green-200">
+                      <p className="text-xs sm:text-sm text-gray-600 mb-2">
+                        تاریخ پرداخت
+                      </p>
+                      <p className="text-sm sm:text-base font-bold text-[#0A1D37]">
+                        {new Date(
+                          selectedLottery.paymentDate
+                        ).toLocaleDateString("fa-IR")}
+                      </p>
+                    </div>
+                  )}
+
+                  {selectedLottery.authority && (
+                    <div className="bg-white p-4 rounded-xl border border-green-200">
+                      <p className="text-xs sm:text-sm text-gray-600 mb-2">
+                        شناسه پرداخت
+                      </p>
+                      <p className="text-sm sm:text-base font-bold text-[#0A1D37] font-mono break-all">
+                        {selectedLottery.authority}
+                      </p>
+                    </div>
+                  )}
+
+                  {selectedLottery.refId && (
+                    <div className="bg-white p-4 rounded-xl border border-green-200">
+                      <p className="text-xs sm:text-sm text-gray-600 mb-2">
+                        شماره پیگیری
+                      </p>
+                      <p className="text-sm sm:text-base font-bold text-[#0A1D37] font-mono break-all">
+                        {selectedLottery.refId}
+                      </p>
+                    </div>
+                  )}
+                </div>
+
+                {/* Payment Receipt Image */}
+                {selectedLottery.receiptUrl && (
+                  <div className="mt-4">
+                    <p className="text-sm sm:text-base text-gray-700 mb-3 flex items-center gap-2 font-semibold">
+                      <FaReceipt className="text-blue-500 text-lg" />
+                      رسید پرداخت
+                    </p>
+                    <div className="bg-white rounded-xl border-2 border-gray-200 p-4">
+                      <img
+                        src={selectedLottery.receiptUrl}
+                        alt="رسید پرداخت"
+                        className="max-w-full h-auto max-h-64 sm:max-h-80 rounded-lg border-2 border-gray-200 cursor-pointer hover:opacity-90 transition-opacity shadow-md"
+                        onClick={() =>
+                          window.open(selectedLottery.receiptUrl, "_blank")
+                        }
+                        onError={(e) => {
+                          console.error(
+                            "Error loading receipt image:",
+                            selectedLottery.receiptUrl
+                          );
+                          (e.target as HTMLImageElement).style.display = "none";
+                          const errorDiv = document.createElement("div");
+                          errorDiv.innerHTML =
+                            '<p class="text-red-500 text-sm">خطا در بارگذاری تصویر</p>';
+                          (
+                            e.target as HTMLImageElement
+                          ).parentNode?.appendChild(errorDiv);
+                        }}
+                        onLoad={() =>
+                          console.log("Receipt image loaded successfully")
+                        }
+                      />
+                      <div className="mt-3 flex items-center justify-between">
+                        <p className="text-xs sm:text-sm text-gray-500">
+                          کلیک کنید برای مشاهده تمام صفحه
+                        </p>
+                        <button
+                          onClick={() =>
+                            window.open(selectedLottery.receiptUrl, "_blank")
+                          }
+                          className="text-xs sm:text-sm text-[#0A1D37] hover:text-[#0A1D37]/80 font-semibold bg-gray-100 hover:bg-gray-200 px-3 py-1 rounded-lg transition-colors"
+                        >
+                          مشاهده اصل تصویر
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+
               {/* Family Information */}
               <div className="bg-gradient-to-br from-pink-50 to-red-50 rounded-xl sm:rounded-2xl p-5 sm:p-6 border-2 border-pink-200">
                 <h3 className="text-base sm:text-lg font-bold text-[#0A1D37] mb-4 flex items-center gap-2">
@@ -607,31 +882,113 @@ const CustomerLotteryList = () => {
                     <p className="text-xs sm:text-sm text-gray-600 mb-2">
                       وضعیت تأهل
                     </p>
-                    <p className="text-sm sm:text-base font-bold text-[#0A1D37]">
-                      {selectedLottery.famillyInformations[0]?.maridgeState
-                        ? "متأهل"
-                        : "مجرد"}
-                    </p>
+                    {isEditMode && editData ? (
+                      <div className="flex gap-2">
+                        <label className="flex items-center gap-1 cursor-pointer">
+                          <input
+                            type="radio"
+                            name="maritalStatus"
+                            checked={
+                              editData.famillyInformations[0]?.maridgeState ===
+                              true
+                            }
+                            onChange={() => {
+                              const newEditData = { ...editData };
+                              newEditData.famillyInformations[0].maridgeState =
+                                true;
+                              setEditData(newEditData);
+                            }}
+                            className="text-[#0A1D37] focus:ring-[#0A1D37] text-sm"
+                          />
+                          <span className="text-sm">متأهل</span>
+                        </label>
+                        <label className="flex items-center gap-1 cursor-pointer">
+                          <input
+                            type="radio"
+                            name="maritalStatus"
+                            checked={
+                              editData.famillyInformations[0]?.maridgeState ===
+                              false
+                            }
+                            onChange={() => {
+                              const newEditData = { ...editData };
+                              newEditData.famillyInformations[0].maridgeState =
+                                false;
+                              setEditData(newEditData);
+                            }}
+                            className="text-[#0A1D37] focus:ring-[#0A1D37] text-sm"
+                          />
+                          <span className="text-sm">مجرد</span>
+                        </label>
+                      </div>
+                    ) : (
+                      <p className="text-sm sm:text-base font-bold text-[#0A1D37]">
+                        {selectedLottery.famillyInformations[0]?.maridgeState
+                          ? "متأهل"
+                          : "مجرد"}
+                      </p>
+                    )}
                   </div>
                   <div className="bg-white p-4 rounded-xl border border-pink-200">
                     <p className="text-xs sm:text-sm text-gray-600 mb-2">
                       تعداد فرزندان
                     </p>
-                    <p className="text-sm sm:text-base font-bold text-[#0A1D37]">
-                      {selectedLottery.famillyInformations[0]
-                        ?.numberOfChildren || 0}
-                    </p>
+                    {isEditMode && editData ? (
+                      <select
+                        value={
+                          editData.famillyInformations[0]?.numberOfChildren || 0
+                        }
+                        onChange={(e) => {
+                          const newEditData = { ...editData };
+                          newEditData.famillyInformations[0].numberOfChildren =
+                            parseInt(e.target.value);
+                          setEditData(newEditData);
+                        }}
+                        className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] text-sm"
+                      >
+                        {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((num) => (
+                          <option key={num} value={num}>
+                            {num}
+                          </option>
+                        ))}
+                      </select>
+                    ) : (
+                      <p className="text-sm sm:text-base font-bold text-[#0A1D37]">
+                        {selectedLottery.famillyInformations[0]
+                          ?.numberOfChildren || 0}
+                      </p>
+                    )}
                   </div>
                   <div className="bg-white p-4 rounded-xl border border-pink-200">
                     <p className="text-xs sm:text-sm text-gray-600 mb-2">
                       ثبت‌نام دو نفره
                     </p>
-                    <p className="text-sm sm:text-base font-bold text-[#0A1D37]">
-                      {selectedLottery.famillyInformations[0]
-                        ?.towPeopleRegistration
-                        ? "بله"
-                        : "خیر"}
-                    </p>
+                    {isEditMode && editData ? (
+                      <label className="flex items-center gap-2 cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={
+                            editData.famillyInformations[0]
+                              ?.towPeopleRegistration || false
+                          }
+                          onChange={(e) => {
+                            const newEditData = { ...editData };
+                            newEditData.famillyInformations[0].towPeopleRegistration =
+                              e.target.checked;
+                            setEditData(newEditData);
+                          }}
+                          className="text-[#0A1D37] focus:ring-[#0A1D37] rounded"
+                        />
+                        <span className="text-sm">ثبت‌نام دو نفره</span>
+                      </label>
+                    ) : (
+                      <p className="text-sm sm:text-base font-bold text-[#0A1D37]">
+                        {selectedLottery.famillyInformations[0]
+                          ?.towPeopleRegistration
+                          ? "بله"
+                          : "خیر"}
+                      </p>
+                    )}
                   </div>
                 </div>
               </div>
@@ -653,32 +1010,88 @@ const CustomerLotteryList = () => {
                       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                         <div>
                           <p className="text-xs text-gray-600 mb-1">نام</p>
-                          <p className="text-sm sm:text-base font-semibold text-[#0A1D37]">
-                            {
-                              selectedLottery.registererInformations[0]
-                                .initialInformations.firstName
-                            }
-                          </p>
+                          {isEditMode && editData ? (
+                            <input
+                              type="text"
+                              value={
+                                editData.registererInformations[0]
+                                  ?.initialInformations.firstName || ""
+                              }
+                              onChange={(e) => {
+                                const newEditData = { ...editData };
+                                newEditData.registererInformations[0].initialInformations.firstName =
+                                  e.target.value;
+                                setEditData(newEditData);
+                              }}
+                              className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] text-sm"
+                              placeholder="نام (انگلیسی)"
+                            />
+                          ) : (
+                            <p className="text-sm sm:text-base font-semibold text-[#0A1D37]">
+                              {
+                                selectedLottery.registererInformations[0]
+                                  .initialInformations.firstName
+                              }
+                            </p>
+                          )}
                         </div>
                         <div>
                           <p className="text-xs text-gray-600 mb-1">
                             نام خانوادگی
                           </p>
-                          <p className="text-sm sm:text-base font-semibold text-[#0A1D37]">
-                            {
-                              selectedLottery.registererInformations[0]
-                                .initialInformations.lastName
-                            }
-                          </p>
+                          {isEditMode && editData ? (
+                            <input
+                              type="text"
+                              value={
+                                editData.registererInformations[0]
+                                  ?.initialInformations.lastName || ""
+                              }
+                              onChange={(e) => {
+                                const newEditData = { ...editData };
+                                newEditData.registererInformations[0].initialInformations.lastName =
+                                  e.target.value;
+                                setEditData(newEditData);
+                              }}
+                              className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] text-sm"
+                              placeholder="نام خانوادگی (انگلیسی)"
+                            />
+                          ) : (
+                            <p className="text-sm sm:text-base font-semibold text-[#0A1D37]">
+                              {
+                                selectedLottery.registererInformations[0]
+                                  .initialInformations.lastName
+                              }
+                            </p>
+                          )}
                         </div>
                         <div>
                           <p className="text-xs text-gray-600 mb-1">جنسیت</p>
-                          <p className="text-sm sm:text-base font-semibold text-[#0A1D37]">
-                            {selectedLottery.registererInformations[0]
-                              .initialInformations.gender === "male"
-                              ? "مرد"
-                              : "زن"}
-                          </p>
+                          {isEditMode && editData ? (
+                            <select
+                              value={
+                                editData.registererInformations[0]
+                                  ?.initialInformations.gender || ""
+                              }
+                              onChange={(e) => {
+                                const newEditData = { ...editData };
+                                newEditData.registererInformations[0].initialInformations.gender =
+                                  e.target.value;
+                                setEditData(newEditData);
+                              }}
+                              className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] text-sm"
+                            >
+                              <option value="">انتخاب کنید</option>
+                              <option value="male">مرد</option>
+                              <option value="female">زن</option>
+                            </select>
+                          ) : (
+                            <p className="text-sm sm:text-base font-semibold text-[#0A1D37]">
+                              {selectedLottery.registererInformations[0]
+                                .initialInformations.gender === "male"
+                                ? "مرد"
+                                : "زن"}
+                            </p>
+                          )}
                         </div>
                         <div>
                           <p className="text-xs text-gray-600 mb-1">
