@@ -332,7 +332,7 @@ const CustomerLotteryList = () => {
             لطفاً برای مشاهده ثبت‌نام‌های خود وارد حساب کاربری شوید
           </p>
           <a
-            href="/auth/login"
+            href="/auth/sms"
             className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-[#0A1D37] to-[#4DBFF0] text-white rounded-xl hover:shadow-lg hover:scale-105 transition-all duration-300"
           >
             ورود به سیستم

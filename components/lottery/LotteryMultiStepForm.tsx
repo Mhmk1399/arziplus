@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import {
   FaUser,
   FaUsers,
@@ -89,7 +90,8 @@ interface LotteryFormData {
 }
 
 const LotteryMultiStepForm: React.FC = () => {
-  const { user: currentUser } = useCurrentUser();
+  const router = useRouter();
+  const { user: currentUser, isLoggedIn, loading } = useCurrentUser();
   const [currentStep, setCurrentStep] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showPaymentSelector, setShowPaymentSelector] = useState(false);
@@ -97,6 +99,9 @@ const LotteryMultiStepForm: React.FC = () => {
   const [showFileUploader, setShowFileUploader] = useState(false);
   const [showPhotoInfoModal, setShowPhotoInfoModal] = useState(false);
   const [walletBalance, setWalletBalance] = useState(0);
+  const [validationErrors, setValidationErrors] = useState<{
+    [key: string]: string;
+  }>({});
 
   const [formData, setFormData] = useState<LotteryFormData>({
     famillyInformations: [
@@ -185,6 +190,239 @@ const LotteryMultiStepForm: React.FC = () => {
     return steps.filter((step) => !step.conditional || step.conditional());
   };
 
+  // Validation functions
+  const validateStep = (step: number): boolean => {
+    const errors: { [key: string]: string } = {};
+
+    switch (step) {
+      case 0: // Family Information
+        const family = formData.famillyInformations[0];
+        if (family.maridgeState && family.towPeopleRegistration === undefined) {
+          errors.towPeopleRegistration =
+            "لطفاً مشخص کنید آیا ثبت‌نام دونفره می‌کنید یا خیر";
+        }
+        if (family.numberOfChildren < 0) {
+          errors.numberOfChildren = "تعداد فرزندان نمی‌تواند منفی باشد";
+        }
+        break;
+
+      case 1: // Registerer Information
+        const registerer = formData.registererInformations[0];
+        const initial = registerer.initialInformations;
+        const residence = registerer.residanceInformation[0];
+        const contact = registerer.contactInformations[0];
+        const other = registerer.otherInformations[0];
+
+        // Initial Information validation
+        if (!initial.firstName.trim()) errors.firstName = "نام الزامی است";
+        if (!initial.lastName.trim())
+          errors.lastName = "نام خانوادگی الزامی است";
+        if (!initial.gender) errors.gender = "جنسیت الزامی است";
+        if (!initial.birthDate.year) errors.birthYear = "سال تولد الزامی است";
+        if (!initial.birthDate.month) errors.birthMonth = "ماه تولد الزامی است";
+        if (!initial.birthDate.day) errors.birthDay = "روز تولد الزامی است";
+        if (!initial.country.trim()) errors.country = "کشور تولد الزامی است";
+        if (!initial.city.trim()) errors.city = "شهر تولد الزامی است";
+        if (!initial.citizenshipCountry.trim())
+          errors.citizenshipCountry = "کشور تابعیت الزامی است";
+
+        // Residence Information validation
+        if (!residence.residanceCountry.trim())
+          errors.residanceCountry = "کشور محل سکونت الزامی است";
+        if (!residence.residanceCity.trim())
+          errors.residanceCity = "شهر محل سکونت الزامی است";
+        if (!residence.residanseState.trim())
+          errors.residanseState = "استان/ایالت محل سکونت الزامی است";
+        if (!residence.postalCode.trim())
+          errors.postalCode = "کد پستی الزامی است";
+        if (!residence.residanseAdress.trim())
+          errors.residanseAdress = "آدرس کامل الزامی است";
+
+        // Contact Information validation
+        if (!contact.activePhoneNumber.trim())
+          errors.activePhoneNumber = "شماره تلفن فعال الزامی است";
+        if (!contact.email.trim()) errors.email = "آدرس ایمیل الزامی است";
+        if (contact.email && !/\S+@\S+\.\S+/.test(contact.email)) {
+          errors.email = "فرمت ایمیل صحیح نیست";
+        }
+
+        // Other Information validation
+        if (!other.persianName.trim())
+          errors.persianName = "نام فارسی الزامی است";
+        if (!other.persianLastName.trim())
+          errors.persianLastName = "نام خانوادگی فارسی الزامی است";
+        if (!other.lastDegree.trim())
+          errors.lastDegree = "آخرین مدرک تحصیلی الزامی است";
+        if (!other.imageUrl.trim()) errors.imageUrl = "آپلود تصویر الزامی است";
+        break;
+
+      case 2: // Partner Information
+        if (formData.famillyInformations[0]?.maridgeState) {
+          if (formData.registererPartnerInformations.length === 0) {
+            errors.partnerData = "اطلاعات همسر باید تکمیل شود";
+            break;
+          }
+
+          const partner = formData.registererPartnerInformations[0];
+          const partnerInitial = partner?.initialInformations;
+          const partnerOther = partner?.otherInformations?.[0];
+
+          if (!partnerInitial?.firstName?.trim())
+            errors.partnerFirstName = "نام همسر الزامی است";
+          if (!partnerInitial?.lastName?.trim())
+            errors.partnerLastName = "نام خانوادگی همسر الزامی است";
+          if (!partnerInitial?.gender)
+            errors.partnerGender = "جنسیت همسر الزامی است";
+          if (!partnerInitial?.birthDate?.year)
+            errors.partnerBirthYear = "سال تولد همسر الزامی است";
+          if (!partnerInitial?.birthDate?.month)
+            errors.partnerBirthMonth = "ماه تولد همسر الزامی است";
+          if (!partnerInitial?.birthDate?.day)
+            errors.partnerBirthDay = "روز تولد همسر الزامی است";
+          if (!partnerInitial?.country?.trim())
+            errors.partnerCountry = "کشور تولد همسر الزامی است";
+          if (!partnerInitial?.city?.trim())
+            errors.partnerCity = "شهر تولد همسر الزامی است";
+          if (!partnerInitial?.citizenshipCountry?.trim())
+            errors.partnerCitizenshipCountry = "کشور تابعیت همسر الزامی است";
+
+          if (!partnerOther?.persianName?.trim())
+            errors.partnerPersianName = "نام فارسی همسر الزامی است";
+          if (!partnerOther?.persianLastName?.trim())
+            errors.partnerPersianLastName =
+              "نام خانوادگی فارسی همسر الزامی است";
+          if (!partnerOther?.lastDegree?.trim())
+            errors.partnerLastDegree = "آخرین مدرک تحصیلی همسر الزامی است";
+          if (!partnerOther?.imageUrl?.trim())
+            errors.partnerImageUrl = "آپلود تصویر همسر الزامی است";
+        }
+        break;
+
+      case 3: // Children Information
+        if (formData.famillyInformations[0]?.numberOfChildren > 0) {
+          formData.registererChildformations.forEach((child, index) => {
+            const childInitial = child.initialInformations;
+            const childOther = child.otherInformations[0];
+
+            if (!childInitial.firstName.trim())
+              errors[`childFirstName${index}`] = `نام فرزند ${
+                index + 1
+              } الزامی است`;
+            if (!childInitial.lastName.trim())
+              errors[`childLastName${index}`] = `نام خانوادگی فرزند ${
+                index + 1
+              } الزامی است`;
+            if (!childInitial.gender)
+              errors[`childGender${index}`] = `جنسیت فرزند ${
+                index + 1
+              } الزامی است`;
+            if (!childInitial.birthDate.year)
+              errors[`childBirthYear${index}`] = `سال تولد فرزند ${
+                index + 1
+              } الزامی است`;
+            if (!childInitial.birthDate.month)
+              errors[`childBirthMonth${index}`] = `ماه تولد فرزند ${
+                index + 1
+              } الزامی است`;
+            if (!childInitial.birthDate.day)
+              errors[`childBirthDay${index}`] = `روز تولد فرزند ${
+                index + 1
+              } الزامی است`;
+            if (!childInitial.country.trim())
+              errors[`childCountry${index}`] = `کشور تولد فرزند ${
+                index + 1
+              } الزامی است`;
+            if (!childInitial.city.trim())
+              errors[`childCity${index}`] = `شهر تولد فرزند ${
+                index + 1
+              } الزامی است`;
+            if (!childInitial.citizenshipCountry.trim())
+              errors[`childCitizenshipCountry${index}`] = `کشور تابعیت فرزند ${
+                index + 1
+              } الزامی است`;
+
+            if (!childOther.persianName.trim())
+              errors[`childPersianName${index}`] = `نام فارسی فرزند ${
+                index + 1
+              } الزامی است`;
+            if (!childOther.persianLastName.trim())
+              errors[
+                `childPersianLastName${index}`
+              ] = `نام خانوادگی فارسی فرزند ${index + 1} الزامی است`;
+            if (!childOther.imageUrl.trim())
+              errors[`childImageUrl${index}`] = `آپلود تصویر فرزند ${
+                index + 1
+              } الزامی است`;
+          });
+        }
+        break;
+    }
+
+    setValidationErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
+  const handleNext = () => {
+    if (validateStep(currentStep)) {
+      const visibleSteps = getVisibleSteps();
+      setCurrentStep(Math.min(visibleSteps.length - 1, currentStep + 1));
+    } else {
+      showToast.error("لطفاً تمامی فیلدهای الزامی را تکمیل کنید");
+    }
+  };
+
+  // Helper function to render form fields with validation
+  const renderFormField = (
+    type: "text" | "select" | "email",
+    label: string,
+    value: string,
+    onChange: (value: string) => void,
+    errorKey: string,
+    placeholder?: string,
+    options?: { value: string; label: string }[],
+    required: boolean = true,
+    className?: string
+  ) => (
+    <div className={className}>
+      <label className="block text-sm font-medium text-gray-700 mb-1">
+        {label} {required && <span className="text-red-500">*</span>}
+      </label>
+      {type === "select" ? (
+        <select
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          className={`w-full p-2 md:p-3 border rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] outline-none transition-all ${
+            validationErrors[errorKey] ? "border-red-500" : "border-gray-300"
+          }`}
+          required={required}
+        >
+          <option value="">{placeholder || "انتخاب کنید"}</option>
+          {options?.map((opt) => (
+            <option key={opt.value} value={opt.value}>
+              {opt.label}
+            </option>
+          ))}
+        </select>
+      ) : (
+        <input
+          type={type}
+          placeholder={placeholder}
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          className={`w-full p-2 md:p-3 border outline-none rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all ${
+            validationErrors[errorKey] ? "border-red-500" : "border-gray-300"
+          }`}
+          required={required}
+        />
+      )}
+      {validationErrors[errorKey] && (
+        <p className="text-red-500 text-xs mt-1">
+          {validationErrors[errorKey]}
+        </p>
+      )}
+    </div>
+  );
+
   // Fetch wallet balance
   const fetchWalletBalance = async () => {
     if (!currentUser) return;
@@ -213,18 +451,75 @@ const LotteryMultiStepForm: React.FC = () => {
     }
   }, [currentUser]);
 
+  // Authentication check - redirect if not logged in
+  useEffect(() => {
+    if (!isLoggedIn) {
+      showToast.error("برای دسترسی به این صفحه باید وارد حساب کاربری خود شوید");
+      setTimeout(() => {
+        router.push("/auth/sms");
+      }, 2000);
+    }
+  }, [isLoggedIn, router]);
+
+  // Loading state while checking authentication
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#FF7A00] mx-auto mb-4"></div>
+          <p className="text-gray-600">در حال بررسی احراز هویت...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Not logged in state
+  if (!isLoggedIn) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50 flex items-center justify-center">
+        <div className="text-center">
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">
+            دسترسی محدود
+          </h2>
+          <p className="text-gray-600 mb-6">
+            برای ثبت‌نام در قرعه‌کشی باید وارد حساب کاربری خود شوید
+          </p>
+          <button
+            onClick={() => router.push("/auth/sms")}
+            className="bg-[#FF7A00] text-white px-6 py-3 rounded-xl font-medium hover:bg-[#FF7A00]/90 transition-colors"
+          >
+            ورود به حساب کاربری
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   const handleSubmit = async () => {
     if (!currentUser?.id) {
       showToast.error("لطفاً ابتدا وارد حساب کاربری خود شوید");
       return;
     }
 
+    // Validate all visible steps before submission
+    const visibleSteps = getVisibleSteps();
+    for (let i = 0; i < visibleSteps.length; i++) {
+      if (!validateStep(visibleSteps[i].id)) {
+        showToast.error(
+          `لطفاً ابتدا اطلاعات مرحله "${visibleSteps[i].title}" را تکمیل کنید`
+        );
+        setCurrentStep(i);
+        return;
+      }
+    }
+
     // Show payment method selection
     setShowPaymentSelector(true);
   };
 
-  const lotteryFee = 500000 + ((formData.famillyInformations[0]?.numberOfChildren || 0) * 150000);
-  
+  const lotteryFee =
+    500000 + (formData.famillyInformations[0]?.numberOfChildren || 0) * 150000;
+
   // Handle wallet payment
   const handleWalletPayment = async () => {
     setIsSubmitting(true);
@@ -246,6 +541,11 @@ const LotteryMultiStepForm: React.FC = () => {
 
       // Update wallet balance
       setWalletBalance((prev) => prev - lotteryFee);
+
+      // Redirect to dashboard after successful submission
+      setTimeout(() => {
+        router.push("/dashboard");
+      }, 2000); // Wait 2 seconds to show success message
     } catch (error) {
       console.log("Wallet payment error:", error);
       showToast.error("خطا در پرداخت از کیف پول");
@@ -465,18 +765,107 @@ const LotteryMultiStepForm: React.FC = () => {
     field: string,
     value: string | { year: string; month: string; day: string }
   ) => {
-    setFormData((prev) => ({
-      ...prev,
-      registererPartnerInformations: [
-        {
-          ...prev.registererPartnerInformations[0],
-          initialInformations: {
-            ...prev.registererPartnerInformations[0].initialInformations,
-            [field]: value,
+    setFormData((prev) => {
+      // Initialize partner info if it doesn't exist
+      if (prev.registererPartnerInformations.length === 0) {
+        return {
+          ...prev,
+          registererPartnerInformations: [
+            {
+              initialInformations: {
+                firstName: "",
+                lastName: "",
+                gender: "",
+                birthDate: {
+                  year: "",
+                  month: "",
+                  day: "",
+                },
+                country: "",
+                city: "",
+                citizenshipCountry: "",
+                [field]: value,
+              },
+              otherInformations: [
+                {
+                  persianName: "",
+                  persianLastName: "",
+                  lastDegree: "",
+                  partnerCitizenShip: "",
+                  imageUrl: "",
+                },
+              ],
+            },
+          ],
+        };
+      }
+
+      return {
+        ...prev,
+        registererPartnerInformations: [
+          {
+            ...prev.registererPartnerInformations[0],
+            initialInformations: {
+              ...prev.registererPartnerInformations[0].initialInformations,
+              [field]: value,
+            },
           },
-        },
-      ],
-    }));
+        ],
+      };
+    });
+  };
+
+  const updatePartnerOtherInfo = (field: string, value: string) => {
+    setFormData((prev) => {
+      // Initialize partner info if it doesn't exist
+      if (prev.registererPartnerInformations.length === 0) {
+        return {
+          ...prev,
+          registererPartnerInformations: [
+            {
+              initialInformations: {
+                firstName: "",
+                lastName: "",
+                gender: "",
+                birthDate: {
+                  year: "",
+                  month: "",
+                  day: "",
+                },
+                country: "",
+                city: "",
+                citizenshipCountry: "",
+              },
+              otherInformations: [
+                {
+                  persianName: "",
+                  persianLastName: "",
+                  lastDegree: "",
+                  partnerCitizenShip: "",
+                  imageUrl: "",
+                  [field]: value,
+                },
+              ],
+            },
+          ],
+        };
+      }
+
+      return {
+        ...prev,
+        registererPartnerInformations: [
+          {
+            ...prev.registererPartnerInformations[0],
+            otherInformations: [
+              {
+                ...prev.registererPartnerInformations[0].otherInformations[0],
+                [field]: value,
+              },
+            ],
+          },
+        ],
+      };
+    });
   };
 
   const updateChildInfo = (
@@ -529,12 +918,12 @@ const LotteryMultiStepForm: React.FC = () => {
           اطلاعات خانوادگی
         </h3>
 
-        <div className="grid md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              وضعیت تأهل
+              وضعیت تأهل <span className="text-red-500">*</span>
             </label>
-            <div className="flex gap-4">
+            <div className="flex flex-col sm:flex-row gap-2 sm:gap-4">
               <label className="flex items-center gap-2 cursor-pointer">
                 <input
                   type="radio"
@@ -544,6 +933,7 @@ const LotteryMultiStepForm: React.FC = () => {
                   }
                   onChange={() => updateFamilyInfo("maridgeState", true)}
                   className="text-[#FF7A00] focus:ring-[#FF7A00]"
+                  required
                 />
                 <span>متأهل</span>
               </label>
@@ -556,6 +946,7 @@ const LotteryMultiStepForm: React.FC = () => {
                   }
                   onChange={() => updateFamilyInfo("maridgeState", false)}
                   className="text-[#FF7A00] focus:ring-[#FF7A00]"
+                  required
                 />
                 <span>مجرد</span>
               </label>
@@ -564,7 +955,7 @@ const LotteryMultiStepForm: React.FC = () => {
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              تعداد فرزندان
+              تعداد فرزندان <span className="text-red-500">*</span>
             </label>
             <select
               value={formData.famillyInformations[0]?.numberOfChildren || 0}
@@ -572,6 +963,7 @@ const LotteryMultiStepForm: React.FC = () => {
                 updateFamilyInfo("numberOfChildren", parseInt(e.target.value))
               }
               className="w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all"
+              required
             >
               {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((num) => (
                 <option key={num} value={num}>
@@ -579,26 +971,59 @@ const LotteryMultiStepForm: React.FC = () => {
                 </option>
               ))}
             </select>
+            {validationErrors.numberOfChildren && (
+              <p className="text-red-500 text-xs mt-1">
+                {validationErrors.numberOfChildren}
+              </p>
+            )}
           </div>
 
-          <div className="md:col-span-2">
-            <label className="flex items-center gap-2 cursor-pointer">
-              <input
-                type="checkbox"
-                checked={
-                  formData.famillyInformations[0]?.towPeopleRegistration ||
-                  false
-                }
-                onChange={(e) =>
-                  updateFamilyInfo("towPeopleRegistration", e.target.checked)
-                }
-                className="text-[#FF7A00] focus:ring-[#FF7A00] rounded"
-              />
-              <span className="text-sm font-medium text-gray-700">
-                ثبت‌نام دو نفره (همراه همسر)
-              </span>
-            </label>
-          </div>
+          {formData.famillyInformations[0]?.maridgeState && (
+            <div className="md:col-span-2">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                نحوه ثبت‌نام <span className="text-red-500">*</span>
+              </label>
+              <div className="flex flex-col sm:flex-row gap-2 sm:gap-4">
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="radio"
+                    name="registrationType"
+                    checked={
+                      formData.famillyInformations[0]?.towPeopleRegistration ===
+                      true
+                    }
+                    onChange={() =>
+                      updateFamilyInfo("towPeopleRegistration", true)
+                    }
+                    className="text-[#FF7A00] focus:ring-[#FF7A00]"
+                    required
+                  />
+                  <span>ثبت‌نام دو نفره (همراه همسر)</span>
+                </label>
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="radio"
+                    name="registrationType"
+                    checked={
+                      formData.famillyInformations[0]?.towPeopleRegistration ===
+                      false
+                    }
+                    onChange={() =>
+                      updateFamilyInfo("towPeopleRegistration", false)
+                    }
+                    className="text-[#FF7A00] focus:ring-[#FF7A00]"
+                    required
+                  />
+                  <span>ثبت‌نام تک نفره</span>
+                </label>
+              </div>
+              {validationErrors.towPeopleRegistration && (
+                <p className="text-red-500 text-xs mt-1">
+                  {validationErrors.towPeopleRegistration}
+                </p>
+              )}
+            </div>
+          )}
         </div>
       </div>
     </div>
@@ -613,112 +1038,212 @@ const LotteryMultiStepForm: React.FC = () => {
           اطلاعات اولیه
         </h3>
 
-        <div className="grid md:grid-cols-2 gap-4">
-          <input
-            type="text"
-            placeholder="نام (حتما انگلیسی وارد نمایید)"
-            value={
-              formData.registererInformations[0]?.initialInformations
-                .firstName || ""
-            }
-            onChange={(e) =>
-              updateRegistererInfo(
-                "initialInformations",
-                "firstName",
-                e.target.value
-              )
-            }
-            className="p-3 border outline-none border-gray-300 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all"
-          />
-          <input
-            type="text"
-            placeholder="نام خانوادگی (حتما انگلیسی وارد نمایید)"
-            value={
-              formData.registererInformations[0]?.initialInformations
-                .lastName || ""
-            }
-            onChange={(e) =>
-              updateRegistererInfo(
-                "initialInformations",
-                "lastName",
-                e.target.value
-              )
-            }
-            className="p-3 border outline-none border-gray-300 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all"
-          />
-          <select
-            value={
-              formData.registererInformations[0]?.initialInformations.gender ||
-              ""
-            }
-            onChange={(e) =>
-              updateRegistererInfo(
-                "initialInformations",
-                "gender",
-                e.target.value
-              )
-            }
-            className="p-3  border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] outline-none transition-all"
-          >
-            <option value="">جنسیت</option>
-            <option value="male">مرد</option>
-            <option value="female">زن</option>
-          </select>
-          <PersianDatePicker
-            value={
-              formData.registererInformations[0]?.initialInformations.birthDate
-            }
-            onChange={(date: { year: string; month: string; day: string }) =>
-              updateRegistererInfo("initialInformations", "birthDate", date)
-            }
-          />
-          <input
-            type="text"
-            placeholder="کشور"
-            value={
-              formData.registererInformations[0]?.initialInformations.country ||
-              ""
-            }
-            onChange={(e) =>
-              updateRegistererInfo(
-                "initialInformations",
-                "country",
-                e.target.value
-              )
-            }
-            className="p-3 border outline-none border-gray-300 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all"
-          />
-          <input
-            type="text"
-            placeholder="شهر (حتما انگلیسی وارد نمایید)"
-            value={
-              formData.registererInformations[0]?.initialInformations.city || ""
-            }
-            onChange={(e) =>
-              updateRegistererInfo(
-                "initialInformations",
-                "city",
-                e.target.value
-              )
-            }
-            className="p-3 border outline-none border-gray-300 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all"
-          />
-          <input
-            type="text"
-            placeholder="کشور تابعیت"
-            value={
-              formData.registererInformations[0]?.initialInformations
-                .citizenshipCountry || ""
-            }
-            onChange={(e) =>
-              updateRegistererInfo(
-                "initialInformations",
-                "citizenshipCountry",
-                e.target.value
-              )
-            }
-            className="p-3 border outline-none border-gray-300 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all md:col-span-2"
-          />
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              نام <span className="text-red-500">*</span>
+            </label>
+            <input
+              type="text"
+              placeholder="نام (حتما انگلیسی وارد نمایید)"
+              value={
+                formData.registererInformations[0]?.initialInformations
+                  .firstName || ""
+              }
+              onChange={(e) =>
+                updateRegistererInfo(
+                  "initialInformations",
+                  "firstName",
+                  e.target.value
+                )
+              }
+              className={`w-full p-2 md:p-3 border outline-none rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all ${
+                validationErrors.firstName
+                  ? "border-red-500"
+                  : "border-gray-300"
+              }`}
+              required
+            />
+            {validationErrors.firstName && (
+              <p className="text-red-500 text-xs mt-1">
+                {validationErrors.firstName}
+              </p>
+            )}
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              نام خانوادگی <span className="text-red-500">*</span>
+            </label>
+            <input
+              type="text"
+              placeholder="نام خانوادگی (حتما انگلیسی وارد نمایید)"
+              value={
+                formData.registererInformations[0]?.initialInformations
+                  .lastName || ""
+              }
+              onChange={(e) =>
+                updateRegistererInfo(
+                  "initialInformations",
+                  "lastName",
+                  e.target.value
+                )
+              }
+              className={`w-full p-2 md:p-3 border outline-none rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all ${
+                validationErrors.lastName ? "border-red-500" : "border-gray-300"
+              }`}
+              required
+            />
+            {validationErrors.lastName && (
+              <p className="text-red-500 text-xs mt-1">
+                {validationErrors.lastName}
+              </p>
+            )}
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              جنسیت <span className="text-red-500">*</span>
+            </label>
+            <select
+              value={
+                formData.registererInformations[0]?.initialInformations
+                  .gender || ""
+              }
+              onChange={(e) =>
+                updateRegistererInfo(
+                  "initialInformations",
+                  "gender",
+                  e.target.value
+                )
+              }
+              className={`w-full p-2 md:p-3 border rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] outline-none transition-all ${
+                validationErrors.gender ? "border-red-500" : "border-gray-300"
+              }`}
+              required
+            >
+              <option value="">انتخاب کنید</option>
+              <option value="male">مرد</option>
+              <option value="female">زن</option>
+            </select>
+            {validationErrors.gender && (
+              <p className="text-red-500 text-xs mt-1">
+                {validationErrors.gender}
+              </p>
+            )}
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              تاریخ تولد <span className="text-red-500">*</span>
+            </label>
+            <PersianDatePicker
+              value={
+                formData.registererInformations[0]?.initialInformations
+                  .birthDate
+              }
+              onChange={(date: { year: string; month: string; day: string }) =>
+                updateRegistererInfo("initialInformations", "birthDate", date)
+              }
+            />
+            {(validationErrors.birthYear ||
+              validationErrors.birthMonth ||
+              validationErrors.birthDay) && (
+              <p className="text-red-500 text-xs mt-1">تاریخ تولد الزامی است</p>
+            )}
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              کشور تولد <span className="text-red-500">*</span>
+            </label>
+            <input
+              type="text"
+              placeholder="کشور تولد"
+              value={
+                formData.registererInformations[0]?.initialInformations
+                  .country || ""
+              }
+              onChange={(e) =>
+                updateRegistererInfo(
+                  "initialInformations",
+                  "country",
+                  e.target.value
+                )
+              }
+              className={`w-full p-2 md:p-3 border outline-none rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all ${
+                validationErrors.country ? "border-red-500" : "border-gray-300"
+              }`}
+              required
+            />
+            {validationErrors.country && (
+              <p className="text-red-500 text-xs mt-1">
+                {validationErrors.country}
+              </p>
+            )}
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              شهر تولد <span className="text-red-500">*</span>
+            </label>
+            <input
+              type="text"
+              placeholder="شهر تولد (حتما انگلیسی وارد نمایید)"
+              value={
+                formData.registererInformations[0]?.initialInformations.city ||
+                ""
+              }
+              onChange={(e) =>
+                updateRegistererInfo(
+                  "initialInformations",
+                  "city",
+                  e.target.value
+                )
+              }
+              className={`w-full p-2 md:p-3 border outline-none rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all ${
+                validationErrors.city ? "border-red-500" : "border-gray-300"
+              }`}
+              required
+            />
+            {validationErrors.city && (
+              <p className="text-red-500 text-xs mt-1">
+                {validationErrors.city}
+              </p>
+            )}
+          </div>
+
+          <div className="sm:col-span-2">
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              کشور تابعیت <span className="text-red-500">*</span>
+            </label>
+            <input
+              type="text"
+              placeholder="کشور تابعیت"
+              value={
+                formData.registererInformations[0]?.initialInformations
+                  .citizenshipCountry || ""
+              }
+              onChange={(e) =>
+                updateRegistererInfo(
+                  "initialInformations",
+                  "citizenshipCountry",
+                  e.target.value
+                )
+              }
+              className={`w-full p-2 md:p-3 border outline-none rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all ${
+                validationErrors.citizenshipCountry
+                  ? "border-red-500"
+                  : "border-gray-300"
+              }`}
+              required
+            />
+            {validationErrors.citizenshipCountry && (
+              <p className="text-red-500 text-xs mt-1">
+                {validationErrors.citizenshipCountry}
+              </p>
+            )}
+          </div>
         </div>
       </div>
 
@@ -970,17 +1495,30 @@ const LotteryMultiStepForm: React.FC = () => {
               </h4>
               <div className="space-y-2 text-sm text-gray-700">
                 <p>• باید زاویه مستقیم به دوربین داشته باشید.</p>
-                <p>• عکس به شکل مربع و طول 600 پیکسل تا 1200 پیکسل مورد قبول است.</p>
+                <p>
+                  • عکس به شکل مربع و طول 600 پیکسل تا 1200 پیکسل مورد قبول است.
+                </p>
                 <p>• زمینه عکس باید سفید یا مایل به سفید باشد.</p>
                 <p>• عکس باید رنگی باشد و عکس سیاه و سفید مردود است.</p>
                 <p>• عکس لاتاری باید بدون عینک و سمعک باشد.</p>
                 <p>• موی شما نباید روی صورت شما را بپوشاند.</p>
                 <p>• نیازی به معلوم بودن گوش ها نیست.</p>
-                <p>• عکس با حجاب هم برای مسلمانان و سایر ادیانی که حجاب در آنها تعریف شده است ممانعتی ندارد.</p>
+                <p>
+                  • عکس با حجاب هم برای مسلمانان و سایر ادیانی که حجاب در آنها
+                  تعریف شده است ممانعتی ندارد.
+                </p>
                 <p>• گردی صورت باید کاملا واضح باشد و با چیزی پوشانده نشود.</p>
-                <p>• نیازی به چاپ عکس ندارید، عکس باید به صورت فایل دیجیتال به شما تحویل داده شود.</p>
-                <p>• عکس باید مربوط به شش ماه گذشته باشد. نباید سن عکس بیش از 6 ماه باشد.</p>
-                <p>• از عکسی که سال گذشته استفاده کردید نباید مجدد استفاده کنید.</p>
+                <p>
+                  • نیازی به چاپ عکس ندارید، عکس باید به صورت فایل دیجیتال به
+                  شما تحویل داده شود.
+                </p>
+                <p>
+                  • عکس باید مربوط به شش ماه گذشته باشد. نباید سن عکس بیش از 6
+                  ماه باشد.
+                </p>
+                <p>
+                  • از عکسی که سال گذشته استفاده کردید نباید مجدد استفاده کنید.
+                </p>
               </div>
               <button
                 onClick={() => setShowPhotoInfoModal(true)}
@@ -1058,80 +1596,314 @@ const LotteryMultiStepForm: React.FC = () => {
             اطلاعات همسر
           </h3>
 
-          <div className="grid md:grid-cols-2 gap-4">
-            <input
-              type="text"
-              placeholder="نام همسر"
-              value={
-                formData.registererPartnerInformations[0]?.initialInformations
-                  .firstName || ""
-              }
-              onChange={(e) => updatePartnerInfo("firstName", e.target.value)}
-              className="p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all"
-            />
-            <input
-              type="text"
-              placeholder="نام خانوادگی همسر"
-              value={
-                formData.registererPartnerInformations[0]?.initialInformations
-                  .lastName || ""
-              }
-              onChange={(e) => updatePartnerInfo("lastName", e.target.value)}
-              className="p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all"
-            />
-            <select
-              value={
-                formData.registererPartnerInformations[0]?.initialInformations
-                  .gender || ""
-              }
-              onChange={(e) => updatePartnerInfo("gender", e.target.value)}
-              className="p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all"
-            >
-              <option value="">جنسیت</option>
-              <option value="male">مرد</option>
-              <option value="female">زن</option>
-            </select>
-            <PersianDatePicker
-              value={
-                formData.registererPartnerInformations[0]?.initialInformations
-                  .birthDate
-              }
-              onChange={(date: { year: string; month: string; day: string }) =>
-                updatePartnerInfo("birthDate", date)
-              }
-            />
-            <input
-              type="text"
-              placeholder="کشور"
-              value={
-                formData.registererPartnerInformations[0]?.initialInformations
-                  .country || ""
-              }
-              onChange={(e) => updatePartnerInfo("country", e.target.value)}
-              className="p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all"
-            />
-            <input
-              type="text"
-              placeholder="شهر"
-              value={
-                formData.registererPartnerInformations[0]?.initialInformations
-                  .city || ""
-              }
-              onChange={(e) => updatePartnerInfo("city", e.target.value)}
-              className="p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all"
-            />
-            <input
-              type="text"
-              placeholder="کشور شهروندی"
-              value={
-                formData.registererPartnerInformations[0]?.initialInformations
-                  .citizenshipCountry || ""
-              }
-              onChange={(e) =>
-                updatePartnerInfo("citizenshipCountry", e.target.value)
-              }
-              className="p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all md:col-span-2"
-            />
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                نام همسر <span className="text-red-500">*</span>
+              </label>
+              <input
+                type="text"
+                placeholder="نام همسر"
+                value={
+                  formData.registererPartnerInformations[0]?.initialInformations
+                    .firstName || ""
+                }
+                onChange={(e) => updatePartnerInfo("firstName", e.target.value)}
+                className={`w-full p-2 md:p-3 border rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all ${
+                  validationErrors.partnerFirstName
+                    ? "border-red-500"
+                    : "border-gray-300"
+                }`}
+                required
+              />
+              {validationErrors.partnerFirstName && (
+                <p className="text-red-500 text-xs mt-1">
+                  {validationErrors.partnerFirstName}
+                </p>
+              )}
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                نام خانوادگی همسر <span className="text-red-500">*</span>
+              </label>
+              <input
+                type="text"
+                placeholder="نام خانوادگی همسر"
+                value={
+                  formData.registererPartnerInformations[0]?.initialInformations
+                    .lastName || ""
+                }
+                onChange={(e) => updatePartnerInfo("lastName", e.target.value)}
+                className={`w-full p-2 md:p-3 border rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all ${
+                  validationErrors.partnerLastName
+                    ? "border-red-500"
+                    : "border-gray-300"
+                }`}
+                required
+              />
+              {validationErrors.partnerLastName && (
+                <p className="text-red-500 text-xs mt-1">
+                  {validationErrors.partnerLastName}
+                </p>
+              )}
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                جنسیت همسر <span className="text-red-500">*</span>
+              </label>
+              <select
+                value={
+                  formData.registererPartnerInformations[0]?.initialInformations
+                    .gender || ""
+                }
+                onChange={(e) => updatePartnerInfo("gender", e.target.value)}
+                className={`w-full p-2 md:p-3 border rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all ${
+                  validationErrors.partnerGender
+                    ? "border-red-500"
+                    : "border-gray-300"
+                }`}
+                required
+              >
+                <option value="">انتخاب کنید</option>
+                <option value="male">مرد</option>
+                <option value="female">زن</option>
+              </select>
+              {validationErrors.partnerGender && (
+                <p className="text-red-500 text-xs mt-1">
+                  {validationErrors.partnerGender}
+                </p>
+              )}
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                تاریخ تولد همسر <span className="text-red-500">*</span>
+              </label>
+              <PersianDatePicker
+                value={
+                  formData.registererPartnerInformations[0]?.initialInformations
+                    .birthDate
+                }
+                onChange={(date: {
+                  year: string;
+                  month: string;
+                  day: string;
+                }) => updatePartnerInfo("birthDate", date)}
+              />
+              {(validationErrors.partnerBirthYear ||
+                validationErrors.partnerBirthMonth ||
+                validationErrors.partnerBirthDay) && (
+                <p className="text-red-500 text-xs mt-1">
+                  تاریخ تولد الزامی است
+                </p>
+              )}
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                کشور تولد همسر <span className="text-red-500">*</span>
+              </label>
+              <input
+                type="text"
+                placeholder="کشور تولد همسر"
+                value={
+                  formData.registererPartnerInformations[0]?.initialInformations
+                    .country || ""
+                }
+                onChange={(e) => updatePartnerInfo("country", e.target.value)}
+                className={`w-full p-2 md:p-3 border rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all ${
+                  validationErrors.partnerCountry
+                    ? "border-red-500"
+                    : "border-gray-300"
+                }`}
+                required
+              />
+              {validationErrors.partnerCountry && (
+                <p className="text-red-500 text-xs mt-1">
+                  {validationErrors.partnerCountry}
+                </p>
+              )}
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                شهر تولد همسر <span className="text-red-500">*</span>
+              </label>
+              <input
+                type="text"
+                placeholder="شهر تولد همسر"
+                value={
+                  formData.registererPartnerInformations[0]?.initialInformations
+                    .city || ""
+                }
+                onChange={(e) => updatePartnerInfo("city", e.target.value)}
+                className={`w-full p-2 md:p-3 border rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all ${
+                  validationErrors.partnerCity
+                    ? "border-red-500"
+                    : "border-gray-300"
+                }`}
+                required
+              />
+              {validationErrors.partnerCity && (
+                <p className="text-red-500 text-xs mt-1">
+                  {validationErrors.partnerCity}
+                </p>
+              )}
+            </div>
+
+            <div className="sm:col-span-2">
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                کشور تابعیت همسر <span className="text-red-500">*</span>
+              </label>
+              <input
+                type="text"
+                placeholder="کشور تابعیت همسر"
+                value={
+                  formData.registererPartnerInformations[0]?.initialInformations
+                    .citizenshipCountry || ""
+                }
+                onChange={(e) =>
+                  updatePartnerInfo("citizenshipCountry", e.target.value)
+                }
+                className={`w-full p-2 md:p-3 border rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all ${
+                  validationErrors.partnerCitizenshipCountry
+                    ? "border-red-500"
+                    : "border-gray-300"
+                }`}
+                required
+              />
+              {validationErrors.partnerCitizenshipCountry && (
+                <p className="text-red-500 text-xs mt-1">
+                  {validationErrors.partnerCitizenshipCountry}
+                </p>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Partner Persian Information */}
+        <div className="bg-gradient-to-r from-green-50 to-teal-50 p-6 rounded-2xl border border-gray-200">
+          <h3 className="text-lg font-bold text-[#0A1D37] mb-4 flex items-center gap-3">
+            <FaUser className="text-green-500" />
+            اطلاعات فارسی همسر
+          </h3>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                نام فارسی همسر <span className="text-red-500">*</span>
+              </label>
+              <input
+                type="text"
+                placeholder="نام فارسی همسر"
+                value={
+                  formData.registererPartnerInformations[0]
+                    ?.otherInformations[0]?.persianName || ""
+                }
+                onChange={(e) =>
+                  updatePartnerOtherInfo("persianName", e.target.value)
+                }
+                className={`w-full p-2 md:p-3 border rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all ${
+                  validationErrors.partnerPersianName
+                    ? "border-red-500"
+                    : "border-gray-300"
+                }`}
+                required
+              />
+              {validationErrors.partnerPersianName && (
+                <p className="text-red-500 text-xs mt-1">
+                  {validationErrors.partnerPersianName}
+                </p>
+              )}
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                نام خانوادگی فارسی همسر <span className="text-red-500">*</span>
+              </label>
+              <input
+                type="text"
+                placeholder="نام خانوادگی فارسی همسر"
+                value={
+                  formData.registererPartnerInformations[0]
+                    ?.otherInformations[0]?.persianLastName || ""
+                }
+                onChange={(e) =>
+                  updatePartnerOtherInfo("persianLastName", e.target.value)
+                }
+                className={`w-full p-2 md:p-3 border rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all ${
+                  validationErrors.partnerPersianLastName
+                    ? "border-red-500"
+                    : "border-gray-300"
+                }`}
+                required
+              />
+              {validationErrors.partnerPersianLastName && (
+                <p className="text-red-500 text-xs mt-1">
+                  {validationErrors.partnerPersianLastName}
+                </p>
+              )}
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                آخرین مدرک تحصیلی همسر <span className="text-red-500">*</span>
+              </label>
+              <select
+                value={
+                  formData.registererPartnerInformations[0]
+                    ?.otherInformations[0]?.lastDegree || ""
+                }
+                onChange={(e) =>
+                  updatePartnerOtherInfo("lastDegree", e.target.value)
+                }
+                className={`w-full p-2 md:p-3 border rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all ${
+                  validationErrors.partnerLastDegree
+                    ? "border-red-500"
+                    : "border-gray-300"
+                }`}
+                required
+              >
+                <option value="">انتخاب کنید</option>
+                <option value="high_school">دیپلم</option>
+                <option value="associate">کاردانی</option>
+                <option value="bachelor">کارشناسی</option>
+                <option value="master">کارشناسی ارشد</option>
+                <option value="phd">دکتری</option>
+              </select>
+              {validationErrors.partnerLastDegree && (
+                <p className="text-red-500 text-xs mt-1">
+                  {validationErrors.partnerLastDegree}
+                </p>
+              )}
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                تصویر همسر <span className="text-red-500">*</span>
+              </label>
+              <button
+                type="button"
+                onClick={() => setShowFileUploader(true)}
+                className={`w-full p-2 md:p-3 border-2 border-dashed rounded-xl text-gray-500 hover:border-[#FF7A00] hover:text-[#FF7A00] transition-all ${
+                  validationErrors.partnerImageUrl
+                    ? "border-red-500"
+                    : "border-gray-300"
+                }`}
+              >
+                {formData.registererPartnerInformations[0]?.otherInformations[0]
+                  ?.imageUrl
+                  ? "تغییر تصویر همسر"
+                  : "آپلود تصویر همسر"}
+              </button>
+              {validationErrors.partnerImageUrl && (
+                <p className="text-red-500 text-xs mt-1">
+                  {validationErrors.partnerImageUrl}
+                </p>
+              )}
+            </div>
           </div>
         </div>
       </div>
@@ -1228,10 +2000,10 @@ const LotteryMultiStepForm: React.FC = () => {
 
   return (
     <div
-      className="min-h-screen bg-gradient-to-br  from-gray-50 via-white to-blue-50 p-4"
+      className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50 p-2 sm:p-4"
       dir="rtl"
     >
-      <div className="max-w-4xl mx-auto mt-28">
+      <div className="max-w-4xl mx-auto mt-16 sm:mt-20 md:mt-28">
         {/* Header */}
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold text-[#0A1D37] mb-4">
@@ -1243,32 +2015,32 @@ const LotteryMultiStepForm: React.FC = () => {
         </div>
 
         {/* Steps Progress */}
-        <div className="bg-white rounded-2xl p-6 mb-8 shadow-lg border border-gray-200">
-          <div className="flex justify-between items-center">
+        <div className="bg-white rounded-2xl p-3 sm:p-6 mb-6 sm:mb-8 shadow-lg border border-gray-200">
+          <div className="flex justify-between items-center overflow-x-auto">
             {visibleSteps.map((step, index) => (
               <div
                 key={step.id}
-                className={`flex items-center ${
+                className={`flex items-center min-w-0 ${
                   index < visibleSteps.length - 1 ? "flex-1" : ""
                 }`}
               >
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2 sm:gap-3">
                   <div
-                    className={`w-12 h-12 rounded-xl flex items-center justify-center font-bold transition-all duration-300 ${
+                    className={`w-8 h-8 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center font-bold transition-all duration-300 ${
                       currentStep >= index
                         ? "bg-gradient-to-r from-[#0A1D37] to-[#4DBFF0] text-white shadow-lg"
                         : "bg-gray-200 text-gray-500"
                     }`}
                   >
                     {currentStep > index ? (
-                      <FaCheck className="text-sm" />
+                      <FaCheck className="text-xs sm:text-sm" />
                     ) : (
-                      step.icon
+                      <span className="text-xs sm:text-base">{step.icon}</span>
                     )}
                   </div>
-                  <div className="text-right">
+                  <div className="text-right hidden sm:block">
                     <p
-                      className={`text-sm font-bold ${
+                      className={`text-xs sm:text-sm font-bold ${
                         currentStep >= index
                           ? "text-[#0A1D37]"
                           : "text-gray-500"
@@ -1276,14 +2048,14 @@ const LotteryMultiStepForm: React.FC = () => {
                     >
                       {step.title}
                     </p>
-                    <p className="text-xs text-gray-500 max-w-[120px]">
+                    <p className="text-xs text-gray-500 max-w-[120px] truncate">
                       {step.description}
                     </p>
                   </div>
                 </div>
                 {index < visibleSteps.length - 1 && (
                   <div
-                    className={`h-1 flex-1 mx-4 rounded-full transition-all duration-300 ${
+                    className={`h-1 flex-1 mx-2 sm:mx-4 rounded-full transition-all duration-300 ${
                       currentStep > index
                         ? "bg-gradient-to-r from-[#FF7A00] to-[#4DBFF0]"
                         : "bg-gray-200"
@@ -1301,170 +2073,172 @@ const LotteryMultiStepForm: React.FC = () => {
         </div>
 
         {/* Important Information Box */}
-        <div className="bg-gradient-to-r h-80 overflow-auto from-red-50 to-orange-50 rounded-2xl shadow-lg border border-red-200 p-6 mb-8">
-          <div className="space-y-6">
-            {/* Important Notice */}
-            <div className="bg-red-100 border-r-4 border-red-500 p-4 rounded-lg">
-              <h3 className="text-lg font-bold text-red-800 mb-2 flex items-center gap-2">
-                <span className="text-red-600">⚠️</span>
-                توجه مهم
-              </h3>
-              <p className="text-red-700 leading-relaxed">
-                پس از انجام پرداخت و تکمیل ثبت‌نام، امکان بازگشت وجه (اعم از
-                پرداخت آنلاین، کارت‌به‌کارت و سایر روش‌ها) وجود نخواهد داشت.
-                لطفاً پیش از پرداخت، تمامی اطلاعات را با دقت بررسی نمایید.
-              </p>
-            </div>
-
-            {/* Services Section */}
-            <div className="space-y-4">
-              <h3 className="text-xl font-bold text-[#0A1D37] mb-4 flex items-center gap-3">
-                <span className="text-[#FF7A00]">🎯</span>
-                خدمات قابل ارائه
-              </h3>
-              <p className="text-gray-700 leading-relaxed mb-4">
-                با توجه به حساسیت بالای فرآیند درخواست ویزا، ارزی پلاس در ازای
-                پرداخت شما خدمات زیر را ارائه می‌دهد:
-              </p>
-
-              <div className="grid gap-3">
-                <div className="flex items-start gap-3 p-3 bg-white rounded-lg border border-gray-200">
-                  <span className="text-green-500 mt-1">✓</span>
-                  <p className="text-gray-700">
-                    ثبت‌نام دقیق متقاضی در برنامه قرعه‌کشی ویزای تنوع نژادی
-                    آمریکا (DV Lottery) که در ایران با نام لاتاری گرین کارت
-                    شناخته می‌شود، توسط کارشناسان ارزی پلاس انجام خواهد شد.
-                  </p>
-                </div>
-
-                <div className="flex items-start gap-3 p-3 bg-white rounded-lg border border-gray-200">
-                  <span className="text-green-500 mt-1">✓</span>
-                  <p className="text-gray-700">
-                    در صورت نیاز، راهنمایی و پشتیبانی تلفنی یا پیامکی برای تکمیل
-                    صحیح اطلاعات ارائه می‌شود.
-                  </p>
-                </div>
-
-                <div className="flex items-start gap-3 p-3 bg-white rounded-lg border border-gray-200">
-                  <span className="text-green-500 mt-1">✓</span>
-                  <p className="text-gray-700">
-                    فرم‌های ثبت‌نام بررسی شده و در صورت وجود نقص یا اشتباه،
-                    اصلاح یا راهنمایی لازم ارائه خواهد شد.
-                  </p>
-                </div>
-
-                <div className="flex items-start gap-3 p-3 bg-white rounded-lg border border-gray-200">
-                  <span className="text-green-500 mt-1">✓</span>
-                  <p className="text-gray-700">
-                    اعلام نتایج لاتاری از طریق پیامک و ایمیل توسط تیم ارزی پلاس
-                    انجام می‌گیرد.
-                  </p>
-                </div>
-
-                <div className="flex items-start gap-3 p-3 bg-white rounded-lg border border-gray-200">
-                  <span className="text-green-500 mt-1">✓</span>
-                  <p className="text-gray-700">
-                    در صورت برنده شدن، با متقاضی تماس گرفته شده و توضیحات لازم
-                    برای ادامه مراحل ارائه خواهد شد.
-                  </p>
-                </div>
-
-                <div className="flex items-start gap-3 p-3 bg-white rounded-lg border border-gray-200">
-                  <span className="text-green-500 mt-1">✓</span>
-                  <p className="text-gray-700">
-                    تمامی اطلاعات ثبت‌نام و نتایج تا پایان دوره مالی مربوطه،
-                    برای حفظ امنیت در سرورهای ارزی پلاس نگهداری می‌شود.
-                  </p>
-                </div>
-
-                <div className="flex items-start gap-3 p-3 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg border border-blue-200">
-                  <span className="text-blue-500 mt-1">⭐</span>
-                  <p className="text-gray-700 font-medium">
-                    تجربه و تخصص ارزی پلاس در حوزه مهاجرت به آمریکا، مهم‌ترین
-                    ارزش افزوده خدمات ماست؛ با انتخاب ما یک ثبت‌نام اصولی و بدون
-                    خطا خواهید داشت.
-                  </p>
-                </div>
+        {currentStep === 0 && (
+          <div className="bg-gradient-to-r h-80 overflow-auto from-red-50 to-orange-50 rounded-2xl shadow-lg border border-red-200 p-6 mb-8">
+            <div className="space-y-6">
+              {/* Important Notice */}
+              <div className="bg-red-100 border-r-4 border-red-500 p-4 rounded-lg">
+                <h3 className="text-lg font-bold text-red-800 mb-2 flex items-center gap-2">
+                  <span className="text-red-600">⚠️</span>
+                  توجه مهم
+                </h3>
+                <p className="text-red-700 leading-relaxed">
+                  پس از انجام پرداخت و تکمیل ثبت‌نام، امکان بازگشت وجه (اعم از
+                  پرداخت آنلاین، کارت‌به‌کارت و سایر روش‌ها) وجود نخواهد داشت.
+                  لطفاً پیش از پرداخت، تمامی اطلاعات را با دقت بررسی نمایید.
+                </p>
               </div>
-            </div>
 
-            {/* Timeline Section */}
-            <div className="space-y-4">
-              <h3 className="text-xl font-bold text-[#0A1D37] mb-4 flex items-center gap-3">
-                <span className="text-[#4DBFF0]">⏰</span>
-                زمان‌بندی ارائه خدمات
-              </h3>
-              <div className="grid gap-3">
-                <div className="flex items-start gap-3 p-3 bg-white rounded-lg border border-gray-200">
-                  <span className="text-blue-500 mt-1">📅</span>
-                  <p className="text-gray-700">
-                    حدود یک ماه پیش از آغاز رسمی برنامه، کارشناسان ارزی پلاس با
-                    شما تماس گرفته و ثبت‌نام نهایی در مرکز کنسولی کنتاکی آمریکا
-                    انجام خواهد شد.
-                  </p>
-                </div>
-                <div className="flex items-start gap-3 p-3 bg-white rounded-lg border border-gray-200">
-                  <span className="text-blue-500 mt-1">📊</span>
-                  <p className="text-gray-700">
-                    حدود شش ماه پس از ثبت‌نام، با اعلام نتایج رسمی، نتیجه توسط
-                    تیم ارزی پلاس بررسی و به شما اطلاع داده می‌شود.
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Requirements Section - Only show on first step */}
-            {visibleSteps[currentStep]?.id === 0 && (
+              {/* Services Section */}
               <div className="space-y-4">
                 <h3 className="text-xl font-bold text-[#0A1D37] mb-4 flex items-center gap-3">
-                  <span className="text-[#FF7A00]">📋</span>
-                  شرایط لازم برای شرکت در برنامه
+                  <span className="text-[#FF7A00]">🎯</span>
+                  خدمات قابل ارائه
                 </h3>
-                <div className="bg-green-50 p-4 rounded-lg border border-green-200">
-                  <p className="text-green-800 leading-relaxed">
-                    تنها شرط ثبت‌نام، داشتن مدرک دیپلم دبیرستان یا حداقل دو سال
-                    سابقه کار در پنج سال گذشته است. هیچ محدودیتی از نظر سن یا مدرک
-                    زبان وجود ندارد.
-                  </p>
+                <p className="text-gray-700 leading-relaxed mb-4">
+                  با توجه به حساسیت بالای فرآیند درخواست ویزا، ارزی پلاس در ازای
+                  پرداخت شما خدمات زیر را ارائه می‌دهد:
+                </p>
+
+                <div className="grid gap-3">
+                  <div className="flex items-start gap-3 p-3 bg-white rounded-lg border border-gray-200">
+                    <span className="text-green-500 mt-1">✓</span>
+                    <p className="text-gray-700">
+                      ثبت‌نام دقیق متقاضی در برنامه قرعه‌کشی ویزای تنوع نژادی
+                      آمریکا (DV Lottery) که در ایران با نام لاتاری گرین کارت
+                      شناخته می‌شود، توسط کارشناسان ارزی پلاس انجام خواهد شد.
+                    </p>
+                  </div>
+
+                  <div className="flex items-start gap-3 p-3 bg-white rounded-lg border border-gray-200">
+                    <span className="text-green-500 mt-1">✓</span>
+                    <p className="text-gray-700">
+                      در صورت نیاز، راهنمایی و پشتیبانی تلفنی یا پیامکی برای
+                      تکمیل صحیح اطلاعات ارائه می‌شود.
+                    </p>
+                  </div>
+
+                  <div className="flex items-start gap-3 p-3 bg-white rounded-lg border border-gray-200">
+                    <span className="text-green-500 mt-1">✓</span>
+                    <p className="text-gray-700">
+                      فرم‌های ثبت‌نام بررسی شده و در صورت وجود نقص یا اشتباه،
+                      اصلاح یا راهنمایی لازم ارائه خواهد شد.
+                    </p>
+                  </div>
+
+                  <div className="flex items-start gap-3 p-3 bg-white rounded-lg border border-gray-200">
+                    <span className="text-green-500 mt-1">✓</span>
+                    <p className="text-gray-700">
+                      اعلام نتایج لاتاری از طریق پیامک و ایمیل توسط تیم ارزی
+                      پلاس انجام می‌گیرد.
+                    </p>
+                  </div>
+
+                  <div className="flex items-start gap-3 p-3 bg-white rounded-lg border border-gray-200">
+                    <span className="text-green-500 mt-1">✓</span>
+                    <p className="text-gray-700">
+                      در صورت برنده شدن، با متقاضی تماس گرفته شده و توضیحات لازم
+                      برای ادامه مراحل ارائه خواهد شد.
+                    </p>
+                  </div>
+
+                  <div className="flex items-start gap-3 p-3 bg-white rounded-lg border border-gray-200">
+                    <span className="text-green-500 mt-1">✓</span>
+                    <p className="text-gray-700">
+                      تمامی اطلاعات ثبت‌نام و نتایج تا پایان دوره مالی مربوطه،
+                      برای حفظ امنیت در سرورهای ارزی پلاس نگهداری می‌شود.
+                    </p>
+                  </div>
+
+                  <div className="flex items-start gap-3 p-3 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg border border-blue-200">
+                    <span className="text-blue-500 mt-1">⭐</span>
+                    <p className="text-gray-700 font-medium">
+                      تجربه و تخصص ارزی پلاس در حوزه مهاجرت به آمریکا، مهم‌ترین
+                      ارزش افزوده خدمات ماست؛ با انتخاب ما یک ثبت‌نام اصولی و
+                      بدون خطا خواهید داشت.
+                    </p>
+                  </div>
                 </div>
               </div>
-            )}
 
-            {/* Privacy Section */}
-            <div className="space-y-4">
-              <h3 className="text-xl font-bold text-[#0A1D37] mb-4 flex items-center gap-3">
-                <span className="text-purple-500">🔒</span>
-                حریم خصوصی
-              </h3>
-              <div className="bg-purple-50 p-4 rounded-lg border border-purple-200">
-                <p className="text-purple-800 leading-relaxed">
-                  گروه ارزی پلاس متعهد است که اطلاعات شخصی متقاضیان را به‌صورت
-                  محرمانه حفظ کرده و از هرگونه استفاده خارج از چارچوب برنامه
-                  لاتاری گرین کارت آمریکا خودداری نماید.
-                </p>
+              {/* Timeline Section */}
+              <div className="space-y-4">
+                <h3 className="text-xl font-bold text-[#0A1D37] mb-4 flex items-center gap-3">
+                  <span className="text-[#4DBFF0]">⏰</span>
+                  زمان‌بندی ارائه خدمات
+                </h3>
+                <div className="grid gap-3">
+                  <div className="flex items-start gap-3 p-3 bg-white rounded-lg border border-gray-200">
+                    <span className="text-blue-500 mt-1">📅</span>
+                    <p className="text-gray-700">
+                      حدود یک ماه پیش از آغاز رسمی برنامه، کارشناسان ارزی پلاس
+                      با شما تماس گرفته و ثبت‌نام نهایی در مرکز کنسولی کنتاکی
+                      آمریکا انجام خواهد شد.
+                    </p>
+                  </div>
+                  <div className="flex items-start gap-3 p-3 bg-white rounded-lg border border-gray-200">
+                    <span className="text-blue-500 mt-1">📊</span>
+                    <p className="text-gray-700">
+                      حدود شش ماه پس از ثبت‌نام، با اعلام نتایج رسمی، نتیجه توسط
+                      تیم ارزی پلاس بررسی و به شما اطلاع داده می‌شود.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Requirements Section - Only show on first step */}
+              {visibleSteps[currentStep]?.id === 0 && (
+                <div className="space-y-4">
+                  <h3 className="text-xl font-bold text-[#0A1D37] mb-4 flex items-center gap-3">
+                    <span className="text-[#FF7A00]">📋</span>
+                    شرایط لازم برای شرکت در برنامه
+                  </h3>
+                  <div className="bg-green-50 p-4 rounded-lg border border-green-200">
+                    <p className="text-green-800 leading-relaxed">
+                      تنها شرط ثبت‌نام، داشتن مدرک دیپلم دبیرستان یا حداقل دو
+                      سال سابقه کار در پنج سال گذشته است. هیچ محدودیتی از نظر سن
+                      یا مدرک زبان وجود ندارد.
+                    </p>
+                  </div>
+                </div>
+              )}
+
+              {/* Privacy Section */}
+              <div className="space-y-4">
+                <h3 className="text-xl font-bold text-[#0A1D37] mb-4 flex items-center gap-3">
+                  <span className="text-purple-500">🔒</span>
+                  حریم خصوصی
+                </h3>
+                <div className="bg-purple-50 p-4 rounded-lg border border-purple-200">
+                  <p className="text-purple-800 leading-relaxed">
+                    گروه ارزی پلاس متعهد است که اطلاعات شخصی متقاضیان را به‌صورت
+                    محرمانه حفظ کرده و از هرگونه استفاده خارج از چارچوب برنامه
+                    لاتاری گرین کارت آمریکا خودداری نماید.
+                  </p>
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        )}
 
         {/* Navigation */}
         <div className="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden">
-          <div className="border-t border-gray-200 p-6 bg-gray-50">
-            <div className="flex justify-between items-center">
+          <div className="border-t border-gray-200 p-3 sm:p-6 bg-gray-50">
+            <div className="flex flex-col sm:flex-row justify-between items-center gap-3 sm:gap-0">
               <button
                 onClick={() => setCurrentStep(Math.max(0, currentStep - 1))}
                 disabled={currentStep === 0}
-                className={`flex items-center gap-2 px-6 py-3 rounded-xl font-medium transition-all duration-300 ${
+                className={`w-full sm:w-auto flex items-center justify-center gap-2 px-4 sm:px-6 py-2 sm:py-3 rounded-xl font-medium transition-all duration-300 ${
                   currentStep === 0
                     ? "bg-gray-200 text-gray-400 cursor-not-allowed"
                     : "bg-gray-500 text-white hover:bg-gray-600 hover:scale-105 active:scale-95"
                 }`}
               >
                 <FaArrowRight className="text-sm" />
-                قبلی
+                <span className="text-sm sm:text-base">قبلی</span>
               </button>
 
-              <div className="text-center">
+              <div className="text-center order-first sm:order-none">
                 <p className="text-sm text-gray-600">
                   مرحله {currentStep + 1} از {visibleSteps.length}
                 </p>
@@ -1474,7 +2248,7 @@ const LotteryMultiStepForm: React.FC = () => {
                 <button
                   onClick={handleSubmit}
                   disabled={isSubmitting}
-                  className={`flex items-center gap-2 px-8 py-3 rounded-xl font-medium transition-all duration-300 ${
+                  className={`w-full sm:w-auto flex items-center justify-center gap-2 px-4 sm:px-8 py-2 sm:py-3 rounded-xl font-medium transition-all duration-300 ${
                     isSubmitting
                       ? "bg-gray-400 cursor-not-allowed"
                       : "bg-gradient-to-r from-[#FF7A00] to-[#4DBFF0] text-white hover:shadow-lg hover:scale-105 active:scale-95"
@@ -1483,25 +2257,23 @@ const LotteryMultiStepForm: React.FC = () => {
                   {isSubmitting ? (
                     <>
                       <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                      در حال ارسال...
+                      <span className="text-sm sm:text-base">
+                        در حال ارسال...
+                      </span>
                     </>
                   ) : (
                     <>
                       <FaSave className="text-sm" />
-                      ثبت نهایی
+                      <span className="text-sm sm:text-base">ثبت نهایی</span>
                     </>
                   )}
                 </button>
               ) : (
                 <button
-                  onClick={() =>
-                    setCurrentStep(
-                      Math.min(visibleSteps.length - 1, currentStep + 1)
-                    )
-                  }
-                  className="flex items-center gap-2 px-6 py-3 rounded-xl font-medium bg-gradient-to-r from-[#0A1D37] to-[#4DBFF0] text-white hover:shadow-lg hover:scale-105 active:scale-95 transition-all duration-300"
+                  onClick={handleNext}
+                  className="w-full sm:w-auto flex items-center justify-center gap-2 px-4 sm:px-6 py-2 sm:py-3 rounded-xl font-medium bg-gradient-to-r from-[#0A1D37] to-[#4DBFF0] text-white hover:shadow-lg hover:scale-105 active:scale-95 transition-all duration-300"
                 >
-                  موافقت و ثبت نام
+                  <span className="text-sm sm:text-base">موافقت و ثبت نام</span>
                   <FaArrowLeft className="text-sm" />
                 </button>
               )}
@@ -1558,6 +2330,11 @@ const LotteryMultiStepForm: React.FC = () => {
           await submitLotteryRegistration("card", lotteryFee, receiptUrl);
           setShowCardPaymentModal(false);
           showToast.success("ثبت‌نام در قرعه‌کشی با موفقیت انجام شد");
+
+          // Redirect to dashboard after successful submission
+          setTimeout(() => {
+            router.push("/dashboard");
+          }, 2000); // Wait 2 seconds to show success message
         }}
       />
 
@@ -1589,9 +2366,7 @@ const LotteryMultiStepForm: React.FC = () => {
                 ×
               </button>
             </div>
-            <div className="p-6">
-              {modalContents.step2.content}
-            </div>
+            <div className="p-6">{modalContents.step2.content}</div>
           </div>
         </div>
       )}
