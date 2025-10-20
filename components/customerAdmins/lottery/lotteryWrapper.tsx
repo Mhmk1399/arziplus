@@ -1,7 +1,9 @@
 "use client";
 import React, { useState } from "react";
 import CustomerLotteryList from "./lotteryList";
-import { FaTicketAlt, FaPlus, FaList } from "react-icons/fa";
+import CustomerHozoriList from "../hozori/hozoriList";
+import { FaTicketAlt, FaPlus, FaList, FaCalendarCheck } from "react-icons/fa";
+import Link from "next/link";
 
 const CustomerLotteryWrapper = () => {
   const [activeTab, setActiveTab] = useState("list");
@@ -13,6 +15,13 @@ const CustomerLotteryWrapper = () => {
       icon: <FaList className="text-lg" />,
       component: CustomerLotteryList,
       description: "مشاهده تمام ثبت‌نام‌های لاتاری شما",
+    },
+    {
+      id: "hozori",
+      label: "رزروهای حضوری",
+      icon: <FaCalendarCheck className="text-lg" />,
+      component: CustomerHozoriList,
+      description: "مشاهده تمام رزروهای حضوری شما",
     },
     // You can add more tabs here in the future like history, statistics, etc.
   ];
@@ -37,35 +46,58 @@ const CustomerLotteryWrapper = () => {
               </div>
               <div className="space-y-1.5">
                 <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#0A1D37] leading-tight">
-                  ثبت‌نام‌های لاتاری
+                  خدمات من
                 </h1>
                 <p className="text-sm sm:text-base text-gray-600 leading-relaxed">
-                  مدیریت درخواست‌های شما برای قرعه‌کشی گرین کارت آمریکا
+                  مدیریت ثبت‌نام‌های لاتاری و رزروهای حضوری
                 </p>
               </div>
             </div>
 
             {/* New Registration Button */}
-            <a
-              href="/lottery/form"
-              className="
-                flex items-center justify-center gap-3
-                px-6 sm:px-8 py-3.5 sm:py-4
-                bg-gradient-to-r from-[#0A1D37] to-[#4DBFF0] 
-                text-white font-bold
-                rounded-xl sm:rounded-2xl
-                hover:shadow-2xl hover:scale-105 
-                active:scale-95
-                transition-all duration-300
-                shadow-lg
-                w-full lg:w-auto
-                text-sm sm:text-base
-                group
-              "
-            >
-              <FaPlus className="text-base sm:text-lg group-hover:rotate-90 transition-transform duration-300" />
-              <span>ثبت‌نام جدید</span>
-            </a>
+            <div className="flex flex-col sm:flex-row gap-3">
+              <Link
+                href="/lottery/form"
+                className="
+                  flex items-center justify-center gap-3
+                  px-6 sm:px-8 py-3.5 sm:py-4
+                  bg-gradient-to-r from-[#0A1D37] to-[#4DBFF0] 
+                  text-white font-bold
+                  rounded-xl sm:rounded-2xl
+                  hover:shadow-2xl hover:scale-105 
+                  active:scale-95
+                  transition-all duration-300
+                  shadow-lg
+                  w-full lg:w-auto
+                  text-sm sm:text-base
+                  group
+                "
+              >
+                <FaPlus className="text-base  sm:text-lg group-hover:rotate-90 transition-transform duration-300" />
+                <span>ثبت‌نام آنلاین</span>
+              </Link>
+
+              <Link
+                href="/lottery/form/hozori"
+                className="
+                  flex items-center justify-center gap-3
+                  px-6 sm:px-8 py-3.5 sm:py-4
+                  bg-gradient-to-r from-green-600 to-blue-600 
+                  text-white font-bold
+                  rounded-xl sm:rounded-2xl
+                  hover:shadow-2xl hover:scale-105 
+                  active:scale-95
+                  transition-all duration-300
+                  shadow-lg
+                  w-full lg:w-auto
+                  text-sm sm:text-base
+                  group
+                "
+              >
+                <FaCalendarCheck className="text-base sm:text-lg group-hover:scale-110 transition-transform duration-300" />
+                <span>رزرو حضوری</span>
+              </Link>
+            </div>
           </div>
 
           {/* Tabs Navigation - Improved design */}
@@ -77,7 +109,7 @@ const CustomerLotteryWrapper = () => {
                   onClick={() => setActiveTab(tab.id)}
                   className={`
                     group
-                    flex items-center gap-3 sm:gap-4
+                    flex mx-2 items-center gap-3 sm:gap-4
                     px-5 sm:px-6 py-3.5 sm:py-4
                     rounded-xl sm:rounded-2xl
                     transition-all duration-300
@@ -156,7 +188,7 @@ const CustomerLotteryWrapper = () => {
         <div className="mt-6 sm:mt-8 text-center">
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-50 border border-blue-100 rounded-xl text-sm text-blue-700">
             <span className="text-lg">ℹ️</span>
-            <span>برای مشاهده جزئیات هر ثبت‌نام، روی آن کلیک کنید</span>
+            <span>برای مشاهده جزئیات هر ثبت‌نام یا رزرو، روی آن کلیک کنید</span>
           </div>
         </div>
       </div>

@@ -368,13 +368,19 @@ export async function GET(request: NextRequest) {
     const skip = (page - 1) * limit;
     const isAdmin = searchParams.get("admin") === "true";
     const search = searchParams.get("search");
+    const requestedUserId = searchParams.get("userId");
 
     // Build query filter
     const filter: HozoriQueryFilter = {};
 
-    // For admin requests, don't filter by userId
-    // For regular users, filter by their userId
-    if (!isAdmin) {
+    // Handle userId filtering
+    if (isAdmin) {
+      // Admin can request specific userId or all users
+      if (requestedUserId) {
+        filter.userId = requestedUserId;
+      }
+    } else {
+      // Regular users can only see their own reservations
       filter.userId = authUser.id;
     }
 
