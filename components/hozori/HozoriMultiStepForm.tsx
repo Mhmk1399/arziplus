@@ -120,22 +120,29 @@ const HozoriMultiStepForm: React.FC = () => {
     switch (step) {
       case 0: // Personal Information
         if (!formData.name.trim()) errors.name = "نام الزامی است";
-        if (!formData.lastname.trim()) errors.lastname = "نام خانوادگی الزامی است";
-        if (!formData.phoneNumber.trim()) errors.phoneNumber = "شماره تلفن الزامی است";
+        if (!formData.lastname.trim())
+          errors.lastname = "نام خانوادگی الزامی است";
+        if (!formData.phoneNumber.trim())
+          errors.phoneNumber = "شماره تلفن الزامی است";
         if (formData.phoneNumber && !/^09\d{9}$/.test(formData.phoneNumber)) {
           errors.phoneNumber = "شماره تلفن باید با 09 شروع شده و 11 رقم باشد";
         }
         break;
 
       case 1: // Family Information
-        if (!formData.maridgeStatus) errors.maridgeStatus = "وضعیت تأهل الزامی است";
+        if (!formData.maridgeStatus)
+          errors.maridgeStatus = "وضعیت تأهل الزامی است";
         if (formData.childrensCount < 0 || formData.childrensCount > 10) {
           errors.childrensCount = "تعداد فرزندان باید بین 0 تا 10 باشد";
         }
         break;
 
       case 2: // Date Selection
-        if (!formData.dateObject.year || !formData.dateObject.month || !formData.dateObject.day) {
+        if (
+          !formData.dateObject.year ||
+          !formData.dateObject.month ||
+          !formData.dateObject.day
+        ) {
           errors.dateObject = "انتخاب تاریخ الزامی است";
         }
         break;
@@ -220,7 +227,9 @@ const HozoriMultiStepForm: React.FC = () => {
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50 flex items-center justify-center">
         <div className="text-center">
-          <p className="text-red-600 mb-4">برای دسترسی به این صفحه باید وارد حساب کاربری خود شوید</p>
+          <p className="text-red-600 mb-4">
+            برای دسترسی به این صفحه باید وارد حساب کاربری خود شوید
+          </p>
           <button
             onClick={() => router.push("/auth/sms")}
             className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
@@ -241,7 +250,9 @@ const HozoriMultiStepForm: React.FC = () => {
     // Validate all steps before submission
     for (let i = 0; i < steps.length; i++) {
       if (!validateStep(i)) {
-        showToast.error(`لطفاً ابتدا اطلاعات مرحله "${steps[i].title}" را تکمیل کنید`);
+        showToast.error(
+          `لطفاً ابتدا اطلاعات مرحله "${steps[i].title}" را تکمیل کنید`
+        );
         setCurrentStep(i);
         return;
       }
@@ -293,7 +304,11 @@ const HozoriMultiStepForm: React.FC = () => {
       const token = localStorage.getItem("authToken");
 
       // Convert Persian date for metadata
-      const convertPersianToDate = (dateObj: { year: string; month: string; day: string }): Date => {
+      const convertPersianToDate = (dateObj: {
+        year: string;
+        month: string;
+        day: string;
+      }): Date => {
         const persianYear = parseInt(dateObj.year);
         const persianMonth = parseInt(dateObj.month);
         const persianDay = parseInt(dateObj.day);
@@ -364,16 +379,20 @@ const HozoriMultiStepForm: React.FC = () => {
     const token = localStorage.getItem("authToken");
 
     // Convert Persian date object to a properly formatted date for the API
-    const formatPersianDateForAPI = (dateObj: { year: string; month: string; day: string }): string => {
+    const formatPersianDateForAPI = (dateObj: {
+      year: string;
+      month: string;
+      day: string;
+    }): string => {
       // For now, let's create a valid current date format that the API can parse
       // In production, you should use a proper Persian to Gregorian conversion library
       const currentDate = new Date();
-      
+
       // Add a few days to ensure it's not in the past
       currentDate.setDate(currentDate.getDate() + 7);
-      
+
       // Return as ISO string
-      return currentDate.toISOString().split('T')[0]; // YYYY-MM-DD format
+      return currentDate.toISOString().split("T")[0]; // YYYY-MM-DD format
     };
 
     const appointmentDateString = formatPersianDateForAPI(formData.dateObject);
@@ -464,7 +483,9 @@ const HozoriMultiStepForm: React.FC = () => {
               required
             />
             {validationErrors.name && (
-              <p className="text-red-500 text-xs mt-1">{validationErrors.name}</p>
+              <p className="text-red-500 text-xs mt-1">
+                {validationErrors.name}
+              </p>
             )}
           </div>
 
@@ -483,7 +504,9 @@ const HozoriMultiStepForm: React.FC = () => {
               required
             />
             {validationErrors.lastname && (
-              <p className="text-red-500 text-xs mt-1">{validationErrors.lastname}</p>
+              <p className="text-red-500 text-xs mt-1">
+                {validationErrors.lastname}
+              </p>
             )}
           </div>
 
@@ -497,12 +520,16 @@ const HozoriMultiStepForm: React.FC = () => {
               value={formData.phoneNumber}
               onChange={(e) => updateFormData("phoneNumber", e.target.value)}
               className={`w-full p-3 border rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] outline-none transition-all ${
-                validationErrors.phoneNumber ? "border-red-500" : "border-gray-300"
+                validationErrors.phoneNumber
+                  ? "border-red-500"
+                  : "border-gray-300"
               }`}
               required
             />
             {validationErrors.phoneNumber && (
-              <p className="text-red-500 text-xs mt-1">{validationErrors.phoneNumber}</p>
+              <p className="text-red-500 text-xs mt-1">
+                {validationErrors.phoneNumber}
+              </p>
             )}
           </div>
         </div>
@@ -527,7 +554,9 @@ const HozoriMultiStepForm: React.FC = () => {
               value={formData.maridgeStatus}
               onChange={(e) => updateFormData("maridgeStatus", e.target.value)}
               className={`w-full p-3 border rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] outline-none transition-all ${
-                validationErrors.maridgeStatus ? "border-red-500" : "border-gray-300"
+                validationErrors.maridgeStatus
+                  ? "border-red-500"
+                  : "border-gray-300"
               }`}
               required
             >
@@ -539,7 +568,9 @@ const HozoriMultiStepForm: React.FC = () => {
               ))}
             </select>
             {validationErrors.maridgeStatus && (
-              <p className="text-red-500 text-xs mt-1">{validationErrors.maridgeStatus}</p>
+              <p className="text-red-500 text-xs mt-1">
+                {validationErrors.maridgeStatus}
+              </p>
             )}
           </div>
 
@@ -553,14 +584,20 @@ const HozoriMultiStepForm: React.FC = () => {
               max="10"
               placeholder="0"
               value={formData.childrensCount}
-              onChange={(e) => updateFormData("childrensCount", parseInt(e.target.value) || 0)}
+              onChange={(e) =>
+                updateFormData("childrensCount", parseInt(e.target.value) || 0)
+              }
               className={`w-full p-3 border rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] outline-none transition-all ${
-                validationErrors.childrensCount ? "border-red-500" : "border-gray-300"
+                validationErrors.childrensCount
+                  ? "border-red-500"
+                  : "border-gray-300"
               }`}
               required
             />
             {validationErrors.childrensCount && (
-              <p className="text-red-500 text-xs mt-1">{validationErrors.childrensCount}</p>
+              <p className="text-red-500 text-xs mt-1">
+                {validationErrors.childrensCount}
+              </p>
             )}
           </div>
         </div>
@@ -586,7 +623,9 @@ const HozoriMultiStepForm: React.FC = () => {
             }`}
           />
           {validationErrors.dateObject && (
-            <p className="text-red-500 text-xs mt-1 text-center">{validationErrors.dateObject}</p>
+            <p className="text-red-500 text-xs mt-1 text-center">
+              {validationErrors.dateObject}
+            </p>
           )}
         </div>
       </div>
@@ -619,7 +658,9 @@ const HozoriMultiStepForm: React.FC = () => {
         </div>
 
         {validationErrors.time && (
-          <p className="text-red-500 text-xs mt-4 text-center">{validationErrors.time}</p>
+          <p className="text-red-500 text-xs mt-4 text-center">
+            {validationErrors.time}
+          </p>
         )}
       </div>
     </div>
@@ -630,10 +671,14 @@ const HozoriMultiStepForm: React.FC = () => {
     const baseFee = 800000;
     const childrenFee = formData.childrensCount * 150000;
     const totalFee = baseFee + childrenFee;
-    const prepaidFee = 200000;
+    const prepaid = 200000;
 
-    const selectedTimeSlot = timeSlots.find(slot => slot.value === formData.time)?.label;
-    const selectedMaritalStatus = maritalStatusOptions.find(option => option.value === formData.maridgeStatus)?.label;
+    const selectedTimeSlot = timeSlots.find(
+      (slot) => slot.value === formData.time
+    )?.label;
+    const selectedMaritalStatus = maritalStatusOptions.find(
+      (option) => option.value === formData.maridgeStatus
+    )?.label;
 
     return (
       <div className="space-y-6">
@@ -661,7 +706,9 @@ const HozoriMultiStepForm: React.FC = () => {
                 </div>
                 <div>
                   <span className="text-gray-600">شماره تلفن:</span>
-                  <span className="font-medium mr-2">{formData.phoneNumber}</span>
+                  <span className="font-medium mr-2">
+                    {formData.phoneNumber}
+                  </span>
                 </div>
               </div>
             </div>
@@ -677,11 +724,15 @@ const HozoriMultiStepForm: React.FC = () => {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
                 <div>
                   <span className="text-gray-600">وضعیت تأهل:</span>
-                  <span className="font-medium mr-2">{selectedMaritalStatus}</span>
+                  <span className="font-medium mr-2">
+                    {selectedMaritalStatus}
+                  </span>
                 </div>
                 <div>
                   <span className="text-gray-600">تعداد فرزندان:</span>
-                  <span className="font-medium mr-2">{formData.childrensCount} نفر</span>
+                  <span className="font-medium mr-2">
+                    {formData.childrensCount} نفر
+                  </span>
                 </div>
               </div>
             </div>
@@ -698,7 +749,9 @@ const HozoriMultiStepForm: React.FC = () => {
                 <div>
                   <span className="text-gray-600">تاریخ مراجعه:</span>
                   <span className="font-medium mr-2">
-                    {formData.dateObject ? `${formData.dateObject.year}/${formData.dateObject.month}/${formData.dateObject.day}` : "انتخاب نشده"}
+                    {formData.dateObject
+                      ? `${formData.dateObject.year}/${formData.dateObject.month}/${formData.dateObject.day}`
+                      : "انتخاب نشده"}
                   </span>
                 </div>
                 <div>
@@ -712,42 +765,31 @@ const HozoriMultiStepForm: React.FC = () => {
           {/* Fee Calculation */}
           <div className="bg-gradient-to-r from-green-50 to-emerald-50 p-4 rounded-xl border border-green-200">
             <h4 className="font-semibold text-[#0A1D37] mb-3 flex items-center gap-2">
-              <svg className="w-5 h-5 text-[#FF7A00]" fill="currentColor" viewBox="0 0 20 20">
+              <svg
+                className="w-5 h-5 text-[#FF7A00]"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+              >
                 <path d="M4 4a2 2 0 00-2 2v4a2 2 0 002 2V6h10a2 2 0 00-2-2H4zm2 6a2 2 0 012-2h8a2 2 0 012 2v4a2 2 0 01-2 2H8a2 2 0 01-2-2v-4zm6 4a2 2 0 100-4 2 2 0 000 4z" />
               </svg>
               محاسبه هزینه
             </h4>
             <div className="space-y-2 text-sm">
               <div className="flex justify-between">
-                <span className="text-gray-600">هزینه پایه:</span>
-                <span className="font-medium">{baseFee.toLocaleString()} تومان</span>
-              </div>
-              {formData.childrensCount > 0 && (
-                <div className="flex justify-between">
-                  <span className="text-gray-600">هزینه فرزندان ({formData.childrensCount} × 150,000):</span>
-                  <span className="font-medium">{childrenFee.toLocaleString()} تومان</span>
-                </div>
-              )}
-              <hr className="border-gray-300" />
-              <div className="flex justify-between font-semibold text-lg">
-                <span className="text-gray-700">جمع کل:</span>
-                <span className="text-[#FF7A00]">{totalFee.toLocaleString()} تومان</span>
-              </div>
-              <div className="bg-blue-50 p-3 rounded-lg mt-3">
-                <div className="flex justify-between text-sm">
-                  <span className="text-blue-700">مبلغ پیش پرداخت:</span>
-                  <span className="font-medium text-blue-800">{prepaidFee.toLocaleString()} تومان</span>
-                </div>
-                <p className="text-xs text-blue-600 mt-1">
-                  باقی مبلغ در زمان مراجعه پرداخت خواهد شد
-                </p>
+                <span className="text-gray-900">مبلغ:</span>
+                <span className="font-medium">
+                  {prepaid.toLocaleString()} {""} تومان به عنوان بیعانه رزرو وقت
+                  دریافت و مبلغ {totalFee - prepaid} در روز ثبت نام حضوری در
+                  مجموعه تسویه میشود.{" "}
+                </span>
               </div>
             </div>
           </div>
 
           <div className="bg-yellow-50 p-4 rounded-xl border border-yellow-200 mt-4">
             <p className="text-sm text-yellow-800 text-center">
-              لطفا اطلاعات وارد شده را بررسی کنید. پس از تایید، فرآیند پرداخت آغاز خواهد شد.
+              لطفا اطلاعات وارد شده را بررسی کنید. پس از تایید، فرآیند پرداخت
+              آغاز خواهد شد.
             </p>
           </div>
         </div>

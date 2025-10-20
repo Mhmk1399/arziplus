@@ -1,10 +1,12 @@
 "use client";
 import React, { useState } from "react";
 import LotteryAdminList from "./lotteryList";
+import HozoriAdminList from "../hozori/hozoriList";
 import {
   FaUsers,
   FaChartBar,
   FaList,
+  FaCalendarCheck,
 } from "react-icons/fa";
 
 const LotteryAdminWrapper = () => {
@@ -17,6 +19,13 @@ const LotteryAdminWrapper = () => {
       icon: <FaList className="text-lg" />,
       component: LotteryAdminList,
       description: "مشاهده و مدیریت تمام ثبت‌نام‌های لاتاری",
+    },
+    {
+      id: "hozori",
+      label: "رزروهای حضوری",
+      icon: <FaCalendarCheck className="text-lg" />,
+      component: HozoriAdminList,
+      description: "مشاهده و مدیریت تمام رزروهای حضوری",
     },
     // You can add more tabs here in the future like statistics, reports, etc.
   ];
@@ -34,10 +43,10 @@ const LotteryAdminWrapper = () => {
             </div>
             <div>
               <h1 className="text-3xl font-bold text-[#0A1D37]">
-                مدیریت ثبت‌نام‌های لاتاری
+                مدیریت خدمات آرزی پلاس
               </h1>
               <p className="text-gray-600 mt-1">
-                مدیریت کامل درخواست‌های ثبت‌نام در قرعه‌کشی گرین کارت آمریکا
+                مدیریت کامل ثبت‌نام‌های لاتاری و رزروهای حضوری
               </p>
             </div>
           </div>

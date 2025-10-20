@@ -287,16 +287,31 @@ export async function GET(request: NextRequest) {
     const page = parseInt(searchParams.get("page") || "1");
     const limit = parseInt(searchParams.get("limit") || "10");
     const skip = (page - 1) * limit;
+    const isAdmin = searchParams.get("admin") === "true";
+    const search = searchParams.get("search");
 
     // Build query filter
-    const filter: HozoriQueryFilter = {
-      userId: authUser.id,
-    };
+    const filter: any = {};
+
+    // For admin requests, don't filter by userId
+    // For regular users, filter by their userId
+    if (!isAdmin) {
+      filter.userId = authUser.id;
+    }
 
     // Add status filter if provided
     const status = searchParams.get("status");
     if (status) {
       filter.status = status;
+    }
+
+    // Add search filter for admin
+    if (search && isAdmin) {
+      filter.$or = [
+        { name: { $regex: search, $options: "i" } },
+        { lastname: { $regex: search, $options: "i" } },
+        { phoneNumber: { $regex: search, $options: "i" } },
+      ];
     }
 
     // Get total count for pagination
@@ -350,7 +365,7 @@ export async function PUT(request: NextRequest) {
     }
 
     // Parse request body
-    const { id, ...updateData } = await request.json();
+    const { id, admin, ...updateData } = await request.json();
 
     if (!id) {
       return NextResponse.json(
@@ -369,7 +384,9 @@ export async function PUT(request: NextRequest) {
       );
     }
 
-    if (hozoriReservation.userId !== authUser.id) {
+    // For admin requests, skip ownership validation
+    // For regular users, validate ownership
+    if (!admin && hozoriReservation.userId !== authUser.id) {
       return NextResponse.json(
         { success: false, error: "شما مجاز به ویرایش این رزرو نیستید" },
         { status: 403 }
@@ -414,6 +431,7 @@ export async function DELETE(request: NextRequest) {
     // Parse query parameters
     const { searchParams } = new URL(request.url);
     const id = searchParams.get("id");
+    const isAdmin = searchParams.get("admin") === "true";
 
     if (!id) {
       return NextResponse.json(
@@ -432,7 +450,9 @@ export async function DELETE(request: NextRequest) {
       );
     }
 
-    if (hozoriReservation.userId !== authUser.id) {
+    // For admin requests, skip ownership validation
+    // For regular users, validate ownership
+    if (!isAdmin && hozoriReservation.userId !== authUser.id) {
       return NextResponse.json(
         { success: false, error: "شما مجاز به حذف این رزرو نیستید" },
         { status: 403 }

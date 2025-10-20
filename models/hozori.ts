@@ -28,6 +28,10 @@ const HozoriSchema = new mongoose.Schema({
     type: String,
     enum: ['pending', 'confirmed', 'completed', 'cancelled'],
     default: 'confirmed'
+  },
+  adminNotes: {
+    type: String,
+    default: ""
   }
 }, {
   timestamps: true // This adds createdAt and updatedAt automatically
