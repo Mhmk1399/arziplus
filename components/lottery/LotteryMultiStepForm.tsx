@@ -327,6 +327,9 @@ const LotteryMultiStepForm: React.FC = () => {
       paymentAmount: amount,
       isPaid: true,
       receiptUrl,
+      // Add payment image for card payments (receiptUrl serves as patmentImage)
+      patmentImage: paymentMethod === "card" ? receiptUrl : undefined,
+      paymentDate: new Date(),
     };
 
     const response = await fetch("/api/lottery", {

@@ -5,7 +5,7 @@ const lotterySchema = new mongoose.Schema({
   status: {
     type: String,
     enum: ["pending", "in_review", "approved", "rejected", "completed"],
-    default: "pending"
+    default: "pending",
   },
   rejectionReason: { type: String },
   adminNotes: { type: String },
@@ -13,7 +13,12 @@ const lotterySchema = new mongoose.Schema({
   reviewedAt: { type: Date },
   reviewedBy: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
   // Payment information
-  paymentMethod: { type: String, enum: ["wallet", "direct", "card"], required: true },
+  paymentMethod: {
+    type: String,
+    enum: ["wallet", "direct", "card"],
+    required: true,
+  },
+  patmentImage: { type: String },
   paymentAmount: { type: Number, required: true },
   isPaid: { type: Boolean, default: false },
   receiptUrl: { type: String },

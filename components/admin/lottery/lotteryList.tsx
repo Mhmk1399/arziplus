@@ -15,7 +15,9 @@ import {
   FaIdCard,
   FaMapMarkerAlt,
   FaPhone,
- 
+  FaCreditCard,
+  FaMoneyBillWave,
+  FaReceipt,
   FaHeart,
 } from "react-icons/fa";
 
@@ -38,6 +40,14 @@ interface LotteryRegistration {
     numberOfChildren: number;
     towPeopleRegistration: boolean;
   }>;
+  // Payment information
+  paymentMethod?: "card" | "direct";
+  paymentAmount?: number;
+  paymentDate?: string;
+  receiptUrl?: string;
+  authority?: string;
+  refId?: string;
+  isPaid?: boolean;
   registererInformations: Array<{
     initialInformations: {
       firstName: string;
@@ -497,6 +507,9 @@ const LotteryAdminList = () => {
                       اطلاعات خانوادگی
                     </th>
                     <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      وضعیت پرداخت
+                    </th>
+                    <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
                       وضعیت
                     </th>
                     <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -547,6 +560,40 @@ const LotteryAdminList = () => {
                               {lottery.famillyInformations[0]?.numberOfChildren || 0} فرزند
                             </span>
                           </div>
+                        </div>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="text-sm text-gray-900">
+                          <div className="flex items-center gap-2 mb-1">
+                            {lottery.isPaid ? (
+                              <>
+                                <FaCheck className="text-green-500 text-xs" />
+                                <span className="text-green-700 font-medium">پرداخت شده</span>
+                              </>
+                            ) : (
+                              <>
+                                <FaTimes className="text-red-500 text-xs" />
+                                <span className="text-red-700 font-medium">پرداخت نشده</span>
+                              </>
+                            )}
+                          </div>
+                          {lottery.paymentMethod && (
+                            <div className="flex items-center gap-2">
+                              {lottery.paymentMethod === "card" ? (
+                                <FaCreditCard className="text-blue-500 text-xs" />
+                              ) : (
+                                <FaMoneyBillWave className="text-green-500 text-xs" />
+                              )}
+                              <span className="text-gray-600 text-xs">
+                                {lottery.paymentMethod === "card" ? "کارت" : "زرین‌پال"}
+                              </span>
+                            </div>
+                          )}
+                          {lottery.paymentAmount && (
+                            <div className="text-xs text-gray-500 mt-1">
+                              {lottery.paymentAmount.toLocaleString("fa-IR")} تومان
+                            </div>
+                          )}
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
@@ -739,6 +786,110 @@ const LotteryAdminList = () => {
                     <p className="text-sm font-medium text-gray-900">
                       {selectedLottery.adminNotes}
                     </p>
+                  </div>
+                )}
+              </div>
+
+              {/* Payment Information */}
+              <div className="bg-gray-50 rounded-xl p-4 border border-[#0A1D37]/10">
+                <h3 className="text-base sm:text-lg font-semibold text-[#0A1D37] mb-3 flex items-center gap-2">
+                  <FaCreditCard className="text-green-500" />
+                  اطلاعات پرداخت
+                </h3>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+                  <div>
+                    <p className="text-sm text-gray-600 mb-1">وضعیت پرداخت</p>
+                    <span
+                      className={`inline-flex px-3 py-1 text-sm font-semibold rounded-full border ${
+                        selectedLottery.isPaid
+                          ? "text-green-700 bg-green-100 border-green-300"
+                          : "text-red-700 bg-red-100 border-red-300"
+                      }`}
+                    >
+                      {selectedLottery.isPaid ? "پرداخت شده" : "پرداخت نشده"}
+                    </span>
+                  </div>
+                  {selectedLottery.paymentMethod && (
+                    <div>
+                      <p className="text-sm text-gray-600 mb-1">روش پرداخت</p>
+                      <div className="flex items-center gap-2">
+                        {selectedLottery.paymentMethod === "card" ? (
+                          <FaCreditCard className="text-blue-500 text-sm" />
+                        ) : (
+                          <FaMoneyBillWave className="text-green-500 text-sm" />
+                        )}
+                        <p className="text-sm font-medium text-gray-900">
+                          {selectedLottery.paymentMethod === "card" ? "کارت به کارت" : "پرداخت مستقیم (زرین‌پال)"}
+                        </p>
+                      </div>
+                    </div>
+                  )}
+                  {selectedLottery.paymentAmount && (
+                    <div>
+                      <p className="text-sm text-gray-600 mb-1">مبلغ پرداخت</p>
+                      <p className="text-sm font-medium text-gray-900">
+                        {selectedLottery.paymentAmount.toLocaleString("fa-IR")} تومان
+                      </p>
+                    </div>
+                  )}
+                  {selectedLottery.paymentDate && (
+                    <div>
+                      <p className="text-sm text-gray-600 mb-1">تاریخ پرداخت</p>
+                      <p className="text-sm font-medium text-gray-900">
+                        {new Date(selectedLottery.paymentDate).toLocaleDateString("fa-IR")}
+                      </p>
+                    </div>
+                  )}
+                  {selectedLottery.authority && (
+                    <div>
+                      <p className="text-sm text-gray-600 mb-1">شناسه پرداخت</p>
+                      <p className="text-sm font-medium text-gray-900 font-mono">
+                        {selectedLottery.authority}
+                      </p>
+                    </div>
+                  )}
+                  {selectedLottery.refId && (
+                    <div>
+                      <p className="text-sm text-gray-600 mb-1">شماره پیگیری</p>
+                      <p className="text-sm font-medium text-gray-900 font-mono">
+                        {selectedLottery.refId}
+                      </p>
+                    </div>
+                  )}
+                </div>
+                
+                {/* Payment Receipt Image */}
+                {selectedLottery.receiptUrl && (
+                  <div className="mt-4">
+                    <p className="text-sm text-gray-600 mb-2 flex items-center gap-2">
+                      <FaReceipt className="text-blue-500" />
+                      رسید پرداخت
+                    </p>
+                    <div className="bg-white rounded-lg border border-gray-200 p-3">
+                      <img
+                        src={selectedLottery.receiptUrl}
+                        alt="رسید پرداخت"
+                        className="max-w-full h-auto max-h-64 rounded-lg border border-gray-200 cursor-pointer hover:opacity-90 transition-opacity"
+                        onClick={() => window.open(selectedLottery.receiptUrl, '_blank')}
+                        onError={(e) => {
+                          console.error('Error loading receipt image:', selectedLottery.receiptUrl);
+                          (e.target as HTMLImageElement).style.display = 'none';
+                          const errorDiv = document.createElement('div');
+                          errorDiv.innerHTML = '<p class="text-red-500 text-sm">خطا در بارگذاری تصویر</p>';
+                          (e.target as HTMLImageElement).parentNode?.appendChild(errorDiv);
+                        }}
+                        onLoad={() => console.log('Receipt image loaded successfully')}
+                      />
+                      <div className="mt-2 flex items-center justify-between">
+                        <p className="text-xs text-gray-500">کلیک کنید برای مشاهده تمام صفحه</p>
+                        <button
+                          onClick={() => window.open(selectedLottery.receiptUrl, '_blank')}
+                          className="text-xs text-[#FF7A00] hover:text-[#FF7A00]/80 font-medium"
+                        >
+                          مشاهده اصل تصویر
+                        </button>
+                      </div>
+                    </div>
                   </div>
                 )}
               </div>
