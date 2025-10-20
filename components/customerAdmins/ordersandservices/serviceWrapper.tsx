@@ -121,16 +121,16 @@ const ServiceWrapper: React.FC<ServiceWrapperProps> = ({
       title: "کل سفارشات",
       value: userStats.totalRequests,
       icon: <FaShoppingCart className="text-xl sm:text-2xl" />,
-      color: "from-[#FF7A00]/10 to-[#FF7A00]/5",
-      iconColor: "text-[#FF7A00]",
+      color: "from-[#0A1D37]/10 to-[#0A1D37]/5",
+      iconColor: "text-[#0A1D37]",
       bgColor: "bg-gradient-to-br from-gray-50 to-white",
     },
     {
       title: "در انتظار بررسی",
       value: userStats.pendingRequests,
       icon: <FaClock className="text-xl sm:text-2xl" />,
-      color: "from-[#FF7A00]/10 to-[#FF7A00]/5",
-      iconColor: "text-[#FF7A00]",
+      color: "from-[#0A1D37]/10 to-[#0A1D37]/5",
+      iconColor: "text-[#0A1D37]",
       bgColor: "bg-gradient-to-br from-orange-50 to-white",
     },
     {
@@ -182,8 +182,8 @@ const ServiceWrapper: React.FC<ServiceWrapperProps> = ({
       <div className="backdrop-blur-sm bg-white/80 border border-gray-100 rounded-2xl p-4 sm:p-6 lg:p-8 mb-6 sm:mb-8 shadow-sm hover:shadow-md transition-shadow duration-300">
         <div className="flex items-center justify-between flex-wrap gap-4">
           <div className="flex items-center gap-3 sm:gap-4 flex-1 min-w-0">
-            <div className="w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 bg-gradient-to-br from-[#FF7A00]/10 to-[#FF7A00]/5 rounded-full sm:rounded-2xl flex items-center justify-center flex-shrink-0 border border-[#FF7A00]/20">
-              <FaUser className="text-[#FF7A00] text-lg sm:text-xl lg:text-2xl" />
+            <div className="w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 bg-gradient-to-br from-[#0A1D37]/10 to-[#0A1D37]/5 rounded-full sm:rounded-2xl flex items-center justify-center flex-shrink-0 border border-[#0A1D37]/20">
+              <FaUser className="text-[#0A1D37] text-lg sm:text-xl lg:text-2xl" />
             </div>
             <div className="flex-1 min-w-0">
               <h2 className="text-base sm:text-xl lg:text-2xl font-bold text-[#0A1D37] mb-1 truncate">
@@ -235,7 +235,7 @@ const ServiceWrapper: React.FC<ServiceWrapperProps> = ({
                   <div className={stat.iconColor}>{stat.icon}</div>
                 </div>
                 <div className="text-right">
-                  <p className="text-xl sm:text-2xl lg:text-3xl font-bold text-[#0A1D37] group-hover:text-[#FF7A00] transition-colors duration-300">
+                  <p className="text-xl sm:text-2xl lg:text-3xl font-bold text-[#0A1D37] group-hover:text-[#0A1D37] transition-colors duration-300">
                     {stat.value}
                   </p>
                 </div>
@@ -302,7 +302,7 @@ const ServiceWrapper: React.FC<ServiceWrapperProps> = ({
                 onClick={() => handleTabChange(tab.id)}
                 className={`relative flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3 px-4 sm:px-5 lg:px-6 py-3 sm:py-4 rounded-xl sm:rounded-xl lg:rounded-2xl font-medium transition-all duration-300 group ${
                   activeTab === tab.id
-                    ? "border-2 border-[#FF7A00] bg-gradient-to-br from-gray-50 to-white text-[#0A1D37] shadow-md scale-[1.02]"
+                    ? "border-2 border-[#0A1D37] bg-gradient-to-br from-gray-50 to-white text-[#0A1D37] shadow-md scale-[1.02]"
                     : "border-2 border-transparent text-gray-700 hover:bg-gray-50 hover:scale-[1.02] hover:shadow-sm"
                 }`}
               >
@@ -310,8 +310,8 @@ const ServiceWrapper: React.FC<ServiceWrapperProps> = ({
                 <div
                   className={`transition-all duration-300 ${
                     activeTab === tab.id
-                      ? "text-[#FF7A00] scale-110"
-                      : "text-gray-500 group-hover:text-[#FF7A00] group-hover:scale-110"
+                      ? "text-[#0A1D37] scale-110"
+                      : "text-gray-500 group-hover:text-[#0A1D37] group-hover:scale-110"
                   }`}
                 >
                   {tab.icon}

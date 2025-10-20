@@ -21,7 +21,7 @@ import LocationSection from "./lottery/location";
 
 export const COLORS = {
   primary: "#0A1D37",
-  accent: "#FF7A00",
+  accent: "#0A1D37",
   secondary: "#4DBFF0",
   white: "#FFFFFF",
   gray: "#A0A0A0",

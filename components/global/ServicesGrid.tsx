@@ -219,21 +219,21 @@ console.log(hoveredService,currentRotation)
               background: `linear-gradient(45deg, 
                 ${
                   i % 4 === 0
-                    ? "#FF7A00"
+                    ? "#0A1D37"
                     : i % 4 === 1
                     ? "#4DBFF0"
                     : i % 4 === 2
                     ? "#0A1D37"
-                    : "#FF7A00"
+                    : "#0A1D37"
                 }, 
                 ${
                   i % 4 === 0
-                    ? "#FF7A00"
+                    ? "#0A1D37"
                     : i % 4 === 1
                     ? "#4DBFF0"
                     : i % 4 === 2
                     ? "#0A1D37"
-                    : "#FF7A00"
+                    : "#0A1D37"
                 }
               )`,
               filter: "blur(1px)",
@@ -245,8 +245,8 @@ console.log(hoveredService,currentRotation)
 
         {/* Geometric Shapes */}
         <div className="absolute top-20 right-20 w-32 h-32 border border-[#4DBFF0]/20 rounded-full animate-spin-slow"></div>
-        <div className="absolute bottom-32 left-16 w-24 h-24 border-2 border-[#FF7A00]/20 rotate-45 animate-pulse"></div>
-        <div className="absolute top-1/3 right-1/4 w-16 h-16 bg-gradient-to-br from-[#FF7A00]/10 to-[#4DBFF0]/10 rounded-lg rotate-12 animate-float"></div>
+        <div className="absolute bottom-32 left-16 w-24 h-24 border-2 border-[#0A1D37]/20 rotate-45 animate-pulse"></div>
+        <div className="absolute top-1/3 right-1/4 w-16 h-16 bg-gradient-to-br from-[#0A1D37]/10 to-[#4DBFF0]/10 rounded-lg rotate-12 animate-float"></div>
         <div className="absolute bottom-1/4 right-3/4 w-20 h-20 border border-[#0A1D37]/20 rounded-lg rotate-45 animate-spin-slow"></div>
       </div>
 
@@ -275,7 +275,7 @@ console.log(hoveredService,currentRotation)
           >
             {/* Center Hub */}
             <div className="absolute md:hidden top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-20 h-20 rounded-full bg-gradient-to-br from-white/40 to-white/20 backdrop-blur-xl border-2 border-white/50 shadow-2xl flex items-center justify-center z-20">
-              <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#4DBFF0] to-[#FF7A00] shadow-inner"></div>
+              <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#4DBFF0] to-[#0A1D37] shadow-inner"></div>
             </div>
 
             {/* Services arranged in circle */}
@@ -309,7 +309,7 @@ console.log(hoveredService,currentRotation)
 
                       {/* Icon */}
                       {service.icon && (
-                        <div className="text-sm sm:text-xl md:text-2xl mb-1 sm:mb-2 text-[#FF7A00] relative z-10">
+                        <div className="text-sm sm:text-xl md:text-2xl mb-1 sm:mb-2 text-[#0A1D37] relative z-10">
                           {service.icon}
                         </div>
                       )}
@@ -320,7 +320,7 @@ console.log(hoveredService,currentRotation)
                       </h3>
 
                       {/* Glow Effect */}
-                      <div className="absolute -inset-1 rounded-2xl bg-gradient-to-br from-[#FF7A00]/20 to-[#4DBFF0]/20 blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10"></div>
+                      <div className="absolute -inset-1 rounded-2xl bg-gradient-to-br from-[#0A1D37]/20 to-[#4DBFF0]/20 blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10"></div>
                     </div>
                   </div>
                 </div>

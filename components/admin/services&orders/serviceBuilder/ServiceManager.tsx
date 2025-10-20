@@ -123,9 +123,9 @@ const ServiceManager: React.FC<ServiceManagerProps> = ({
           <div className="mb-6 flex justify-center">
             <div className="relative group/badge">
               <span className="inline-flex items-center px-6 py-3 rounded-full text-sm font-medium bg-gradient-to-r from-white/20 via-white/10 to-white/5 backdrop-blur-sm border border-white/30 shadow-lg text-[#0A1D37]/90 relative z-10">
-                <div className="absolute inset-0 bg-gradient-to-r from-[#4DBFF0]/10 to-[#FF7A00]/10 rounded-full group-hover/badge:from-[#4DBFF0]/20 group-hover/badge:to-[#FF7A00]/20 transition-all duration-300"></div>
+                <div className="absolute inset-0 bg-gradient-to-r from-[#4DBFF0]/10 to-[#0A1D37]/10 rounded-full group-hover/badge:from-[#4DBFF0]/20 group-hover/badge:to-[#0A1D37]/20 transition-all duration-300"></div>
                 <span className="relative flex items-center gap-2">
-                  <div className="w-2 h-2 bg-gradient-to-r from-[#4DBFF0] to-[#FF7A00] rounded-full animate-pulse"></div>
+                  <div className="w-2 h-2 bg-gradient-to-r from-[#4DBFF0] to-[#0A1D37] rounded-full animate-pulse"></div>
                   سرویس‌های ویژه
                 </span>
               </span>
@@ -144,7 +144,7 @@ const ServiceManager: React.FC<ServiceManagerProps> = ({
             }}
           >
             سرویس‌های موجود
-            <div className="absolute inset-0 bg-gradient-to-r from-[#4DBFF0]/5 via-[#FF7A00]/5 to-[#0A1D37]/5 blur-xl -z-10"></div>
+            <div className="absolute inset-0 bg-gradient-to-r from-[#4DBFF0]/5 via-[#0A1D37]/5 to-[#0A1D37]/5 blur-xl -z-10"></div>
           </h1>
 
           <p className="text-[#0A1D37]/70 text-lg max-w-2xl mx-auto leading-relaxed">
@@ -386,7 +386,7 @@ const AdminServiceList: React.FC<{
               </button>
               <button
                 onClick={() => handleDelete(service)}
-                className="px-3 py-1 text-[#0A1D37] border-[#FF7A00] border rounded-md transition-colors text-sm"
+                className="px-3 py-1 text-[#0A1D37] border-[#0A1D37] border rounded-md transition-colors text-sm"
               >
                 حذف
               </button>

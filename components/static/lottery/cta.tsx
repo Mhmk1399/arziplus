@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { Clock, Globe, ArrowRight, MapPin, Phone, Mail } from "lucide-react";
 import { COLORS } from "../lottery";
+import Link from "next/link";
 
 const CTASection = () => {
   const [timeLeft, setTimeLeft] = useState({
@@ -143,26 +144,32 @@ const CTASection = () => {
 
         {/* Buttons */}
         <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-12">
-          <button
-            className="px-10 py-5 rounded-xl font-bold text-xl transition-all hover:scale-105 shadow-2xl flex items-center gap-3"
-            style={{ backgroundColor: COLORS.accent, color: COLORS.white }}
-          >
-            <Globe className="w-6 h-6" />
-            ثبت‌نام آنلاین لاتاری
-            <ArrowRight className="w-6 h-6" />
-          </button>
-          <button
-            className="px-10 py-5 rounded-xl font-bold text-xl transition-all hover:scale-105 shadow-2xl flex items-center gap-3"
-            style={{
-              backgroundColor: "transparent",
-              color: COLORS.white,
-              border: `2px solid ${COLORS.white}`,
-            }}
-          >
-            <MapPin className="w-6 h-6" />
-            رزرو وقت حضوری
-            <ArrowRight className="w-6 h-6" />
-          </button>
+          <Link href="/lottery/form">
+            {" "}
+            <button
+              className="px-10 py-5 rounded-xl font-bold text-xl transition-all hover:scale-105 shadow-2xl flex items-center gap-3"
+              style={{ backgroundColor: COLORS.accent, color: COLORS.white }}
+            >
+              <Globe className="w-6 h-6" />
+              ثبت‌نام آنلاین لاتاری
+              <ArrowRight className="w-6 h-6" />
+            </button>
+          </Link>
+          <Link href="/lottery/present">
+            {" "}
+            <button
+              className="px-10 py-5 rounded-xl font-bold text-xl transition-all hover:scale-105 shadow-2xl flex items-center gap-3"
+              style={{
+                backgroundColor: "transparent",
+                color: COLORS.white,
+                border: `2px solid ${COLORS.white}`,
+              }}
+            >
+              <MapPin className="w-6 h-6" />
+              رزرو وقت حضوری
+              <ArrowRight className="w-6 h-6" />
+            </button>
+          </Link>
         </div>
 
         {/* Contact Info */}
@@ -172,36 +179,46 @@ const CTASection = () => {
               icon: (
                 <Phone
                   className="w-8 h-8 mx-auto mb-3"
-                  style={{ color: COLORS.accent }}
+                  style={{ color: COLORS.secondary }}
                 />
               ),
               title: "تماس تلفنی",
-              value: "۰۲۱-۱۲۳۴۵۶۷۸",
+              value: "09991202049",
+              href: "tel:+989991202049",
             },
             {
               icon: (
                 <Mail
                   className="w-8 h-8 mx-auto mb-3"
-                  style={{ color: COLORS.accent }}
+                  style={{ color: COLORS.secondary }}
                 />
               ),
               title: "ایمیل",
-              value: "info@arzyplus.com",
+              value: "info@arziplus.com",
+              href: "mailto:info@arziplus.com",
             },
             {
               icon: (
                 <MapPin
                   className="w-8 h-8 mx-auto mb-3"
-                  style={{ color: COLORS.accent }}
+                  style={{ color: COLORS.secondary }}
                 />
               ),
               title: "آدرس دفتر",
               value: "تهران، خیابان فلسطین",
+              href: "https://maps.app.goo.gl/NQtGhVhuDr8aGpGJ8",
             },
           ].map((item) => (
-            <div
+            <a
               key={item.title}
-              className="p-6 rounded-xl backdrop-blur-md"
+              href={item.href}
+              target={item.href.startsWith("https") ? "_blank" : undefined}
+              rel={
+                item.href.startsWith("https")
+                  ? "noopener noreferrer"
+                  : undefined
+              }
+              className="block p-6 rounded-xl backdrop-blur-md hover:scale-105 transition-all duration-300"
               style={{ backgroundColor: `${COLORS.white}10` }}
             >
               {item.icon}
@@ -209,7 +226,7 @@ const CTASection = () => {
                 {item.title}
               </div>
               <div style={{ color: COLORS.secondary }}>{item.value}</div>
-            </div>
+            </a>
           ))}
         </div>
       </div>

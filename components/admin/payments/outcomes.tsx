@@ -344,7 +344,7 @@ const WithdrawRequestsList: React.FC = () => {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#FF7A00]"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#0A1D37]"></div>
       </div>
     );
   }
@@ -355,7 +355,7 @@ const WithdrawRequestsList: React.FC = () => {
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
           <h1 className="text-2xl font-bold text-[#0A1D37] flex items-center gap-3">
-            <span className="w-3 h-3 bg-[#FF7A00] rounded-full"></span>
+            <span className="w-3 h-3 bg-[#0A1D37] rounded-full"></span>
             مدیریت درخواست‌های برداشت
           </h1>
           <p className="text-gray-600 mt-1">
@@ -364,7 +364,7 @@ const WithdrawRequestsList: React.FC = () => {
         </div>
         <button
           onClick={exportRequests}
-          className="flex items-center gap-2 px-4 py-2 bg-[#FF7A00] text-white rounded-lg hover:bg-[#FF7A00]/90 transition-colors"
+          className="flex items-center gap-2 px-4 py-2 bg-[#0A1D37] text-white rounded-lg hover:bg-[#0A1D37]/90 transition-colors"
         >
           <FiDownload />
           خروجی CSV
@@ -444,7 +444,7 @@ const WithdrawRequestsList: React.FC = () => {
               <input
                 type="text"
                 placeholder="جستجو بر اساس نام کاربری، نام، یا شماره تلفن..."
-                className="w-full pr-10 pl-3 py-2 border border-[#0A1D37]/20 rounded-lg focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-colors"
+                className="w-full pr-10 pl-3 py-2 border border-[#0A1D37]/20 rounded-lg focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] transition-colors"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
@@ -454,7 +454,7 @@ const WithdrawRequestsList: React.FC = () => {
             <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
-              className="px-3 py-2 border border-[#0A1D37]/20 rounded-lg focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-colors"
+              className="px-3 py-2 border border-[#0A1D37]/20 rounded-lg focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] transition-colors"
             >
               <option value="">همه وضعیت‌ها</option>
               <option value="pending">در انتظار</option>
@@ -552,7 +552,7 @@ const WithdrawRequestsList: React.FC = () => {
                       </button>
                       <button
                         onClick={() => openEditRequest(request)}
-                        className="p-2 text-[#FF7A00] hover:bg-orange-50 rounded-lg transition-colors"
+                        className="p-2 text-[#0A1D37] hover:bg-orange-50 rounded-lg transition-colors"
                         title="ویرایش"
                       >
                         <FiEdit3 />
@@ -607,7 +607,7 @@ const WithdrawRequestsList: React.FC = () => {
           <div className="bg-white rounded-2xl max-w-4xl w-full h-[90vh] overflow-y-auto shadow-2xl border border-[#0A1D37]/10">
             <div className="p-4 sm:p-6 border-b border-[#0A1D37]/10">
               <h2 className="text-xl font-bold text-[#0A1D37] flex items-center gap-3">
-                <span className="w-3 h-3 bg-[#FF7A00] rounded-full"></span>
+                <span className="w-3 h-3 bg-[#0A1D37] rounded-full"></span>
                 جزئیات درخواست برداشت - {selectedRequest.user.username}
               </h2>
             </div>
@@ -616,7 +616,7 @@ const WithdrawRequestsList: React.FC = () => {
               {/* Request Info */}
               <div className="bg-gray-50 rounded-xl p-4 border border-[#0A1D37]/10">
                 <h3 className="text-base sm:text-lg font-semibold text-[#0A1D37] mb-3 flex items-center gap-2">
-                  <span className="w-2 h-2 bg-[#FF7A00] rounded-full"></span>
+                  <span className="w-2 h-2 bg-[#0A1D37] rounded-full"></span>
                   اطلاعات درخواست
                 </h3>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -713,7 +713,7 @@ const WithdrawRequestsList: React.FC = () => {
               {/* User Info */}
               <div className="bg-gray-50 rounded-xl p-4 border border-[#0A1D37]/10">
                 <h3 className="text-base sm:text-lg font-semibold text-[#0A1D37] mb-3 flex items-center gap-2">
-                  <span className="w-2 h-2 bg-[#FF7A00] rounded-full"></span>
+                  <span className="w-2 h-2 bg-[#0A1D37] rounded-full"></span>
                   اطلاعات کاربر
                 </h3>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -751,7 +751,7 @@ const WithdrawRequestsList: React.FC = () => {
                 selectedRequest.user.bankingInfo.length > 0 && (
                   <div className="bg-gray-50 rounded-xl p-4 border border-[#0A1D37]/10">
                     <h3 className="text-base sm:text-lg font-semibold text-[#0A1D37] mb-3 flex items-center gap-2">
-                      <span className="w-2 h-2 bg-[#FF7A00] rounded-full"></span>
+                      <span className="w-2 h-2 bg-[#0A1D37] rounded-full"></span>
                       اطلاعات بانکی
                     </h3>
                     <div className="space-y-3">
@@ -816,7 +816,7 @@ const WithdrawRequestsList: React.FC = () => {
                   setShowRequestDetails(false);
                   openEditRequest(selectedRequest);
                 }}
-                className="w-full sm:w-auto px-4 py-2 bg-[#FF7A00] text-white rounded-lg hover:bg-[#FF7A00]/90 transition-colors"
+                className="w-full sm:w-auto px-4 py-2 bg-[#0A1D37] text-white rounded-lg hover:bg-[#0A1D37]/90 transition-colors"
               >
                 ویرایش
               </button>
@@ -831,7 +831,7 @@ const WithdrawRequestsList: React.FC = () => {
           <div className="bg-white rounded-2xl max-w-2xl w-full shadow-2xl border border-[#0A1D37]/10">
             <div className="p-4 sm:p-6 border-b border-[#0A1D37]/10">
               <h2 className="text-xl font-bold text-[#0A1D37] flex items-center gap-3">
-                <span className="w-3 h-3 bg-[#FF7A00] rounded-full"></span>
+                <span className="w-3 h-3 bg-[#0A1D37] rounded-full"></span>
                 ویرایش درخواست برداشت - {selectedRequest.user.username}
               </h2>
             </div>
@@ -860,7 +860,7 @@ const WithdrawRequestsList: React.FC = () => {
               {/* Status Selection */}
               <div className="bg-gray-50 rounded-xl p-4 border border-[#0A1D37]/10">
                 <h3 className="text-base sm:text-lg font-semibold text-[#0A1D37] mb-3 flex items-center gap-2">
-                  <span className="w-2 h-2 bg-[#FF7A00] rounded-full"></span>
+                  <span className="w-2 h-2 bg-[#0A1D37] rounded-full"></span>
                   تغییر وضعیت
                 </h3>
                 <div>
@@ -878,7 +878,7 @@ const WithdrawRequestsList: React.FC = () => {
                           | "rejected",
                       }))
                     }
-                    className="w-full px-3 py-2 border border-[#0A1D37]/20 rounded-lg focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-colors"
+                    className="w-full px-3 py-2 border border-[#0A1D37]/20 rounded-lg focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] transition-colors"
                   >
                     <option value="pending">در انتظار</option>
                     <option value="approved">تایید شده</option>
@@ -899,7 +899,7 @@ const WithdrawRequestsList: React.FC = () => {
                           rejectionReason: e.target.value,
                         }))
                       }
-                      className="w-full px-3 py-2 border border-[#0A1D37]/20 rounded-lg focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-colors resize-none"
+                      className="w-full px-3 py-2 border border-[#0A1D37]/20 rounded-lg focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] transition-colors resize-none"
                       rows={3}
                       placeholder="لطفاً دلیل رد درخواست را وارد کنید..."
                     />
@@ -922,7 +922,7 @@ const WithdrawRequestsList: React.FC = () => {
                   (editForm.status === "rejected" &&
                     !editForm.rejectionReason.trim())
                 }
-                className="px-4 py-2 bg-[#FF7A00] text-white rounded-lg hover:bg-[#FF7A00]/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                className="px-4 py-2 bg-[#0A1D37] text-white rounded-lg hover:bg-[#0A1D37]/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
               >
                 {submitting ? "در حال بروزرسانی..." : "ذخیره تغییرات"}
               </button>

@@ -692,7 +692,7 @@ const WithdrawComponent: React.FC<WithdrawComponentProps> = ({
               {/* Wallet Statistics */}
               <div className="bg-white border-2 border-gray-100 rounded-2xl sm:rounded-3xl p-5 sm:p-6 shadow-sm">
                 <div className="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6">
-                  <FaChartLine className="text-[#FF7A00] text-lg sm:text-xl" />
+                  <FaChartLine className="text-[#0A1D37] text-lg sm:text-xl" />
                   <h3 className="text-base sm:text-lg font-bold text-[#0A1D37]">
                     آمار کیف پول
                   </h3>
@@ -737,7 +737,7 @@ const WithdrawComponent: React.FC<WithdrawComponentProps> = ({
               {/* Recent Transactions */}
               <div className="bg-white border-2 border-gray-100 rounded-2xl sm:rounded-3xl p-5 sm:p-6 shadow-sm">
                 <div className="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6">
-                  <FaHistory className="text-[#FF7A00] text-lg sm:text-xl" />
+                  <FaHistory className="text-[#0A1D37] text-lg sm:text-xl" />
                   <h3 className="text-base sm:text-lg font-bold text-[#0A1D37]">
                     آخرین تراکنش‌ها
                   </h3>

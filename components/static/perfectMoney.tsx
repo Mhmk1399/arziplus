@@ -146,83 +146,7 @@ const PerfectMoney = () => {
     },
   ];
 
-  const faqIcons = {
-    question: (
-      <svg
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-        className="w-full h-full"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-        />
-      </svg>
-    ),
-    help: (
-      <svg
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-        className="w-full h-full"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192L5.636 18.364M12 2.25a9.75 9.75 0 109.75 9.75A9.75 9.75 0 0012 2.25z"
-        />
-      </svg>
-    ),
-    support: (
-      <svg
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-        className="w-full h-full"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M18.364 5.636a9 9 0 010 12.728m0 0l-2.829-2.829m2.829 2.829L21 21M15.536 8.464a5 5 0 010 7.072m0 0l-2.829-2.829m-4.243 2.829a4.978 4.978 0 01-1.414-2.83m-1.414 5.658a9 9 0 01-2.167-9.238m7.824 2.167a1 1 0 111.414 1.414m-1.414-1.414L3 3"
-        />
-      </svg>
-    ),
-    info: (
-      <svg
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-        className="w-full h-full"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-        />
-      </svg>
-    ),
-    chat: (
-      <svg
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-        className="w-full h-full"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
-        />
-      </svg>
-    ),
-  };
+ 
 
   return (
     <div>
@@ -354,8 +278,7 @@ const PerfectMoney = () => {
       <FAQSection
         heading="سوالات متداول"
         description="پاسخ سوالات رایج درباره خدمات ارزی پلاس و افتتاح حساب پرفکت‌مانی را در اینجا بیابید"
-        svgIcon={faqIcons.info}
-        faqItems={faqData}
+         faqItems={faqData}
         buttons={[
           {
             text: "ارسال سوال",
@@ -379,7 +302,7 @@ const PerfectMoney = () => {
           variant: "primary",
           icon: <FaRocket />,
         }}
-        theme={ctaThemes.danger}
+        theme={ctaThemes.primary}
         height={50}
       />
     </div>

@@ -422,6 +422,24 @@ export const menuItems: MenuItems = [
     },
   },
   {
+    title: "لاتاری",
+    childrens: {
+      dropdowns: [
+        {
+          name: "ثبت نام لاتاری",
+          icon: FaTicketAlt,
+          childrens: [
+            {
+              name: "ثبت نام لاتاری آکریکا",
+              href: "/lottery",
+              icon: FaTicketAlt,
+            },
+          ],
+        },
+      ],
+    },
+  },
+  {
     title: "درباره ما",
     childrens: {
       dropdowns: [

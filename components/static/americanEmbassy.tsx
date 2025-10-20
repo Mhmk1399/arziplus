@@ -112,24 +112,6 @@ const USVisaPaymentPage = () => {
     },
   ];
 
-  const faqIcons = {
-    info: (
-      <svg
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-        className="w-full h-full"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-        />
-      </svg>
-    ),
-  };
-
   return (
     <div>
       <HeroSection
@@ -179,7 +161,7 @@ const USVisaPaymentPage = () => {
         buttonText="پرداخت هزینه سفارت"
         buttonLink="/services/Paying-for-the-American-Embassy"
         items={whyUsItems}
-         theme={themesWhyus.dark}
+        theme={themesWhyus.dark}
       />
 
       <HeroSplitSection
@@ -224,7 +206,6 @@ const USVisaPaymentPage = () => {
       <FAQSection
         heading="سوالات متداول"
         description="پاسخ به متداول‌ترین سوالات درباره پرداخت هزینه‌های سفارت آمریکا"
-        svgIcon={faqIcons.info}
         faqItems={faqItems}
         buttons={[
           {
@@ -250,7 +231,7 @@ const USVisaPaymentPage = () => {
           variant: "ghost",
           icon: <FaRocket />,
         }}
-        theme={ctaThemes.success}
+        theme={ctaThemes.primary}
         height={50}
       />
     </div>

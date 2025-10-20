@@ -126,7 +126,7 @@ const WiseOpening = () => {
     {
       id: 1,
       icon: <FaDollarSign size={32} />,
-      iconColor: "bg-[#FF7A00]",
+      iconColor: "bg-[#0A1D37]",
       title: "دریافت درآمد ارزی",
       description:
         "به راحتی درآمد خود را از مشتریان یا پلتفرم‌های فریلنسری به حساب وایز منتقل کنید و بدون محدودیت برداشت نمایید.",
@@ -134,7 +134,7 @@ const WiseOpening = () => {
     {
       id: 2,
       icon: <FaPeopleArrows size={32} />,
-      iconColor: "bg-[#FF7A00]",
+      iconColor: "bg-[#0A1D37]",
       title: "ارسال پول به حساب‌های خارجی",
       description:
         "انتقال سریع و امن وجه به حساب‌های خارجی با کمترین کارمزد و بدون نیاز به حساب بانکی سنتی.",
@@ -142,7 +142,7 @@ const WiseOpening = () => {
     {
       id: 3,
       icon: <FaShoppingCart size={32} />,
-      iconColor: "bg-[#FF7A00]",
+      iconColor: "bg-[#0A1D37]",
       title: "خرید از فروشگاه‌های بین‌المللی",
       description:
         "امکان خرید مستقیم از فروشگاه‌های خارجی و پرداخت اشتراک سرویس‌های آنلاین مثل Netflix، Adobe و دیگر پلتفرم‌ها.",
@@ -150,7 +150,7 @@ const WiseOpening = () => {
     {
       id: 4,
       icon: <FaGlobe size={32} />,
-      iconColor: "bg-[#FF7A00]",
+      iconColor: "bg-[#0A1D37]",
       title: "انتقال سریع ارز به حساب‌های بانکی",
       description:
         "انتقال وجه به حساب‌های بانکی در سراسر دنیا با سرعت و کارمزد پایین، بدون محدودیت‌های بانکی ایران.",
@@ -158,7 +158,7 @@ const WiseOpening = () => {
     {
       id: 5,
       icon: <FaUniversity size={32} />,
-      iconColor: "bg-[#FF7A00]",
+      iconColor: "bg-[#0A1D37]",
       title: "حسابی دارای سوئیفت و IBAN",
       description:
         "حساب بانکی وایز قابلیت سوئیفت و IBAN  را برای ارسال و دریافت 80 ارز دنیا را دارد.",
@@ -166,7 +166,7 @@ const WiseOpening = () => {
     {
       id: 6,
       icon: <FaUniversity size={32} />,
-      iconColor: "bg-[#FF7A00]",
+      iconColor: "bg-[#0A1D37]",
       title: "ارائه مدارک حقوقی از انگلستان",
       description:
         "با افتتاح حساب وایز مدارک حقوقی از انگلستان صادر میشو که با استفاده از آن میتوانید در تمام پلتفرم ها دنیا احراز هویت کنید.",
@@ -301,84 +301,6 @@ const WiseOpening = () => {
     },
   ];
 
-  const faqIcons = {
-    question: (
-      <svg
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-        className="w-full h-full"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-        />
-      </svg>
-    ),
-    help: (
-      <svg
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-        className="w-full h-full"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192L5.636 18.364M12 2.25a9.75 9.75 0 109.75 9.75A9.75 9.75 0 0012 2.25z"
-        />
-      </svg>
-    ),
-    support: (
-      <svg
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-        className="w-full h-full"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M18.364 5.636a9 9 0 010 12.728m0 0l-2.829-2.829m2.829 2.829L21 21M15.536 8.464a5 5 0 010 7.072m0 0l-2.829-2.829m-4.243 2.829a4.978 4.978 0 01-1.414-2.83m-1.414 5.658a9 9 0 01-2.167-9.238m7.824 2.167a1 1 0 111.414 1.414m-1.414-1.414L3 3"
-        />
-      </svg>
-    ),
-    info: (
-      <svg
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-        className="w-full h-full"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-        />
-      </svg>
-    ),
-    chat: (
-      <svg
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-        className="w-full h-full"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
-        />
-      </svg>
-    ),
-  };
-
   return (
     <div>
       {" "}
@@ -415,7 +337,7 @@ const WiseOpening = () => {
         heading="مزایای افتتاح حساب وایز با ارزی پلاس"
         description="با افتتاح حساب بین‌المللی وایز، می‌توانید تراکنش‌های خود را سریع، امن و کم‌هزینه انجام دهید. از جمله مزایای بارز افتتاح حساب با ارزی پلاس می‌توان به امکانات زیر اشاره نمود:"
         steps={wiseRegistrationSteps}
-        theme={stepThemes.blue}
+        theme={stepThemes.default}
         layout="timeline"
         boxShape="square"
         boxSize="sm"
@@ -430,7 +352,7 @@ const WiseOpening = () => {
         buttonText="افتتاح حساب وایز"
         buttonLink="/services/opening-a-wise-account"
         items={wiseItemsWhyus}
-        buttonColor="bg-[#FF7A00] hover:bg-[#FF7A00]/80 text-white"
+        buttonColor="bg-[#0A1D37] hover:bg-[#0A1D37]/80 text-white"
         theme={themesWhyus.default}
       />
       <SmoothTimeline
@@ -535,7 +457,6 @@ const WiseOpening = () => {
       <FAQSection
         heading="سوالات متداول"
         description="پاسخ سوالات رایج درباره خدمات ارزی پلاس و افتتاح حساب وایز را در اینجا بیابید"
-        svgIcon={faqIcons.info}
         faqItems={faqCompany}
         buttons={[
           {

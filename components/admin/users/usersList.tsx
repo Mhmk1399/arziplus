@@ -693,11 +693,11 @@ const UsersList = () => {
             className="fixed inset-0 h-screen overflow-hidden bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-2 sm:p-4"
             dir="rtl"
           >
-            <div className="bg-white rounded-2xl w-full max-w-6xl max-h-screen overflow-hidden shadow-2xl border border-[#FF7A00]/20">
+            <div className="bg-white rounded-2xl w-full max-w-6xl max-h-screen overflow-hidden shadow-2xl border border-[#0A1D37]/20">
               {/* Header */}
-              <div className="flex items-center justify-between p-4 sm:p-6 border-b bg-gray-50 border-[#FF7A00]/20">
+              <div className="flex items-center justify-between p-4 sm:p-6 border-b bg-gray-50 border-[#0A1D37]/20">
                 <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 bg-[#FF7A00] rounded-full flex items-center justify-center">
+                  <div className="w-8 h-8 bg-[#0A1D37] rounded-full flex items-center justify-center">
                     <FaUser className="text-white text-sm" />
                   </div>
                   <h2 className="text-lg sm:text-xl font-bold text-[#0A1D37]">
@@ -707,14 +707,14 @@ const UsersList = () => {
                 <div className="flex items-center gap-2">
                   <button
                     onClick={refreshUserData}
-                    className="p-2 hover:bg-[#FF7A00]/10 rounded-lg transition-colors text-gray-500 hover:text-[#FF7A00]"
+                    className="p-2 hover:bg-[#0A1D37]/10 rounded-lg transition-colors text-gray-500 hover:text-[#0A1D37]"
                     title="بروزرسانی اطلاعات"
                   >
                     🔄
                   </button>
                   <button
                     onClick={() => setShowUserDetails(false)}
-                    className="p-2 hover:bg-[#FF7A00]/10 rounded-lg transition-colors text-gray-500 hover:text-[#FF7A00]"
+                    className="p-2 hover:bg-[#0A1D37]/10 rounded-lg transition-colors text-gray-500 hover:text-[#0A1D37]"
                   >
                     ✕
                   </button>
@@ -726,7 +726,7 @@ const UsersList = () => {
                 {/* Basic Info */}
                 <div className="bg-gray-50 rounded-xl p-4 border border-[#0A1D37]/10">
                   <h3 className="text-base sm:text-lg font-semibold text-[#0A1D37] mb-3 flex items-center gap-2">
-                    <span className="w-2 h-2 bg-[#FF7A00] rounded-full"></span>
+                    <span className="w-2 h-2 bg-[#0A1D37] rounded-full"></span>
                     اطلاعات پایه
                   </h3>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
@@ -747,7 +747,7 @@ const UsersList = () => {
                           {selectedUser.roles.map((role, index) => (
                             <span
                               key={index}
-                              className="inline-flex px-2 py-1 bg-[#FF7A00]/10 text-[#FF7A00] text-xs rounded-full border border-[#FF7A00]/20"
+                              className="inline-flex px-2 py-1 bg-[#0A1D37]/10 text-[#0A1D37] text-xs rounded-full border border-[#0A1D37]/20"
                             >
                               {getRoleText([role])}
                             </span>
@@ -795,7 +795,7 @@ const UsersList = () => {
                 {/* National Credentials */}
                 <div className="bg-gray-50 rounded-xl p-4 border border-[#0A1D37]/10">
                   <h3 className="text-base sm:text-lg font-semibold text-[#0A1D37] mb-3 flex items-center gap-2">
-                    <span className="w-2 h-2 bg-[#FF7A00] rounded-full"></span>
+                    <span className="w-2 h-2 bg-[#0A1D37] rounded-full"></span>
                     اطلاعات هویتی
                   </h3>
                   {selectedUser.nationalCredentials &&
@@ -923,7 +923,7 @@ const UsersList = () => {
                 {/* Contact Info */}
                 <div className="bg-gray-50 rounded-xl p-4 border border-[#0A1D37]/10">
                   <h3 className="text-base sm:text-lg font-semibold text-[#0A1D37] mb-3 flex items-center gap-2">
-                    <span className="w-2 h-2 bg-[#FF7A00] rounded-full"></span>
+                    <span className="w-2 h-2 bg-[#0A1D37] rounded-full"></span>
                     اطلاعات تماس
                   </h3>
                   {selectedUser.contactInfo ? (
@@ -1020,7 +1020,7 @@ const UsersList = () => {
                 {/* Banking Info */}
                 <div className="bg-gray-50 rounded-xl p-4 border border-[#0A1D37]/10">
                   <h3 className="text-base sm:text-lg font-semibold text-[#0A1D37] mb-3 flex items-center gap-2">
-                    <span className="w-2 h-2 bg-[#FF7A00] rounded-full"></span>
+                    <span className="w-2 h-2 bg-[#0A1D37] rounded-full"></span>
                     اطلاعات بانکی
                   </h3>
                   {selectedUser.bankingInfo &&
@@ -1110,7 +1110,7 @@ const UsersList = () => {
                 {/* Verification Status */}
                 <div className="bg-gray-50 rounded-xl p-4 border border-[#0A1D37]/10">
                   <h3 className="text-base sm:text-lg font-semibold text-[#0A1D37] mb-3 flex items-center gap-2">
-                    <span className="w-2 h-2 bg-[#FF7A00] rounded-full"></span>
+                    <span className="w-2 h-2 bg-[#0A1D37] rounded-full"></span>
                     وضعیت تایید
                   </h3>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
@@ -1188,7 +1188,7 @@ const UsersList = () => {
                 {selectedUser.profile && (
                   <div className="bg-gray-50 rounded-xl p-4 border border-[#0A1D37]/10">
                     <h3 className="text-base sm:text-lg font-semibold text-[#0A1D37] mb-3 flex items-center gap-2">
-                      <span className="w-2 h-2 bg-[#FF7A00] rounded-full"></span>
+                      <span className="w-2 h-2 bg-[#0A1D37] rounded-full"></span>
                       اطلاعات پروفایل
                     </h3>
                     <div className="space-y-3">
@@ -1307,7 +1307,7 @@ const UsersList = () => {
                     setShowUserDetails(false);
                     openEditUser(selectedUser);
                   }}
-                  className="w-full sm:w-auto px-4 py-2 bg-[#FF7A00] text-white rounded-lg hover:bg-[#FF7A00]/90 transition-colors"
+                  className="w-full sm:w-auto px-4 py-2 bg-[#0A1D37] text-white rounded-lg hover:bg-[#0A1D37]/90 transition-colors"
                 >
                   ویرایش
                 </button>
@@ -1329,7 +1329,7 @@ const UsersList = () => {
             <div className="bg-white rounded-2xl max-w-6xl w-full h-[95vh] overflow-y-auto shadow-2xl border border-[#0A1D37]/10">
               <div className="p-4 sm:p-6 border-b border-[#0A1D37]/10">
                 <h2 className="text-xl font-bold text-[#0A1D37] flex items-center gap-3">
-                  <span className="w-3 h-3 bg-[#FF7A00] rounded-full"></span>
+                  <span className="w-3 h-3 bg-[#0A1D37] rounded-full"></span>
                   ویرایش کاربر
                 </h2>
               </div>
@@ -1338,7 +1338,7 @@ const UsersList = () => {
                 {/* Basic Info Section */}
                 <div className="bg-gray-50 rounded-xl p-4 border border-[#0A1D37]/10">
                   <h3 className="text-base sm:text-lg font-semibold text-[#0A1D37] mb-3 flex items-center gap-2">
-                    <span className="w-2 h-2 bg-[#FF7A00] rounded-full"></span>
+                    <span className="w-2 h-2 bg-[#0A1D37] rounded-full"></span>
                     اطلاعات پایه
                   </h3>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -1355,7 +1355,7 @@ const UsersList = () => {
                             username: e.target.value,
                           }))
                         }
-                        className="w-full px-3 py-2 border border-[#0A1D37]/20 rounded-lg focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-colors"
+                        className="w-full px-3 py-2 border border-[#0A1D37]/20 rounded-lg focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] transition-colors"
                       />
                     </div>
 
@@ -1371,7 +1371,7 @@ const UsersList = () => {
                             status: e.target.value,
                           }))
                         }
-                        className="w-full px-3 py-2 border border-[#0A1D37]/20 rounded-lg focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-colors"
+                        className="w-full px-3 py-2 border border-[#0A1D37]/20 rounded-lg focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] transition-colors"
                       >
                         <option value="active">فعال</option>
                         <option value="suspended">معلق</option>
@@ -1412,7 +1412,7 @@ const UsersList = () => {
                                 }));
                               }
                             }}
-                            className="ml-2 accent-[#FF7A00]"
+                            className="ml-2 accent-[#0A1D37]"
                           />
                           <span className="text-sm">{getRoleText([role])}</span>
                         </label>
@@ -1424,7 +1424,7 @@ const UsersList = () => {
                 {/* National Credentials Section */}
                 <div className="bg-gray-50 rounded-xl p-4 border border-[#0A1D37]/10">
                   <h3 className="text-base sm:text-lg font-semibold text-[#0A1D37] mb-3 flex items-center gap-2">
-                    <span className="w-2 h-2 bg-[#FF7A00] rounded-full"></span>
+                    <span className="w-2 h-2 bg-[#0A1D37] rounded-full"></span>
                     اطلاعات هویتی
                   </h3>
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -1444,7 +1444,7 @@ const UsersList = () => {
                             },
                           }))
                         }
-                        className="w-full px-3 py-2 border border-[#0A1D37]/20 rounded-lg focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-colors"
+                        className="w-full px-3 py-2 border border-[#0A1D37]/20 rounded-lg focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] transition-colors"
                       />
                     </div>
 
@@ -1464,7 +1464,7 @@ const UsersList = () => {
                             },
                           }))
                         }
-                        className="w-full px-3 py-2 border border-[#0A1D37]/20 rounded-lg focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-colors"
+                        className="w-full px-3 py-2 border border-[#0A1D37]/20 rounded-lg focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] transition-colors"
                       />
                     </div>
 
@@ -1484,7 +1484,7 @@ const UsersList = () => {
                             },
                           }))
                         }
-                        className="w-full px-3 py-2 border border-[#0A1D37]/20 rounded-lg focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-colors font-mono"
+                        className="w-full px-3 py-2 border border-[#0A1D37]/20 rounded-lg focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] transition-colors font-mono"
                       />
                     </div>
                   </div>
@@ -1505,7 +1505,7 @@ const UsersList = () => {
                             },
                           }))
                         }
-                        className="w-full px-3 py-2 border border-[#0A1D37]/20 rounded-lg focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-colors"
+                        className="w-full px-3 py-2 border border-[#0A1D37]/20 rounded-lg focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] transition-colors"
                       >
                         <option value="">انتخاب کنید</option>
                         <option value="accepted">تایید شده</option>
@@ -1531,7 +1531,7 @@ const UsersList = () => {
                             },
                           }))
                         }
-                        className="w-full px-3 py-2 border border-[#0A1D37]/20 rounded-lg focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-colors resize-none"
+                        className="w-full px-3 py-2 border border-[#0A1D37]/20 rounded-lg focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] transition-colors resize-none"
                         rows={2}
                       />
                     </div>
@@ -1541,7 +1541,7 @@ const UsersList = () => {
                 {/* Contact Info Section */}
                 <div className="bg-gray-50 rounded-xl p-4 border border-[#0A1D37]/10">
                   <h3 className="text-base sm:text-lg font-semibold text-[#0A1D37] mb-3 flex items-center gap-2">
-                    <span className="w-2 h-2 bg-[#FF7A00] rounded-full"></span>
+                    <span className="w-2 h-2 bg-[#0A1D37] rounded-full"></span>
                     اطلاعات تماس
                   </h3>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -1561,7 +1561,7 @@ const UsersList = () => {
                             },
                           }))
                         }
-                        className="w-full px-3 py-2 border border-[#0A1D37]/20 rounded-lg focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-colors"
+                        className="w-full px-3 py-2 border border-[#0A1D37]/20 rounded-lg focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] transition-colors"
                       />
                     </div>
 
@@ -1581,7 +1581,7 @@ const UsersList = () => {
                             },
                           }))
                         }
-                        className="w-full px-3 py-2 border border-[#0A1D37]/20 rounded-lg focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-colors font-mono"
+                        className="w-full px-3 py-2 border border-[#0A1D37]/20 rounded-lg focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] transition-colors font-mono"
                       />
                     </div>
 
@@ -1601,7 +1601,7 @@ const UsersList = () => {
                             },
                           }))
                         }
-                        className="w-full px-3 py-2 border border-[#0A1D37]/20 rounded-lg focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-colors font-mono"
+                        className="w-full px-3 py-2 border border-[#0A1D37]/20 rounded-lg focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] transition-colors font-mono"
                       />
                     </div>
 
@@ -1621,7 +1621,7 @@ const UsersList = () => {
                             },
                           }))
                         }
-                        className="w-full px-3 py-2 border border-[#0A1D37]/20 rounded-lg focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-colors font-mono"
+                        className="w-full px-3 py-2 border border-[#0A1D37]/20 rounded-lg focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] transition-colors font-mono"
                       />
                     </div>
                   </div>
@@ -1641,7 +1641,7 @@ const UsersList = () => {
                           },
                         }))
                       }
-                      className="w-full px-3 py-2 border border-[#0A1D37]/20 rounded-lg focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-colors resize-none"
+                      className="w-full px-3 py-2 border border-[#0A1D37]/20 rounded-lg focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] transition-colors resize-none"
                       rows={3}
                     />
                   </div>
@@ -1662,7 +1662,7 @@ const UsersList = () => {
                             },
                           }))
                         }
-                        className="w-full px-3 py-2 border border-[#0A1D37]/20 rounded-lg focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-colors"
+                        className="w-full px-3 py-2 border border-[#0A1D37]/20 rounded-lg focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] transition-colors"
                       >
                         <option value="">انتخاب کنید</option>
                         <option value="accepted">تایید شده</option>
@@ -1688,7 +1688,7 @@ const UsersList = () => {
                             },
                           }))
                         }
-                        className="w-full px-3 py-2 border border-[#0A1D37]/20 rounded-lg focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-colors resize-none"
+                        className="w-full px-3 py-2 border border-[#0A1D37]/20 rounded-lg focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] transition-colors resize-none"
                         rows={2}
                       />
                     </div>
@@ -1698,7 +1698,7 @@ const UsersList = () => {
                 {/* Profile Section */}
                 <div className="bg-gray-50 rounded-xl p-4 border border-[#0A1D37]/10">
                   <h3 className="text-base sm:text-lg font-semibold text-[#0A1D37] mb-3 flex items-center gap-2">
-                    <span className="w-2 h-2 bg-[#FF7A00] rounded-full"></span>
+                    <span className="w-2 h-2 bg-[#0A1D37] rounded-full"></span>
                     اطلاعات پروفایل
                   </h3>
                   <div className="space-y-4">
@@ -1717,7 +1717,7 @@ const UsersList = () => {
                             },
                           }))
                         }
-                        className="w-full px-3 py-2 border border-[#0A1D37]/20 rounded-lg focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-colors resize-none"
+                        className="w-full px-3 py-2 border border-[#0A1D37]/20 rounded-lg focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] transition-colors resize-none"
                         rows={3}
                       />
                     </div>
@@ -1741,7 +1741,7 @@ const UsersList = () => {
                               },
                             }))
                           }
-                          className="w-full px-3 py-2 border border-[#0A1D37]/20 rounded-lg focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-colors"
+                          className="w-full px-3 py-2 border border-[#0A1D37]/20 rounded-lg focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] transition-colors"
                         >
                           <option value="fa">فارسی</option>
                           <option value="en">انگلیسی</option>
@@ -1775,7 +1775,7 @@ const UsersList = () => {
                                   },
                                 }))
                               }
-                              className="ml-2 accent-[#FF7A00]"
+                              className="ml-2 accent-[#0A1D37]"
                             />
                             <span className="text-sm">ایمیل</span>
                           </label>
@@ -1801,7 +1801,7 @@ const UsersList = () => {
                                   },
                                 }))
                               }
-                              className="ml-2 accent-[#FF7A00]"
+                              className="ml-2 accent-[#0A1D37]"
                             />
                             <span className="text-sm">پیامک</span>
                           </label>
@@ -1827,7 +1827,7 @@ const UsersList = () => {
                                   },
                                 }))
                               }
-                              className="ml-2 accent-[#FF7A00]"
+                              className="ml-2 accent-[#0A1D37]"
                             />
                             <span className="text-sm">اعلانات</span>
                           </label>
@@ -1848,7 +1848,7 @@ const UsersList = () => {
                 <button
                   onClick={handleUpdateUser}
                   disabled={submitting}
-                  className="px-4 py-2 bg-[#FF7A00] text-white rounded-lg hover:bg-[#FF7A00]/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                  className="px-4 py-2 bg-[#0A1D37] text-white rounded-lg hover:bg-[#0A1D37]/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                 >
                   {submitting ? "در حال بروزرسانی..." : "ذخیره تغییرات"}
                 </button>

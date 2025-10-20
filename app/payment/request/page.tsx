@@ -141,7 +141,7 @@ const PaymentRequestPage: React.FC = () => {
         dir="rtl"
       >
         <div className="text-center">
-          <FaSpinner className="animate-spin text-4xl text-[#FF7A00] mx-auto mb-4" />
+          <FaSpinner className="animate-spin text-4xl text-[#0A1D37] mx-auto mb-4" />
           <p className="text-gray-600">در حال بررسی احراز هویت...</p>
         </div>
       </div>
@@ -163,7 +163,7 @@ const PaymentRequestPage: React.FC = () => {
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
         <div className="text-center mb-8 mt-20">
-          <div className="w-20 h-20 bg-gradient-to-r from-[#FF7A00] to-[#4DBFF0] rounded-full flex items-center justify-center mx-auto mb-4">
+          <div className="w-20 h-20 bg-gradient-to-r from-[#0A1D37] to-[#4DBFF0] rounded-full flex items-center justify-center mx-auto mb-4">
             <FaCreditCard className="text-white text-3xl" />
           </div>
           <h1 className="text-3xl font-bold text-[#0A1D37] mb-2">
@@ -176,8 +176,8 @@ const PaymentRequestPage: React.FC = () => {
           {/* User Info */}
           <div className="bg-white/80 backdrop-blur-sm border border-gray-200/50 rounded-2xl p-6 mb-6">
             <div className="flex items-center gap-4">
-              <div className="w-12 h-12 bg-gradient-to-r from-[#FF7A00]/20 to-[#4DBFF0]/20 rounded-full flex items-center justify-center">
-                <span className="text-[#FF7A00] font-bold text-lg">
+              <div className="w-12 h-12 bg-gradient-to-r from-[#0A1D37]/20 to-[#4DBFF0]/20 rounded-full flex items-center justify-center">
+                <span className="text-[#0A1D37] font-bold text-lg">
                   {(currentUser.firstName || "ک").charAt(0)}
                 </span>
               </div>
@@ -203,14 +203,14 @@ const PaymentRequestPage: React.FC = () => {
                   مبلغ پرداخت *
                 </label>
                 <div className="relative">
-                  <FaMoneyBillWave className="absolute right-4 top-1/2 transform -translate-y-1/2 text-[#FF7A00]" />
+                  <FaMoneyBillWave className="absolute right-4 top-1/2 transform -translate-y-1/2 text-[#0A1D37]" />
                   <input
                     type="number"
                     value={formData.amount}
                     onChange={(e) =>
                       handleInputChange("amount", e.target.value)
                     }
-                    className="w-full pr-12 pl-4 py-4 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all"
+                    className="w-full pr-12 pl-4 py-4 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] transition-all"
                     placeholder="مبلغ را وارد کنید"
                     min="100"
                     required
@@ -225,8 +225,8 @@ const PaymentRequestPage: React.FC = () => {
                       onClick={() => handleInputChange("currency", "IRT")}
                       className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${
                         formData.currency === "IRT"
-                          ? "bg-[#FF7A00] text-white"
-                          : "text-gray-600 hover:text-[#FF7A00]"
+                          ? "bg-[#0A1D37] text-white"
+                          : "text-gray-600 hover:text-[#0A1D37]"
                       }`}
                     >
                       ریال
@@ -236,8 +236,8 @@ const PaymentRequestPage: React.FC = () => {
                       onClick={() => handleInputChange("currency", "IRT")}
                       className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${
                         formData.currency === "IRT"
-                          ? "bg-[#FF7A00] text-white"
-                          : "text-gray-600 hover:text-[#FF7A00]"
+                          ? "bg-[#0A1D37] text-white"
+                          : "text-gray-600 hover:text-[#0A1D37]"
                       }`}
                     >
                       تومان
@@ -258,13 +258,13 @@ const PaymentRequestPage: React.FC = () => {
                   توضیحات پرداخت *
                 </label>
                 <div className="relative">
-                  <FaInfoCircle className="absolute right-4 top-4 text-[#FF7A00]" />
+                  <FaInfoCircle className="absolute right-4 top-4 text-[#0A1D37]" />
                   <textarea
                     value={formData.description}
                     onChange={(e) =>
                       handleInputChange("description", e.target.value)
                     }
-                    className="w-full pr-12 pl-4 py-4 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all resize-none"
+                    className="w-full pr-12 pl-4 py-4 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] transition-all resize-none"
                     placeholder="توضیحات مربوط به پرداخت را وارد کنید"
                     rows={3}
                     maxLength={255}
@@ -288,7 +288,7 @@ const PaymentRequestPage: React.FC = () => {
                     onChange={(e) =>
                       handleInputChange("serviceId", e.target.value)
                     }
-                    className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all"
+                    className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] transition-all"
                     placeholder="شناسه سرویس"
                   />
                 </div>
@@ -303,7 +303,7 @@ const PaymentRequestPage: React.FC = () => {
                     onChange={(e) =>
                       handleInputChange("orderId", e.target.value)
                     }
-                    className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all"
+                    className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] transition-all"
                     placeholder="شماره سفارش"
                   />
                 </div>
@@ -323,7 +323,7 @@ const PaymentRequestPage: React.FC = () => {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="flex-1 flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-[#FF7A00] to-[#4DBFF0] text-white rounded-xl hover:shadow-lg disabled:opacity-50 transition-all"
+                  className="flex-1 flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-[#0A1D37] to-[#4DBFF0] text-white rounded-xl hover:shadow-lg disabled:opacity-50 transition-all"
                 >
                   {loading ? (
                     <>

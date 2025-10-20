@@ -23,39 +23,32 @@ import TextBox from "../global/textBox";
 import WhyUsSection from "../global/whyUs";
 
 const ContactPage = () => {
-
-
   const whyChooseUs = [
     {
       id: 1,
       icon: <FaClock size={32} />,
-      iconColor: "bg-emerald-700",
-      title: "پاسخگویی سریع و دقیق",
-      description: "پاسخگویی سریع و دقیق در تمام روزهای هفته",
+       title: "پاسخگویی سریع و دقیق",
+      description: "پاسخگویی سریع و دقیق در تمام روزهای هفته توسط کارشناسان ارزی پلاس",
     },
     {
       id: 2,
       icon: <FaUserTie size={32} />,
-      iconColor: "bg-blue-700",
-      title: "مشاوره تخصصی",
-      description: "مشاوره تخصصی قبل از ثبت سفارش",
+       title: "مشاوره تخصصی",
+      description: "مشاوره تخصصی قبل از ثبت سفارش توسط کارشناسان بخش فروش",
     },
     {
       id: 3,
       icon: <FaGlobe size={32} />,
-      iconColor: "bg-purple-700",
-      title: "راهنمایی کامل",
-      description: "راهنمایی در افتتاح حسابها و پرداختهای بینالمللی",
+       title: "راهنمایی کامل",
+      description: "راهنمایی در افتتاح حسابها و پرداخت های بین المللی در ارزی پلاس",
     },
     {
       id: 4,
       icon: <FaHeadset size={32} />,
-      iconColor: "bg-orange-700",
-      title: "پشتیبانی چندکاناله",
-      description: "پشتیبانی از طریق ایمیل، تلفن و شبکههای اجتماعی",
+       title: "پشتیبانی چندکاناله",
+      description: "پشتیبانی از طریق ایمیل، تلفن و شبکه های احتماعی ارزی پلاس",
     },
   ];
-
 
   const contactFaq = [
     {
@@ -129,50 +122,39 @@ const ContactPage = () => {
       />
 
       <WhyUsSection
-        heading="💬 چرا کاربران ارزی پلاس ما را انتخاب میکنند؟"
+        heading=" چرا کاربران ارزی پلاس ما را انتخاب میکنند؟"
         description="مزایای منحصربهفرد پشتیبانی ارزی پلاس که ما را از سایرین متمایز میکند."
         buttonText="درخواست مشاوره"
         buttonLink="/"
         items={whyChooseUs}
-        buttonColor="#0A1D37 hover:bg-indigo-800 text-white"
         theme={themesWhyus.default}
       />
 
       <div className="grid md:grid-cols-3 gap-8 p-8">
         <div className="text-center">
-          <FaPhone className="mx-auto mb-4 text-4xl text-[#FF7A00]" />
+          <FaPhone className="mx-auto mb-4 text-4xl text-[#0A1D37]" />
           <h3 className="text-lg font-semibold">تماس تلفنی</h3>
-          <p className="text-[#A0A0A0]">021-12345678</p>
+          <a href="tel:+989991202049" className="text-[#A0A0A0] hover:text-[#FF7A00] transition-colors">
+            09991202049
+          </a>
         </div>
         <div className="text-center">
-          <FaEnvelope className="mx-auto mb-4 text-4xl text-[#FF7A00]" />
+          <FaEnvelope className="mx-auto mb-4 text-4xl text-[#0A1D37]" />
           <h3 className="text-lg font-semibold">ایمیل</h3>
-          <p className="text-[#A0A0A0]">support@arzplus.com</p>
+          <a href="mailto:support@arzplus.com" className="text-[#A0A0A0] hover:text-[#FF7A00] transition-colors">
+            support@arzplus.com
+          </a>
         </div>
         <div className="text-center">
-          <FaMapMarkerAlt className="mx-auto mb-4 text-4xl text-[#FF7A00]" />
+          <FaMapMarkerAlt className="mx-auto mb-4 text-4xl text-[#0A1D37]" />
           <h3 className="text-lg font-semibold">آدرس</h3>
-          <p className="text-[#A0A0A0]">تهران، خیابان ولیعصر، پلاک 123</p>
+          <a href="https://maps.app.goo.gl/NQtGhVhuDr8aGpGJ8" target="_blank" rel="noopener noreferrer" className="text-[#A0A0A0] hover:text-[#FF7A00] transition-colors">
+            تهران، خیابان ولیعصر، پلاک 123
+          </a>
         </div>
       </div>
 
-      <TextBox
-        heading="💚 پیام اطمینان"
-        content="ارزی پلاس همیشه کنار شماست تا مسیر پرداختهای بینالمللی، آسان، شفاف و مطمئن باشد.
-ما فقط یک وبسایت نیستیم — بلکه همراه مطمئن شما در مسیر جهانی شدن هستیم 🌍"
-        height={200}
-        theme={textBoxThemes.default}
-        typography={textBoxTypography.medium}
-        spacing={{
-          padding: "p-8",
-          gap: "space-y-6",
-        }}
-        style={{
-          rounded: true,
-          shadow: true,
-          border: true,
-        }}
-      />
+    
 
       <FAQSection
         heading="سوالات متداول تماس با ارزی پلاس"

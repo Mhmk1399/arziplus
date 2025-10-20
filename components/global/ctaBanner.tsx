@@ -125,18 +125,19 @@ export default function CTABanner({
   const {
     // backgroundColor = "",
     // backgroundGradient,
+    headingColor = "text-white",
     descriptionColor = "text-[#A0A0A0]",
-    // borderColor = "border-[#FF7A00]/20",
+    // borderColor = "border-[#0A1D37]/20",
   } = theme;
 
   // Enhanced luxury button classes
   const getButtonClasses = () => {
     const baseClasses =
-      "group relative inline-flex items-center gap-3 px-8 py-4 rounded-2xl font-bold text-sm transition-all duration-500 shadow-2xl hover:shadow-xl transform hover:scale-105 overflow-hidden backdrop-blur-sm border border-white/20 focus:outline-none focus:ring-2 focus:ring-[#FF7A00]/50";
+      "group relative inline-flex items-center gap-3 px-8 py-4 rounded-2xl font-bold text-sm transition-all duration-500 shadow-2xl hover:shadow-xl transform hover:scale-105 overflow-hidden backdrop-blur-sm   focus:outline-none focus:ring-2 focus:ring-[#0A1D37]/50";
 
     switch (button.variant) {
       case "primary":
-        return `${baseClasses} bg-gradient-to-r from-[#FF7A00] to-[#4DBFF0] text-[#FFFFFF] hover:from-[#FF7A00]/80 hover:to-[#4DBFF0]/80 hover:shadow-[#FF7A00]/50`;
+        return `${baseClasses} bg-gradient-to-r from-[#0A1D37] to-[#4DBFF0] text-[#FFFFFF] hover:from-[#0A1D37]/80 hover:to-[#4DBFF0]/80 hover:shadow-[#0A1D37]/50`;
       case "secondary":
         return `${baseClasses} bg-[#0A1D37] text-[#FFFFFF] hover:bg-[#0A1D37]/80 hover:shadow-[#0A1D37]/50`;
       case "outline":
@@ -144,7 +145,7 @@ export default function CTABanner({
       case "ghost":
         return `${baseClasses} text-[#4DBFF0] hover:bg-[#4DBFF0]/20 bg-white/5`;
       default:
-        return `${baseClasses} bg-gradient-to-r from-[#FF7A00] to-[#4DBFF0] text-[#FFFFFF] hover:from-[#FF7A00]/80 hover:to-[#4DBFF0]/80`;
+        return `${baseClasses} bg-gradient-to-r from-[#0A1D37] to-[#4DBFF0] text-[#FFFFFF] hover:from-[#0A1D37]/80 hover:to-[#4DBFF0]/80`;
     }
   };
 
@@ -176,9 +177,9 @@ export default function CTABanner({
               height: `${8 + (i % 3) * 6}px`,
               background: `linear-gradient(45deg, 
                 ${
-                  i % 3 === 0 ? "#FF7A00" : i % 3 === 1 ? "#4DBFF0" : "#FFFFFF"
+                  i % 3 === 0 ? "#0A1D37" : i % 3 === 1 ? "#4DBFF0" : "#FFFFFF"
                 }, 
-                ${i % 3 === 0 ? "#FF7A00" : i % 3 === 1 ? "#4DBFF0" : "#FFFFFF"}
+                ${i % 3 === 0 ? "#0A1D37" : i % 3 === 1 ? "#4DBFF0" : "#FFFFFF"}
               )`,
               borderRadius: i % 2 === 0 ? "50%" : "4px",
               filter: "blur(1px)",
@@ -188,7 +189,7 @@ export default function CTABanner({
 
         {/* Geometric Accents */}
         <div className="absolute top-6 right-8 w-16 h-16 border border-[#4DBFF0]/30 rounded-full animate-spin-slow"></div>
-        <div className="absolute bottom-6 left-8 w-12 h-12 border-2 border-[#FF7A00]/30 rotate-45 animate-pulse"></div>
+        <div className="absolute bottom-6 left-8 w-12 h-12 border-2 border-[#0A1D37]/30 rotate-45 animate-pulse"></div>
       </div>
       <div className="relative z-10 h-full bg-[#0A1D37] mx-4 md:mx-8 rounded-2xl md:rounded-3xl bg-gradient-to-br from-white/15 via-white/8 to-white/5 backdrop-blur-xl border border-white/20 shadow-2xl p-6 md:p-8">
         {/* Subtle Pattern Overlay */}
@@ -208,15 +209,7 @@ export default function CTABanner({
             className="flex flex-col text-center lg:text-right flex-1 max-w-2xl"
           >
             <h3
-              className={`animate-text text-xl md:text-2xl lg:text-3xl  mb-4 lg:mb-6 ${estedadBold.className} font-extrabold leading-tight`}
-              style={{
-                background:
-                  "linear-gradient(135deg, #FFFFFF 0%, #4DBFF0 50%, #FF7A00 100%)",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-                backgroundClip: "text",
-                textShadow: "0 4px 20px rgba(255, 255, 255, 0.1)",
-              }}
+              className={`animate-text text-xl md:text-2xl lg:text-3xl ${headingColor}  mb-4 lg:mb-6 ${estedadBold.className} font-extrabold leading-tight`}
             >
               {heading}
             </h3>

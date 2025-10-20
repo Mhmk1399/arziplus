@@ -137,28 +137,28 @@ const ServiceWrapper: React.FC<AdminWrapperProps> = ({
     {
       title: "کل درخواست‌ها",
       value: adminStats.totalRequests,
-      icon: <FaClipboardList className="text-2xl text-[#FF7A00]" />,
+      icon: <FaClipboardList className="text-2xl text-[#0A1D37]" />,
       color: "",
       bgColor: "bg-gray-50",
     },
     {
       title: "در انتظار بررسی",
       value: adminStats.pendingRequests,
-      icon: <FaClipboardList className="text-2xl text-[#FF7A00]" />,
+      icon: <FaClipboardList className="text-2xl text-[#0A1D37]" />,
       color: "",
       bgColor: "bg-gray-50",
     },
     {
       title: "تکمیل شده",
       value: adminStats.completedRequests,
-      icon: <FaClipboardList className="text-2xl text-[#FF7A00]" />,
+      icon: <FaClipboardList className="text-2xl text-[#0A1D37]" />,
       color: "",
       bgColor: "bg-gray-50",
     },
     {
       title: "سرویس‌های فعال",
       value: adminStats.totalServices,
-      icon: <FaServicestack className="text-2xl text-[#FF7A00]" />,
+      icon: <FaServicestack className="text-2xl text-[#0A1D37]" />,
       color: "",
       bgColor: "bg-gray-50",
     },
@@ -196,7 +196,7 @@ const ServiceWrapper: React.FC<AdminWrapperProps> = ({
         <div className="flex items-center justify-between flex-wrap gap-4">
           <div className="flex items-center gap-4">
             <div className="w-12 h-12  rounded-full flex items-center justify-center">
-              <FaCog className="text-[#FF7A00] text-xl" />
+              <FaCog className="text-[#0A1D37] text-xl" />
             </div>
             <div>
               <h2 className="sm:text-2xl text-base font-bold mb-2 text-[#0A1D37]">
@@ -328,7 +328,7 @@ const ServiceWrapper: React.FC<AdminWrapperProps> = ({
                 onClick={() => handleTabChange(tab.id)}
                 className={`relative flex items-center justify-center gap-3 px-6 py-4 rounded-xl font-medium transition-all duration-300 ${
                   activeTab === tab.id
-                    ? "border-[#FF7A00] border bg-gray-50 text-[#0A1D37] shadow-lg scale-105"
+                    ? "border-[#0A1D37] border bg-gray-50 text-[#0A1D37] shadow-lg scale-105"
                     : "text-gray-700  hover:scale-105"
                 }`}
               >

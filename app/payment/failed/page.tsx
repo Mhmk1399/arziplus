@@ -129,7 +129,7 @@ const PaymentFailedPage: React.FC = () => {
     return (
       <div className="min-h-screen bg-gradient-to-br from-red-50 via-white to-orange-50 flex items-center justify-center" dir="rtl">
         <div className="text-center">
-          <FaSpinner className="animate-spin text-4xl text-[#FF7A00] mx-auto mb-4" />
+          <FaSpinner className="animate-spin text-4xl text-[#0A1D37] mx-auto mb-4" />
           <p className="text-gray-600">در حال بررسی احراز هویت...</p>
         </div>
       </div>
@@ -145,7 +145,7 @@ const PaymentFailedPage: React.FC = () => {
     return (
       <div className="min-h-screen bg-gradient-to-br from-red-50 via-white to-orange-50 flex items-center justify-center" dir="rtl">
         <div className="text-center">
-          <FaSpinner className="animate-spin text-4xl text-[#FF7A00] mx-auto mb-4" />
+          <FaSpinner className="animate-spin text-4xl text-[#0A1D37] mx-auto mb-4" />
           <p className="text-gray-600">در حال بررسی...</p>
         </div>
       </div>
@@ -243,7 +243,7 @@ const PaymentFailedPage: React.FC = () => {
               {paymentDetails && (
                 <button
                   onClick={retryPayment}
-                  className="flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-r from-[#FF7A00] to-[#4DBFF0] text-white rounded-xl hover:shadow-lg transition-all"
+                  className="flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-r from-[#0A1D37] to-[#4DBFF0] text-white rounded-xl hover:shadow-lg transition-all"
                 >
                   <FaRedo />
                   تلاش مجدد

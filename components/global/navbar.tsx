@@ -40,6 +40,18 @@ export default function NewNavbar() {
     setIsMounted(true);
     const currentUser = getCurrentUser();
     setUser(currentUser);
+    
+    // Listen for login events to refresh user state
+    const handleUserLogin = () => {
+      const updatedUser = getCurrentUser();
+      setUser(updatedUser);
+    };
+    
+    window.addEventListener('userLoggedIn', handleUserLogin);
+    
+    return () => {
+      window.removeEventListener('userLoggedIn', handleUserLogin);
+    };
   }, []);
 
   // Scroll handler
@@ -351,8 +363,8 @@ export default function NewNavbar() {
                   <button
                     className={`relative px-5 py-3 font-semibold cursor-pointer text-sm transition-all duration-300 rounded-xl ${
                       activeDropdown === item.title
-                        ? "text-[#FF7A00]  "
-                        : "text-[#0A1D37] hover:text-[#FF7A00]"
+                        ? "text-[#0A1D37]  "
+                        : "text-[#0A1D37] hover:text-[#0A1D37]"
                     }`}
                   >
                     {item.title}
@@ -363,14 +375,14 @@ export default function NewNavbar() {
 
             {/* Desktop CTA */}
             <div className="hidden lg:flex items-center gap-2">
-              <Link href="tel:091212312312">
+              <Link href="tel:09991202049">
                 {" "}
                 <button
-                  className="group p-3 rounded-xl cursor-pointer bg-gradient-to-r from-[#FF7A00]/10 to-[#4DBFF0]/10 hover:from-[#FF7A00]/20 hover:to-[#4DBFF0]/20 backdrop-blur-sm transition-all duration-300 border border-[#FF7A00]/20 hover:border-[#FF7A00]/40 hover:scale-105"
+                  className="group p-3 rounded-xl cursor-pointer bg-gradient-to-r from-[#0A1D37]/10 to-[#4DBFF0]/10 hover:from-[#0A1D37]/20 hover:to-[#4DBFF0]/20 backdrop-blur-sm transition-all duration-300 border border-[#0A1D37]/20 hover:border-[#0A1D37]/40 hover:scale-105"
                   suppressHydrationWarning
                 >
                   <svg
-                    className="w-5 h-5 text-[#FF7A00] group-hover:scale-110 transition-transform duration-300"
+                    className="w-5 h-5 text-[#0A1D37] group-hover:scale-110 transition-transform duration-300"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -389,15 +401,15 @@ export default function NewNavbar() {
                 <div className="relative user-dropdown">
                   <button
                     onClick={() => setShowUserDropdown(!showUserDropdown)}
-                    className="group relative cursor-pointer px-4 py-3 font-bold text-sm text-[#0A1D37] overflow-hidden rounded-xl transition-all duration-300 hover:scale-105 bg-gradient-to-r from-[#FF7A00]/10 to-[#4DBFF0]/10 hover:from-[#FF7A00]/20 hover:to-[#4DBFF0]/20 border border-[#FF7A00]/20 hover:border-[#FF7A00]/40 flex items-center gap-2"
+                    className="group relative cursor-pointer px-4 py-3 font-bold text-sm text-[#0A1D37] overflow-hidden rounded-xl transition-all duration-300 hover:scale-105 bg-gradient-to-r from-[#0A1D37]/10 to-[#4DBFF0]/10 hover:from-[#0A1D37]/20 hover:to-[#4DBFF0]/20 border border-[#0A1D37]/20 hover:border-[#0A1D37]/40 flex items-center gap-2"
                     suppressHydrationWarning
                   >
-                    <FaUser className="text-[#FF7A00]" />
+                    <FaUser className="text-[#0A1D37]" />
                     <span className="relative z-10">
                       {getUserDisplayName()}
                     </span>
                     <svg
-                      className={`w-4 h-4 text-[#FF7A00] transition-transform duration-200 ${
+                      className={`w-4 h-4 text-[#0A1D37] transition-transform duration-200 ${
                         showUserDropdown ? "rotate-180" : ""
                       }`}
                       fill="none"
@@ -414,11 +426,11 @@ export default function NewNavbar() {
                   </button>
 
                   {showUserDropdown && (
-                    <div className="absolute left-0 mt-2 w-48 bg-white/80 backdrop-blur-xl border border-[#FF7A00]/20 rounded-xl shadow-2xl shadow-[#FF7A00]/10 overflow-hidden z-50">
+                    <div className="absolute left-0 mt-2 w-48 bg-white/80 backdrop-blur-xl border border-[#0A1D37]/20 rounded-xl shadow-2xl shadow-[#0A1D37]/10 overflow-hidden z-50">
                       <Link
                         href="/dashboard"
                         onClick={() => setShowUserDropdown(false)}
-                        className="flex items-center gap-3 px-4 py-3 text-[#0A1D37] hover:bg-gradient-to-r hover:from-[#FF7A00]/5 hover:to-[#4DBFF0]/5 transition-all duration-200"
+                        className="flex items-center gap-3 px-4 py-3 text-[#0A1D37] hover:bg-gradient-to-r hover:from-[#0A1D37]/5 hover:to-[#4DBFF0]/5 transition-all duration-200"
                       >
                         <FaTachometerAlt className="text-[#4DBFF0]" />
                         <span>داشبورد</span>
@@ -436,11 +448,11 @@ export default function NewNavbar() {
               ) : (
                 <Link
                   href="/auth/sms"
-                  className="group relative px-6 py-3 font-bold text-sm text-white overflow-hidden rounded-xl transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-[#FF7A00]/20"
+                  className="group relative px-6 py-3 font-bold text-sm text-white overflow-hidden rounded-xl transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-[#0A1D37]/20"
                   suppressHydrationWarning
                 >
-                  <span className="absolute inset-0 bg-gradient-to-r from-[#FF7A00] to-[#4DBFF0]" />
-                  <span className="absolute inset-0 bg-gradient-to-r from-[#4DBFF0] to-[#FF7A00] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  <span className="absolute inset-0 bg-gradient-to-r from-[#0A1D37] to-[#4DBFF0]" />
+                  <span className="absolute inset-0 bg-gradient-to-r from-[#4DBFF0] to-[#0A1D37] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                   <span className="relative z-10">ورود / ثبت نام</span>
                 </Link>
               )}
@@ -449,7 +461,7 @@ export default function NewNavbar() {
             {/* Mobile Menu Button */}
             <button
               onClick={toggleMobileMenu}
-              className="lg:hidden p-3 rounded-xl bg-gradient-to-r from-[#FF7A00]/10 to-[#4DBFF0]/10 backdrop-blur-sm transition-all duration-300 hover:scale-105 border border-[#FF7A00]/20"
+              className="lg:hidden p-2 rounded-xl bg-gradient-to-r from-[#0A1D37]/10 to-[#4DBFF0]/10 backdrop-blur-sm transition-all duration-300 hover:scale-105 border border-[#0A1D37]/20"
               suppressHydrationWarning
             >
               {isMobileOpen ? (
@@ -492,9 +504,9 @@ export default function NewNavbar() {
             dir="rtl"
             suppressHydrationWarning
           >
-            <div className="bg-white/90 backdrop-blur-sm border border-white/20 rounded-3xl shadow-2xl shadow-[#FF7A00]/10 overflow-hidden">
+            <div className="bg-white/90 backdrop-blur-sm border border-white/20 rounded-3xl shadow-2xl shadow-[#0A1D37]/10 overflow-hidden">
               {/* Header */}
-              <div className="relative px-8 py-6 bg-gradient-to-r from-[#FF7A00]/5 to-[#4DBFF0]/5 border-b border-gray-100">
+              <div className="relative px-8 py-6 bg-gradient-to-r from-[#0A1D37]/5 to-[#4DBFF0]/5 border-b border-gray-100">
                 <div className="flex items-center justify-between">
                   <div>
                     <h2 className="text-2xl font-black text-[#0A1D37]">
@@ -533,12 +545,12 @@ export default function NewNavbar() {
                           )}
 
                           {/* Category Header */}
-                          <div className="flex items-center space-x-3 space-x-reverse pb-4 border-b-2 border-gradient-to-r from-[#FF7A00] to-[#4DBFF0]">
+                          <div className="flex items-center gap-1 pb-4 border-b-2 border-gradient-to-r from-[#0A1D37] to-[#4DBFF0]">
                             {dropdown.icon && (
-                              <div className="flex-shrink-0 p-2.5 rounded-xl bg-gradient-to-br from-[#FF7A00]/10 to-[#4DBFF0]/10">
+                              <div className="flex-shrink-0 p-2.5 rounded-xl bg-gradient-to-br from-[#0A1D37]/10 to-[#4DBFF0]/10">
                                 <IconComponent
                                   icon={dropdown.icon as IconType}
-                                  className="text-xl text-[#FF7A00]"
+                                  className="text-xl text-[#0A1D37]"
                                 />
                               </div>
                             )}
@@ -553,7 +565,7 @@ export default function NewNavbar() {
                               <Link
                                 key={subItem.name}
                                 href={subItem.href}
-                                className="dropdown-item group flex items-center space-x-3 space-x-reverse p-3 text-gray-700 hover:text-[#0A1D37] text-sm rounded-xl hover:bg-gradient-to-r hover:from-[#FF7A00]/5 hover:to-[#4DBFF0]/5 transition-all duration-300 border border-transparent hover:border-[#FF7A00]/20 hover:shadow-md"
+                                className="dropdown-item group flex items-center space-x-3 space-x-reverse p-3 text-gray-700 hover:text-[#0A1D37] text-sm rounded-xl hover:bg-gradient-to-r hover:from-[#0A1D37]/5 hover:to-[#4DBFF0]/5 transition-all duration-300 border border-transparent hover:border-[#0A1D37]/20 hover:shadow-md"
                                 onClick={() => {
                                   setActiveDropdown(null);
                                   isMouseOverMenu.current = false;
@@ -562,14 +574,14 @@ export default function NewNavbar() {
                                 {subItem.icon && (
                                   <IconComponent
                                     icon={subItem.icon as IconType}
-                                    className="flex-shrink-0 text-base text-[#4DBFF0] group-hover:text-[#FF7A00] group-hover:scale-110 transition-all duration-300"
+                                    className="flex-shrink-0 text-base text-[#4DBFF0] group-hover:text-[#0A1D37] group-hover:scale-110 transition-all duration-300"
                                   />
                                 )}
                                 <span className="flex-1 font-medium group-hover:translate-x-1 transition-transform duration-300">
                                   {subItem.name}
                                 </span>
                                 <svg
-                                  className="w-4 h-4 text-gray-300 group-hover:text-[#FF7A00] opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-300 flex-shrink-0"
+                                  className="w-4 h-4 text-gray-300 group-hover:text-[#0A1D37] opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-300 flex-shrink-0"
                                   fill="none"
                                   stroke="currentColor"
                                   viewBox="0 0 24 24"
@@ -618,21 +630,21 @@ export default function NewNavbar() {
         >
           <div className="flex flex-col h-full">
             {/* Mobile Header */}
-            <div className="p-6 border-b border-gray-200">
+            <div className="p-3 border-b border-gray-200">
               <div className="flex items-center justify-between">
                 <Link href="/">
                   {" "}
                   <Image
-                    src="/assets/images/logoArzi.webp"
-                    width={80}
-                    height={80}
+                    src="/assets/images/loggo.png"
+                    width={50}
+                    height={50}
                     alt="logo"
                   />
                 </Link>
 
                 <button
                   onClick={toggleMobileMenu}
-                  className="p-2 rounded-xl bg-gradient-to-r from-[#FF7A00]/10 to-[#4DBFF0]/10 hover:scale-110 transition-transform duration-300"
+                  className="p-2 rounded-xl bg-gradient-to-r from-[#0A1D37]/10 to-[#4DBFF0]/10 hover:scale-110 transition-transform duration-300"
                 >
                   <MdClose className="text-2xl text-[#0A1D37]" />
                 </button>
@@ -640,14 +652,14 @@ export default function NewNavbar() {
             </div>
 
             {/* Mobile Menu Items */}
-            <div className="flex-1 overflow-y-auto p-6 space-y-3 ">
+            <div className="flex-1 overflow-y-auto p-3 space-y-3 ">
               {menuItems.map((item) => (
                 <div key={item.title} className="mobile-menu-item space-y-2">
                   <button
                     onClick={() => handleMobileItemClick(item.title)}
                     className={`w-full flex items-center justify-between p-4 text-sm font-bold rounded-xl transition-all duration-300 ${
                       mobileActiveItem === item.title
-                        ? "bg-gradient-to-r from-[#FF7A00] to-[#4DBFF0] text-white shadow-lg"
+                        ? "bg-gradient-to-r from-[#0A1D37] to-[#4DBFF0] text-white shadow-lg"
                         : "bg-gray-50 text-[#0A1D37] hover:bg-gray-100"
                     }`}
                   >
@@ -688,7 +700,7 @@ export default function NewNavbar() {
                                 {dropdown.icon && (
                                   <IconComponent
                                     icon={dropdown.icon as IconType}
-                                    className="text-base mr-1 text-[#FF7A00]"
+                                    className="text-base mr-1 text-[#0A1D37]"
                                   />
                                 )}
                                 <span className="text-xs font-semibold text-[#0A1D37]">
@@ -722,7 +734,7 @@ export default function NewNavbar() {
                                     key={subItem.name}
                                     href={subItem.href}
                                     onClick={toggleMobileMenu}
-                                    className="flex items-center gap-1 p-3 bg-gradient-to-r from-[#FF7A00]/5 to-[#4DBFF0]/5 hover:from-[#FF7A00]/10 hover:to-[#4DBFF0]/10 text-gray-700 hover:text-[#0A1D37] text-sm rounded-lg transition-all duration-200"
+                                    className="flex items-center gap-1 p-3 bg-gradient-to-r from-[#0A1D37]/5 to-[#4DBFF0]/5 hover:from-[#0A1D37]/10 hover:to-[#4DBFF0]/10 text-gray-700 hover:text-[#0A1D37] text-sm rounded-lg transition-all duration-200"
                                   >
                                     {subItem.icon && (
                                       <IconComponent
@@ -750,8 +762,8 @@ export default function NewNavbar() {
             <div className="p-6 border-t border-gray-200 space-y-3">
               {user ? (
                 <div className="space-y-3">
-                  <div className="flex items-center justify-center gap-3 p-4 bg-gradient-to-r from-[#FF7A00]/10 to-[#4DBFF0]/10 rounded-xl">
-                    <FaUser className="text-[#FF7A00]" />
+                  <div className="flex items-center justify-center gap-3 p-4 bg-gradient-to-r from-[#0A1D37]/10 to-[#4DBFF0]/10 rounded-xl">
+                    <FaUser className="text-[#0A1D37]" />
                     <span className="font-bold text-[#0A1D37]">
                       {getUserDisplayName()}
                     </span>
@@ -761,7 +773,7 @@ export default function NewNavbar() {
                     onClick={toggleMobileMenu}
                     className="group relative w-full flex items-center justify-center gap-2 p-4 font-bold text-white overflow-hidden rounded-xl transition-all duration-300 hover:scale-105 shadow-lg"
                   >
-                    <span className="absolute inset-0 bg-gradient-to-r from-[#4DBFF0] to-[#FF7A00]" />
+                    <span className="absolute inset-0 bg-gradient-to-r from-[#4DBFF0] to-[#0A1D37]" />
                     <span className="relative z-10 flex items-center gap-2">
                       <FaTachometerAlt />
                       داشبورد
@@ -784,8 +796,8 @@ export default function NewNavbar() {
                   onClick={toggleMobileMenu}
                   className="group relative w-full flex items-center justify-center p-4 font-bold text-white overflow-hidden rounded-xl transition-all duration-300 hover:scale-105 shadow-lg"
                 >
-                  <span className="absolute inset-0 bg-gradient-to-r from-[#FF7A00] to-[#4DBFF0]" />
-                  <span className="absolute inset-0 bg-gradient-to-r from-[#4DBFF0] to-[#FF7A00] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  <span className="absolute inset-0 bg-gradient-to-r from-[#0A1D37] to-[#4DBFF0]" />
+                  <span className="absolute inset-0 bg-gradient-to-r from-[#4DBFF0] to-[#0A1D37] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                   <span className="relative z-10">ورود / ثبت نام</span>
                 </Link>
               )}

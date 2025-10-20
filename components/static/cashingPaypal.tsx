@@ -108,7 +108,6 @@ const CashingPaypal = () => {
     {
       id: 1,
       icon: <FaDollarSign size={32} />,
-      iconColor: "bg-blue-900",
       title: "دریافت درآمد فریلنسری",
       description:
         "برداشت درآمد از Upwork، Fiverr، Freelancer و سایر پلتفرم‌های خارجی.",
@@ -116,7 +115,6 @@ const CashingPaypal = () => {
     {
       id: 2,
       icon: <FaCoins size={32} />,
-      iconColor: "bg-blue-900",
       title: "تسویه فروشگاه‌های بین‌المللی",
       description:
         "نقد کردن درآمد فروش در eBay، Etsy و دیگر فروشگاه ها با ارزی پلاس.",
@@ -124,7 +122,6 @@ const CashingPaypal = () => {
     {
       id: 3,
       icon: <FaRocket size={32} />,
-      iconColor: "bg-blue-900",
       title: "پرداخت مشتریان خارجی",
       description:
         "دریافت و نقد کردن پرداخت‌های مشتریان خارج از ایران با امنیت کامل.",
@@ -132,7 +129,6 @@ const CashingPaypal = () => {
     {
       id: 4,
       icon: <FaMedal size={32} />,
-      iconColor: "bg-blue-900",
       title: "تبدیل درآمد دلاری به ریال",
       description:
         "تبدیل سریع و مطمئن درآمد دلاری با بهترین نرخ بازار با ارزی پلاس.",
@@ -158,24 +154,6 @@ const CashingPaypal = () => {
       category: "نقد کردن پی‌پال",
     },
   ];
-
-  const faqIcons = {
-    info: (
-      <svg
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-        className="w-full h-full"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-        />
-      </svg>
-    ),
-  };
 
   return (
     <div>
@@ -212,7 +190,7 @@ const CashingPaypal = () => {
         heading="مزایای نقد کردن پی‌پال با ارزی پلاس"
         description="با ارزی پلاس، تسویه سریع، کارمزد شفاف و امنیت کامل را تجربه کنید:"
         steps={cashingSteps}
-        theme={stepThemes.blue}
+        theme={stepThemes.default}
         layout="vertical"
         boxShape="rounded"
         boxSize="sm"
@@ -227,8 +205,7 @@ const CashingPaypal = () => {
         buttonText="ثبت درخواست نقد کردن"
         buttonLink="/services/cashing-out-PayPal-balance"
         items={cashingUseCases}
-        buttonColor="bg-blue-800 hover:bg-blue-900 text-white"
-        theme={themesWhyus.dark}
+        theme={themesWhyus.default}
       />
 
       <HeroSplitSection
@@ -275,7 +252,6 @@ const CashingPaypal = () => {
       <FAQSection
         heading="سؤالات متداول"
         description="پرسش‌های پرتکرار درباره نقد کردن موجودی پی‌پال"
-        svgIcon={faqIcons.info}
         faqItems={cashingFaq}
         buttons={[
           {
@@ -301,7 +277,7 @@ const CashingPaypal = () => {
           variant: "primary",
           icon: <FaRocket />,
         }}
-        theme={ctaThemes.gradient}
+        theme={ctaThemes.primary}
         height={50}
       />
     </div>

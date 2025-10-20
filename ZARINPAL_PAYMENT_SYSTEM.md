@@ -57,7 +57,7 @@ This payment system integrates ZarinPal (Iran's leading payment gateway) with th
 ### 🎨 User Interface
 - ✅ Persian/Farsi RTL layout
 - ✅ Responsive design (Mobile/Desktop)
-- ✅ Consistent branding (Orange #FF7A00, Blue #4DBFF0)
+- ✅ Consistent branding (Orange #0A1D37, Blue #4DBFF0)
 - ✅ Loading states and animations
 - ✅ Toast notifications
 - ✅ Error handling with user-friendly messages

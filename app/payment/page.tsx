@@ -137,7 +137,7 @@ const PaymentDashboard: React.FC = () => {
         dir="rtl"
       >
         <div className="text-center">
-          <FaSpinner className="animate-spin text-4xl text-[#FF7A00] mx-auto mb-4" />
+          <FaSpinner className="animate-spin text-4xl text-[#0A1D37] mx-auto mb-4" />
           <p className="text-gray-600">در حال بررسی احراز هویت...</p>
         </div>
       </div>
@@ -157,7 +157,7 @@ const PaymentDashboard: React.FC = () => {
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
         <div className="text-center mb-8 mt-20">
-          <div className="w-20 h-20 bg-gradient-to-r from-[#FF7A00] to-[#4DBFF0] rounded-full flex items-center justify-center mx-auto mb-4">
+          <div className="w-20 h-20 bg-gradient-to-r from-[#0A1D37] to-[#4DBFF0] rounded-full flex items-center justify-center mx-auto mb-4">
             <FaWallet className="text-white text-3xl" />
           </div>
           <h1 className="text-3xl font-bold text-[#0A1D37] mb-2">
@@ -167,7 +167,7 @@ const PaymentDashboard: React.FC = () => {
         </div>
 
         {/* Welcome Card */}
-        <div className="bg-gradient-to-r from-[#FF7A00] to-[#4DBFF0] rounded-2xl p-6 mb-8 text-white">
+        <div className="bg-gradient-to-r from-[#0A1D37] to-[#4DBFF0] rounded-2xl p-6 mb-8 text-white">
           <div className="flex items-center justify-between">
             <div>
               <h2 className="text-xl font-bold mb-1">
@@ -191,7 +191,7 @@ const PaymentDashboard: React.FC = () => {
               <div className="w-12 h-12 bg-gradient-to-r from-green-400 to-green-600 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
                 <FaPlus className="text-white text-xl" />
               </div>
-              <FaArrowRight className="text-gray-400 group-hover:text-[#FF7A00] transition-colors" />
+              <FaArrowRight className="text-gray-400 group-hover:text-[#0A1D37] transition-colors" />
             </div>
             <h3 className="font-semibold text-[#0A1D37] mb-2">پرداخت جدید</h3>
             <p className="text-gray-600 text-sm">ایجاد درخواست پرداخت جدید</p>
@@ -205,7 +205,7 @@ const PaymentDashboard: React.FC = () => {
               <div className="w-12 h-12 bg-gradient-to-r from-blue-400 to-blue-600 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
                 <FaSearch className="text-white text-xl" />
               </div>
-              <FaArrowRight className="text-gray-400 group-hover:text-[#FF7A00] transition-colors" />
+              <FaArrowRight className="text-gray-400 group-hover:text-[#0A1D37] transition-colors" />
             </div>
             <h3 className="font-semibold text-[#0A1D37] mb-2">استعلام وضعیت</h3>
             <p className="text-gray-600 text-sm">بررسی وضعیت پرداخت</p>
@@ -219,7 +219,7 @@ const PaymentDashboard: React.FC = () => {
               <div className="w-12 h-12 bg-gradient-to-r from-purple-400 to-purple-600 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
                 <FaHistory className="text-white text-xl" />
               </div>
-              <FaArrowRight className="text-gray-400 group-hover:text-[#FF7A00] transition-colors" />
+              <FaArrowRight className="text-gray-400 group-hover:text-[#0A1D37] transition-colors" />
             </div>
             <h3 className="font-semibold text-[#0A1D37] mb-2">
               تاریخچه پرداخت
@@ -241,7 +241,7 @@ const PaymentDashboard: React.FC = () => {
                     {formatAmount(stats.totalAmount)}
                   </p>
                 </div>
-                <div className="w-12 h-12 bg-gradient-to-r from-[#FF7A00] to-[#4DBFF0] rounded-xl flex items-center justify-center">
+                <div className="w-12 h-12 bg-gradient-to-r from-[#0A1D37] to-[#4DBFF0] rounded-xl flex items-center justify-center">
                   <FaChartLine className="text-white text-xl" />
                 </div>
               </div>
@@ -302,7 +302,7 @@ const PaymentDashboard: React.FC = () => {
               </h3>
               <button
                 onClick={() => router.push("/payment/history")}
-                className="flex items-center gap-2 text-[#FF7A00] hover:text-[#e56a00] transition-colors"
+                className="flex items-center gap-2 text-[#0A1D37] hover:text-[#e56a00] transition-colors"
               >
                 <span>مشاهده همه</span>
                 <FaArrowRight />
@@ -312,7 +312,7 @@ const PaymentDashboard: React.FC = () => {
 
           {loading ? (
             <div className="flex items-center justify-center py-12">
-              <FaSpinner className="animate-spin text-4xl text-[#FF7A00]" />
+              <FaSpinner className="animate-spin text-4xl text-[#0A1D37]" />
             </div>
           ) : recentPayments.length > 0 ? (
             <div className="divide-y divide-gray-200">
@@ -366,7 +366,7 @@ const PaymentDashboard: React.FC = () => {
                               );
                             }
                           }}
-                          className="text-[#FF7A00] hover:text-[#e56a00] transition-colors"
+                          className="text-[#0A1D37] hover:text-[#e56a00] transition-colors"
                         >
                           <FaEye />
                         </button>
@@ -385,7 +385,7 @@ const PaymentDashboard: React.FC = () => {
               <p className="text-gray-500 mb-4">هنوز پرداختی انجام نداده‌اید</p>
               <button
                 onClick={() => router.push("/payment/request")}
-                className="px-6 py-2 bg-[#FF7A00] text-white rounded-lg hover:bg-[#e56a00] transition-colors"
+                className="px-6 py-2 bg-[#0A1D37] text-white rounded-lg hover:bg-[#e56a00] transition-colors"
               >
                 پرداخت جدید
               </button>

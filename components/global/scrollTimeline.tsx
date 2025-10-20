@@ -232,9 +232,9 @@ export default function SmoothTimeline({
               height: `${compact ? 4 + (i % 3) * 2 : 8 + (i % 4) * 4}px`,
               background: `linear-gradient(45deg, 
                 ${
-                  i % 3 === 0 ? "#FF7A00" : i % 3 === 1 ? "#4DBFF0" : "#0A1D37"
+                  i % 3 === 0 ? "#0A1D37" : i % 3 === 1 ? "#4DBFF0" : "#0A1D37"
                 }, 
-                ${i % 3 === 0 ? "#FF7A00" : i % 3 === 1 ? "#4DBFF0" : "#0A1D37"}
+                ${i % 3 === 0 ? "#0A1D37" : i % 3 === 1 ? "#4DBFF0" : "#0A1D37"}
               )`,
               filter: "blur(1px)",
             }}
@@ -250,10 +250,10 @@ export default function SmoothTimeline({
         <div
           className={`absolute bottom-32 left-16 ${
             compact ? "w-12 h-12" : "w-24 h-24"
-          } border-2 border-[#FF7A00]/20 rotate-45 animate-pulse`}
+          } border-2 border-[#0A1D37]/20 rotate-45 animate-pulse`}
         ></div>
         {!compact && (
-          <div className="absolute top-1/3 left-1/4 w-16 h-16 bg-gradient-to-br from-[#FF7A00]/10 to-[#4DBFF0]/10 rounded-lg rotate-12 animate-float"></div>
+          <div className="absolute top-1/3 left-1/4 w-16 h-16 bg-gradient-to-br from-[#0A1D37]/10 to-[#4DBFF0]/10 rounded-lg rotate-12 animate-float"></div>
         )}
       </div>
 
@@ -270,7 +270,7 @@ export default function SmoothTimeline({
           <div className="fixed top-1/2 left-8 transform -translate-y-1/2 z-20 hidden lg:flex flex-col items-center gap-3">
             <div className="w-1 h-32 bg-white/20 rounded-full overflow-hidden">
               <div
-                className="scroll-progress w-full bg-gradient-to-t from-[#FF7A00] via-[#4DBFF0] to-[#0A1D37] rounded-full origin-bottom"
+                className="scroll-progress w-full bg-gradient-to-t from-[#0A1D37] via-[#4DBFF0] to-[#0A1D37] rounded-full origin-bottom"
                 style={{ transform: "scaleY(0)" }}
               ></div>
             </div>
@@ -320,7 +320,7 @@ export default function SmoothTimeline({
             ref={progressLineRef}
             className={`absolute top-0 left-1/2 ${
               compact ? "w-[2px]" : "w-[3px]"
-            } h-full bg-gradient-to-b from-[#FF7A00] via-[#4DBFF0] to-[#0A1D37] -translate-x-1/2 ${
+            } h-full bg-gradient-to-b from-[#0A1D37] via-[#4DBFF0] to-[#0A1D37] -translate-x-1/2 ${
               compact ? "hidden md:block" : "hidden sm:block"
             }`}
             style={{ transform: "scaleY(0)", transformOrigin: "top center" }}
@@ -355,7 +355,7 @@ export default function SmoothTimeline({
                   } rounded-full bg-gradient-to-br from-white/40 to-white/20 backdrop-blur-sm border-2 border-white/50 shadow-2xl relative overflow-hidden flex-shrink-0 flex items-center justify-center`}
                 >
                   <div
-                    className={`absolute inset-0 rounded-full bg-gradient-to-br from-[#FF7A00] to-[#4DBFF0] shadow-inner`}
+                    className={`absolute inset-0 rounded-full bg-gradient-to-br from-[#0A1D37] to-[#4DBFF0] shadow-inner`}
                   ></div>
                   {/* شماره مرحله */}
                   <span
@@ -366,12 +366,12 @@ export default function SmoothTimeline({
                     {i + 1}
                   </span>
                   {/* Pulse effect */}
-                  <div className="absolute inset-0 rounded-full bg-gradient-to-br from-[#FF7A00]/30 to-[#4DBFF0]/30 animate-ping"></div>
+                  <div className="absolute inset-0 rounded-full bg-gradient-to-br from-[#0A1D37]/30 to-[#4DBFF0]/30 animate-ping"></div>
                   {/* Glow effect */}
                   <div
                     className={`absolute ${
                       compact ? "-inset-1" : "-inset-2"
-                    } rounded-full bg-gradient-to-br from-[#FF7A00]/20 to-[#4DBFF0]/20 blur-md -z-10`}
+                    } rounded-full bg-gradient-to-br from-[#0A1D37]/20 to-[#4DBFF0]/20 blur-md -z-10`}
                   ></div>
                 </div>
 
@@ -407,7 +407,7 @@ export default function SmoothTimeline({
                   <div
                     className={`absolute bottom-0 left-0 right-0 ${
                       compact ? "h-0.5" : "h-1"
-                    } bg-gradient-to-r from-[#FF7A00]/50 via-[#4DBFF0]/50 to-[#0A1D37]/50 scale-x-0 hover:scale-x-100 transition-transform duration-500 origin-right`}
+                    } bg-gradient-to-r from-[#0A1D37]/50 via-[#4DBFF0]/50 to-[#0A1D37]/50 scale-x-0 hover:scale-x-100 transition-transform duration-500 origin-right`}
                   ></div>
                 </div>
               </div>

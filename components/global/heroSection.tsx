@@ -287,19 +287,19 @@ export default function HeroSection({
 
     switch (button.variant) {
       case "primary":
-        return `${baseClasses} bg-gradient-to-r from-[#FF7A00] to-[#4DBFF0] text-[#FFFFFF] hover:from-[#FF7A00]/80 hover:to-[#4DBFF0]/80 hover:shadow-[#FF7A00]/50 hover:shadow-2xl`;
+        return `${baseClasses} bg-gradient-to-r from-[#0A1D37] to-[#4DBFF0] text-[#FFFFFF] hover:from-[#0A1D37]/80 hover:to-[#4DBFF0]/80 hover:shadow-[#0A1D37]/50 hover:shadow-2xl`;
       case "red":
-        return `${baseClasses} bg-[#FF7A00] text-[#FFFFFF] hover:bg-[#FF7A00]/80 hover:shadow-[#FF7A00]/50 hover:shadow-2xl`;
+        return `${baseClasses} bg-[#0A1D37] text-[#FFFFFF] hover:bg-[#0A1D37]/80 hover:shadow-[#0A1D37]/50 hover:shadow-2xl`;
       case "secondary":
         return `${baseClasses} bg-[#0A1D37] text-[#FFFFFF] hover:bg-[#0A1D37]/80 hover:shadow-[#0A1D37]/50 hover:shadow-2xl`;
       case "fuchsia":
-        return `${baseClasses} bg-gradient-to-r from-[#4DBFF0] to-[#FF7A00] text-[#FFFFFF] hover:from-[#4DBFF0]/80 hover:to-[#FF7A00]/80 hover:shadow-[#4DBFF0]/50 hover:shadow-2xl`;
+        return `${baseClasses} bg-gradient-to-r from-[#4DBFF0] to-[#0A1D37] text-[#FFFFFF] hover:from-[#4DBFF0]/80 hover:to-[#0A1D37]/80 hover:shadow-[#4DBFF0]/50 hover:shadow-2xl`;
       case "green":
         return `${baseClasses} bg-[#4DBFF0] text-[#FFFFFF] hover:bg-[#4DBFF0]/80 hover:shadow-[#4DBFF0]/50 hover:shadow-2xl`;
       case "outline":
         return `${baseClasses} border-2 border-[#4DBFF0]/50 text-[#4DBFF0] hover:border-[#4DBFF0] hover:bg-[#4DBFF0]/10 hover:text-[#4DBFF0] bg-[#FFFFFF]/5 backdrop-blur-md hover:shadow-[#4DBFF0]/30 hover:shadow-2xl`;
       default:
-        return `${baseClasses} bg-gradient-to-r from-[#FF7A00] to-[#4DBFF0] text-[#FFFFFF] hover:from-[#FF7A00]/80 hover:to-[#4DBFF0]/80 hover:shadow-[#FF7A00]/50 hover:shadow-2xl`;
+        return `${baseClasses} bg-gradient-to-r from-[#0A1D37] to-[#4DBFF0] text-[#FFFFFF] hover:from-[#0A1D37]/80 hover:to-[#4DBFF0]/80 hover:shadow-[#0A1D37]/50 hover:shadow-2xl`;
     }
   };
 
@@ -371,7 +371,7 @@ export default function HeroSection({
 
         {/* Fallback Text */}
         {!media.src && (
-          <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-[#FF7A00]/20 to-[#4DBFF0]/20">
+          <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-[#0A1D37]/20 to-[#4DBFF0]/20">
             <div className="text-4xl sm:text-5xl lg:text-6xl text-[#0A1D37]/10 font-bold">
               {heading.charAt(0)}
             </div>
@@ -412,10 +412,10 @@ export default function HeroSection({
               height: `${8 + (i % 4) * 4}px`,
               background: `linear-gradient(45deg, 
                 ${
-                  i % 3 === 0 ? "#FF7A00" : i % 3 === 1 ? "#4DBFF0" : "#0A1D37"
+                  i % 3 === 0 ? "#0A1D37" : i % 3 === 1 ? "#4DBFF0" : "#0A1D37"
                 }, 
                 ${
-                  i % 3 === 0 ? "#FF7A00" : i % 3 === 1 ? "#4DBFF0" : "#0A1D37"
+                  i % 3 === 0 ? "#0A1D37" : i % 3 === 1 ? "#4DBFF0" : "#0A1D37"
                 })`,
               filter: "blur(1px)",
             }}
@@ -424,8 +424,8 @@ export default function HeroSection({
 
         {/* Geometric Shapes */}
         <div className="absolute top-20 right-20 w-32 h-32 border border-[#4DBFF0]/20 rounded-full animate-spin-slow"></div>
-        <div className="absolute bottom-32 left-16 w-24 h-24 border-2 border-[#FF7A00]/20 rotate-45 animate-pulse"></div>
-        <div className="absolute top-1/3 left-1/4 w-16 h-16 bg-gradient-to-br from-[#FF7A00]/10 to-[#4DBFF0]/10 rounded-lg rotate-12 animate-float"></div>
+        <div className="absolute bottom-32 left-16 w-24 h-24 border-2 border-[#0A1D37]/20 rotate-45 animate-pulse"></div>
+        <div className="absolute top-1/3 left-1/4 w-16 h-16 bg-gradient-to-br from-[#0A1D37]/10 to-[#4DBFF0]/10 rounded-lg rotate-12 animate-float"></div>
       </div>
 
       {/* Glass Morphism Overlay */}
@@ -469,7 +469,7 @@ export default function HeroSection({
                 {media.type === "video" && !media.autoplay && (
                   <div className="absolute inset-0 flex items-center justify-center">
                     <button className="w-24 h-24 bg-white/95 hover:bg-white rounded-full flex items-center justify-center shadow-2xl transform hover:scale-110 transition-all duration-500 group/play backdrop-blur-sm border border-white/30">
-                      <div className="w-16 h-16 bg-gradient-to-r from-[#FF7A00] to-[#4DBFF0] rounded-full flex items-center justify-center group-hover/play:from-[#FF7A00]/80 group-hover/play:to-[#4DBFF0]/80 transition-all duration-300">
+                      <div className="w-16 h-16 bg-gradient-to-r from-[#0A1D37] to-[#4DBFF0] rounded-full flex items-center justify-center group-hover/play:from-[#0A1D37]/80 group-hover/play:to-[#4DBFF0]/80 transition-all duration-300">
                         <svg
                           className="w-6 h-6 text-[#FFFFFF] ml-1 group-hover/play:scale-110 transition-transform duration-300"
                           fill="currentColor"
@@ -484,7 +484,7 @@ export default function HeroSection({
               </div>
 
               {/* Ambient Glow */}
-              <div className="absolute inset-0 bg-gradient-to-r from-[#FF7A00]/20 via-[#4DBFF0]/20 to-[#0A1D37]/20 rounded-3xl blur-3xl -z-10 group-hover:scale-110 transition-transform duration-500"></div>
+              <div className="absolute inset-0 bg-gradient-to-r from-[#0A1D37]/20 via-[#4DBFF0]/20 to-[#0A1D37]/20 rounded-3xl blur-3xl -z-10 group-hover:scale-110 transition-transform duration-500"></div>
             </div>
           )}
 
@@ -503,7 +503,7 @@ export default function HeroSection({
                 </div>
 
                 {/* Elegant Decorative Elements */}
-                <div className="absolute -top-3 -right-3 w-6 h-6 bg-gradient-to-br from-[#4DBFF0] to-[#FF7A00] rounded-full opacity-70 animate-pulse"></div>
+                <div className="absolute -top-3 -right-3 w-6 h-6 bg-gradient-to-br from-[#4DBFF0] to-[#0A1D37] rounded-full opacity-70 animate-pulse"></div>
                 <div
                   className="absolute -bottom-3 -left-3 w-8 h-8 bg-gradient-to-br from-purple-400 to-pink-500 rounded-full opacity-60 animate-pulse"
                   style={{ animationDelay: "1s" }}
@@ -511,7 +511,7 @@ export default function HeroSection({
               </div>
 
               {/* Centered Ambient Glow */}
-              <div className="absolute inset-0 bg-gradient-to-br from-[#4DBFF0]/15 via-[#FF7A00]/15 to-[#0A1D37]/15 rounded-3xl blur-2xl -z-10 group-hover:scale-105 transition-transform duration-700"></div>
+              <div className="absolute inset-0 bg-gradient-to-br from-[#4DBFF0]/15 via-[#0A1D37]/15 to-[#0A1D37]/15 rounded-3xl blur-2xl -z-10 group-hover:scale-105 transition-transform duration-700"></div>
             </div>
           )}
           {/* Enhanced Content Section */}
@@ -523,9 +523,9 @@ export default function HeroSection({
                   <span
                     className={`inline-flex items-center px-6 py-3 rounded-full text-[10px] md:text-sm font-medium bg-gradient-to-r from-white/20 via-white/10 to-white/5 backdrop-blur-sm border border-white/30 shadow-lg ${subheadingColor} relative z-10`}
                   >
-                    <div className="absolute inset-0 bg-gradient-to-r from-[#4DBFF0]/10 to-[#FF7A00]/10 rounded-full group-hover/badge:from-[#4DBFF0]/20 group-hover/badge:to-[#FF7A00]/20 transition-all duration-300"></div>
+                    <div className="absolute inset-0 bg-gradient-to-r from-[#4DBFF0]/10 to-[#0A1D37]/10 rounded-full group-hover/badge:from-[#4DBFF0]/20 group-hover/badge:to-[#0A1D37]/20 transition-all duration-300"></div>
                     <span className="relative flex items-center gap-2">
-                      <div className="w-2 h-2 bg-gradient-to-r from-[#4DBFF0] to-[#FF7A00] rounded-full animate-pulse"></div>
+                      <div className="w-2 h-2 bg-gradient-to-r from-[#4DBFF0] to-[#0A1D37] rounded-full animate-pulse"></div>
                       {subheading}
                     </span>
                   </span>
@@ -555,7 +555,7 @@ export default function HeroSection({
               {heading}
 
               {/* Subtle Glow Effect */}
-              <div className="absolute inset-0 bg-gradient-to-r from-[#4DBFF0]/5 via-[#FF7A00]/5 to-[#0A1D37]/5 blur-xl -z-10"></div>
+              <div className="absolute inset-0 bg-gradient-to-r from-[#4DBFF0]/5 via-[#0A1D37]/5 to-[#0A1D37]/5 blur-xl -z-10"></div>
             </h1>
 
             {/* Enhanced Description */}
@@ -585,7 +585,7 @@ export default function HeroSection({
                       key={idx}
                       className="group flex items-center justify-center md:justify-start gap-2 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 transition-all duration-300 hover:scale-105"
                     >
-                      <div className="flex-shrink-0 md:w-10 md:h-10 rounded-xl bg-[#FF7A00] flex items-center justify-center shadow-lg group-hover:shadow-[#0A1D37] transition-all duration-300">
+                      <div className="flex-shrink-0 md:w-10 md:h-10 rounded-xl bg-[#0A1D37] flex items-center justify-center shadow-lg group-hover:shadow-[#0A1D37] transition-all duration-300">
                         {item.icon ? (
                           <span className="text-[#FFFFFF] text-lg">
                             {item.icon}

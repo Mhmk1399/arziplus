@@ -200,7 +200,7 @@ const IncomesHistory: React.FC = () => {
       >
         <div className="text-center">
           <div className="relative w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-6">
-            <div className="absolute inset-0 bg-gradient-to-r from-[#FF7A00] to-[#4DBFF0] rounded-2xl animate-pulse"></div>
+            <div className="absolute inset-0 bg-gradient-to-r from-[#0A1D37] to-[#4DBFF0] rounded-2xl animate-pulse"></div>
             <div className="absolute inset-0 flex items-center justify-center">
               <FaRedo className="animate-spin text-2xl sm:text-3xl text-white" />
             </div>
@@ -224,8 +224,8 @@ const IncomesHistory: React.FC = () => {
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
             <div>
               <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-[#0A1D37] flex items-center gap-2 sm:gap-3 mb-2">
-                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-r from-[#FF7A00]/20 to-[#4DBFF0]/20 rounded-xl flex items-center justify-center">
-                  <FaHistory className="text-[#FF7A00] text-lg sm:text-xl" />
+                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-r from-[#0A1D37]/20 to-[#4DBFF0]/20 rounded-xl flex items-center justify-center">
+                  <FaHistory className="text-[#0A1D37] text-lg sm:text-xl" />
                 </div>
                 <span>تاریخچه تراکنش‌ها</span>
               </h2>
@@ -239,7 +239,7 @@ const IncomesHistory: React.FC = () => {
               className={`flex items-center gap-2 px-4 sm:px-5 lg:px-6 py-2.5 sm:py-3 rounded-xl sm:rounded-2xl font-bold text-sm sm:text-base transition-all duration-300 hover:scale-105 ${
                 showFilters
                   ? "bg-gray-600 text-white"
-                  : "bg-gradient-to-r from-[#FF7A00] to-[#4DBFF0] text-white shadow-md"
+                  : "bg-gradient-to-r from-[#0A1D37] to-[#4DBFF0] text-white shadow-md"
               }`}
             >
               <FaFilter className="text-sm sm:text-base" />
@@ -331,8 +331,8 @@ const IncomesHistory: React.FC = () => {
         {showFilters && (
           <div className="bg-white border-2 border-gray-100 rounded-2xl sm:rounded-3xl p-4 sm:p-6 lg:p-8 mb-6 sm:mb-8 shadow-lg">
             <div className="flex items-center gap-3 mb-6">
-              <div className="w-10 h-10 bg-gradient-to-r from-[#FF7A00]/20 to-[#4DBFF0]/20 rounded-xl flex items-center justify-center">
-                <FaSearch className="text-[#FF7A00]" />
+              <div className="w-10 h-10 bg-gradient-to-r from-[#0A1D37]/20 to-[#4DBFF0]/20 rounded-xl flex items-center justify-center">
+                <FaSearch className="text-[#0A1D37]" />
               </div>
               <h3 className="text-lg sm:text-xl font-bold text-[#0A1D37]">
                 فیلتر پیشرفته تراکنش‌ها
@@ -349,7 +349,7 @@ const IncomesHistory: React.FC = () => {
                   onChange={(e) =>
                     setFilters({ ...filters, type: e.target.value })
                   }
-                  className="w-full px-3 sm:px-4 py-2.5 sm:py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-[#FF7A00]/30 focus:border-[#FF7A00] transition-all text-sm sm:text-base"
+                  className="w-full px-3 sm:px-4 py-2.5 sm:py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-[#0A1D37]/30 focus:border-[#0A1D37] transition-all text-sm sm:text-base"
                 >
                   <option value="all">همه</option>
                   <option value="income">واریز</option>
@@ -366,7 +366,7 @@ const IncomesHistory: React.FC = () => {
                   onChange={(e) =>
                     setFilters({ ...filters, status: e.target.value })
                   }
-                  className="w-full px-3 sm:px-4 py-2.5 sm:py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-[#FF7A00]/30 focus:border-[#FF7A00] transition-all text-sm sm:text-base"
+                  className="w-full px-3 sm:px-4 py-2.5 sm:py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-[#0A1D37]/30 focus:border-[#0A1D37] transition-all text-sm sm:text-base"
                 >
                   <option value="">همه</option>
                   <option value="pending">در انتظار</option>
@@ -397,7 +397,7 @@ const IncomesHistory: React.FC = () => {
                   calendar={persian}
                   locale={persian_fa}
                   calendarPosition="bottom-right"
-                  inputClass="w-full px-3 sm:px-4 py-2.5 sm:py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-[#FF7A00]/30 focus:border-[#FF7A00] transition-all text-sm sm:text-base"
+                  inputClass="w-full px-3 sm:px-4 py-2.5 sm:py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-[#0A1D37]/30 focus:border-[#0A1D37] transition-all text-sm sm:text-base"
                   placeholder="انتخاب تاریخ"
                   containerClassName="w-full"
                 />
@@ -425,7 +425,7 @@ const IncomesHistory: React.FC = () => {
                   calendar={persian}
                   locale={persian_fa}
                   calendarPosition="bottom-right"
-                  inputClass="w-full px-3 sm:px-4 py-2.5 sm:py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-[#FF7A00]/30 focus:border-[#FF7A00] transition-all text-sm sm:text-base"
+                  inputClass="w-full px-3 sm:px-4 py-2.5 sm:py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-[#0A1D37]/30 focus:border-[#0A1D37] transition-all text-sm sm:text-base"
                   placeholder="انتخاب تاریخ"
                   containerClassName="w-full"
                 />
@@ -444,7 +444,7 @@ const IncomesHistory: React.FC = () => {
                       setFilters({ ...filters, tag: e.target.value })
                     }
                     placeholder="جستجو در برچسب‌ها"
-                    className="w-full pr-10 sm:pr-12 pl-3 sm:pl-4 py-2.5 sm:py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-[#FF7A00]/30 focus:border-[#FF7A00] transition-all text-sm sm:text-base"
+                    className="w-full pr-10 sm:pr-12 pl-3 sm:pl-4 py-2.5 sm:py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-[#0A1D37]/30 focus:border-[#0A1D37] transition-all text-sm sm:text-base"
                   />
                 </div>
               </div>
@@ -453,7 +453,7 @@ const IncomesHistory: React.FC = () => {
             <div className="flex flex-col sm:flex-row gap-3 mt-6">
               <button
                 onClick={handleApplyFilters}
-                className="flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-[#FF7A00] to-[#4DBFF0] text-white rounded-xl font-bold hover:shadow-xl transition-all duration-300 hover:scale-105 text-sm sm:text-base"
+                className="flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-[#0A1D37] to-[#4DBFF0] text-white rounded-xl font-bold hover:shadow-xl transition-all duration-300 hover:scale-105 text-sm sm:text-base"
               >
                 <FaSearch />
                 <span>اعمال فیلترها</span>
@@ -474,7 +474,7 @@ const IncomesHistory: React.FC = () => {
           {loading ? (
             <div className="flex flex-col items-center justify-center py-16 sm:py-20 lg:py-24">
               <div className="relative w-16 h-16 sm:w-20 sm:h-20 mb-6">
-                <div className="absolute inset-0 bg-gradient-to-r from-[#FF7A00] to-[#4DBFF0] rounded-2xl animate-pulse"></div>
+                <div className="absolute inset-0 bg-gradient-to-r from-[#0A1D37] to-[#4DBFF0] rounded-2xl animate-pulse"></div>
                 <div className="absolute inset-0 flex items-center justify-center">
                   <FaRedo className="animate-spin text-2xl sm:text-3xl text-white" />
                 </div>
@@ -682,7 +682,7 @@ const IncomesHistory: React.FC = () => {
               <span>قبلی</span>
             </button>
 
-            <div className="flex items-center gap-2 px-4 sm:px-6 py-2.5 sm:py-3 bg-gradient-to-r from-[#FF7A00] to-[#4DBFF0] text-white rounded-xl font-bold shadow-md text-sm sm:text-base">
+            <div className="flex items-center gap-2 px-4 sm:px-6 py-2.5 sm:py-3 bg-gradient-to-r from-[#0A1D37] to-[#4DBFF0] text-white rounded-xl font-bold shadow-md text-sm sm:text-base">
               <span>
                 صفحه {pagination.page} از {pagination.pages}
               </span>

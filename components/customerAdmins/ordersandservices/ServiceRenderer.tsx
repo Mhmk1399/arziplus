@@ -378,7 +378,7 @@ const ServiceRenderer: React.FC<ServiceRendererProps> = ({
                 <button
                   type="button"
                   onClick={() => handleFileUploadClick(field.name)}
-                  className="px-6 py-3 hover:bg-gradient-to-r from-[#4DBFF0] to-[#FF7A00] text-[#0A1D37] hover:text-white border border-[#4DBFF0] rounded-xl font-medium hover:from-[#4DBFF0]/80 hover:to-[#FF7A00]/80 transition-all duration-300 whitespace-nowrap"
+                  className="px-6 py-3 hover:bg-gradient-to-r from-[#4DBFF0] to-[#0A1D37] text-[#0A1D37] hover:text-white border border-[#4DBFF0] rounded-xl font-medium hover:from-[#4DBFF0]/80 hover:to-[#0A1D37]/80 transition-all duration-300 whitespace-nowrap"
                 >
                   📁 آپلود فایل
                 </button>
@@ -404,7 +404,7 @@ const ServiceRenderer: React.FC<ServiceRendererProps> = ({
                     <button
                       type="button"
                       onClick={() => handleInputChange(field.name, "")}
-                      className="text-[#FF7A00] border border-[#FF7A00] p-2 rounded-md hover:text-[#FF7A00]/80 text-sm"
+                      className="text-[#0A1D37] border border-[#0A1D37] p-2 rounded-md hover:text-[#0A1D37]/80 text-sm"
                     >
                       حذف
                     </button>
@@ -454,7 +454,7 @@ const ServiceRenderer: React.FC<ServiceRendererProps> = ({
       <div key={field.name} className="space-y-2">
         <label className="block text-[#0A1D37] font-medium">
           {field.label || field.name}
-          {field.required && <span className="text-[#FF7A00] ml-1">*</span>}
+          {field.required && <span className="text-[#0A1D37] ml-1">*</span>}
         </label>
         {field.description && (
           <p className="text-[#0A1D37]/60 text-sm">{field.description}</p>
@@ -526,7 +526,7 @@ const ServiceRenderer: React.FC<ServiceRendererProps> = ({
                       {services.map((service) => (
                         <div
                           key={service._id}
-                          className="group flex-shrink-0 w-48 bg-white/90 backdrop-blur-sm border border-white/20 rounded-2xl p-4 hover:bg-white hover:border-[#FF7A00]/50 transition-all duration-300 hover:scale-105 hover:shadow-xl cursor-pointer"
+                          className="group flex-shrink-0 w-48 bg-white/90 backdrop-blur-sm border border-white/20 rounded-2xl p-4 hover:bg-white hover:border-[#0A1D37]/50 transition-all duration-300 hover:scale-105 hover:shadow-xl cursor-pointer"
                           onClick={() => handleServiceSelect(service)}
                         >
                           <div className="relative mb-3">
@@ -546,19 +546,19 @@ const ServiceRenderer: React.FC<ServiceRendererProps> = ({
                                 }}
                               />
                             ) : (
-                              <div className="w-1/2 h-16 mx-auto bg-gradient-to-br from-[#4DBFF0]/20 to-[#FF7A00]/20 rounded-xl flex items-center justify-center">
+                              <div className="w-1/2 h-16 mx-auto bg-gradient-to-br from-[#4DBFF0]/20 to-[#0A1D37]/20 rounded-xl flex items-center justify-center">
                                 {service.icon ? (
                                   <span className="text-2xl">
                                     {service.icon}
                                   </span>
                                 ) : (
-                                  <div className="w-6 h-6 bg-gradient-to-r from-[#4DBFF0] to-[#FF7A00] rounded-lg"></div>
+                                  <div className="w-6 h-6 bg-gradient-to-r from-[#4DBFF0] to-[#0A1D37] rounded-lg"></div>
                                 )}
                               </div>
                             )}
                           </div>
 
-                          <h5 className="text-[#0A1D37] font-bold text-center text-sm mb-2 group-hover:text-[#FF7A00] transition-colors duration-300 line-clamp-2">
+                          <h5 className="text-[#0A1D37] font-bold text-center text-sm mb-2 group-hover:text-[#0A1D37] transition-colors duration-300 line-clamp-2">
                             {service.title}
                           </h5>
 
@@ -568,7 +568,7 @@ const ServiceRenderer: React.FC<ServiceRendererProps> = ({
                             </p>
                           )}
 
-                          <div className="mt-3 flex items-center text-[#4DBFF0] text-xs font-medium group-hover:text-[#FF7A00] transition-colors duration-300">
+                          <div className="mt-3 flex items-center text-[#4DBFF0] text-xs font-medium group-hover:text-[#0A1D37] transition-colors duration-300">
                             <span>مشاهده</span>
                             <svg
                               className="w-3 h-3 mr-1 rotate-180 group-hover:translate-x-1 transition-transform duration-300"
@@ -613,7 +613,7 @@ const ServiceRenderer: React.FC<ServiceRendererProps> = ({
                     {services.map((service) => (
                       <div
                         key={service._id}
-                        className="group bg-white/90 shadow-xl backdrop-blur-sm border border-white/20 rounded-2xl p-6 hover:bg-white hover:border-[#FF7A00]/50 transition-all duration-300 hover:scale-105 hover:shadow-xl cursor-pointer"
+                        className="group bg-white/90 shadow-xl backdrop-blur-sm border border-white/20 rounded-2xl p-6 hover:bg-white hover:border-[#0A1D37]/50 transition-all duration-300 hover:scale-105 hover:shadow-xl cursor-pointer"
                         onClick={() => handleServiceSelect(service)}
                       >
                         <div className="relative mb-4 overflow-hidden rounded-xl">
@@ -633,17 +633,17 @@ const ServiceRenderer: React.FC<ServiceRendererProps> = ({
                               }}
                             />
                           ) : (
-                            <div className="w-1/2 h-24 mx-auto bg-gradient-to-br from-[#4DBFF0]/20 to-[#FF7A00]/20 rounded-xl flex items-center justify-center">
+                            <div className="w-1/2 h-24 mx-auto bg-gradient-to-br from-[#4DBFF0]/20 to-[#0A1D37]/20 rounded-xl flex items-center justify-center">
                               {service.icon ? (
                                 <span className="text-3xl">{service.icon}</span>
                               ) : (
-                                <div className="w-8 h-8 bg-gradient-to-r from-[#4DBFF0] to-[#FF7A00] rounded-lg"></div>
+                                <div className="w-8 h-8 bg-gradient-to-r from-[#4DBFF0] to-[#0A1D37] rounded-lg"></div>
                               )}
                             </div>
                           )}
                         </div>
 
-                        <h5 className="text-[#0A1D37] text-center font-bold text-sm mb-2 group-hover:text-[#FF7A00] transition-colors duration-300">
+                        <h5 className="text-[#0A1D37] text-center font-bold text-sm mb-2 group-hover:text-[#0A1D37] transition-colors duration-300">
                           {service.title}
                         </h5>
 
@@ -653,7 +653,7 @@ const ServiceRenderer: React.FC<ServiceRendererProps> = ({
                           </p>
                         )}
 
-                        <div className="flex items-center justify-center text-[#4DBFF0] text-center text-xs font-medium group-hover:text-[#FF7A00] transition-colors duration-300">
+                        <div className="flex items-center justify-center text-[#4DBFF0] text-center text-xs font-medium group-hover:text-[#0A1D37] transition-colors duration-300">
                           <span>فرم سفارش</span>
                           <svg
                             className="w-4 h-4 mr-2 rotate-180 group-hover:translate-x-1 transition-transform duration-300"
@@ -710,8 +710,8 @@ const ServiceRenderer: React.FC<ServiceRendererProps> = ({
                       {selectedService.description}
                     </p>
                   )}
-                  <div className="mt-4 p-4 bg-gradient-to-r from-[#FF7A00]/10 to-[#4DBFF0]/10 border border-[#FF7A00]/20 rounded-xl">
-                    <p className="text-[#FF7A00] font-medium">
+                  <div className="mt-4 p-4 bg-gradient-to-r from-[#0A1D37]/10 to-[#4DBFF0]/10 border border-[#0A1D37]/20 rounded-xl">
+                    <p className="text-[#0A1D37] font-medium">
                       هزینه خدمت: ${selectedService.fee}
                     </p>
                   </div>
@@ -724,7 +724,7 @@ const ServiceRenderer: React.FC<ServiceRendererProps> = ({
                     <button
                       type="submit"
                       disabled={submitting}
-                      className="w-full bg-gradient-to-r from-[#4DBFF0] to-[#FF7A00] text-white py-4 rounded-xl font-medium hover:from-[#4DBFF0]/80 hover:to-[#FF7A00]/80 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 shadow-lg hover:shadow-[#4DBFF0]/20"
+                      className="w-full bg-gradient-to-r from-[#4DBFF0] to-[#0A1D37] text-white py-4 rounded-xl font-medium hover:from-[#4DBFF0]/80 hover:to-[#0A1D37]/80 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 shadow-lg hover:shadow-[#4DBFF0]/20"
                     >
                       {submitting ? (
                         <div className="flex items-center justify-center space-x-reverse space-x-2">

@@ -217,7 +217,7 @@ const PaymentStatusPage: React.FC = () => {
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 flex items-center justify-center" dir="rtl">
         <div className="text-center">
-          <FaSpinner className="animate-spin text-4xl text-[#FF7A00] mx-auto mb-4" />
+          <FaSpinner className="animate-spin text-4xl text-[#0A1D37] mx-auto mb-4" />
           <p className="text-gray-600">در حال بررسی احراز هویت...</p>
         </div>
       </div>
@@ -234,7 +234,7 @@ const PaymentStatusPage: React.FC = () => {
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
         <div className="text-center mb-8 mt-20">
-          <div className="w-20 h-20 bg-gradient-to-r from-[#FF7A00] to-[#4DBFF0] rounded-full flex items-center justify-center mx-auto mb-4">
+          <div className="w-20 h-20 bg-gradient-to-r from-[#0A1D37] to-[#4DBFF0] rounded-full flex items-center justify-center mx-auto mb-4">
             <FaSearch className="text-white text-3xl" />
           </div>
           <h1 className="text-3xl font-bold text-[#0A1D37] mb-2">استعلام وضعیت پرداخت</h1>
@@ -250,7 +250,7 @@ const PaymentStatusPage: React.FC = () => {
                   کد پیگیری پرداخت *
                 </label>
                 <div className="relative">
-                  <FaSearch className="absolute right-4 top-1/2 transform -translate-y-1/2 text-[#FF7A00]" />
+                  <FaSearch className="absolute right-4 top-1/2 transform -translate-y-1/2 text-[#0A1D37]" />
                   <input
                     type="text"
                     value={authority}
@@ -259,7 +259,7 @@ const PaymentStatusPage: React.FC = () => {
                       setError("");
                       setPaymentStatus(null);
                     }}
-                    className="w-full pr-12 pl-4 py-4 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all font-mono"
+                    className="w-full pr-12 pl-4 py-4 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] transition-all font-mono"
                     placeholder="کد پیگیری را وارد کنید"
                     maxLength={50}
                   />
@@ -275,7 +275,7 @@ const PaymentStatusPage: React.FC = () => {
               <button
                 onClick={() => checkPaymentStatus()}
                 disabled={loading || !authority.trim()}
-                className="w-full flex items-center justify-center gap-2 px-6 py-4 bg-gradient-to-r from-[#FF7A00] to-[#4DBFF0] text-white rounded-xl hover:shadow-lg disabled:opacity-50 transition-all"
+                className="w-full flex items-center justify-center gap-2 px-6 py-4 bg-gradient-to-r from-[#0A1D37] to-[#4DBFF0] text-white rounded-xl hover:shadow-lg disabled:opacity-50 transition-all"
               >
                 {loading ? (
                   <>
@@ -323,7 +323,7 @@ const PaymentStatusPage: React.FC = () => {
                     <span className="font-mono font-medium">{paymentStatus.authority}</span>
                     <button
                       onClick={() => copyToClipboard(paymentStatus.authority, 'کد پیگیری')}
-                      className="text-[#FF7A00] hover:text-[#e56a00] transition-colors"
+                      className="text-[#0A1D37] hover:text-[#e56a00] transition-colors"
                     >
                       <FaCopy />
                     </button>
@@ -337,7 +337,7 @@ const PaymentStatusPage: React.FC = () => {
                       <span className="font-mono font-medium">{paymentStatus.zarinpalResponse.refId}</span>
                       <button
                         onClick={() => copyToClipboard(paymentStatus.zarinpalResponse?.refId || '', 'شماره مرجع')}
-                        className="text-[#FF7A00] hover:text-[#e56a00] transition-colors"
+                        className="text-[#0A1D37] hover:text-[#e56a00] transition-colors"
                       >
                         <FaCopy />
                       </button>
@@ -437,7 +437,7 @@ const PaymentStatusPage: React.FC = () => {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <button
                 onClick={() => router.push('/payment/request')}
-                className="flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-r from-[#FF7A00] to-[#4DBFF0] text-white rounded-xl hover:shadow-lg transition-all"
+                className="flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-r from-[#0A1D37] to-[#4DBFF0] text-white rounded-xl hover:shadow-lg transition-all"
               >
                 <FaCreditCard />
                 پرداخت جدید

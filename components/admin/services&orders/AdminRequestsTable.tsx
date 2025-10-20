@@ -319,7 +319,7 @@ export default function AdminRequestsTable({ className = "mt-20" }: AdminRequest
   return (
     <div className={`${className} p-6`} dir="rtl">
       {/* Filters */}
-      <div className="bg-gradient-to-r from-[#4DBFF0]/10 to-[#FF7A00]/10 backdrop-blur-sm border border-[#4DBFF0]/30 rounded-2xl p-6 mb-6">
+      <div className="bg-gradient-to-r from-[#4DBFF0]/10 to-[#0A1D37]/10 backdrop-blur-sm border border-[#4DBFF0]/30 rounded-2xl p-6 mb-6">
         <div className="flex flex-wrap gap-4 items-center">
           <select
             value={statusFilter}
@@ -360,7 +360,7 @@ export default function AdminRequestsTable({ className = "mt-20" }: AdminRequest
           <>
             <div className="overflow-x-auto">
               <table className="w-full">
-                <thead className="bg-gradient-to-r from-[#4DBFF0]/10 to-[#FF7A00]/10">
+                <thead className="bg-gradient-to-r from-[#4DBFF0]/10 to-[#0A1D37]/10">
                   <tr>
                     <th className="px-6 py-4 text-right text-sm font-semibold text-[#0A1D37]">شماره درخواست</th>
                     <th className="px-6 py-4 text-right text-sm font-semibold text-[#0A1D37]">سرویس</th>
@@ -429,7 +429,7 @@ export default function AdminRequestsTable({ className = "mt-20" }: AdminRequest
                           </button>
                           <button
                             onClick={() => openUpdateModal(request)}
-                            className="px-3 py-2 bg-gradient-to-r from-[#4DBFF0] to-[#FF7A00] text-white text-sm rounded-lg hover:shadow-lg transition-all"
+                            className="px-3 py-2 bg-gradient-to-r from-[#4DBFF0] to-[#0A1D37] text-white text-sm rounded-lg hover:shadow-lg transition-all"
                           >
                             ویرایش وضعیت
                           </button>
@@ -585,7 +585,7 @@ export default function AdminRequestsTable({ className = "mt-20" }: AdminRequest
               <button
                 onClick={handleUpdateRequest}
                 disabled={updating}
-                className="px-6 py-2 bg-gradient-to-r from-[#4DBFF0] to-[#FF7A00] text-white rounded-xl hover:shadow-lg transition-all disabled:opacity-50"
+                className="px-6 py-2 bg-gradient-to-r from-[#4DBFF0] to-[#0A1D37] text-white rounded-xl hover:shadow-lg transition-all disabled:opacity-50"
               >
                 {updating ? "در حال ذخیره..." : "ذخیره تغییرات"}
               </button>
@@ -598,7 +598,7 @@ export default function AdminRequestsTable({ className = "mt-20" }: AdminRequest
       {showDetailsModal && selectedRequest && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
-            <div className="p-6 border-b bg-gradient-to-r from-[#4DBFF0]/10 to-[#FF7A00]/10">
+            <div className="p-6 border-b bg-gradient-to-r from-[#4DBFF0]/10 to-[#0A1D37]/10">
               <div className="flex items-center justify-between">
                 <div>
                   <h2 className={`text-xl ${estedadBold.className} text-[#0A1D37]`}>
@@ -706,7 +706,7 @@ export default function AdminRequestsTable({ className = "mt-20" }: AdminRequest
               )}
 
               {/* Action Box - Admin Controls */}
-              <div className="bg-gradient-to-r from-[#4DBFF0]/5 to-[#FF7A00]/5 border border-[#4DBFF0]/20 rounded-lg p-4">
+              <div className="bg-gradient-to-r from-[#4DBFF0]/5 to-[#0A1D37]/5 border border-[#4DBFF0]/20 rounded-lg p-4">
                 <h3 className={`text-lg ${estedadBold.className} text-[#0A1D37] mb-4`}>
                   عملیات مدیریتی
                 </h3>
@@ -716,7 +716,7 @@ export default function AdminRequestsTable({ className = "mt-20" }: AdminRequest
                       setShowDetailsModal(false);
                       openUpdateModal(selectedRequest);
                     }}
-                    className="px-4 py-2 bg-gradient-to-r from-[#4DBFF0] to-[#FF7A00] text-white rounded-lg hover:shadow-lg transition-all"
+                    className="px-4 py-2 bg-gradient-to-r from-[#4DBFF0] to-[#0A1D37] text-white rounded-lg hover:shadow-lg transition-all"
                   >
                     تغییر وضعیت
                   </button>

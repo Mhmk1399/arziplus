@@ -7,7 +7,7 @@ import { modalContents } from "./modalContent";
 
 const COLORS = {
   primary: "#0A1D37",
-  secondary: "#FF7A00",
+  secondary: "#0A1D37",
   accent: "#4DBFF0",
   white: "#FFFFFF",
   gray: "#A0A0A0",

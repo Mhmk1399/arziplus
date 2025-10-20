@@ -204,7 +204,7 @@ ${paymentDetails.zarinpalResponse?.refId ? `شماره مرجع: ${paymentDetail
     const printContent = `
       <div style="font-family: Arial, sans-serif; direction: rtl; padding: 20px;">
         <div style="text-align: center; margin-bottom: 30px;">
-          <h1 style="color: #FF7A00;">آرزی پلاس</h1>
+          <h1 style="color: #0A1D37;">آرزی پلاس</h1>
           <h2>رسید پرداخت</h2>
         </div>
         <div style="border: 2px solid #ddd; padding: 20px; border-radius: 10px;">
@@ -231,7 +231,7 @@ ${paymentDetails.zarinpalResponse?.refId ? `شماره مرجع: ${paymentDetail
     return (
       <div className="min-h-screen bg-gradient-to-br from-green-50 via-white to-blue-50 flex items-center justify-center" dir="rtl">
         <div className="text-center">
-          <FaSpinner className="animate-spin text-4xl text-[#FF7A00] mx-auto mb-4" />
+          <FaSpinner className="animate-spin text-4xl text-[#0A1D37] mx-auto mb-4" />
           <p className="text-gray-600">در حال بررسی احراز هویت...</p>
         </div>
       </div>
@@ -247,7 +247,7 @@ ${paymentDetails.zarinpalResponse?.refId ? `شماره مرجع: ${paymentDetail
     return (
       <div className="min-h-screen bg-gradient-to-br from-green-50 via-white to-blue-50 flex items-center justify-center" dir="rtl">
         <div className="text-center">
-          <FaSpinner className="animate-spin text-4xl text-[#FF7A00] mx-auto mb-4" />
+          <FaSpinner className="animate-spin text-4xl text-[#0A1D37] mx-auto mb-4" />
           <p className="text-gray-600">در حال بررسی پرداخت...</p>
         </div>
       </div>
@@ -302,7 +302,7 @@ ${paymentDetails.zarinpalResponse?.refId ? `شماره مرجع: ${paymentDetail
                   <span className="font-mono font-medium">{paymentDetails.authority}</span>
                   <button
                     onClick={() => copyToClipboard(paymentDetails.authority, 'کد پیگیری')}
-                    className="text-[#FF7A00] hover:text-[#e56a00] transition-colors"
+                    className="text-[#0A1D37] hover:text-[#e56a00] transition-colors"
                   >
                     <FaCopy />
                   </button>
@@ -316,7 +316,7 @@ ${paymentDetails.zarinpalResponse?.refId ? `شماره مرجع: ${paymentDetail
                     <span className="font-mono font-medium">{paymentDetails.zarinpalResponse.refId}</span>
                     <button
                       onClick={() => copyToClipboard(paymentDetails.zarinpalResponse?.refId || '', 'شماره مرجع')}
-                      className="text-[#FF7A00] hover:text-[#e56a00] transition-colors"
+                      className="text-[#0A1D37] hover:text-[#e56a00] transition-colors"
                     >
                       <FaCopy />
                     </button>
@@ -381,7 +381,7 @@ ${paymentDetails.zarinpalResponse?.refId ? `شماره مرجع: ${paymentDetail
               
               <button
                 onClick={() => router.push('/')}
-                className="flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-r from-[#FF7A00] to-[#4DBFF0] text-white rounded-xl hover:shadow-lg transition-all"
+                className="flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-r from-[#0A1D37] to-[#4DBFF0] text-white rounded-xl hover:shadow-lg transition-all"
               >
                 <FaHome />
                 صفحه اصلی

@@ -171,7 +171,7 @@ const WithdrawHistory: React.FC = () => {
   if (userLoading) {
     return (
       <div className="flex items-center justify-center p-8">
-        <FaRedo className="animate-spin text-2xl text-[#FF7A00]" />
+        <FaRedo className="animate-spin text-2xl text-[#0A1D37]" />
         <span className="mr-2">در حال بارگذاری...</span>
       </div>
     );
@@ -182,7 +182,7 @@ const WithdrawHistory: React.FC = () => {
       <div className="flex justify-between items-center mb-6">
         <div>
           <h2 className="text-2xl font-bold text-[#0A1D37] flex items-center gap-2">
-            <FaMoneyBillWave className="text-[#FF7A00]" />
+            <FaMoneyBillWave className="text-[#0A1D37]" />
             درخواست‌های برداشت
           </h2>
           <p className="text-gray-600 mt-1">مشاهده و پیگیری درخواست‌های برداشت از کیف پول</p>
@@ -190,7 +190,7 @@ const WithdrawHistory: React.FC = () => {
 
         <button
           onClick={() => setShowFilters(!showFilters)}
-          className="flex items-center gap-2 px-4 py-2 bg-[#FF7A00] text-white rounded-lg hover:bg-[#e56900] transition-colors"
+          className="flex items-center gap-2 px-4 py-2 bg-[#0A1D37] text-white rounded-lg hover:bg-[#e56900] transition-colors"
         >
           <FaFilter />
           فیلترها
@@ -271,7 +271,7 @@ const WithdrawHistory: React.FC = () => {
               <select
                 value={filters.status}
                 onChange={(e) => setFilters({ ...filters, status: e.target.value })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#FF7A00] focus:border-transparent"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#0A1D37] focus:border-transparent"
               >
                 <option value="">همه</option>
                 <option value="pending">در انتظار</option>
@@ -288,7 +288,7 @@ const WithdrawHistory: React.FC = () => {
                 type="date"
                 value={filters.startDate}
                 onChange={(e) => setFilters({ ...filters, startDate: e.target.value })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#FF7A00] focus:border-transparent"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#0A1D37] focus:border-transparent"
               />
             </div>
 
@@ -300,7 +300,7 @@ const WithdrawHistory: React.FC = () => {
                 type="date"
                 value={filters.endDate}
                 onChange={(e) => setFilters({ ...filters, endDate: e.target.value })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#FF7A00] focus:border-transparent"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#0A1D37] focus:border-transparent"
               />
             </div>
 
@@ -313,7 +313,7 @@ const WithdrawHistory: React.FC = () => {
                 value={filters.minAmount}
                 onChange={(e) => setFilters({ ...filters, minAmount: e.target.value })}
                 placeholder="0"
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#FF7A00] focus:border-transparent"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#0A1D37] focus:border-transparent"
               />
             </div>
 
@@ -326,7 +326,7 @@ const WithdrawHistory: React.FC = () => {
                 value={filters.maxAmount}
                 onChange={(e) => setFilters({ ...filters, maxAmount: e.target.value })}
                 placeholder="0"
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#FF7A00] focus:border-transparent"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#0A1D37] focus:border-transparent"
               />
             </div>
           </div>
@@ -334,7 +334,7 @@ const WithdrawHistory: React.FC = () => {
           <div className="flex gap-2 mt-4">
             <button
               onClick={handleApplyFilters}
-              className="px-4 py-2 bg-[#FF7A00] text-white rounded-md hover:bg-[#e56900] transition-colors"
+              className="px-4 py-2 bg-[#0A1D37] text-white rounded-md hover:bg-[#e56900] transition-colors"
             >
               اعمال فیلترها
             </button>
@@ -352,7 +352,7 @@ const WithdrawHistory: React.FC = () => {
       <div className="bg-white rounded-lg border overflow-hidden">
         {loading ? (
           <div className="flex items-center justify-center py-12">
-            <FaRedo className="animate-spin text-2xl text-[#FF7A00] mr-2" />
+            <FaRedo className="animate-spin text-2xl text-[#0A1D37] mr-2" />
             <span>در حال بارگذاری...</span>
           </div>
         ) : withdrawRequests.length === 0 ? (
@@ -409,7 +409,7 @@ const WithdrawHistory: React.FC = () => {
                       </td>
                       <td className="px-4 py-3">
                         <div className="flex items-center gap-2">
-                          <button className="text-[#FF7A00] hover:text-[#e56900] text-sm">
+                          <button className="text-[#0A1D37] hover:text-[#e56900] text-sm">
                             <FaEye />
                           </button>
                           {request.status === "pending" && (
@@ -440,7 +440,7 @@ const WithdrawHistory: React.FC = () => {
               قبلی
             </button>
             
-            <span className="px-4 py-2 bg-[#FF7A00] text-white rounded-md">
+            <span className="px-4 py-2 bg-[#0A1D37] text-white rounded-md">
               {pagination.page} از {pagination.pages}
             </span>
             

@@ -7,7 +7,7 @@ const TermsPage = () => {
         {/* Header */}
         <div className="text-center ">
           <div className="inline-flex items-center  text-black px-6 py-3 rounded-lg  ">
-            <FaShieldAlt className="ml-2 text-[#FF7A00]" />
+            <FaShieldAlt className="ml-2 text-[#0A1D37]" />
             <span className="font-bold text-sm">
               شرایط و قوانین استفاده از خدمات ارزی پلاس
             </span>
@@ -16,7 +16,7 @@ const TermsPage = () => {
 
         {/* Section 1 */}
         <section className="bg-[#FFFFFF] text-[#0A1D37] p-8 rounded-lg shadow-lg">
-          <h2 className="text-2xl font-bold text-[#FF7A00] mb-6 flex items-center">
+          <h2 className="text-2xl font-bold text-[#0A1D37] mb-6 flex items-center">
             <FaGavel className="ml-3" />
             ۱. شرایط و قوانین کلی
           </h2>
@@ -54,7 +54,7 @@ const TermsPage = () => {
 
         {/* Section 2 */}
         <section className="bg-[#FFFFFF] text-[#0A1D37] p-8 rounded-lg shadow-lg">
-          <h2 className="text-2xl font-bold text-[#FF7A00] mb-6">
+          <h2 className="text-2xl font-bold text-[#0A1D37] mb-6">
             ۲. شرایط و قوانین مالی
           </h2>
 
@@ -77,26 +77,26 @@ const TermsPage = () => {
 
         {/* Section 3 */}
         <section className="bg-[#FFFFFF] text-[#0A1D37] p-8 rounded-lg shadow-lg">
-          <h2 className="text-2xl font-bold text-[#FF7A00] mb-6">
+          <h2 className="text-2xl font-bold text-[#0A1D37] mb-6">
             ۳. اصطلاحات و تعاریف
           </h2>
 
           <div className="space-y-4 text-lg leading-relaxed">
             <div className="bg-[#4DBFF0] bg-opacity-10 p-4 rounded-lg text-justify">
-              <strong className="text-[#FF7A00]">سایت ارزی پلاس:</strong>{" "}
+              <strong className="text-[#0A1D37]">سایت ارزی پلاس:</strong>{" "}
               پلتفرمی به نشانی اینترنتی ArziPlus.com که به عنوان رابط میان
               کاربران و خدمات پرداخت ارزی فعالیت میکند و تابع تمامی قوانین
               جمهوری اسلامی ایران است.
             </div>
 
             <div className="bg-[#4DBFF0] bg-opacity-10 p-4 rounded-lg text-justify">
-              <strong className="text-[#FF7A00]">حساب کاربری:</strong> صفحه
+              <strong className="text-[#0A1D37]">حساب کاربری:</strong> صفحه
               اختصاصی هر کاربر (حقیقی یا حقوقی) برای مدیریت سفارشها، پرداختها و
               تراکنش ها در چارچوب قوانین رسمی کشور.
             </div>
 
             <div className="bg-[#4DBFF0] bg-opacity-10 p-4 rounded-lg text-justify">
-              <strong className="text-[#FF7A00]">اطلاعات هویتی:</strong> شامل
+              <strong className="text-[#0A1D37]">اطلاعات هویتی:</strong> شامل
               نام، نام خانوادگی، کد ملی و سایر اطلاعاتی است که کاربر برای احراز
               هویت باید به صورت واقعی و صحیح وارد کند.
             </div>
@@ -105,7 +105,7 @@ const TermsPage = () => {
 
         {/* Section 4 */}
         <section className="bg-[#FFFFFF] text-[#0A1D37] p-8 rounded-lg shadow-lg">
-          <h2 className="text-2xl font-bold text-[#FF7A00] mb-6">
+          <h2 className="text-2xl font-bold text-[#0A1D37] mb-6">
             ۴. مقررات عمومی
           </h2>
 
@@ -132,7 +132,7 @@ const TermsPage = () => {
 
         {/* Section 5 */}
         <section className="bg-[#FFFFFF] text-[#0A1D37] p-8 rounded-lg shadow-lg">
-          <h2 className="text-2xl font-bold text-[#FF7A00] mb-6">
+          <h2 className="text-2xl font-bold text-[#0A1D37] mb-6">
             ۵. مقررات مربوط به ساخت و مدیریت حساب کاربری
           </h2>
 
@@ -156,7 +156,7 @@ const TermsPage = () => {
 
         {/* Section 6 */}
         <section className="bg-[#FFFFFF] text-[#0A1D37] p-8 rounded-lg shadow-lg">
-          <h2 className="text-2xl font-bold text-[#FF7A00] mb-6">
+          <h2 className="text-2xl font-bold text-[#0A1D37] mb-6">
             ۶. ساخت حساب حقوقی در ارزی پلاس
           </h2>
 
@@ -171,7 +171,7 @@ const TermsPage = () => {
             </p>
 
             <div className="bg-[#4DBFF0] bg-opacity-20 p-6 rounded-lg">
-              <h4 className="font-bold text-[#FF7A00] mb-4">۳. مدارک لازم:</h4>
+              <h4 className="font-bold text-[#0A1D37] mb-4">۳. مدارک لازم:</h4>
               <ul className="list-disc list-inside space-y-2">
                 <li>آگهی تأسیس شرکت</li>
                 <li>آخرین تغییرات هیئتمدیره</li>
@@ -184,7 +184,7 @@ const TermsPage = () => {
 
         {/* Section 7 */}
         <section className="bg-[#FFFFFF] text-[#0A1D37] p-8 rounded-lg shadow-lg">
-          <h2 className="text-2xl font-bold text-[#FF7A00] mb-6 flex items-center">
+          <h2 className="text-2xl font-bold text-[#0A1D37] mb-6 flex items-center">
             <FaUserShield className="ml-3" />
             ۷. قوانین احراز هویت کاربران
           </h2>
@@ -228,7 +228,7 @@ const TermsPage = () => {
 
         {/* Section 8 */}
         <section className="bg-[#FFFFFF] text-[#0A1D37] p-8 rounded-lg shadow-lg">
-          <h2 className="text-2xl font-bold text-[#FF7A00] mb-6">
+          <h2 className="text-2xl font-bold text-[#0A1D37] mb-6">
             ۸. استفاده از خدمات ارزی پلاس
           </h2>
 
@@ -259,7 +259,7 @@ const TermsPage = () => {
 
         {/* Section 9 */}
         <section className="bg-[#FFFFFF] text-[#0A1D37] p-8 rounded-lg shadow-lg">
-          <h2 className="text-2xl font-bold text-[#FF7A00] mb-6 flex items-center">
+          <h2 className="text-2xl font-bold text-[#0A1D37] mb-6 flex items-center">
             <FaShieldAlt className="ml-3" />
             ۹. حریم خصوصی کاربران
           </h2>

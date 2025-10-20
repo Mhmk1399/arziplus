@@ -180,7 +180,7 @@ const FileUploaderModal: React.FC<FileUploaderModalProps> = ({
               group
               ${
                 dragActive
-                  ? "border-[#FF7A00] bg-gradient-to-br from-[#FF7A00]/10 to-[#4DBFF0]/10 scale-[1.02] shadow-xl"
+                  ? "border-[#0A1D37] bg-gradient-to-br from-[#0A1D37]/10 to-[#4DBFF0]/10 scale-[1.02] shadow-xl"
                   : "border-[#4DBFF0]/40 hover:border-[#4DBFF0] hover:bg-[#4DBFF0]/5 hover:shadow-lg"
               }
               ${isUploading ? "pointer-events-none opacity-60" : ""}
@@ -388,7 +388,7 @@ const FileUploaderModal: React.FC<FileUploaderModalProps> = ({
                         navigator.clipboard.writeText(file.url);
                         showToast.success("لینک کپی شد!");
                       }}
-                      className="flex items-center justify-center gap-2 bg-white border-2 border-[#FF7A00]/30 text-[#FF7A00] px-6 py-3 rounded-xl font-bold hover:bg-[#FF7A00]/10 hover:border-[#FF7A00] transition-all duration-300"
+                      className="flex items-center justify-center gap-2 bg-white border-2 border-[#0A1D37]/30 text-[#0A1D37] px-6 py-3 rounded-xl font-bold hover:bg-[#0A1D37]/10 hover:border-[#0A1D37] transition-all duration-300"
                     >
                       <FaCopy className="text-base" />
                       کپی لینک

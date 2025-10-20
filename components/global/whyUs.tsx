@@ -66,7 +66,6 @@ export default function WhyUsSection({
         if (iconEl) {
           gsap.to(iconEl, {
             scale: 1.1,
-            rotation: 5,
             duration: 0.3,
             ease: "back.out(1.7)",
           });
@@ -179,9 +178,9 @@ export default function WhyUsSection({
               }}
               className={`p-4 lg:p-6 rounded-2xl shadow-md border border-transparent text-center md:text-right transition-all duration-300 backdrop-blur-sm cursor-pointer group ${theme.textBoxBg} hover:border-white/20`}
             >
-              <div className="flex  gap-4 justify-between items-center">
+              <div className="flex  gap-2 md:gap-4 justify-between items-center">
                 <div
-                  className={`icon-container p-4 flex items-center justify-center  rounded-xl text-white text-xl shadow-md transition-all duration-300 group-hover:shadow-lg ${
+                  className={`icon-container p-2 md:p-4 flex items-center justify-center  rounded-xl text-white text-sm md:text-xl shadow-md transition-all duration-300 group-hover:shadow-lg ${
                     item.iconColor ?? "bg-[#4DBFF0]"
                   }`}
                 >
@@ -189,12 +188,12 @@ export default function WhyUsSection({
                 </div>
                 <div className="flex border-r border-white px-4 flex-col  leading-relaxed tracking-wider gap-1">
                   <h3
-                    className={`text-right text-[10px] line-clamp-1  md:text-base font-extrabold  leading-relaxed transition-all duration-300 ${theme.heading}`}
+                    className={`text-right text-sm line-clamp-1  md:text-base font-bold  leading-relaxed transition-all duration-300 ${theme.heading}`}
                   >
                     {item.title}
                   </h3>{" "}
                   <p
-                    className={`text-xs text-right sm:leading-0.5  md:leading-relaxed transition-colors duration-300 ${theme.description}`}
+                    className={`text-[10px] text-right sm:leading-0.5  md:leading-relaxed transition-colors duration-300 ${theme.description}`}
                   >
                     {item.description}
                   </p>

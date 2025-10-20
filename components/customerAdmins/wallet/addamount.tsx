@@ -204,7 +204,7 @@ const AddAmountComponent: React.FC<AddAmountComponentProps> = ({
       >
         <div className="text-center">
           <div className="relative w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-6">
-            <div className="absolute inset-0 bg-gradient-to-r from-[#FF7A00] to-[#4DBFF0] rounded-2xl animate-pulse"></div>
+            <div className="absolute inset-0 bg-gradient-to-r from-[#0A1D37] to-[#4DBFF0] rounded-2xl animate-pulse"></div>
             <div className="absolute inset-0 flex items-center justify-center">
               <FaSpinner className="animate-spin text-2xl sm:text-3xl text-white" />
             </div>
@@ -237,7 +237,7 @@ const AddAmountComponent: React.FC<AddAmountComponentProps> = ({
           </p>
           <button
             onClick={() => router.push("/auth/sms")}
-            className="w-full px-6 py-3 sm:py-4 bg-gradient-to-r from-[#FF7A00] to-[#4DBFF0] text-white rounded-xl sm:rounded-2xl hover:shadow-xl transition-all duration-300 hover:scale-105 font-bold"
+            className="w-full px-6 py-3 sm:py-4 bg-gradient-to-r from-[#0A1D37] to-[#4DBFF0] text-white rounded-xl sm:rounded-2xl hover:shadow-xl transition-all duration-300 hover:scale-105 font-bold"
           >
             ورود / ثبت نام
           </button>
@@ -257,7 +257,7 @@ const AddAmountComponent: React.FC<AddAmountComponentProps> = ({
           <div className="lg:col-span-2 space-y-4 sm:space-y-6">
             {/* Header */}
             <div className="text-center bg-white/80 backdrop-blur-sm rounded-2xl sm:rounded-3xl p-6 sm:p-8 border border-gray-100 shadow-sm">
-              <div className="w-14 h-14 sm:w-16 sm:h-16 lg:w-20 lg:h-20 bg-gradient-to-r from-[#FF7A00] to-[#4DBFF0] rounded-2xl sm:rounded-3xl flex items-center justify-center mx-auto mb-4 sm:mb-6 shadow-lg">
+              <div className="w-14 h-14 sm:w-16 sm:h-16 lg:w-20 lg:h-20 bg-gradient-to-r from-[#0A1D37] to-[#4DBFF0] rounded-2xl sm:rounded-3xl flex items-center justify-center mx-auto mb-4 sm:mb-6 shadow-lg">
                 <FaCreditCard className="text-white text-xl sm:text-2xl lg:text-3xl" />
               </div>
               <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-[#0A1D37] mb-2 sm:mb-3">
@@ -271,8 +271,8 @@ const AddAmountComponent: React.FC<AddAmountComponentProps> = ({
             {/* User Info */}
             <div className="bg-white/80 backdrop-blur-sm border border-gray-100 rounded-2xl sm:rounded-3xl p-4 sm:p-5 lg:p-6 shadow-sm">
               <div className="flex items-center gap-3 sm:gap-4">
-                <div className="w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-r from-[#FF7A00]/20 to-[#4DBFF0]/20 rounded-full sm:rounded-2xl flex items-center justify-center flex-shrink-0 border-2 border-[#FF7A00]/20">
-                  <span className="text-[#FF7A00] font-bold text-lg sm:text-xl">
+                <div className="w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-r from-[#0A1D37]/20 to-[#4DBFF0]/20 rounded-full sm:rounded-2xl flex items-center justify-center flex-shrink-0 border-2 border-[#0A1D37]/20">
+                  <span className="text-[#0A1D37] font-bold text-lg sm:text-xl">
                     {(currentUser.firstName || "ک").charAt(0)}
                   </span>
                 </div>
@@ -306,14 +306,14 @@ const AddAmountComponent: React.FC<AddAmountComponentProps> = ({
                     مبلغ شارژ *(تومان)
                   </label>
                   <div className="relative">
-                    <FaMoneyBillWave className="absolute right-4 top-1/2 transform -translate-y-1/2 text-[#FF7A00] text-base sm:text-lg" />
+                    <FaMoneyBillWave className="absolute right-4 top-1/2 transform -translate-y-1/2 text-[#0A1D37] text-base sm:text-lg" />
                     <input
                       type="number"
                       value={formData.amount}
                       onChange={(e) =>
                         handleInputChange("amount", e.target.value)
                       }
-                      className="w-full pr-12 sm:pr-14 pl-4 py-3 sm:py-4 lg:py-5 border-2 border-gray-200 rounded-xl sm:rounded-2xl focus:ring-2 focus:ring-[#FF7A00]/30 focus:border-[#FF7A00] transition-all text-sm sm:text-base lg:text-lg font-medium"
+                      className="w-full pr-12 sm:pr-14 pl-4 py-3 sm:py-4 lg:py-5 border-2 border-gray-200 rounded-xl sm:rounded-2xl focus:ring-2 focus:ring-[#0A1D37]/30 focus:border-[#0A1D37] transition-all text-sm sm:text-base lg:text-lg font-medium"
                       placeholder="مبلغ را وارد کنید"
                       min="1"
                       required
@@ -341,8 +341,8 @@ const AddAmountComponent: React.FC<AddAmountComponentProps> = ({
                         className={`relative p-3 sm:p-4 text-xs sm:text-sm border-2 rounded-xl sm:rounded-2xl transition-all duration-300 group hover:scale-105 ${
                           Math.abs(parseFloat(formData.amount) - preset.value) <
                           1
-                            ? "bg-gradient-to-r from-[#FF7A00] to-[#4DBFF0] text-white border-[#FF7A00] shadow-lg scale-105"
-                            : "bg-white text-gray-700 border-gray-200 hover:border-[#FF7A00] hover:shadow-md"
+                            ? "bg-gradient-to-r from-[#0A1D37] to-[#4DBFF0] text-white border-[#0A1D37] shadow-lg scale-105"
+                            : "bg-white text-gray-700 border-gray-200 hover:border-[#0A1D37] hover:shadow-md"
                         }`}
                       >
                         {preset.popular && (
@@ -363,13 +363,13 @@ const AddAmountComponent: React.FC<AddAmountComponentProps> = ({
                     توضیحات پرداخت *
                   </label>
                   <div className="relative">
-                    <FaInfoCircle className="absolute right-4 top-4 text-[#FF7A00] text-base sm:text-lg" />
+                    <FaInfoCircle className="absolute right-4 top-4 text-[#0A1D37] text-base sm:text-lg" />
                     <textarea
                       value={formData.description}
                       onChange={(e) =>
                         handleInputChange("description", e.target.value)
                       }
-                      className="w-full pr-12 sm:pr-14 pl-4 py-3 sm:py-4 border-2 border-gray-200 rounded-xl sm:rounded-2xl focus:ring-2 focus:ring-[#FF7A00]/30 focus:border-[#FF7A00] transition-all resize-none text-sm sm:text-base"
+                      className="w-full pr-12 sm:pr-14 pl-4 py-3 sm:py-4 border-2 border-gray-200 rounded-xl sm:rounded-2xl focus:ring-2 focus:ring-[#0A1D37]/30 focus:border-[#0A1D37] transition-all resize-none text-sm sm:text-base"
                       placeholder="توضیحات مربوط به شارژ کیف پول"
                       rows={4}
                       maxLength={255}
@@ -406,7 +406,7 @@ const AddAmountComponent: React.FC<AddAmountComponentProps> = ({
                   <button
                     type="submit"
                     disabled={loading}
-                    className="flex-1 flex items-center justify-center gap-2 px-6 py-3 sm:py-4 bg-gradient-to-r from-[#FF7A00] to-[#4DBFF0] text-white rounded-xl sm:rounded-2xl hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed transition-all font-bold text-sm sm:text-base"
+                    className="flex-1 flex items-center justify-center gap-2 px-6 py-3 sm:py-4 bg-gradient-to-r from-[#0A1D37] to-[#4DBFF0] text-white rounded-xl sm:rounded-2xl hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed transition-all font-bold text-sm sm:text-base"
                   >
                     {loading ? (
                       <>
@@ -451,7 +451,7 @@ const AddAmountComponent: React.FC<AddAmountComponentProps> = ({
             {/* Wallet Statistics */}
             <div className="bg-white border-2 border-gray-100 rounded-2xl sm:rounded-3xl p-5 sm:p-6 shadow-sm">
               <div className="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6">
-                <FaChartLine className="text-[#FF7A00] text-lg sm:text-xl" />
+                <FaChartLine className="text-[#0A1D37] text-lg sm:text-xl" />
                 <h3 className="font-bold text-[#0A1D37] text-base sm:text-lg">
                   آمار کیف پول
                 </h3>
@@ -496,7 +496,7 @@ const AddAmountComponent: React.FC<AddAmountComponentProps> = ({
             {/* Recent Transactions */}
             <div className="bg-white border-2 border-gray-100 rounded-2xl sm:rounded-3xl p-5 sm:p-6 shadow-sm">
               <div className="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6">
-                <FaHistory className="text-[#FF7A00] text-lg sm:text-xl" />
+                <FaHistory className="text-[#0A1D37] text-lg sm:text-xl" />
                 <h3 className="font-bold text-[#0A1D37] text-base sm:text-lg">
                   آخرین تراکنش‌ها
                 </h3>

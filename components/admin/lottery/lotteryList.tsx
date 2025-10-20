@@ -395,7 +395,7 @@ const LotteryAdminList = () => {
         <div className="mb-8">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-3">
-              <FaUsers className="text-3xl text-[#FF7A00]" />
+              <FaUsers className="text-3xl text-[#0A1D37]" />
               <div>
                 <h1 className="text-3xl font-bold text-gray-900">
                   مدیریت ثبت‌نام‌های لاتاری
@@ -422,7 +422,7 @@ const LotteryAdminList = () => {
                   placeholder="جستجو بر اساس نام، ایمیل یا کشور..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full pr-10 pl-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00]"
+                  className="w-full pr-10 pl-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37]"
                 />
               </div>
             </div>
@@ -434,7 +434,7 @@ const LotteryAdminList = () => {
               <select
                 value={statusFilter}
                 onChange={(e) => setStatusFilter(e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00]"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37]"
               >
                 <option value="">همه وضعیت‌ها</option>
                 <option value="pending">در انتظار بررسی</option>
@@ -452,7 +452,7 @@ const LotteryAdminList = () => {
               <select
                 value={pageSize}
                 onChange={(e) => setPageSize(Number(e.target.value))}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00]"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37]"
               >
                 <option value={10}>10</option>
                 <option value={25}>25</option>
@@ -466,7 +466,7 @@ const LotteryAdminList = () => {
         {/* Lottery Registrations Table */}
         {loading ? (
           <div className="bg-white rounded-xl shadow-sm border p-8 text-center">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#FF7A00] mx-auto mb-4"></div>
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#0A1D37] mx-auto mb-4"></div>
             <p className="text-gray-600">در حال بارگذاری...</p>
           </div>
         ) : error ? (
@@ -474,7 +474,7 @@ const LotteryAdminList = () => {
             <p className="text-red-600">{error}</p>
             <button
               onClick={() => fetchLotteries()}
-              className="mt-4 px-4 py-2 bg-[#FF7A00] text-white rounded-lg hover:bg-[#FF7A00]/90"
+              className="mt-4 px-4 py-2 bg-[#0A1D37] text-white rounded-lg hover:bg-[#0A1D37]/90"
             >
               تلاش مجدد
             </button>
@@ -513,7 +513,7 @@ const LotteryAdminList = () => {
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="flex items-center">
                           <div className="flex-shrink-0 h-10 w-10">
-                            <div className="h-10 w-10 rounded-full bg-gradient-to-r from-[#FF7A00] to-[#4DBFF0] flex items-center justify-center">
+                            <div className="h-10 w-10 rounded-full bg-gradient-to-r from-[#0A1D37] to-[#4DBFF0] flex items-center justify-center">
                               <FaUser className="text-white text-sm" />
                             </div>
                           </div>
@@ -572,7 +572,7 @@ const LotteryAdminList = () => {
                           </button>
                           <button
                             onClick={() => openEditLottery(lottery)}
-                            className="text-[#FF7A00] hover:text-[#FF7A00]/80 p-1 rounded"
+                            className="text-[#0A1D37] hover:text-[#0A1D37]/80 p-1 rounded"
                             title="ویرایش"
                           >
                             <FaEdit />
@@ -659,11 +659,11 @@ const LotteryAdminList = () => {
       {/* Lottery Details Modal */}
       {showLotteryDetails && selectedLottery && (
         <div className="fixed inset-0 h-screen overflow-hidden bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-2 sm:p-4">
-          <div className="bg-white rounded-2xl w-full max-w-6xl max-h-screen overflow-hidden shadow-2xl border border-[#FF7A00]/20">
+          <div className="bg-white rounded-2xl w-full max-w-6xl max-h-screen overflow-hidden shadow-2xl border border-[#0A1D37]/20">
             {/* Header */}
-            <div className="flex items-center justify-between p-4 sm:p-6 border-b bg-gray-50 border-[#FF7A00]/20">
+            <div className="flex items-center justify-between p-4 sm:p-6 border-b bg-gray-50 border-[#0A1D37]/20">
               <div className="flex items-center gap-3">
-                <div className="w-8 h-8 bg-[#FF7A00] rounded-full flex items-center justify-center">
+                <div className="w-8 h-8 bg-[#0A1D37] rounded-full flex items-center justify-center">
                   <FaUsers className="text-white text-sm" />
                 </div>
                 <h2 className="text-lg sm:text-xl font-bold text-[#0A1D37]">
@@ -672,7 +672,7 @@ const LotteryAdminList = () => {
               </div>
               <button
                 onClick={() => setShowLotteryDetails(false)}
-                className="p-2 hover:bg-[#FF7A00]/10 rounded-lg transition-colors text-gray-500 hover:text-[#FF7A00]"
+                className="p-2 hover:bg-[#0A1D37]/10 rounded-lg transition-colors text-gray-500 hover:text-[#0A1D37]"
               >
                 ✕
               </button>
@@ -683,7 +683,7 @@ const LotteryAdminList = () => {
               {/* Status Info */}
               <div className="bg-gray-50 rounded-xl p-4 border border-[#0A1D37]/10">
                 <h3 className="text-base sm:text-lg font-semibold text-[#0A1D37] mb-3 flex items-center gap-2">
-                  <span className="w-2 h-2 bg-[#FF7A00] rounded-full"></span>
+                  <span className="w-2 h-2 bg-[#0A1D37] rounded-full"></span>
                   وضعیت درخواست
                 </h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
@@ -966,7 +966,7 @@ const LotteryAdminList = () => {
                   setShowLotteryDetails(false);
                   openEditLottery(selectedLottery);
                 }}
-                className="w-full sm:w-auto px-4 py-2 bg-[#FF7A00] text-white rounded-lg hover:bg-[#FF7A00]/90 transition-colors"
+                className="w-full sm:w-auto px-4 py-2 bg-[#0A1D37] text-white rounded-lg hover:bg-[#0A1D37]/90 transition-colors"
               >
                 ویرایش وضعیت
               </button>
@@ -981,7 +981,7 @@ const LotteryAdminList = () => {
           <div className="bg-white rounded-2xl max-w-2xl w-full shadow-2xl border border-[#0A1D37]/10">
             <div className="p-4 sm:p-6 border-b border-[#0A1D37]/10">
               <h2 className="text-xl font-bold text-[#0A1D37] flex items-center gap-3">
-                <span className="w-3 h-3 bg-[#FF7A00] rounded-full"></span>
+                <span className="w-3 h-3 bg-[#0A1D37] rounded-full"></span>
                 ویرایش وضعیت ثبت‌نام
               </h2>
             </div>
@@ -996,7 +996,7 @@ const LotteryAdminList = () => {
                   onChange={(e) =>
                     setEditForm((prev) => ({ ...prev, status: e.target.value }))
                   }
-                  className="w-full px-3 py-2 border border-[#0A1D37]/20 rounded-lg focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-colors"
+                  className="w-full px-3 py-2 border border-[#0A1D37]/20 rounded-lg focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] transition-colors"
                 >
                   <option value="pending">در انتظار بررسی</option>
                   <option value="in_review">در حال بررسی</option>
@@ -1019,7 +1019,7 @@ const LotteryAdminList = () => {
                         rejectionReason: e.target.value,
                       }))
                     }
-                    className="w-full px-3 py-2 border border-[#0A1D37]/20 rounded-lg focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-colors resize-none"
+                    className="w-full px-3 py-2 border border-[#0A1D37]/20 rounded-lg focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] transition-colors resize-none"
                     rows={3}
                     placeholder="دلیل رد درخواست را وارد کنید..."
                   />
@@ -1038,7 +1038,7 @@ const LotteryAdminList = () => {
                       adminNotes: e.target.value,
                     }))
                   }
-                  className="w-full px-3 py-2 border border-[#0A1D37]/20 rounded-lg focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-colors resize-none"
+                  className="w-full px-3 py-2 border border-[#0A1D37]/20 rounded-lg focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] transition-colors resize-none"
                   rows={3}
                   placeholder="یادداشت‌های مدیر..."
                 />
@@ -1055,7 +1055,7 @@ const LotteryAdminList = () => {
               <button
                 onClick={handleUpdateLottery}
                 disabled={submitting}
-                className="px-4 py-2 bg-[#FF7A00] text-white rounded-lg hover:bg-[#FF7A00]/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                className="px-4 py-2 bg-[#0A1D37] text-white rounded-lg hover:bg-[#0A1D37]/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
               >
                 {submitting ? "در حال بروزرسانی..." : "ذخیره تغییرات"}
               </button>

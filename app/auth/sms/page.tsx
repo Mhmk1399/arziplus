@@ -1,13 +1,14 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { FaPhone, FaKey, FaSpinner } from "react-icons/fa";
 import { showToast } from "@/utilities/toast";
 import { estedadBold } from "@/next-persian-fonts/estedad";
 
 export default function SMSAuthPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [step, setStep] = useState<"phone" | "verification">("phone");
   const [phone, setPhone] = useState("");
   const [verificationCode, setVerificationCode] = useState("");
@@ -15,6 +16,27 @@ export default function SMSAuthPage() {
   const [isExistingUser, setIsExistingUser] = useState(false);
   const [loading, setLoading] = useState(false);
   const [countdown, setCountdown] = useState(0);
+  const [redirectUrl, setRedirectUrl] = useState<string>("/dashboard");
+
+  // Capture redirect URL from query params or referrer
+  useEffect(() => {
+    const redirect = searchParams.get("redirect");
+    const referrer = document.referrer;
+
+    if (redirect) {
+      setRedirectUrl(decodeURIComponent(redirect));
+    } else if (referrer && !referrer.includes("/auth")) {
+      // Extract path from referrer if it's from the same domain
+      try {
+        const referrerUrl = new URL(referrer);
+        if (referrerUrl.origin === window.location.origin) {
+          setRedirectUrl(referrerUrl.pathname + referrerUrl.search);
+        }
+      } catch {
+        // Keep default redirect
+      }
+    }
+  }, [searchParams]);
 
   const handlePhoneSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -86,13 +108,26 @@ export default function SMSAuthPage() {
         // Store token
         console.log("Storing token:", data.token?.substring(0, 20) + "...");
         localStorage.setItem("authToken", data.token);
-        console.log("Token stored, redirecting to:", data.redirectTo);
 
-        showToast.success(data.message);
+        const finalRedirect =
+          redirectUrl !== "/dashboard" ? redirectUrl : data.redirectTo;
+        console.log("Token stored, redirecting to:", finalRedirect);
 
-        // Redirect based on profile completeness
+        // Show success message with redirect info
+        if (redirectUrl !== "/dashboard") {
+          showToast.success(` ... در حال انتقال به صفحه قبلی`, {
+            duration: 3000,
+          });
+        } else {
+          showToast.success(data.message);
+        }
+
+        // Trigger navbar refresh
+        window.dispatchEvent(new CustomEvent('userLoggedIn'));
+        
+        // Redirect to previous page or dashboard
         setTimeout(() => {
-          router.push(data.redirectTo);
+          router.push(finalRedirect);
         }, 1000);
       } else {
         showToast.error(data.error);
@@ -174,9 +209,9 @@ export default function SMSAuthPage() {
               height: `${8 + (i % 4) * 6}px`,
               background: `linear-gradient(45deg, 
                 ${
-                  i % 3 === 0 ? "#FF7A00" : i % 3 === 1 ? "#4DBFF0" : "#FFFFFF"
+                  i % 3 === 0 ? "#0A1D37" : i % 3 === 1 ? "#4DBFF0" : "#FFFFFF"
                 }, 
-                ${i % 3 === 0 ? "#FF7A00" : i % 3 === 1 ? "#4DBFF0" : "#FFFFFF"}
+                ${i % 3 === 0 ? "#0A1D37" : i % 3 === 1 ? "#4DBFF0" : "#FFFFFF"}
               )`,
               borderRadius: i % 2 === 0 ? "50%" : "6px",
               filter: "blur(1px)",
@@ -188,8 +223,8 @@ export default function SMSAuthPage() {
 
         {/* Geometric Shapes */}
         <div className="absolute top-20 right-16 w-24 h-24 border border-[#4DBFF0]/20 rounded-full animate-spin-slow"></div>
-        <div className="absolute bottom-20 left-16 w-20 h-20 border-2 border-[#FF7A00]/20 rotate-45 animate-pulse"></div>
-        <div className="absolute top-1/3 left-1/4 w-16 h-16 bg-gradient-to-br from-[#FF7A00]/10 to-[#4DBFF0]/10 rounded-lg rotate-12 animate-bounce"></div>
+        <div className="absolute bottom-20 left-16 w-20 h-20 border-2 border-[#0A1D37]/20 rotate-45 animate-pulse"></div>
+        <div className="absolute top-1/3 left-1/4 w-16 h-16 bg-gradient-to-br from-[#0A1D37]/10 to-[#4DBFF0]/10 rounded-lg rotate-12 animate-bounce"></div>
       </div>
 
       {/* Glass Morphism Overlay */}
@@ -209,7 +244,7 @@ export default function SMSAuthPage() {
           <div className="relative z-10 text-center mb-8">
             <div className="mb-6">
               <div
-                className={`inline-flex items-center justify-center md:w-20 md:h-20 rounded-2xl bg-gradient-to-br from-[#FF7A00]/20 to-[#4DBFF0]/20 backdrop-blur-sm border border-[#FF7A00]/30 shadow-lg text-[#FF7A00]`}
+                className={`inline-flex items-center justify-center md:w-20 md:h-20 rounded-2xl bg-gradient-to-br from-[#0A1D37]/20 to-[#4DBFF0]/20 backdrop-blur-sm border border-[#0A1D37]/30 shadow-lg text-[#0A1D37]`}
               >
                 {step === "phone" ? (
                   <FaPhone className="text-xl" />
@@ -227,9 +262,19 @@ export default function SMSAuthPage() {
 
             <p className="text-[#A0A0A0] text-base leading-relaxed relative z-10 max-w-md mx-auto">
               {step === "phone"
-                ? "شماره تلفن خود را وارد کنید"
+                ? redirectUrl !== "/dashboard"
+                  ? "برای ادامه، شماره تلفن خود را وارد کنید"
+                  : "شماره تلفن خود را وارد کنید"
                 : `کد تایید ارسال شده به ${phone} را وارد کنید`}
             </p>
+
+            {redirectUrl !== "/dashboard" && (
+              <div className="mt-4 p-3 bg-gradient-to-r from-[#0A1D37]/70 to-[#4DBFF0]/90 rounded-xl border border-[#0A1D37]/20">
+                <p className="text-[#ffffff] text-sm font-medium">
+                  پس از ورود موفق، به صفحه قبلی بازمیگردید
+                </p>
+              </div>
+            )}
 
             {step === "verification" && (
               <div className="mt-6">
@@ -237,7 +282,7 @@ export default function SMSAuthPage() {
                   className={`inline-flex items-center gap-2 px-4 py-2 rounded-full backdrop-blur-sm border ${
                     isExistingUser
                       ? "bg-gradient-to-r from-green-500/20 to-blue-500/20 border-green-500/30 text-green-400"
-                      : "bg-gradient-to-r from-[#FF7A00]/20 to-[#4DBFF0]/20 border-[#FF7A00]/30 text-[#FF7A00]"
+                      : "bg-gradient-to-r from-[#0A1D37]/20 to-[#4DBFF0]/20 border-[#0A1D37]/30 text-[#0A1D37]"
                   }`}
                 >
                   <svg
@@ -270,13 +315,13 @@ export default function SMSAuthPage() {
               className="relative z-10 space-y-6"
             >
               <div className="relative">
-                <FaPhone className="absolute right-4 top-1/2 transform -translate-y-1/2 text-[#FF7A00]" />
+                <FaPhone className="absolute right-4 top-1/2 transform -translate-y-1/2 text-[#0A1D37]" />
                 <input
                   type="tel"
                   placeholder="09123456789"
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
-                  className="w-full pr-12 pl-4 py-4 bg-white/10 border text-[#0A1D37] border-[#FF7A00]/30 rounded-2xl focus:ring-2 focus:ring-[#4DBFF0] focus:border-[#4DBFF0] focus:outline-none backdrop-blur-sm transition-all duration-300 placeholder:text-[#A0A0A0] text-left hover:bg-white/15"
+                  className="w-full pr-12 pl-4 py-4 bg-white/10 border text-[#0A1D37] border-[#0A1D37]/30 rounded-2xl focus:ring-2 focus:ring-[#4DBFF0] focus:border-[#4DBFF0] focus:outline-none backdrop-blur-sm transition-all duration-300 placeholder:text-[#A0A0A0] text-left hover:bg-white/15"
                   maxLength={11}
                   required
                 />
@@ -306,7 +351,7 @@ export default function SMSAuthPage() {
               className="relative z-10 space-y-6"
             >
               <div className="relative">
-                <FaKey className="absolute right-4 top-1/2 transform -translate-y-1/2 text-[#FF7A00]" />
+                <FaKey className="absolute right-4 top-1/2 transform -translate-y-1/2 text-[#0A1D37]" />
                 <input
                   type="text"
                   placeholder="123456"
@@ -314,7 +359,7 @@ export default function SMSAuthPage() {
                   onChange={(e) =>
                     setVerificationCode(e.target.value.replace(/\D/g, ""))
                   }
-                  className="w-full pr-12 pl-4 py-4 bg-white/10 border border-[#FF7A00]/30 rounded-2xl focus:ring-2 focus:ring-[#4DBFF0] focus:border-[#4DBFF0] focus:outline-none backdrop-blur-sm transition-all duration-300 text-[#0A1D37] placeholder:text-[#A0A0A0] text-center text-2xl tracking-widest hover:bg-white/15"
+                  className="w-full pr-12 pl-4 py-4 bg-white/10 border border-[#0A1D37]/30 rounded-2xl focus:ring-2 focus:ring-[#4DBFF0] focus:border-[#4DBFF0] focus:outline-none backdrop-blur-sm transition-all duration-300 text-[#0A1D37] placeholder:text-[#A0A0A0] text-center text-2xl tracking-widest hover:bg-white/15"
                   maxLength={6}
                   required
                 />
@@ -338,9 +383,9 @@ export default function SMSAuthPage() {
               {/* Resend Code */}
               <div className="text-center">
                 {countdown > 0 ? (
-                  <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-[#FF7A00]/20 to-[#4DBFF0]/20 backdrop-blur-sm border border-[#FF7A00]/30">
+                  <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-[#0A1D37]/20 to-[#4DBFF0]/20 backdrop-blur-sm border border-[#0A1D37]/30">
                     <svg
-                      className="w-4 h-4 text-[#FF7A00]"
+                      className="w-4 h-4 text-[#0A1D37]"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -361,7 +406,7 @@ export default function SMSAuthPage() {
                     type="button"
                     onClick={resendCode}
                     disabled={loading}
-                    className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-[#FF7A00]/20 to-[#4DBFF0]/20 text-[#FF7A00] rounded-full font-semibold hover:from-[#FF7A00]/30 hover:to-[#4DBFF0]/30 hover:text-[#FFFFFF] transition-all duration-300 backdrop-blur-sm border border-[#FF7A00]/30 disabled:opacity-50 hover:scale-105 transform"
+                    className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-[#0A1D37]/20 to-[#4DBFF0]/20 text-[#0A1D37] rounded-full font-semibold hover:from-[#0A1D37]/30 hover:to-[#4DBFF0]/30 hover:text-[#FFFFFF] transition-all duration-300 backdrop-blur-sm border border-[#0A1D37]/30 disabled:opacity-50 hover:scale-105 transform"
                   >
                     <svg
                       className="w-4 h-4"
@@ -396,14 +441,14 @@ export default function SMSAuthPage() {
             </form>
           )}
           {/* Glow Effect */}
-          <div className="absolute -inset-1 rounded-3xl bg-gradient-to-r from-[#FF7A00]/20 via-[#4DBFF0]/20 to-[#FF7A00]/20 blur-sm opacity-50 -z-10"></div>
+          <div className="absolute -inset-1 rounded-3xl bg-gradient-to-r from-[#0A1D37]/20 via-[#4DBFF0]/20 to-[#0A1D37]/20 blur-sm opacity-50 -z-10"></div>
         </div>
 
         {/* Footer */}
         <div className="relative z-10 text-center mt-8">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-white/10 to-white/5 backdrop-blur-sm border border-white/20">
             <svg
-              className="w-4 h-4 text-[#FF7A00]"
+              className="w-4 h-4 text-[#0A1D37]"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -419,7 +464,7 @@ export default function SMSAuthPage() {
               با ورود یا ثبت نام، شما
               <a
                 href="/terms"
-                className="text-[#FF7A00] hover:text-[#4DBFF0] mx-1 transition-colors duration-300"
+                className="text-[#0A1D37] hover:text-[#4DBFF0] mx-1 transition-colors duration-300"
               >
                 {""} قوانین و مقررات {""}
               </a>

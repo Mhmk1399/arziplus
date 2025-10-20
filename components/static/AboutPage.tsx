@@ -285,7 +285,7 @@ const AboutPage = () => {
           subheadingColor: "text-gray-700",
           descriptionColor: "text-gray-200",
           backgroundColor: "#0A1D37",
-          bgSubHeadingColor: "#FF7A00",
+          bgSubHeadingColor: "#0A1D37",
         }}
       />
 

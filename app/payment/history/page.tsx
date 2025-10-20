@@ -230,7 +230,7 @@ const PaymentHistoryPage: React.FC = () => {
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 flex items-center justify-center" dir="rtl">
         <div className="text-center">
-          <FaSpinner className="animate-spin text-4xl text-[#FF7A00] mx-auto mb-4" />
+          <FaSpinner className="animate-spin text-4xl text-[#0A1D37] mx-auto mb-4" />
           <p className="text-gray-600">در حال بررسی احراز هویت...</p>
         </div>
       </div>
@@ -247,7 +247,7 @@ const PaymentHistoryPage: React.FC = () => {
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
         <div className="text-center mb-8 mt-20">
-          <div className="w-20 h-20 bg-gradient-to-r from-[#FF7A00] to-[#4DBFF0] rounded-full flex items-center justify-center mx-auto mb-4">
+          <div className="w-20 h-20 bg-gradient-to-r from-[#0A1D37] to-[#4DBFF0] rounded-full flex items-center justify-center mx-auto mb-4">
             <FaReceipt className="text-white text-3xl" />
           </div>
           <h1 className="text-3xl font-bold text-[#0A1D37] mb-2">تاریخچه پرداخت</h1>
@@ -265,7 +265,7 @@ const PaymentHistoryPage: React.FC = () => {
                     {formatAmount(paymentHistory.statistics.totalAmount, 'IRR')}
                   </p>
                 </div>
-                <FaCreditCard className="text-3xl text-[#FF7A00]" />
+                <FaCreditCard className="text-3xl text-[#0A1D37]" />
               </div>
             </div>
 
@@ -339,7 +339,7 @@ const PaymentHistoryPage: React.FC = () => {
                     type="text"
                     value={filters.search}
                     onChange={(e) => handleFilterChange('search', e.target.value)}
-                    className="w-full pr-10 pl-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00]"
+                    className="w-full pr-10 pl-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37]"
                     placeholder="جستجو در توضیحات یا کد پیگیری"
                   />
                 </div>
@@ -350,7 +350,7 @@ const PaymentHistoryPage: React.FC = () => {
                 <select
                   value={filters.status}
                   onChange={(e) => handleFilterChange('status', e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00]"
+                  className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37]"
                 >
                   <option value="">همه وضعیت‌ها</option>
                   <option value="verified">تایید شده</option>
@@ -367,7 +367,7 @@ const PaymentHistoryPage: React.FC = () => {
                   type="date"
                   value={filters.startDate}
                   onChange={(e) => handleFilterChange('startDate', e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00]"
+                  className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37]"
                 />
               </div>
 
@@ -377,7 +377,7 @@ const PaymentHistoryPage: React.FC = () => {
                   type="date"
                   value={filters.endDate}
                   onChange={(e) => handleFilterChange('endDate', e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00]"
+                  className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37]"
                 />
               </div>
             </div>
@@ -387,7 +387,7 @@ const PaymentHistoryPage: React.FC = () => {
             <div className="flex gap-2">
               <button
                 onClick={applyFilters}
-                className="px-4 py-2 bg-[#FF7A00] text-white rounded-lg hover:bg-[#e56a00] transition-colors"
+                className="px-4 py-2 bg-[#0A1D37] text-white rounded-lg hover:bg-[#e56a00] transition-colors"
               >
                 اعمال فیلتر
               </button>
@@ -405,7 +405,7 @@ const PaymentHistoryPage: React.FC = () => {
         <div className="bg-white/80 backdrop-blur-sm border border-gray-200/50 rounded-xl overflow-hidden">
           {loading ? (
             <div className="flex items-center justify-center py-12">
-              <FaSpinner className="animate-spin text-4xl text-[#FF7A00] mb-4" />
+              <FaSpinner className="animate-spin text-4xl text-[#0A1D37] mb-4" />
             </div>
           ) : paymentHistory?.payments.length ? (
             <>
@@ -508,7 +508,7 @@ const PaymentHistoryPage: React.FC = () => {
               <p className="text-gray-500 mb-4">هیچ پرداختی یافت نشد</p>
               <button
                 onClick={() => router.push('/payment/request')}
-                className="px-6 py-2 bg-[#FF7A00] text-white rounded-lg hover:bg-[#e56a00] transition-colors"
+                className="px-6 py-2 bg-[#0A1D37] text-white rounded-lg hover:bg-[#e56a00] transition-colors"
               >
                 پرداخت جدید
               </button>

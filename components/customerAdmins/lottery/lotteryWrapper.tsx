@@ -32,7 +32,7 @@ const CustomerLotteryWrapper = () => {
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 mb-6 sm:mb-8">
             {/* Title Section */}
             <div className="flex items-start sm:items-center gap-4 sm:gap-5">
-              <div className="flex-shrink-0 w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-r from-[#FF7A00] to-[#4DBFF0] rounded-2xl flex items-center justify-center shadow-lg hover:shadow-xl transition-shadow duration-300">
+              <div className="flex-shrink-0 w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-r from-[#0A1D37] to-[#4DBFF0] rounded-2xl flex items-center justify-center shadow-lg hover:shadow-xl transition-shadow duration-300">
                 <FaTicketAlt className="text-white text-2xl sm:text-3xl" />
               </div>
               <div className="space-y-1.5">
@@ -51,7 +51,7 @@ const CustomerLotteryWrapper = () => {
               className="
                 flex items-center justify-center gap-3
                 px-6 sm:px-8 py-3.5 sm:py-4
-                bg-gradient-to-r from-[#FF7A00] to-[#4DBFF0] 
+                bg-gradient-to-r from-[#0A1D37] to-[#4DBFF0] 
                 text-white font-bold
                 rounded-xl sm:rounded-2xl
                 hover:shadow-2xl hover:scale-105 
@@ -86,8 +86,8 @@ const CustomerLotteryWrapper = () => {
                     ${
                       activeTab === tab.id
                         ? `
-                          bg-gradient-to-r from-[#FF7A00]/15 to-[#4DBFF0]/15 
-                          border-2 border-[#FF7A00]/40 
+                          bg-gradient-to-r from-[#0A1D37]/15 to-[#4DBFF0]/15 
+                          border-2 border-[#0A1D37]/40 
                           text-[#0A1D37] 
                            
                           scale-[1.03]
@@ -114,8 +114,8 @@ const CustomerLotteryWrapper = () => {
                       transition-all duration-300
                       ${
                         activeTab === tab.id
-                          ? "text-[#FF7A00] bg-white shadow-md scale-110"
-                          : "text-gray-500 bg-white/70 group-hover:text-[#FF7A00] group-hover:bg-[#FF7A00]/10 group-hover:scale-105"
+                          ? "text-[#0A1D37] bg-white shadow-md scale-110"
+                          : "text-gray-500 bg-white/70 group-hover:text-[#0A1D37] group-hover:bg-[#0A1D37]/10 group-hover:scale-105"
                       }
                     `}
                   >

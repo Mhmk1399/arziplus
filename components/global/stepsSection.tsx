@@ -465,7 +465,7 @@ export default function StepsSection({
     >
       {/* Blurred Circle Background */}
       <div className="absolute inset-0 flex justify-center items-center">
-        <div className="w-[400px] h-[400px] md:w-[200px] md:h-[450px] rounded-full bg-gradient-to-r   from-[#FF7A00] to-transparent blur-3xl opacity-40" />
+        <div className="w-[400px] h-[400px] md:w-[200px] md:h-[450px] rounded-full bg-gradient-to-r   from-[#4DBFF0] to-transparent blur-3xl opacity-40" />
       </div>
       <div className="max-w-5xl mx-auto px-6 md:px-8">
         {/* Header */}

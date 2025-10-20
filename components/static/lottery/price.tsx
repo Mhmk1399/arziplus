@@ -1,11 +1,13 @@
 import React from "react";
 import { COLORS } from "../lottery";
 import { Globe, MapPin, CheckCircle } from "lucide-react";
+import Link from "next/link";
 
 const plans = [
   {
     type: "online",
-    title: "🟢 پذیرش غیرحضوری",
+    href: "/lottery/form",
+    title: " پذیرش غیرحضوری",
     icon: <Globe className="w-8 h-8" />,
     pricing: [
       {
@@ -37,7 +39,9 @@ const plans = [
   },
   {
     type: "inperson",
-    title: "🏢 پذیرش حضوری",
+    href: "/lottery/present",
+
+    title: " پذیرش حضوری",
     icon: <MapPin className="w-8 h-8" />,
     pricing: [
       {
@@ -77,7 +81,7 @@ const PricingSection = () => {
             className="text-4xl md:text-5xl font-bold mb-4"
             style={{ color: COLORS.primary }}
           >
-            💰 پلن‌ها و هزینه ثبت‌نام لاتاری
+            پلن‌ها و هزینه ثبت‌نام لاتاری
           </h2>
         </div>
 
@@ -185,7 +189,7 @@ const PricingSection = () => {
                         className="font-bold mb-2"
                         style={{ color: COLORS.primary }}
                       >
-                        📋 نکات مهم
+                        نکات مهم
                       </h4>
                       <p style={{ color: COLORS.gray }} className="text-sm">
                         ثبت‌نام لاتاری متأهلین بدون هزینه اضافه و با دو شانس
@@ -201,16 +205,18 @@ const PricingSection = () => {
                     </div>
                   </div>
                 </div>
-
-                <button
-                  className="w-full py-4 rounded-lg font-bold transition-all hover:scale-105"
-                  style={{
-                    backgroundColor: COLORS.accent,
-                    color: COLORS.white,
-                  }}
-                >
-                  {plan.cta}
-                </button>
+                <Link href={plan.href}>
+                  {" "}
+                  <button
+                    className="w-full py-4 rounded-lg font-bold transition-all hover:scale-105"
+                    style={{
+                      backgroundColor: COLORS.accent,
+                      color: COLORS.white,
+                    }}
+                  >
+                    {plan.cta}
+                  </button>
+                </Link>
               </div>
             </div>
           ))}

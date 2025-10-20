@@ -117,7 +117,7 @@ const FieldBuilder: React.FC<FieldBuilderProps> = ({
 
   return (
     <div
-      className="relative group bg-gradient-to-br from-white/15 via-white/8 to-white/5 backdrop-blur-xl rounded-2xl border border-[#4DBFF0] shadow-2xl hover:shadow-[#FF7A00]/20 transition-all duration-500 overflow-hidden"
+      className="relative group bg-gradient-to-br from-white/15 via-white/8 to-white/5 backdrop-blur-xl rounded-2xl border border-[#4DBFF0] shadow-2xl hover:shadow-[#0A1D37]/20 transition-all duration-500 overflow-hidden"
       dir="rtl"
     >
       <div className="relative z-10 p-6 space-y-6">
@@ -129,7 +129,7 @@ const FieldBuilder: React.FC<FieldBuilderProps> = ({
               onClick={() => setIsExpanded(!isExpanded)}
               className="relative group/toggle w-12 h-12 bg-gradient-to-br from-white/20 to-white/5 backdrop-blur-sm rounded-xl border border-white/20 flex items-center justify-center text-black/90 hover:text-white hover:shadow-lg hover:shadow-[#4DBFF0]/20 transition-all duration-300"
             >
-              <div className="absolute inset-0 bg-gradient-to-br from-[#4DBFF0]/20 to-[#FF7A00]/20 rounded-xl opacity-0 group-hover/toggle:opacity-100 transition-opacity duration-300"></div>
+              <div className="absolute inset-0 bg-gradient-to-br from-[#4DBFF0]/20 to-[#0A1D37]/20 rounded-xl opacity-0 group-hover/toggle:opacity-100 transition-opacity duration-300"></div>
               <span
                 className="relative text-lg transform transition-transform duration-300"
                 style={{
@@ -173,7 +173,7 @@ const FieldBuilder: React.FC<FieldBuilderProps> = ({
             <button
               type="button"
               onClick={onDelete}
-              className="group/btn relative w-10 h-10 bg-gradient-to-br from-red-500/20 to-red-600/10 backdrop-blur-sm rounded-xl border border-[#4DBFF0] flex items-center justify-center text-[#FF7A00] hover:text-red-300 transition-all duration-300 hover:shadow-lg hover:shadow-red-500/20"
+              className="group/btn relative w-10 h-10 bg-gradient-to-br from-red-500/20 to-red-600/10 backdrop-blur-sm rounded-xl border border-[#4DBFF0] flex items-center justify-center text-[#0A1D37] hover:text-red-300 transition-all duration-300 hover:shadow-lg hover:shadow-red-500/20"
             >
               <span className="relative text-lg">
                 <FaTrash />
@@ -213,7 +213,7 @@ const FieldBuilder: React.FC<FieldBuilderProps> = ({
                     className="w-full px-4 py-3 bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-sm border border-[#4DBFF0] rounded-xl text-[#0A1D37] placeholder:text-[#0A1D37]/50 focus:border-[#4DBFF0]/50 focus:outline-none focus:ring-2 focus:ring-[#4DBFF0] transition-all duration-300"
                     placeholder="نام کاربری حساب"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-r from-[#FF7A00]/5 to-[#4DBFF0]/5 rounded-xl opacity-0 group-hover/input:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
+                  <div className="absolute inset-0 bg-gradient-to-r from-[#0A1D37]/5 to-[#4DBFF0]/5 rounded-xl opacity-0 group-hover/input:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
                 </div>
               </div>
 
@@ -289,9 +289,9 @@ const FieldBuilder: React.FC<FieldBuilderProps> = ({
                   <button
                     type="button"
                     onClick={handleOptionAdd}
-                    className="group/add relative px-4 py-2 bg-gradient-to-r from-[#4DBFF0]/20 to-[#FF7A00]/20 backdrop-blur-sm border border-[#4DBFF0] text-[#0A1D37] text-sm rounded-lg hover:from-[#4DBFF0]/30 hover:to-[#FF7A00]/30 transition-all duration-300 flex items-center gap-2"
+                    className="group/add relative px-4 py-2 bg-gradient-to-r from-[#4DBFF0]/20 to-[#0A1D37]/20 backdrop-blur-sm border border-[#4DBFF0] text-[#0A1D37] text-sm rounded-lg hover:from-[#4DBFF0]/30 hover:to-[#0A1D37]/30 transition-all duration-300 flex items-center gap-2"
                   >
-                    <div className="absolute inset-0 bg-gradient-to-r from-[#4DBFF0]/10 to-[#FF7A00]/10 rounded-lg opacity-0 group-hover/add:opacity-100 transition-opacity duration-300"></div>
+                    <div className="absolute inset-0 bg-gradient-to-r from-[#4DBFF0]/10 to-[#0A1D37]/10 rounded-lg opacity-0 group-hover/add:opacity-100 transition-opacity duration-300"></div>
                     <span className="relative">+</span>
                     <span className="relative">افزودن گزینه</span>
                   </button>

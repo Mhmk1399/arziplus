@@ -252,7 +252,7 @@ const CustomerLotteryList = () => {
     return (
       <div className="min-h-[60vh] flex items-center justify-center p-4">
         <div className="text-center space-y-4 bg-white p-8 sm:p-12 rounded-2xl shadow-lg border border-gray-100 max-w-md">
-          <div className="w-20 h-20 bg-gradient-to-r from-[#FF7A00] to-[#4DBFF0] rounded-full flex items-center justify-center mx-auto">
+          <div className="w-20 h-20 bg-gradient-to-r from-[#0A1D37] to-[#4DBFF0] rounded-full flex items-center justify-center mx-auto">
             <FaUser className="text-white text-3xl" />
           </div>
           <h2 className="text-xl sm:text-2xl font-bold text-[#0A1D37]">
@@ -263,7 +263,7 @@ const CustomerLotteryList = () => {
           </p>
           <a
             href="/auth/login"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-[#FF7A00] to-[#4DBFF0] text-white rounded-xl hover:shadow-lg hover:scale-105 transition-all duration-300"
+            className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-[#0A1D37] to-[#4DBFF0] text-white rounded-xl hover:shadow-lg hover:scale-105 transition-all duration-300"
           >
             ورود به سیستم
           </a>
@@ -344,7 +344,7 @@ const CustomerLotteryList = () => {
       {/* Lottery Registrations List */}
       {loading ? (
         <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-8 sm:p-12 text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-4 border-[#FF7A00]/20 border-t-[#FF7A00] mx-auto mb-4"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-4 border-[#0A1D37]/20 border-t-[#0A1D37] mx-auto mb-4"></div>
           <p className="text-gray-600 font-medium">
             در حال بارگذاری اطلاعات...
           </p>
@@ -358,14 +358,14 @@ const CustomerLotteryList = () => {
           <p className="text-red-600">{error}</p>
           <button
             onClick={() => fetchLotteries()}
-            className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-[#FF7A00] to-[#4DBFF0] text-white rounded-xl hover:shadow-lg hover:scale-105 transition-all duration-300"
+            className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-[#0A1D37] to-[#4DBFF0] text-white rounded-xl hover:shadow-lg hover:scale-105 transition-all duration-300"
           >
             تلاش مجدد
           </button>
         </div>
       ) : lotteries.length === 0 ? (
         <div className=" rounded-2xl  p-8 sm:p-16 text-center space-y-6">
-          <div className="w-20 h-20 sm:w-24 sm:h-24 bg-gradient-to-r from-[#FF7A00]/10 to-[#4DBFF0]/10 rounded-full flex items-center justify-center mx-auto">
+          <div className="w-20 h-20 sm:w-24 sm:h-24 bg-gradient-to-r from-[#0A1D37]/10 to-[#4DBFF0]/10 rounded-full flex items-center justify-center mx-auto">
             <FaTicketAlt className="text-4xl sm:text-5xl text-gray-400" />
           </div>
           <div className="space-y-3">
@@ -379,7 +379,7 @@ const CustomerLotteryList = () => {
           </div>
           <a
             href="/lottery/form"
-            className="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-[#FF7A00] to-[#4DBFF0] text-white font-bold rounded-xl hover:shadow-2xl hover:scale-105 active:scale-95 transition-all duration-300 shadow-lg"
+            className="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-[#0A1D37] to-[#4DBFF0] text-white font-bold rounded-xl hover:shadow-2xl hover:scale-105 active:scale-95 transition-all duration-300 shadow-lg"
           >
             <FaPlus className="text-lg" />
             شروع ثبت‌نام
@@ -390,12 +390,12 @@ const CustomerLotteryList = () => {
           {lotteries.map((lottery) => (
             <div
               key={lottery._id}
-              className="group bg-white rounded-xl sm:rounded-2xl shadow-md border border-gray-200 p-5 sm:p-6 hover:shadow-xl hover:border-[#FF7A00]/30 transition-all duration-300 hover:-translate-y-1"
+              className="group bg-white rounded-xl sm:rounded-2xl shadow-md border border-gray-200 p-5 sm:p-6 hover:shadow-xl hover:border-[#0A1D37]/30 transition-all duration-300 hover:-translate-y-1"
             >
               <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 sm:gap-6">
                 {/* Left Section - Info */}
                 <div className="flex items-start gap-4 flex-1">
-                  <div className="flex-shrink-0 w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-r from-[#FF7A00] to-[#4DBFF0] rounded-xl sm:rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
+                  <div className="flex-shrink-0 w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-r from-[#0A1D37] to-[#4DBFF0] rounded-xl sm:rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
                     <FaTicketAlt className="text-white text-xl sm:text-2xl" />
                   </div>
 
@@ -453,7 +453,7 @@ const CustomerLotteryList = () => {
                 <div className="flex items-center gap-3">
                   <button
                     onClick={() => openLotteryDetails(lottery)}
-                    className="flex items-center gap-2 px-5 py-2.5 text-[#4DBFF0] hover:text-white bg-[#4DBFF0]/10 hover:bg-gradient-to-r hover:from-[#FF7A00] hover:to-[#4DBFF0] rounded-xl transition-all duration-300 font-medium text-sm border border-[#4DBFF0]/20 hover:border-transparent hover:shadow-lg"
+                    className="flex items-center gap-2 px-5 py-2.5 text-[#4DBFF0] hover:text-white bg-[#4DBFF0]/10 hover:bg-gradient-to-r hover:from-[#0A1D37] hover:to-[#4DBFF0] rounded-xl transition-all duration-300 font-medium text-sm border border-[#4DBFF0]/20 hover:border-transparent hover:shadow-lg"
                   >
                     <FaEye className="text-base" />
                     <span className="hidden sm:inline">مشاهده جزئیات</span>
@@ -503,11 +503,11 @@ const CustomerLotteryList = () => {
       {/* Lottery Details Modal - Enhanced */}
       {showLotteryDetails && selectedLottery && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-3 sm:p-4 animate-in fade-in duration-300">
-          <div className="bg-white rounded-2xl sm:rounded-3xl w-full max-w-6xl max-h-[95vh] overflow-hidden shadow-2xl border-2 border-[#FF7A00]/20 animate-in zoom-in duration-300">
+          <div className="bg-white rounded-2xl sm:rounded-3xl w-full max-w-6xl max-h-[95vh] overflow-hidden shadow-2xl border-2 border-[#0A1D37]/20 animate-in zoom-in duration-300">
             {/* Modal Header - Fixed */}
             <div className="sticky top-0 z-10 flex items-center justify-between p-5 sm:p-6 lg:p-8 border-b bg-gradient-to-r from-gray-50 to-blue-50 border-gray-200">
               <div className="flex items-center gap-3 sm:gap-4">
-                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-r from-[#FF7A00] to-[#4DBFF0] rounded-xl sm:rounded-2xl flex items-center justify-center shadow-lg">
+                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-r from-[#0A1D37] to-[#4DBFF0] rounded-xl sm:rounded-2xl flex items-center justify-center shadow-lg">
                   <FaTicketAlt className="text-white text-lg sm:text-xl" />
                 </div>
                 <div>
@@ -532,7 +532,7 @@ const CustomerLotteryList = () => {
               {/* Status Section */}
               <div className="bg-gradient-to-br from-gray-50 to-blue-50 rounded-xl sm:rounded-2xl p-5 sm:p-6 border-2 border-gray-200">
                 <h3 className="text-base sm:text-lg font-bold text-[#0A1D37] mb-4 flex items-center gap-2">
-                  <div className="w-2 h-2 bg-[#FF7A00] rounded-full animate-pulse"></div>
+                  <div className="w-2 h-2 bg-[#0A1D37] rounded-full animate-pulse"></div>
                   وضعیت درخواست
                 </h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -901,7 +901,7 @@ const CustomerLotteryList = () => {
               </div>
               <button
                 onClick={() => setShowLotteryDetails(false)}
-                className="px-6 py-2.5 sm:px-8 sm:py-3 bg-gradient-to-r from-[#FF7A00] to-[#4DBFF0] text-white font-bold rounded-xl hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-300 text-sm sm:text-base"
+                className="px-6 py-2.5 sm:px-8 sm:py-3 bg-gradient-to-r from-[#0A1D37] to-[#4DBFF0] text-white font-bold rounded-xl hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-300 text-sm sm:text-base"
               >
                 بستن
               </button>
