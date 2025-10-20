@@ -264,7 +264,7 @@ Joker.com با تمرکز بر سادگی و کارایی، ویژگی‌های 
             icon: <FaShieldAlt />,
           },
         ]}
-        imageSrc="/assets/images/payeer.jpeg"
+        imageSrc="https://arziplus.storage.c2.liara.space/images/pages/every.png"
         imageAlt="خرید دامنه از جوکر"
         theme={splitSectionThemes.dark}
         layout="image-left"

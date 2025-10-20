@@ -179,7 +179,7 @@ const UKVisaPaymentPage = () => {
             icon: <FaShieldAlt />,
           },
         ]}
-        imageSrc="/assets/images/uk-visa-2.webp"
+        imageSrc="https://arziplus.storage.c2.liara.space/images/pages/every.png"
         imageAlt="پرداخت هزینه سفارت انگلیس"
         theme={splitSectionThemes.dark}
         layout="image-left"

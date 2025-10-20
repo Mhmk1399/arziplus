@@ -269,7 +269,7 @@ const PaypalOpening = () => {
             icon: <FaShieldAlt />,
           },
         ]}
-        imageSrc="/assets/images/whypaypal.png"
+        imageSrc="https://arziplus.storage.c2.liara.space/images/pages/every.png"
         imageAlt="خرید با پی‌پال"
         theme={splitSectionThemes.blue}
         layout="image-left"

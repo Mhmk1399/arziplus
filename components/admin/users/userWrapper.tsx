@@ -25,7 +25,7 @@ interface AdminStats {
 
 const UserWrapper: React.FC<AdminWrapperProps> = ({
   initialTab = "users",
-  className = "mx-10 my-28",
+  className = "mx-4 my-8",
 }) => {
   const [activeTab, setActiveTab] = useState<
     "users" | "credentials" | "banking" | "settings"
@@ -181,7 +181,7 @@ const UserWrapper: React.FC<AdminWrapperProps> = ({
         : currentUser.firstName || "مدیر محترم";
 
     return (
-      <div className=" backdrop-blur-sm  rounded-2xl p-1 sm:p-6 mb-8">
+      <div className=" backdrop-blur-sm  rounded-2xl  sm:p-6 mb-8">
         <div className="flex items-center justify-between flex-wrap gap-4">
           <div className="flex items-center gap-4">
             <div className="w-12 h-12  rounded-full flex items-center justify-center">
@@ -301,7 +301,7 @@ const UserWrapper: React.FC<AdminWrapperProps> = ({
 
   return (
     <div className={`min-h-screen  ${className}`} dir="rtl">
-      <div className=" mx-auto p-0 sm:px-4 sm:py-8">
+      <div className=" mx-auto   sm:px-4  ">
         {/* Admin Welcome Section */}
         {renderAdminWelcome()}
 
@@ -309,13 +309,13 @@ const UserWrapper: React.FC<AdminWrapperProps> = ({
         {renderStatsCards()}
 
         {/* Navigation Tabs */}
-        <div className=" backdrop-blur-sm border border-white/20 rounded-2xl p-2 mb-8 ">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className=" backdrop-blur-sm border border-white/20 rounded-2xl   mb-8 ">
+          <div className="grid grid-cols-3 gap-1 md:gap-8">
             {tabs.map((tab) => (
               <button
                 key={tab.id}
                 onClick={() => handleTabChange(tab.id)}
-                className={`relative flex items-center justify-center gap-3 px-6 py-4 rounded-xl font-medium transition-all duration-300 ${
+                className={`relative flex flex-col-reverse items-center justify-center gap-3 md:px-6 md:py-4 rounded-md font-medium transition-all duration-300 ${
                   activeTab === tab.id
                     ? "border-[#0A1D37] border bg-gray-50 text-[#0A1D37] shadow-lg scale-105"
                     : "text-gray-700  hover:scale-105"
@@ -323,9 +323,9 @@ const UserWrapper: React.FC<AdminWrapperProps> = ({
               >
                 {tab.icon}
                 <div className="text-center">
-                  <div className="font-bold text-sm">{tab.label}</div>
+                  <div className="font-bold text-xs md:text-sm">{tab.label}</div>
                   <div
-                    className={`text-xs ${
+                    className={`text-xs hidden md:block ${
                       activeTab === tab.id ? "text-[#0A1D37]" : "text-gray-500"
                     }`}
                   >

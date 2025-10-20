@@ -396,7 +396,7 @@ const WiseOpening = () => {
             icon: <FaShieldAlt />,
           },
         ]}
-        imageSrc="/assets/images/wise2.png"
+        imageSrc="https://arziplus.storage.c2.liara.space/images/pages/every.png"
         imageAlt="افتتاح حساب وایز (Wise) در ایران"
         theme={splitSectionThemes.dark}
         layout="image-left"

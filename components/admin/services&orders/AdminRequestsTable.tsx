@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { showToast } from "@/utilities/toast";
 import { estedadBold } from "@/next-persian-fonts/estedad";
 
@@ -58,14 +59,14 @@ const statusColors = {
   completed: "bg-green-100 text-green-800 border-green-300",
   rejected: "bg-red-100 text-red-800 border-red-300",
   cancelled: "bg-gray-100 text-gray-800 border-gray-300",
-  requires_info: "bg-purple-100 text-purple-800 border-purple-300"
+  requires_info: "bg-purple-100 text-purple-800 border-purple-300",
 };
 
 const priorityColors = {
   low: "bg-gray-100 text-gray-800",
   medium: "bg-blue-100 text-blue-800",
   high: "bg-orange-100 text-orange-800",
-  urgent: "bg-red-100 text-red-800"
+  urgent: "bg-red-100 text-red-800",
 };
 
 const statusLabels = {
@@ -74,17 +75,19 @@ const statusLabels = {
   completed: "تکمیل شده",
   rejected: "رد شده",
   cancelled: "لغو شده",
-  requires_info: "نیاز به اطلاعات"
+  requires_info: "نیاز به اطلاعات",
 };
 
 const priorityLabels = {
   low: "کم",
   medium: "متوسط",
   high: "زیاد",
-  urgent: "فوری"
+  urgent: "فوری",
 };
 
-export default function AdminRequestsTable({ className = "mt-20" }: AdminRequestsTableProps) {
+export default function AdminRequestsTable({
+  className = "mt-20",
+}: AdminRequestsTableProps) {
   const [requests, setRequests] = useState<Request[]>([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
@@ -103,13 +106,13 @@ export default function AdminRequestsTable({ className = "mt-20" }: AdminRequest
     rejectedReason: "",
     priority: "",
     adminNote: "",
-    isNoteVisibleToCustomer: false
+    isNoteVisibleToCustomer: false,
   });
 
   const fetchRequests = async () => {
     setLoading(true);
     try {
-      const token = localStorage.getItem('authToken');
+      const token = localStorage.getItem("authToken");
       if (!token) {
         showToast.error("لطفاً وارد سیستم شوید");
         return;
@@ -117,15 +120,15 @@ export default function AdminRequestsTable({ className = "mt-20" }: AdminRequest
 
       const params = new URLSearchParams({
         page: currentPage.toString(),
-        limit: "10"
+        limit: "10",
       });
 
-      if (statusFilter) params.append('status', statusFilter);
+      if (statusFilter) params.append("status", statusFilter);
 
       const response = await fetch(`/api/service-requests?${params}`, {
         headers: {
-          'Authorization': `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       });
 
       const data = await response.json();
@@ -154,17 +157,17 @@ export default function AdminRequestsTable({ className = "mt-20" }: AdminRequest
 
     setUpdating(true);
     try {
-      const token = localStorage.getItem('authToken');
-      const response = await fetch('/api/admin/requests', {
-        method: 'PUT',
+      const token = localStorage.getItem("authToken");
+      const response = await fetch("/api/admin/requests", {
+        method: "PUT",
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
           requestId: selectedRequest._id,
-          ...updateForm
-        })
+          ...updateForm,
+        }),
       });
 
       const data = await response.json();
@@ -191,7 +194,7 @@ export default function AdminRequestsTable({ className = "mt-20" }: AdminRequest
       rejectedReason: request.rejectedReason || "",
       priority: request.priority,
       adminNote: "",
-      isNoteVisibleToCustomer: false
+      isNoteVisibleToCustomer: false,
     });
     setShowUpdateModal(true);
   };
@@ -201,8 +204,11 @@ export default function AdminRequestsTable({ className = "mt-20" }: AdminRequest
     setShowDetailsModal(true);
   };
 
-  const renderFormData = (data: Record<string,string>, service: Request['service']) => {
-    console.log(service)
+  const renderFormData = (
+    data: Record<string, string>,
+    service: Request["service"]
+  ) => {
+    console.log(service);
     if (!data || Object.keys(data).length === 0) {
       return (
         <div className="text-center py-8">
@@ -214,32 +220,46 @@ export default function AdminRequestsTable({ className = "mt-20" }: AdminRequest
 
     return Object.entries(data).map(([fieldName, value]) => {
       const displayValue = () => {
-        if (value === null || value === undefined || value === '') {
+        if (value === null || value === undefined || value === "") {
           return <span className="text-[#0A1D37]/40 italic">خالی</span>;
         }
-        
+
         if (Array.isArray(value)) {
           return (
             <div className="flex flex-wrap gap-2">
               {value.map((item, idx) => (
-                <span key={idx} className="px-2 py-1 bg-[#4DBFF0]/10 text-[#4DBFF0] rounded-md text-sm">
+                <span
+                  key={idx}
+                  className="px-2 py-1 bg-[#4DBFF0]/10 text-[#4DBFF0] rounded-md text-sm"
+                >
                   {String(item)}
                 </span>
               ))}
             </div>
           );
         }
-        
-        if (typeof value === 'boolean') {
+
+        if (typeof value === "boolean") {
           return (
-            <span className={`px-2 py-1 rounded-md text-sm ${value ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
-              {value ? 'بله' : 'خیر'}
+            <span
+              className={`px-2 py-1 rounded-md text-sm ${
+                value
+                  ? "bg-green-100 text-green-700"
+                  : "bg-red-100 text-red-700"
+              }`}
+            >
+              {value ? "بله" : "خیر"}
             </span>
           );
         }
-        
+
         // Check if it's a file URL
-        if (typeof value === 'string' && (value.startsWith('http') || value.includes('amazonaws.com') || value.includes('storage'))) {
+        if (
+          typeof value === "string" &&
+          (value.startsWith("http") ||
+            value.includes("amazonaws.com") ||
+            value.includes("storage"))
+        ) {
           return (
             <div className="space-y-2">
               <div className="flex items-center gap-3">
@@ -252,11 +272,14 @@ export default function AdminRequestsTable({ className = "mt-20" }: AdminRequest
                   <span>📁</span>
                   مشاهده فایل
                 </a>
-                <span className="text-[#0A1D37]/60 text-xs">فایل آپلود شده</span>
+                <span className="text-[#0A1D37]/60 text-xs">
+                  فایل آپلود شده
+                </span>
               </div>
-              
+
               {/* Image preview if it's an image */}
-              {(value.includes('image') || value.match(/\.(jpg|jpeg|png|gif|webp)$/i)) && (
+              {(value.includes("image") ||
+                value.match(/\.(jpg|jpeg|png|gif|webp)$/i)) && (
                 <div className="mt-2">
                   <img
                     src={value}
@@ -264,7 +287,7 @@ export default function AdminRequestsTable({ className = "mt-20" }: AdminRequest
                     className="w-24 h-24 object-cover rounded-lg border border-[#4DBFF0]/30"
                     onError={(e) => {
                       const img = e.target as HTMLImageElement;
-                      img.style.display = 'none';
+                      img.style.display = "none";
                     }}
                   />
                 </div>
@@ -272,14 +295,14 @@ export default function AdminRequestsTable({ className = "mt-20" }: AdminRequest
             </div>
           );
         }
-        
+
         return <span className="text-[#0A1D37]">{String(value)}</span>;
       };
 
       const fieldLabel = fieldName
-        .replace(/([A-Z])/g, ' $1')
-        .replace(/^./, str => str.toUpperCase())
-        .replace(/([a-z])([A-Z])/g, '$1 $2');
+        .replace(/([A-Z])/g, " $1")
+        .replace(/^./, (str) => str.toUpperCase())
+        .replace(/([a-z])([A-Z])/g, "$1 $2");
 
       return (
         <div key={fieldName} className="space-y-2">
@@ -288,7 +311,7 @@ export default function AdminRequestsTable({ className = "mt-20" }: AdminRequest
               <span className="w-2 h-2 bg-[#4DBFF0] rounded-full"></span>
               {fieldLabel}
             </label>
-            
+
             <div className="min-h-[44px] px-4 py-3 bg-gradient-to-br from-white/80 to-white/40 backdrop-blur-sm border border-[#4DBFF0]/20 rounded-lg flex items-center">
               {displayValue()}
             </div>
@@ -298,7 +321,7 @@ export default function AdminRequestsTable({ className = "mt-20" }: AdminRequest
     });
   };
 
-  const getCustomerName = (customer: Request['customer']) => {
+  const getCustomerName = (customer: Request["customer"]) => {
     if (!customer?.nationalCredentials) return "نام نامشخص";
     const { firstName, lastName } = customer.nationalCredentials;
     if (firstName && lastName) return `${firstName} ${lastName}`;
@@ -307,12 +330,12 @@ export default function AdminRequestsTable({ className = "mt-20" }: AdminRequest
   };
 
   const formatDate = (dateString: string) => {
-    return new Intl.DateTimeFormat('fa-IR', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
+    return new Intl.DateTimeFormat("fa-IR", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
     }).format(new Date(dateString));
   };
 
@@ -328,7 +351,9 @@ export default function AdminRequestsTable({ className = "mt-20" }: AdminRequest
           >
             <option value="">همه وضعیت‌ها</option>
             {Object.entries(statusLabels).map(([key, label]) => (
-              <option key={key} value={key}>{label}</option>
+              <option key={key} value={key}>
+                {label}
+              </option>
             ))}
           </select>
 
@@ -339,7 +364,9 @@ export default function AdminRequestsTable({ className = "mt-20" }: AdminRequest
           >
             <option value="">همه اولویت‌ها</option>
             {Object.entries(priorityLabels).map(([key, label]) => (
-              <option key={key} value={key}>{label}</option>
+              <option key={key} value={key}>
+                {label}
+              </option>
             ))}
           </select>
 
@@ -362,19 +389,38 @@ export default function AdminRequestsTable({ className = "mt-20" }: AdminRequest
               <table className="w-full">
                 <thead className="bg-gradient-to-r from-[#4DBFF0]/10 to-[#0A1D37]/10">
                   <tr>
-                    <th className="px-6 py-4 text-right text-sm font-semibold text-[#0A1D37]">شماره درخواست</th>
-                    <th className="px-6 py-4 text-right text-sm font-semibold text-[#0A1D37]">سرویس</th>
-                    <th className="px-6 py-4 text-right text-sm font-semibold text-[#0A1D37]">مشتری</th>
-                    <th className="px-6 py-4 text-right text-sm font-semibold text-[#0A1D37]">وضعیت</th>
-                    <th className="px-6 py-4 text-right text-sm font-semibold text-[#0A1D37]">اولویت</th>
-                    <th className="px-6 py-4 text-right text-sm font-semibold text-[#0A1D37]">مبلغ</th>
-                    <th className="px-6 py-4 text-right text-sm font-semibold text-[#0A1D37]">تاریخ</th>
-                    <th className="px-6 py-4 text-right text-sm font-semibold text-[#0A1D37]">عملیات</th>
+                    <th className="px-6 py-4 text-right text-sm font-semibold text-[#0A1D37]">
+                      شماره  
+                    </th>
+                    <th className="px-6 py-4 text-right text-sm font-semibold text-[#0A1D37]">
+                      سرویس
+                    </th>
+                    <th className="px-6 py-4 text-right text-sm font-semibold text-[#0A1D37]">
+                      مشتری
+                    </th>
+                    <th className="px-6 py-4 text-right text-sm font-semibold text-[#0A1D37]">
+                      وضعیت
+                    </th>
+                    <th className="px-6 py-4 text-right text-sm font-semibold text-[#0A1D37]">
+                      اولویت
+                    </th>
+                    <th className="px-6 py-4 text-right text-sm font-semibold text-[#0A1D37]">
+                      مبلغ
+                    </th>
+                    <th className="px-6 py-4 text-right text-sm font-semibold text-[#0A1D37]">
+                      تاریخ
+                    </th>
+                    <th className="px-6 py-4 text-right text-sm font-semibold text-[#0A1D37]">
+                      عملیات
+                    </th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-100">
                   {requests.map((request) => (
-                    <tr key={request._id} className="hover:bg-gray-50 transition-colors">
+                    <tr
+                      key={request._id}
+                      className="hover:bg-gray-50 transition-colors"
+                    >
                       <td className="px-6 py-4">
                         <div className="font-mono text-sm text-[#4DBFF0]">
                           {request.requestNumber}
@@ -383,10 +429,14 @@ export default function AdminRequestsTable({ className = "mt-20" }: AdminRequest
                       <td className="px-6 py-4">
                         <div className="flex items-center gap-3">
                           {request.service.icon && (
-                            <span className="text-xl">{request.service.icon}</span>
+                            <span className="text-xl">
+                              {request.service.icon}
+                            </span>
                           )}
                           <div>
-                            <div className="font-medium text-[#0A1D37]">{request.service.title}</div>
+                            <div className="font-medium text-[#0A1D37]">
+                              {request.service.title}
+                            </div>
                           </div>
                         </div>
                       </td>
@@ -395,25 +445,46 @@ export default function AdminRequestsTable({ className = "mt-20" }: AdminRequest
                           <div className="font-medium text-[#0A1D37]">
                             {getCustomerName(request.customer)}
                           </div>
-                          
                         </div>
                       </td>
                       <td className="px-6 py-4">
-                        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${statusColors[request.status as keyof typeof statusColors]}`}>
-                          {statusLabels[request.status as keyof typeof statusLabels]}
+                        <span
+                          className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${
+                            statusColors[
+                              request.status as keyof typeof statusColors
+                            ]
+                          }`}
+                        >
+                          {
+                            statusLabels[
+                              request.status as keyof typeof statusLabels
+                            ]
+                          }
                         </span>
                       </td>
                       <td className="px-6 py-4">
-                        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${priorityColors[request.priority as keyof typeof priorityColors]}`}>
-                          {priorityLabels[request.priority as keyof typeof priorityLabels]}
+                        <span
+                          className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                            priorityColors[
+                              request.priority as keyof typeof priorityColors
+                            ]
+                          }`}
+                        >
+                          {
+                            priorityLabels[
+                              request.priority as keyof typeof priorityLabels
+                            ]
+                          }
                         </span>
                       </td>
                       <td className="px-6 py-4">
                         <div className="text-[#0A1D37]">
-                          {request.paymentAmount?.toLocaleString('fa-IR')} تومان
+                          {request.paymentAmount?.toLocaleString("fa-IR")} تومان
                         </div>
                         {request.isPaid && (
-                          <div className="text-green-600 text-xs">پرداخت شده</div>
+                          <div className="text-green-600 text-xs">
+                            پرداخت شده
+                          </div>
                         )}
                       </td>
                       <td className="px-6 py-4 text-sm text-[#0A1D37]/60">
@@ -425,13 +496,13 @@ export default function AdminRequestsTable({ className = "mt-20" }: AdminRequest
                             onClick={() => openDetailsModal(request)}
                             className="px-3 py-2 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700 transition-colors"
                           >
-                            مشاهده جزئیات
+                            مشاهده
                           </button>
                           <button
                             onClick={() => openUpdateModal(request)}
                             className="px-3 py-2 bg-gradient-to-r from-[#4DBFF0] to-[#0A1D37] text-white text-sm rounded-lg hover:shadow-lg transition-all"
                           >
-                            ویرایش وضعیت
+                            ویرایش
                           </button>
                         </div>
                       </td>
@@ -449,14 +520,18 @@ export default function AdminRequestsTable({ className = "mt-20" }: AdminRequest
                 </div>
                 <div className="flex gap-2">
                   <button
-                    onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+                    onClick={() =>
+                      setCurrentPage((prev) => Math.max(1, prev - 1))
+                    }
                     disabled={currentPage === 1}
                     className="px-3 py-2 bg-white border border-gray-300 rounded-lg disabled:opacity-50 hover:bg-gray-50 transition-colors"
                   >
                     قبلی
                   </button>
                   <button
-                    onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+                    onClick={() =>
+                      setCurrentPage((prev) => Math.min(totalPages, prev + 1))
+                    }
                     disabled={currentPage === totalPages}
                     className="px-3 py-2 bg-white border border-gray-300 rounded-lg disabled:opacity-50 hover:bg-gray-50 transition-colors"
                   >
@@ -470,310 +545,414 @@ export default function AdminRequestsTable({ className = "mt-20" }: AdminRequest
       </div>
 
       {/* Update Modal */}
-      {showUpdateModal && selectedRequest && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-            <div className="p-6 border-b">
-              <h2 className={`text-xl ${estedadBold.className} text-[#0A1D37]`}>
-                ویرایش درخواست {selectedRequest.requestNumber}
-              </h2>
-            </div>
-            
-            <div className="p-6 space-y-4">
-              {/* Status */}
-              <div>
-                <label className="block text-sm font-medium text-[#0A1D37] mb-2">
-                  وضعیت
-                </label>
-                <select
-                  value={updateForm.status}
-                  onChange={(e) => setUpdateForm(prev => ({ ...prev, status: e.target.value }))}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#4DBFF0] focus:outline-none"
+      {showUpdateModal &&
+        selectedRequest &&
+        typeof document !== "undefined" &&
+        createPortal(
+          <div dir="rtl" className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+            <div className="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+              <div className="p-6 border-b">
+                <h2
+                  className={`text-xl ${estedadBold.className} text-[#0A1D37]`}
                 >
-                  {Object.entries(statusLabels).map(([key, label]) => (
-                    <option key={key} value={key}>{label}</option>
-                  ))}
-                </select>
+                  ویرایش درخواست {selectedRequest.requestNumber}
+                </h2>
               </div>
 
-              {/* Priority */}
-              <div>
-                <label className="block text-sm font-medium text-[#0A1D37] mb-2">
-                  اولویت
-                </label>
-                <select
-                  value={updateForm.priority}
-                  onChange={(e) => setUpdateForm(prev => ({ ...prev, priority: e.target.value }))}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#4DBFF0] focus:outline-none"
-                >
-                  {Object.entries(priorityLabels).map(([key, label]) => (
-                    <option key={key} value={key}>{label}</option>
-                  ))}
-                </select>
-              </div>
-
-              {/* Rejection Reason */}
-              {updateForm.status === 'rejected' && (
+              <div className="p-6 space-y-4">
+                {/* Status */}
                 <div>
                   <label className="block text-sm font-medium text-[#0A1D37] mb-2">
-                    دلیل رد
+                    وضعیت
+                  </label>
+                  <select
+                    value={updateForm.status}
+                    onChange={(e) =>
+                      setUpdateForm((prev) => ({
+                        ...prev,
+                        status: e.target.value,
+                      }))
+                    }
+                    className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#4DBFF0] focus:outline-none"
+                  >
+                    {Object.entries(statusLabels).map(([key, label]) => (
+                      <option key={key} value={key}>
+                        {label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Priority */}
+                <div>
+                  <label className="block text-sm font-medium text-[#0A1D37] mb-2">
+                    اولویت
+                  </label>
+                  <select
+                    value={updateForm.priority}
+                    onChange={(e) =>
+                      setUpdateForm((prev) => ({
+                        ...prev,
+                        priority: e.target.value,
+                      }))
+                    }
+                    className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#4DBFF0] focus:outline-none"
+                  >
+                    {Object.entries(priorityLabels).map(([key, label]) => (
+                      <option key={key} value={key}>
+                        {label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Rejection Reason */}
+                {updateForm.status === "rejected" && (
+                  <div>
+                    <label className="block text-sm font-medium text-[#0A1D37] mb-2">
+                      دلیل رد
+                    </label>
+                    <textarea
+                      value={updateForm.rejectedReason}
+                      onChange={(e) =>
+                        setUpdateForm((prev) => ({
+                          ...prev,
+                          rejectedReason: e.target.value,
+                        }))
+                      }
+                      className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#4DBFF0] focus:outline-none"
+                      rows={3}
+                      placeholder="دلیل رد درخواست را وارد کنید..."
+                    />
+                  </div>
+                )}
+
+                {/* Admin Note */}
+                <div>
+                  <label className="block text-sm font-medium text-[#0A1D37] mb-2">
+                    یادداشت مدیریتی
                   </label>
                   <textarea
-                    value={updateForm.rejectedReason}
-                    onChange={(e) => setUpdateForm(prev => ({ ...prev, rejectedReason: e.target.value }))}
+                    value={updateForm.adminNote}
+                    onChange={(e) =>
+                      setUpdateForm((prev) => ({
+                        ...prev,
+                        adminNote: e.target.value,
+                      }))
+                    }
                     className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#4DBFF0] focus:outline-none"
                     rows={3}
-                    placeholder="دلیل رد درخواست را وارد کنید..."
+                    placeholder="یادداشت اختیاری..."
                   />
-                </div>
-              )}
-
-              {/* Admin Note */}
-              <div>
-                <label className="block text-sm font-medium text-[#0A1D37] mb-2">
-                  یادداشت مدیریتی
-                </label>
-                <textarea
-                  value={updateForm.adminNote}
-                  onChange={(e) => setUpdateForm(prev => ({ ...prev, adminNote: e.target.value }))}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#4DBFF0] focus:outline-none"
-                  rows={3}
-                  placeholder="یادداشت اختیاری..."
-                />
-                <div className="mt-2">
-                  <label className="flex items-center">
-                    <input
-                      type="checkbox"
-                      checked={updateForm.isNoteVisibleToCustomer}
-                      onChange={(e) => setUpdateForm(prev => ({ ...prev, isNoteVisibleToCustomer: e.target.checked }))}
-                      className="rounded border-gray-300 text-[#4DBFF0] focus:ring-[#4DBFF0]"
-                    />
-                    <span className="mr-2 text-sm text-[#0A1D37]/70">
-                      قابل مشاهده برای مشتری
-                    </span>
-                  </label>
-                </div>
-              </div>
-
-              {/* Existing Notes */}
-              {selectedRequest.adminNotes.length > 0 && (
-                <div>
-                  <label className="block text-sm font-medium text-[#0A1D37] mb-2">
-                    یادداشت‌های قبلی
-                  </label>
-                  <div className="space-y-2 max-h-40 overflow-y-auto">
-                    {selectedRequest.adminNotes.map((note, index) => (
-                      <div key={index} className="p-3 bg-gray-50 rounded-lg">
-                        <div className="text-sm text-[#0A1D37]">{note.note}</div>
-                        <div className="text-xs text-[#0A1D37]/60 mt-1">
-                          {formatDate(note.addedAt)} - {note.isVisibleToCustomer ? 'مشاهده مشتری' : 'داخلی'}
-                        </div>
-                      </div>
-                    ))}
+                  <div className="mt-2">
+                    <label className="flex items-center">
+                      <input
+                        type="checkbox"
+                        checked={updateForm.isNoteVisibleToCustomer}
+                        onChange={(e) =>
+                          setUpdateForm((prev) => ({
+                            ...prev,
+                            isNoteVisibleToCustomer: e.target.checked,
+                          }))
+                        }
+                        className="rounded border-gray-300 text-[#4DBFF0] focus:ring-[#4DBFF0]"
+                      />
+                      <span className="mr-2 text-sm text-[#0A1D37]/70">
+                        قابل مشاهده برای مشتری
+                      </span>
+                    </label>
                   </div>
                 </div>
-              )}
-            </div>
 
-            <div className="p-6 border-t flex gap-4 justify-end">
-              <button
-                onClick={() => setShowUpdateModal(false)}
-                className="px-4 py-2 text-[#0A1D37] border border-gray-300 rounded-xl hover:bg-gray-50 transition-colors"
-              >
-                لغو
-              </button>
-              <button
-                onClick={handleUpdateRequest}
-                disabled={updating}
-                className="px-6 py-2 bg-gradient-to-r from-[#4DBFF0] to-[#0A1D37] text-white rounded-xl hover:shadow-lg transition-all disabled:opacity-50"
-              >
-                {updating ? "در حال ذخیره..." : "ذخیره تغییرات"}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+                {/* Existing Notes */}
+                {selectedRequest.adminNotes.length > 0 && (
+                  <div>
+                    <label className="block text-sm font-medium text-[#0A1D37] mb-2">
+                      یادداشت‌های قبلی
+                    </label>
+                    <div className="space-y-2 max-h-40 overflow-y-auto">
+                      {selectedRequest.adminNotes.map((note, index) => (
+                        <div key={index} className="p-3 bg-gray-50 rounded-lg">
+                          <div className="text-sm text-[#0A1D37]">
+                            {note.note}
+                          </div>
+                          <div className="text-xs text-[#0A1D37]/60 mt-1">
+                            {formatDate(note.addedAt)} -{" "}
+                            {note.isVisibleToCustomer
+                              ? "مشاهده مشتری"
+                              : "داخلی"}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
 
-      {/* Details Modal */}
-      {showDetailsModal && selectedRequest && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
-            <div className="p-6 border-b bg-gradient-to-r from-[#4DBFF0]/10 to-[#0A1D37]/10">
-              <div className="flex items-center justify-between">
-                <div>
-                  <h2 className={`text-xl ${estedadBold.className} text-[#0A1D37]`}>
-                    جزئیات درخواست {selectedRequest.requestNumber}
-                  </h2>
-                  <p className="text-[#0A1D37]/70 text-sm mt-1">
-                    سرویس: {selectedRequest.service.title}
-                  </p>
-                </div>
+              <div className="p-6 border-t flex gap-4 justify-end">
                 <button
-                  onClick={() => setShowDetailsModal(false)}
-                  className="text-[#0A1D37]/60 hover:text-[#0A1D37] text-2xl"
+                  onClick={() => setShowUpdateModal(false)}
+                  className="px-4 py-2 text-[#0A1D37] border border-gray-300 rounded-xl hover:bg-gray-50 transition-colors"
                 >
-                  ×
+                  لغو
+                </button>
+                <button
+                  onClick={handleUpdateRequest}
+                  disabled={updating}
+                  className="px-6 py-2 bg-gradient-to-r from-[#4DBFF0] to-[#0A1D37] text-white rounded-xl hover:shadow-lg transition-all disabled:opacity-50"
+                >
+                  {updating ? "در حال ذخیره..." : "ذخیره تغییرات"}
                 </button>
               </div>
             </div>
-            
-            <div className="p-6">
-              {/* Customer Information */}
-              <div className="mb-6">
-                <h3 className={`text-lg ${estedadBold.className} text-[#0A1D37] mb-4`}>
-                  اطلاعات مشتری
-                </h3>
-                <div className="grid md:grid-cols-2 gap-4 p-4 bg-gray-50 rounded-lg">
+          </div>,
+          document.body
+        )}
+
+      {/* Details Modal */}
+      {showDetailsModal &&
+        selectedRequest &&
+        typeof document !== "undefined" &&
+        createPortal(
+          <div dir="rtl" className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+            <div className="bg-white rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+              <div className="p-6 border-b bg-gradient-to-r from-[#4DBFF0]/10 to-[#0A1D37]/10">
+                <div className="flex items-center justify-between">
                   <div>
-                    <span className="font-medium text-[#0A1D37]">نام:</span>
-                    <span className="mr-2 text-[#0A1D37]/80">
-                      {getCustomerName(selectedRequest.customer)}
-                    </span>
+                    <h2
+                      className={`text-xl ${estedadBold.className} text-[#0A1D37]`}
+                    >
+                      جزئیات درخواست {selectedRequest.requestNumber}
+                    </h2>
+                    <p className="text-[#0A1D37]/70 text-sm mt-1">
+                      سرویس: {selectedRequest.service.title}
+                    </p>
                   </div>
-                  <div>
-                    <span className="font-medium text-[#0A1D37]">موبایل:</span>
-                    <span className="mr-2 text-[#0A1D37]/80">
-                      {selectedRequest.customer.contactInfo.mobilePhone}
-                    </span>
-                  </div>
-                  <div>
-                    <span className="font-medium text-[#0A1D37]">ایمیل:</span>
-                    <span className="mr-2 text-[#0A1D37]/80">
-                      {selectedRequest.customer.contactInfo.email}
-                    </span>
-                  </div>
-                  <div>
-                    <span className="font-medium text-[#0A1D37]">تاریخ درخواست:</span>
-                    <span className="mr-2 text-[#0A1D37]/80">
-                      {formatDate(selectedRequest.createdAt)}
-                    </span>
-                  </div>
+                  <button
+                    onClick={() => setShowDetailsModal(false)}
+                    className="text-[#0A1D37]/60 hover:text-[#0A1D37] text-2xl"
+                  >
+                    ×
+                  </button>
                 </div>
               </div>
 
-              {/* Request Status */}
-              <div className="mb-6">
-                <h3 className={`text-lg ${estedadBold.className} text-[#0A1D37] mb-4`}>
-                  وضعیت درخواست
-                </h3>
-                <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-lg">
-                  <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium border ${statusColors[selectedRequest.status as keyof typeof statusColors]}`}>
-                    {statusLabels[selectedRequest.status as keyof typeof statusLabels]}
-                  </span>
-                  <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${priorityColors[selectedRequest.priority as keyof typeof priorityColors]}`}>
-                    اولویت: {priorityLabels[selectedRequest.priority as keyof typeof priorityLabels]}
-                  </span>
-                  {selectedRequest.isPaid && (
-                    <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
-                      پرداخت شده: {selectedRequest.paymentAmount?.toLocaleString('fa-IR')} تومان
-                    </span>
-                  )}
-                </div>
-              </div>
-
-              {/* User Submitted Form Data */}
-              <div className="mb-6">
-                <h3 className={`text-lg ${estedadBold.className} text-[#0A1D37] mb-4`}>
-                  اطلاعات ارسالی کاربر
-                </h3>
-                <div className="space-y-3 max-h-80 overflow-y-auto border border-gray-200 rounded-lg p-4">
-                  {renderFormData(selectedRequest.data, selectedRequest.service)}
-                </div>
-              </div>
-
-              {/* Admin Notes */}
-              {selectedRequest.adminNotes.length > 0 && (
+              <div className="p-6">
+                {/* Customer Information */}
                 <div className="mb-6">
-                  <h3 className={`text-lg ${estedadBold.className} text-[#0A1D37] mb-4`}>
-                    یادداشت‌های مدیریتی
+                  <h3
+                    className={`text-lg ${estedadBold.className} text-[#0A1D37] mb-4`}
+                  >
+                    اطلاعات مشتری
                   </h3>
-                  <div className="space-y-3 max-h-40 overflow-y-auto">
-                    {selectedRequest.adminNotes.map((note, index) => (
-                      <div key={index} className={`p-4 rounded-lg border ${note.isVisibleToCustomer ? 'bg-blue-50 border-blue-200' : 'bg-gray-50 border-gray-200'}`}>
-                        <div className="flex items-start justify-between mb-2">
-                          <div className="text-sm text-[#0A1D37]">{note.note}</div>
-                          <span className={`text-xs px-2 py-1 rounded-full ${note.isVisibleToCustomer ? 'bg-blue-100 text-blue-700' : 'bg-gray-100 text-gray-700'}`}>
-                            {note.isVisibleToCustomer ? 'قابل مشاهده مشتری' : 'داخلی'}
-                          </span>
-                        </div>
-                        <div className="text-xs text-[#0A1D37]/60">
-                          {formatDate(note.addedAt)}
-                        </div>
-                      </div>
-                    ))}
+                  <div className="grid md:grid-cols-2 gap-4 p-4 bg-gray-50 rounded-lg">
+                    <div>
+                      <span className="font-medium text-[#0A1D37]">نام:</span>
+                      <span className="mr-2 text-[#0A1D37]/80">
+                        {getCustomerName(selectedRequest.customer)}
+                      </span>
+                    </div>
+                    <div>
+                      <span className="font-medium text-[#0A1D37]">
+                        موبایل:
+                      </span>
+                      <span className="mr-2 text-[#0A1D37]/80">
+                        {selectedRequest.customer.contactInfo.mobilePhone}
+                      </span>
+                    </div>
+                    <div>
+                      <span className="font-medium text-[#0A1D37]">ایمیل:</span>
+                      <span className="mr-2 text-[#0A1D37]/80">
+                        {selectedRequest.customer.contactInfo.email}
+                      </span>
+                    </div>
+                    <div>
+                      <span className="font-medium text-[#0A1D37]">
+                        تاریخ درخواست:
+                      </span>
+                      <span className="mr-2 text-[#0A1D37]/80">
+                        {formatDate(selectedRequest.createdAt)}
+                      </span>
+                    </div>
                   </div>
                 </div>
-              )}
 
-              {/* Action Box - Admin Controls */}
-              <div className="bg-gradient-to-r from-[#4DBFF0]/5 to-[#0A1D37]/5 border border-[#4DBFF0]/20 rounded-lg p-4">
-                <h3 className={`text-lg ${estedadBold.className} text-[#0A1D37] mb-4`}>
-                  عملیات مدیریتی
-                </h3>
-                <div className="flex flex-wrap gap-3">
-                  <button
-                    onClick={() => {
-                      setShowDetailsModal(false);
-                      openUpdateModal(selectedRequest);
-                    }}
-                    className="px-4 py-2 bg-gradient-to-r from-[#4DBFF0] to-[#0A1D37] text-white rounded-lg hover:shadow-lg transition-all"
+                {/* Request Status */}
+                <div className="mb-6">
+                  <h3
+                    className={`text-lg ${estedadBold.className} text-[#0A1D37] mb-4`}
                   >
-                    تغییر وضعیت
-                  </button>
-                  <button
-                    onClick={() => {
-                      setShowDetailsModal(false);
-                      openUpdateModal(selectedRequest);
-                    }}
-                    className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+                    وضعیت درخواست
+                  </h3>
+                  <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-lg">
+                    <span
+                      className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium border ${
+                        statusColors[
+                          selectedRequest.status as keyof typeof statusColors
+                        ]
+                      }`}
+                    >
+                      {
+                        statusLabels[
+                          selectedRequest.status as keyof typeof statusLabels
+                        ]
+                      }
+                    </span>
+                    <span
+                      className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${
+                        priorityColors[
+                          selectedRequest.priority as keyof typeof priorityColors
+                        ]
+                      }`}
+                    >
+                      اولویت:{" "}
+                      {
+                        priorityLabels[
+                          selectedRequest.priority as keyof typeof priorityLabels
+                        ]
+                      }
+                    </span>
+                    {selectedRequest.isPaid && (
+                      <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
+                        پرداخت شده:{" "}
+                        {selectedRequest.paymentAmount?.toLocaleString("fa-IR")}{" "}
+                        تومان
+                      </span>
+                    )}
+                  </div>
+                </div>
+
+                {/* User Submitted Form Data */}
+                <div className="mb-6">
+                  <h3
+                    className={`text-lg ${estedadBold.className} text-[#0A1D37] mb-4`}
                   >
-                    افزودن یادداشت
-                  </button>
-                  {selectedRequest.status === 'rejected' && (
+                    اطلاعات ارسالی کاربر
+                  </h3>
+                  <div className="space-y-3 max-h-80 overflow-y-auto border border-gray-200 rounded-lg p-4">
+                    {renderFormData(
+                      selectedRequest.data,
+                      selectedRequest.service
+                    )}
+                  </div>
+                </div>
+
+                {/* Admin Notes */}
+                {selectedRequest.adminNotes.length > 0 && (
+                  <div className="mb-6">
+                    <h3
+                      className={`text-lg ${estedadBold.className} text-[#0A1D37] mb-4`}
+                    >
+                      یادداشت‌های مدیریتی
+                    </h3>
+                    <div className="space-y-3 max-h-40 overflow-y-auto">
+                      {selectedRequest.adminNotes.map((note, index) => (
+                        <div
+                          key={index}
+                          className={`p-4 rounded-lg border ${
+                            note.isVisibleToCustomer
+                              ? "bg-blue-50 border-blue-200"
+                              : "bg-gray-50 border-gray-200"
+                          }`}
+                        >
+                          <div className="flex items-start justify-between mb-2">
+                            <div className="text-sm text-[#0A1D37]">
+                              {note.note}
+                            </div>
+                            <span
+                              className={`text-xs px-2 py-1 rounded-full ${
+                                note.isVisibleToCustomer
+                                  ? "bg-blue-100 text-blue-700"
+                                  : "bg-gray-100 text-gray-700"
+                              }`}
+                            >
+                              {note.isVisibleToCustomer
+                                ? "قابل مشاهده مشتری"
+                                : "داخلی"}
+                            </span>
+                          </div>
+                          <div className="text-xs text-[#0A1D37]/60">
+                            {formatDate(note.addedAt)}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Action Box - Admin Controls */}
+                <div className="bg-gradient-to-r from-[#4DBFF0]/5 to-[#0A1D37]/5 border border-[#4DBFF0]/20 rounded-lg p-4">
+                  <h3
+                    className={`text-lg ${estedadBold.className} text-[#0A1D37] mb-4`}
+                  >
+                    عملیات مدیریتی
+                  </h3>
+                  <div className="flex flex-wrap gap-3">
                     <button
                       onClick={() => {
                         setShowDetailsModal(false);
                         openUpdateModal(selectedRequest);
                       }}
-                      className="px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors"
+                      className="px-4 py-2 bg-gradient-to-r from-[#4DBFF0] to-[#0A1D37] text-white rounded-lg hover:shadow-lg transition-all"
                     >
-                      ویرایش دلیل رد
+                      تغییر وضعیت
                     </button>
-                  )}
-                </div>
-                
-                {/* Checkbox Explanation */}
-                <div className="mt-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
-                  <div className="flex items-start gap-2">
-                    <div className="text-yellow-600 mt-0.5">ℹ️</div>
-                    <div>
-                      <div className="font-medium text-yellow-800 text-sm">
-                        درباره چک‌باکس قابل مشاهده برای مشتری:
-                      </div>
-                      <div className="text-yellow-700 text-xs mt-1 leading-relaxed">
-                        • <strong>فعال:</strong> یادداشت برای مشتری نمایش داده می‌شود و او آن را در پنل خود خواهد دید
-                        <br />
-                        • <strong>غیرفعال:</strong> یادداشت فقط برای مدیران قابل مشاهده است و مشتری آن را نمی‌بیند
-                        <br />
-                        • از این ویژگی برای ارسال پیام به مشتری یا نگهداری یادداشت‌های داخلی استفاده کنید
+                    <button
+                      onClick={() => {
+                        setShowDetailsModal(false);
+                        openUpdateModal(selectedRequest);
+                      }}
+                      className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+                    >
+                      افزودن یادداشت
+                    </button>
+                    {selectedRequest.status === "rejected" && (
+                      <button
+                        onClick={() => {
+                          setShowDetailsModal(false);
+                          openUpdateModal(selectedRequest);
+                        }}
+                        className="px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors"
+                      >
+                        ویرایش دلیل رد
+                      </button>
+                    )}
+                  </div>
+
+                  {/* Checkbox Explanation */}
+                  <div className="mt-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+                    <div className="flex items-start gap-2">
+                      <div className="text-yellow-600 mt-0.5">ℹ️</div>
+                      <div>
+                        <div className="font-medium text-yellow-800 text-sm">
+                          درباره چک‌باکس قابل مشاهده برای مشتری:
+                        </div>
+                        <div className="text-yellow-700 text-xs mt-1 leading-relaxed">
+                          • <strong>فعال:</strong> یادداشت برای مشتری نمایش داده
+                          می‌شود و او آن را در پنل خود خواهد دید
+                          <br />• <strong>غیرفعال:</strong> یادداشت فقط برای
+                          مدیران قابل مشاهده است و مشتری آن را نمی‌بیند
+                          <br />• از این ویژگی برای ارسال پیام به مشتری یا
+                          نگهداری یادداشت‌های داخلی استفاده کنید
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
 
-            <div className="p-6 border-t bg-gray-50 flex justify-end">
-              <button
-                onClick={() => setShowDetailsModal(false)}
-                className="px-6 py-2 bg-white border border-gray-300 text-[#0A1D37] rounded-xl hover:bg-gray-50 transition-colors"
-              >
-                بستن
-              </button>
+              <div className="p-6 border-t bg-gray-50 flex justify-end">
+                <button
+                  onClick={() => setShowDetailsModal(false)}
+                  className="px-6 py-2 bg-white border border-gray-300 text-[#0A1D37] rounded-xl hover:bg-gray-50 transition-colors"
+                >
+                  بستن
+                </button>
+              </div>
             </div>
-          </div>
-        </div>
-      )}
+          </div>,
+          document.body
+        )}
     </div>
   );
 }

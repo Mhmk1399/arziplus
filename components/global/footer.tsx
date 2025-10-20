@@ -18,6 +18,46 @@ if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
 
+const TrustBadge = ({
+  src,
+  alt,
+  href,
+}: {
+  src: string;
+  alt: string;
+  href: string;
+}) => {
+  const [imageError, setImageError] = useState(false);
+
+  return (
+    <a
+      href={href}
+      className="block hover:scale-105 transition-transform duration-300"
+    >
+      {!imageError ? (
+        <Image
+          src={src}
+          alt={alt}
+          width={80}
+          height={80}
+          className="rounded-lg"
+          onError={() => setImageError(true)}
+        />
+      ) : (
+        <img
+          src={src}
+          alt={alt}
+          className="w-20 h-20 rounded-lg"
+          onError={(e) => {
+            const img = e.target as HTMLImageElement;
+            img.style.display = "none";
+          }}
+        />
+      )}
+    </a>
+  );
+};
+
 export default function Footer() {
   const pathname = usePathname();
 
@@ -346,8 +386,36 @@ export default function Footer() {
               </div>
             </div>
 
-            {/* Bottom Section - Copyright */}
+            {/* Bottom Section - Trust Badges & Copyright */}
             <div className="py-8 border-t border-white/5">
+              {/* Trust Badges */}
+              <div className="flex items-center justify-center gap-8 mb-8">
+                <a
+                  referrerPolicy="origin"
+                  target="_blank"
+                  href="https://trustseal.enamad.ir/?id=658364&Code=TCr7NNVwQ3ytoZz2wVAKbcVnbtZYnbh9"
+                  className="hover:scale-105 transition-transform duration-300"
+                >
+                  <img
+                    referrerPolicy="origin"
+                    
+                    src="/assets/images/enamad.png"
+                    alt="نماد اعتماد الکترونیکی"
+                    className="cursor-pointer w-28 h-28 rounded-lg"
+                  />
+                </a>
+                <a
+                  href="https://cdn.zarinpal.com/trustlogo/v1/trustlogo.js"
+                  className="block hover:scale-105 transition-transform duration-300"
+                >
+                  <img
+                    src="https://cdn.zarinpal.com/badges/trustLogo/1.png"
+                    alt="درگاه پرداخت زرین پال"
+                    className="w-15 h-15 rounded-lg"
+                  />
+                </a>
+              </div>
+
               <div className="copyright-text text-center space-y-4">
                 <p className="text-[#A0A0A0] text-base md:text-lg">
                   ©{" "}
@@ -359,6 +427,13 @@ export default function Footer() {
           </div>
         </div>
       </div>
+
+      {/* Zarinpal Trust Script */}
+      <script
+        src="https://www.zarinpal.com/webservice/TrustCode"
+        type="text/javascript"
+        async
+      />
 
       <style jsx global>{`
         @keyframes float {

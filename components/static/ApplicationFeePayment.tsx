@@ -319,7 +319,7 @@ const ApplicationFeePayment = () => {
             icon: <FaShield />,
           },
         ]}
-        imageSrc="/assets/images/RegisterInternationalExams.avif"
+        imageSrc="https://arziplus.storage.c2.liara.space/images/pages/every.png"
         imageAlt="پرداخت هزینه آزمون‌های بین‌المللی"
         theme={splitSectionThemes.dark}
         layout="image-left"

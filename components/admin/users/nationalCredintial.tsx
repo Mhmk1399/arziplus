@@ -2,7 +2,16 @@
 
 import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
-import { FaSearch, FaCheck, FaTimes, FaEye, FaFilter, FaIdCard, FaUser, FaImage } from "react-icons/fa";
+import {
+  FaSearch,
+  FaCheck,
+  FaTimes,
+  FaEye,
+  FaFilter,
+  FaIdCard,
+  FaUser,
+  FaImage,
+} from "react-icons/fa";
 import { showToast } from "@/utilities/toast";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
 
@@ -55,12 +64,15 @@ const NationalCredentialAdmin = () => {
   const [pageSize] = useState(10);
 
   // Modal states
-  const [selectedCredential, setSelectedCredential] = useState<NationalCredential | null>(null);
+  const [selectedCredential, setSelectedCredential] =
+    useState<NationalCredential | null>(null);
   const [showDetailsModal, setShowDetailsModal] = useState(false);
   const [showReviewModal, setShowReviewModal] = useState(false);
   const [showImageModal, setShowImageModal] = useState(false);
   const [selectedImage, setSelectedImage] = useState<string>("");
-  const [reviewStatus, setReviewStatus] = useState<"accepted" | "rejected">("accepted");
+  const [reviewStatus, setReviewStatus] = useState<"accepted" | "rejected">(
+    "accepted"
+  );
   const [rejectionNotes, setRejectionNotes] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
@@ -80,12 +92,15 @@ const NationalCredentialAdmin = () => {
       });
 
       const token = localStorage.getItem("authToken");
-      const response = await fetch(`/api/users/nationalverifications?${params}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await fetch(
+        `/api/users/nationalverifications?${params}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
       if (!response.ok) {
         throw new Error("خطا در دریافت اطلاعات هویتی");
@@ -127,15 +142,19 @@ const NationalCredentialAdmin = () => {
       }
 
       showToast.success(
-        reviewStatus === "accepted" ? "اطلاعات هویتی تایید شد" : "اطلاعات هویتی رد شد"
+        reviewStatus === "accepted"
+          ? "اطلاعات هویتی تایید شد"
+          : "اطلاعات هویتی رد شد"
       );
-      
+
       setShowReviewModal(false);
       setSelectedCredential(null);
       setRejectionNotes("");
       await fetchCredentials();
     } catch (err) {
-      showToast.error(err instanceof Error ? err.message : "خطا در به‌روزرسانی");
+      showToast.error(
+        err instanceof Error ? err.message : "خطا در به‌روزرسانی"
+      );
     } finally {
       setSubmitting(false);
     }
@@ -151,19 +170,27 @@ const NationalCredentialAdmin = () => {
   // Utility functions
   const getStatusColor = (status: string) => {
     switch (status) {
-      case "accepted": return "text-green-700 bg-green-100 border-green-300";
-      case "rejected": return "text-red-700 bg-red-100 border-red-300";
-      case "pending_verification": return "text-yellow-700 bg-yellow-100 border-yellow-300";
-      default: return "text-gray-700 bg-gray-100 border-gray-300";
+      case "accepted":
+        return "text-green-700 bg-green-100 border-green-300";
+      case "rejected":
+        return "text-red-700 bg-red-100 border-red-300";
+      case "pending_verification":
+        return "text-yellow-700 bg-yellow-100 border-yellow-300";
+      default:
+        return "text-gray-700 bg-gray-100 border-gray-300";
     }
   };
 
   const getStatusText = (status: string) => {
     switch (status) {
-      case "accepted": return "تایید شده";
-      case "rejected": return "رد شده";
-      case "pending_verification": return "در انتظار بررسی";
-      default: return "نامشخص";
+      case "accepted":
+        return "تایید شده";
+      case "rejected":
+        return "رد شده";
+      case "pending_verification":
+        return "در انتظار بررسی";
+      default:
+        return "نامشخص";
     }
   };
 
@@ -193,18 +220,25 @@ const NationalCredentialAdmin = () => {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">ورود به سیستم لازم است</h2>
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">
+            ورود به سیستم لازم است
+          </h2>
           <p className="text-gray-600">لطفاً وارد حساب کاربری خود شوید</p>
         </div>
       </div>
     );
   }
 
-  if (!currentUser?.roles.includes("admin") && !currentUser?.roles.includes("super_admin")) {
+  if (
+    !currentUser?.roles.includes("admin") &&
+    !currentUser?.roles.includes("super_admin")
+  ) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">دسترسی غیر مجاز</h2>
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">
+            دسترسی غیر مجاز
+          </h2>
           <p className="text-gray-600">شما به این بخش دسترسی ندارید</p>
         </div>
       </div>
@@ -217,15 +251,17 @@ const NationalCredentialAdmin = () => {
         {/* Header */}
         <div className="mb-8">
           <div className="flex items-center gap-3 mb-4">
-            <FaIdCard className="text-3xl text-emerald-600" />
             <div>
-              <h1 className="text-3xl font-bold text-gray-900">مدیریت اطلاعات هویتی</h1>
-              <p className="text-gray-600">بررسی و تایید اطلاعات هویتی کاربران</p>
+              <h1 className="md:text-3xl text-xl font-bold text-gray-900">
+                مدیریت اطلاعات هویتی
+              </h1>
+              <p className="text-gray-600">
+                بررسی و تایید اطلاعات هویتی کاربران
+              </p>
             </div>
           </div>
 
           {/* Stats */}
-        
         </div>
 
         {/* Filters */}
@@ -336,14 +372,24 @@ const NationalCredentialAdmin = () => {
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="flex gap-2">
                           <button
-                            onClick={() => openImageModal(credential.nationalCredentials.nationalCardImageUrl)}
+                            onClick={() =>
+                              openImageModal(
+                                credential.nationalCredentials
+                                  .nationalCardImageUrl
+                              )
+                            }
                             className="text-blue-600 hover:text-blue-800"
                             title="مشاهده کارت ملی"
                           >
                             <FaIdCard />
                           </button>
                           <button
-                            onClick={() => openImageModal(credential.nationalCredentials.verificationImageUrl)}
+                            onClick={() =>
+                              openImageModal(
+                                credential.nationalCredentials
+                                  .verificationImageUrl
+                              )
+                            }
                             className="text-green-600 hover:text-green-800"
                             title="مشاهده تصویر احراز هویت"
                           >
@@ -352,12 +398,18 @@ const NationalCredentialAdmin = () => {
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${getStatusColor(credential.nationalCredentials.status)}`}>
+                        <span
+                          className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${getStatusColor(
+                            credential.nationalCredentials.status
+                          )}`}
+                        >
                           {getStatusText(credential.nationalCredentials.status)}
                         </span>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        {new Date(credential.createdAt).toLocaleDateString('fa-IR')}
+                        {new Date(credential.createdAt).toLocaleDateString(
+                          "fa-IR"
+                        )}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                         <div className="flex gap-2">
@@ -367,7 +419,8 @@ const NationalCredentialAdmin = () => {
                           >
                             <FaEye />
                           </button>
-                          {credential.nationalCredentials.status === "pending_verification" && (
+                          {credential.nationalCredentials.status ===
+                            "pending_verification" && (
                             <button
                               onClick={() => openReviewModal(credential)}
                               className="text-blue-600 hover:text-blue-900"
@@ -387,18 +440,25 @@ const NationalCredentialAdmin = () => {
             {pagination.totalPages > 1 && (
               <div className="px-6 py-3 bg-gray-50 border-t border-gray-200 flex items-center justify-between">
                 <div className="text-sm text-gray-700">
-                  صفحه {pagination.currentPage} از {pagination.totalPages} (مجموع {pagination.totalUsers} مورد)
+                  صفحه {pagination.currentPage} از {pagination.totalPages}{" "}
+                  (مجموع {pagination.totalUsers} مورد)
                 </div>
                 <div className="flex gap-2">
                   <button
-                    onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+                    onClick={() =>
+                      setCurrentPage((prev) => Math.max(1, prev - 1))
+                    }
                     disabled={!pagination.hasPreviousPage}
                     className="px-3 py-1 text-sm border border-gray-300 rounded disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-100"
                   >
                     قبلی
                   </button>
                   <button
-                    onClick={() => setCurrentPage(prev => Math.min(pagination.totalPages, prev + 1))}
+                    onClick={() =>
+                      setCurrentPage((prev) =>
+                        Math.min(pagination.totalPages, prev + 1)
+                      )
+                    }
                     disabled={!pagination.hasNextPage}
                     className="px-3 py-1 text-sm border border-gray-300 rounded disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-100"
                   >
@@ -412,195 +472,280 @@ const NationalCredentialAdmin = () => {
       </div>
 
       {/* Details Modal */}
-      {showDetailsModal && selectedCredential &&  typeof document !== 'undefined' && createPortal(
-        <div className="fixed inset-0 bg-white/10 backdrop-blur-2xl flex items-center justify-center z-50 p-4" dir="rtl">
-          <div className="bg-white rounded-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto">
-            <div className="p-6 border-b">
-              <h2 className="text-xl font-bold text-gray-900">جزئیات اطلاعات هویتی</h2>
-            </div>
-            
-            <div className="p-6 space-y-6">
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="text-sm font-medium text-gray-600">نام و نام خانوادگی</label>
-                  <div className="text-gray-900 mt-1">{getUserName(selectedCredential)}</div>
-                </div>
-                <div>
-                  <label className="text-sm font-medium text-gray-600">کد ملی</label>
-                  <div className="text-gray-900 mt-1 font-mono">{selectedCredential.nationalCredentials.nationalNumber}</div>
-                </div>
-                <div>
-                  <label className="text-sm font-medium text-gray-600">وضعیت</label>
-                  <div className="mt-1">
-                    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${getStatusColor(selectedCredential.nationalCredentials.status)}`}>
-                      {getStatusText(selectedCredential.nationalCredentials.status)}
-                    </span>
-                  </div>
-                </div>
-                <div>
-                  <label className="text-sm font-medium text-gray-600">تاریخ ثبت</label>
-                  <div className="text-gray-900 mt-1">{new Date(selectedCredential.createdAt).toLocaleDateString('fa-IR')}</div>
-                </div>
+      {showDetailsModal &&
+        selectedCredential &&
+        typeof document !== "undefined" &&
+        createPortal(
+          <div
+            className="fixed inset-0 bg-white/10 backdrop-blur-sm flex items-center justify-center z-50 p-4"
+            dir="rtl"
+          >
+            <div className="bg-white rounded-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto">
+              <div className="p-6 border-b">
+                <h2 className="text-xl font-bold text-gray-900">
+                  جزئیات اطلاعات هویتی
+                </h2>
               </div>
 
-              {/* Images */}
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="text-sm font-medium text-gray-600 mb-2 block">تصویر کارت ملی</label>
-                  <div 
-                    className="border rounded-lg overflow-hidden cursor-pointer hover:opacity-90"
-                    onClick={() => openImageModal(selectedCredential.nationalCredentials.nationalCardImageUrl)}
-                  >
-                    <img
-                      src={selectedCredential.nationalCredentials.nationalCardImageUrl}
-                      alt="کارت ملی"
-                      className="w-full h-78 object-cover"
-                    />
+              <div className="p-6 space-y-6">
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="text-sm font-medium text-gray-600">
+                      نام و نام خانوادگی
+                    </label>
+                    <div className="text-gray-900 mt-1">
+                      {getUserName(selectedCredential)}
+                    </div>
+                  </div>
+                  <div>
+                    <label className="text-sm font-medium text-gray-600">
+                      کد ملی
+                    </label>
+                    <div className="text-gray-900 mt-1 font-mono">
+                      {selectedCredential.nationalCredentials.nationalNumber}
+                    </div>
+                  </div>
+                  <div>
+                    <label className="text-sm font-medium text-gray-600">
+                      وضعیت
+                    </label>
+                    <div className="mt-1">
+                      <span
+                        className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${getStatusColor(
+                          selectedCredential.nationalCredentials.status
+                        )}`}
+                      >
+                        {getStatusText(
+                          selectedCredential.nationalCredentials.status
+                        )}
+                      </span>
+                    </div>
+                  </div>
+                  <div>
+                    <label className="text-sm font-medium text-gray-600">
+                      تاریخ ثبت
+                    </label>
+                    <div className="text-gray-900 mt-1">
+                      {new Date(
+                        selectedCredential.createdAt
+                      ).toLocaleDateString("fa-IR")}
+                    </div>
                   </div>
                 </div>
-                <div>
-                  <label className="text-sm font-medium text-gray-600 mb-2 block">تصویر احراز هویت</label>
-                  <div 
-                    className="border rounded-lg overflow-hidden cursor-pointer hover:opacity-90"
-                    onClick={() => openImageModal(selectedCredential.nationalCredentials.verificationImageUrl)}
-                  >
-                    <img
-                      src={selectedCredential.nationalCredentials.verificationImageUrl}
-                      alt="احراز هویت"
-                      className="w-full h-78 object-cover"
-                    />
+
+                {/* Images */}
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="text-sm font-medium text-gray-600 mb-2 block">
+                      تصویر کارت ملی
+                    </label>
+                    <div
+                      className="border rounded-lg overflow-hidden cursor-pointer hover:opacity-90"
+                      onClick={() =>
+                        openImageModal(
+                          selectedCredential.nationalCredentials
+                            .nationalCardImageUrl
+                        )
+                      }
+                    >
+                      <img
+                        src={
+                          selectedCredential.nationalCredentials
+                            .nationalCardImageUrl
+                        }
+                        alt="کارت ملی"
+                        className="w-full h-78 object-cover"
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <label className="text-sm font-medium text-gray-600 mb-2 block">
+                      تصویر احراز هویت
+                    </label>
+                    <div
+                      className="border rounded-lg overflow-hidden cursor-pointer hover:opacity-90"
+                      onClick={() =>
+                        openImageModal(
+                          selectedCredential.nationalCredentials
+                            .verificationImageUrl
+                        )
+                      }
+                    >
+                      <img
+                        src={
+                          selectedCredential.nationalCredentials
+                            .verificationImageUrl
+                        }
+                        alt="احراز هویت"
+                        className="w-full h-78 object-cover"
+                      />
+                    </div>
                   </div>
                 </div>
+
+                {selectedCredential.nationalCredentials.rejectionNotes && (
+                  <div>
+                    <label className="text-sm font-medium text-red-600">
+                      دلیل رد
+                    </label>
+                    <div className="mt-1 p-3 bg-red-50 border border-red-200 rounded-lg text-red-700">
+                      {selectedCredential.nationalCredentials.rejectionNotes}
+                    </div>
+                  </div>
+                )}
               </div>
 
-              {selectedCredential.nationalCredentials.rejectionNotes && (
-                <div>
-                  <label className="text-sm font-medium text-red-600">دلیل رد</label>
-                  <div className="mt-1 p-3 bg-red-50 border border-red-200 rounded-lg text-red-700">
-                    {selectedCredential.nationalCredentials.rejectionNotes}
-                  </div>
-                </div>
-              )}
-            </div>
-
-            <div className="p-6 border-t flex justify-end gap-3">
-              <button
-                onClick={() => setShowDetailsModal(false)}
-                className="px-4 py-2 text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-50"
-              >
-                بستن
-              </button>
-              {selectedCredential.nationalCredentials.status === "pending_verification" && (
+              <div className="p-3 border-t flex justify-end gap-3">
                 <button
-                  onClick={() => {
-                    setShowDetailsModal(false);
-                    openReviewModal(selectedCredential);
-                  }}
-                  className="px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700"
+                  onClick={() => setShowDetailsModal(false)}
+                  className="px-4 py-2 text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-50"
                 >
-                  بررسی و تایید
+                  بستن
                 </button>
-              )}
+                {selectedCredential.nationalCredentials.status ===
+                  "pending_verification" && (
+                  <button
+                    onClick={() => {
+                      setShowDetailsModal(false);
+                      openReviewModal(selectedCredential);
+                    }}
+                    className="px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700"
+                  >
+                    بررسی و تایید
+                  </button>
+                )}
+              </div>
             </div>
-          </div>
-        </div>,
-        document.body
-      )}
+          </div>,
+          document.body
+        )}
 
       {/* Review Modal */}
-      {showReviewModal && selectedCredential && typeof document !== 'undefined' && createPortal(
-        <div className="fixed inset-0 bg-black/10 backdrop-blur-2xl  flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-2xl shadow-md border-[#0A1D37] border-2   max-w-xl w-full">
-            <div className="p-6 border-b">
-              <h2 className="text-xl font-bold text-gray-900">بررسی اطلاعات هویتی</h2>
-            </div>
-            
-            <div className="p-6 space-y-4">
-              <div className="p-4 bg-gray-50 rounded-lg">
-                <div className="text-sm text-gray-600">کاربر: {getUserName(selectedCredential)}</div>
-                <div className="text-sm text-gray-600">کد ملی: {selectedCredential.nationalCredentials.nationalNumber}</div>
+      {showReviewModal &&
+        selectedCredential &&
+        typeof document !== "undefined" &&
+        createPortal(
+          <div
+            className="fixed inset-0 bg-white/10 backdrop-blur-sm flex items-center justify-center z-50 p-4"
+            dir="rtl"
+          >
+            <div className="bg-white rounded-2xl shadow-md border-[#0A1D37] border-2   max-w-xl w-full">
+              <div className="p-6 border-b">
+                <h2 className="text-xl font-bold text-gray-900">
+                  بررسی اطلاعات هویتی
+                </h2>
               </div>
 
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-3">تصمیم</label>
-                <div className="flex gap-4">
-                  <label className="flex items-center">
-                    <input
-                      type="radio"
-                      name="reviewStatus"
-                      value="accepted"
-                      checked={reviewStatus === "accepted"}
-                      onChange={(e) => setReviewStatus(e.target.value as "accepted" | "rejected")}
-                      className="ml-2"
-                    />
-                    <span className="text-green-700">تایید</span>
-                  </label>
-                  <label className="flex items-center">
-                    <input
-                      type="radio"
-                      name="reviewStatus"
-                      value="rejected"
-                      checked={reviewStatus === "rejected"}
-                      onChange={(e) => setReviewStatus(e.target.value as "accepted" | "rejected")}
-                      className="ml-2"
-                    />
-                    <span className="text-red-700">رد</span>
-                  </label>
+              <div className="p-6 space-y-4">
+                <div className="p-4 bg-gray-50 rounded-lg">
+                  <div className="text-sm text-gray-600">
+                    کاربر: {getUserName(selectedCredential)}
+                  </div>
+                  <div className="text-sm text-gray-600">
+                    کد ملی:{" "}
+                    {selectedCredential.nationalCredentials.nationalNumber}
+                  </div>
                 </div>
-              </div>
 
-              {reviewStatus === "rejected" && (
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">دلیل رد</label>
-                  <textarea
-                    value={rejectionNotes}
-                    onChange={(e) => setRejectionNotes(e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
-                    rows={3}
-                    placeholder="لطفاً دلیل رد اطلاعات هویتی را توضیح دهید..."
-                  />
+                  <label className="block text-sm font-medium text-gray-700 mb-3">
+                    تصمیم
+                  </label>
+                  <div className="flex gap-4">
+                    <label className="flex items-center">
+                      <input
+                        type="radio"
+                        name="reviewStatus"
+                        value="accepted"
+                        checked={reviewStatus === "accepted"}
+                        onChange={(e) =>
+                          setReviewStatus(
+                            e.target.value as "accepted" | "rejected"
+                          )
+                        }
+                        className="ml-2"
+                      />
+                      <span className="text-green-700">تایید</span>
+                    </label>
+                    <label className="flex items-center">
+                      <input
+                        type="radio"
+                        name="reviewStatus"
+                        value="rejected"
+                        checked={reviewStatus === "rejected"}
+                        onChange={(e) =>
+                          setReviewStatus(
+                            e.target.value as "accepted" | "rejected"
+                          )
+                        }
+                        className="ml-2"
+                      />
+                      <span className="text-red-700">رد</span>
+                    </label>
+                  </div>
                 </div>
-              )}
-            </div>
 
-            <div className="p-6 border-t flex justify-end gap-3">
-              <button
-                onClick={() => setShowReviewModal(false)}
-                className="px-4 py-2 text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-50"
-              >
-                انصراف
-              </button>
-              <button
-                onClick={handleStatusUpdate}
-                disabled={submitting || (reviewStatus === "rejected" && !rejectionNotes.trim())}
-                className="px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                {submitting ? "در حال پردازش..." : "تایید"}
-              </button>
+                {reviewStatus === "rejected" && (
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      دلیل رد
+                    </label>
+                    <textarea
+                      value={rejectionNotes}
+                      onChange={(e) => setRejectionNotes(e.target.value)}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                      rows={3}
+                      placeholder="لطفاً دلیل رد اطلاعات هویتی را توضیح دهید..."
+                    />
+                  </div>
+                )}
+              </div>
+
+              <div className="p-6 border-t flex justify-end gap-3">
+                <button
+                  onClick={() => setShowReviewModal(false)}
+                  className="px-4 py-2 text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-50"
+                >
+                  انصراف
+                </button>
+                <button
+                  onClick={handleStatusUpdate}
+                  disabled={
+                    submitting ||
+                    (reviewStatus === "rejected" && !rejectionNotes.trim())
+                  }
+                  className="px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {submitting ? "در حال پردازش..." : "تایید"}
+                </button>
+              </div>
             </div>
-          </div>
-        </div>,
-        document.body
-      )}
+          </div>,
+          document.body
+        )}
 
       {/* Image Modal */}
-      {showImageModal && selectedImage && (
-        <div className="fixed inset-0 bg-black/10 backdrop-blur-2xl flex items-center justify-center z-50 p-4">
-          <div className="relative max-w-4xl max-h-[90vh]">
-            <button
-              onClick={() => setShowImageModal(false)}
-              className="absolute top-2 right-2 z-10 bg-white rounded-full p-2 hover:bg-gray-100"
-            >
-              <FaTimes />
-            </button>
-            <img
-              src={selectedImage}
-              alt="مشاهده تصویر"
-              className="max-w-full max-h-full object-contain rounded-lg"
-            />
-          </div>
-        </div>
-      )}
+      {showImageModal &&
+        selectedImage &&
+        typeof document !== "undefined" &&
+        createPortal(
+          <div className="fixed inset-0 bg-black/10 backdrop-blur-2xl flex items-center justify-center z-50 p-4">
+            <div className="relative max-w-4xl max-h-[90vh]">
+              <button
+                onClick={() => setShowImageModal(false)}
+                className="absolute top-2 right-2 z-10 bg-white rounded-full p-2 hover:bg-gray-100"
+              >
+                <FaTimes />
+              </button>
+              <img
+                src={selectedImage}
+                alt="مشاهده تصویر"
+                className="max-w-full max-h-full object-contain rounded-lg"
+              />
+            </div>
+          </div>,
+          document.body
+        )}
     </div>
   );
 };

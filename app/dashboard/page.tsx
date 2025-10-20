@@ -286,7 +286,7 @@ const Dashboard: React.FC = () => {
 
   return (
     <div
-      className="min-h-screen bg-gradient-to-br from-gray-50 via-white  to-blue-50"
+      className="min-h-screen "
       dir="rtl"
     >
       {/* Mobile Sidebar Overlay */}
@@ -468,12 +468,7 @@ const Dashboard: React.FC = () => {
             </div>
 
             <div className="flex items-center gap-3 lg:gap-4 flex-shrink-0">
-              <button className="relative p-3 hover:bg-gradient-to-r hover:from-[#0A1D37]/10 hover:to-[#4DBFF0]/10 rounded-xl transition-all duration-300 hover:scale-105 active:scale-95 group border border-transparent hover:border-[#0A1D37]/20">
-                <FaBell className="text-gray-600 text-lg group-hover:text-[#0A1D37] transition-colors" />
-                <div className="absolute -top-1 -right-1 w-5 h-5 bg-gradient-to-r from-red-500 to-red-600 rounded-full flex items-center justify-center shadow-lg">
-                  <span className="text-white text-xs font-bold">3</span>
-                </div>
-              </button>
+              
               <Link
                 href="/"
                 className="flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-[#0A1D37] to-[#4DBFF0] rounded-xl text-white font-bold text-sm hover:shadow-lg transition-all duration-300 hover:scale-105 active:scale-95"
@@ -487,7 +482,7 @@ const Dashboard: React.FC = () => {
 
         {/* Page Content */}
         <div className="min-h-[calc(100vh-80px)] bg-gradient-to-br from-gray-50/50 via-white to-blue-50/30">
-          <div className="p-4 sm:p-6 lg:p-8">
+          <div className="   ">
             {selectedMenuItem === "wallet" ? (
               <div className="max-w-7xl mx-auto">
                 <div className="mb-6">
