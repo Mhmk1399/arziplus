@@ -27,6 +27,8 @@ const ServiceBuilder: React.FC<ServiceBuilderProps> = ({
   const [formData, setFormData] = useState<ServiceBuilderFormData>({
     title: initialData?.title || "",
     slug: initialData?.slug || "",
+    helper: initialData?.helper || "",
+    category: initialData?.category || "",
     fee: initialData?.fee || 0,
     wallet: initialData?.wallet || false,
     description: initialData?.description || "",
@@ -286,6 +288,32 @@ const ServiceBuilder: React.FC<ServiceBuilderProps> = ({
                     type="text"
                     value={formData.slug}
                     onChange={(e) => handleInputChange("slug", e.target.value)}
+                    className="w-full px-4 py-3 bg-white/10 border border-[#4DBFF0] rounded-lg text-[#0A1D37] placeholder:text-[#0A1D37]"
+                    placeholder="chatgpt-account-creation"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-[#0A1D37] text-sm mb-2">
+                    متن کاشن(helper) *
+                  </label>
+                  <input
+                    type="text"
+                    value={formData.helper}
+                    onChange={(e) => handleInputChange("helper", e.target.value)}
+                    className="w-full px-4 py-3 bg-white/10 border border-[#4DBFF0] rounded-lg text-[#0A1D37] placeholder:text-[#0A1D37]"
+                    placeholder="chatgpt-account-creation"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-[#0A1D37] text-sm mb-2">
+                   دسته بندی *
+                  </label>
+                  <input
+                    type="text"
+                    value={formData.category}
+                    onChange={(e) => handleInputChange("category", e.target.value)}
                     className="w-full px-4 py-3 bg-white/10 border border-[#4DBFF0] rounded-lg text-[#0A1D37] placeholder:text-[#0A1D37]"
                     placeholder="chatgpt-account-creation"
                     required

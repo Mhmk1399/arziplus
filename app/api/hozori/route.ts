@@ -16,6 +16,7 @@ interface CreateHozoriBody {
   paymentType: string;
   paymentDate: string | Date;
   paymentImage: string;
+  [key: string]: string | number | Date; // Add index signature to allow multiple types
 }
 
 // Type for MongoDB query filters
@@ -41,21 +42,46 @@ export async function POST(request: NextRequest) {
     // Parse request body
     const body: CreateHozoriBody = await request.json();
 
+    // Debug logging
+    console.log("Received hozori request body:", body);
+    console.log("Body type and validation:");
+    console.log("- name:", typeof body.name, body.name);
+    console.log("- lastname:", typeof body.lastname, body.lastname);
+    console.log("- phoneNumber:", typeof body.phoneNumber, body.phoneNumber);
+    console.log(
+      "- childrensCount:",
+      typeof body.childrensCount,
+      body.childrensCount
+    );
+    console.log(
+      "- maridgeStatus:",
+      typeof body.maridgeStatus,
+      body.maridgeStatus
+    );
+    console.log("- Date:", typeof body.Date, body.Date);
+    console.log("- time:", typeof body.time, body.time);
+    console.log("- paymentType:", typeof body.paymentType, body.paymentType);
+
     // Validate required fields
     const requiredFields = [
-      'name', 
-      'lastname', 
-      'phoneNumber', 
-      'maridgeStatus', 
-      'Date', 
-      'time',
-      'paymentType'
+      "name",
+      "lastname",
+      "phoneNumber",
+      "maridgeStatus",
+      "Date",
+      "time",
+      "paymentType",
     ];
 
     for (const field of requiredFields) {
       if (!body[field]) {
+        console.error(`Missing required field: ${field}`, body[field]);
         return NextResponse.json(
-          { success: false, error: `فیلد ${field} الزامی است` },
+          {
+            success: false,
+            error: `فیلد ${field} الزامی است`,
+            message: `Missing field: ${field}`,
+          },
           { status: 400 }
         );
       }
@@ -63,34 +89,54 @@ export async function POST(request: NextRequest) {
 
     // Validate phone number format
     if (!/^09\d{9}$/.test(body.phoneNumber)) {
+      console.error("Invalid phone number format:", body.phoneNumber);
       return NextResponse.json(
-        { success: false, error: "فرمت شماره تلفن صحیح نیست" },
+        {
+          success: false,
+          error: "فرمت شماره تلفن صحیح نیست",
+          message: `Invalid phone format: ${body.phoneNumber}`,
+        },
         { status: 400 }
       );
     }
 
     // Validate children count
     if (body.childrensCount < 0 || body.childrensCount > 10) {
+      console.error("Invalid children count:", body.childrensCount);
       return NextResponse.json(
-        { success: false, error: "تعداد فرزندان باید بین 0 تا 10 باشد" },
+        {
+          success: false,
+          error: "تعداد فرزندان باید بین 0 تا 10 باشد",
+          message: `Invalid children count: ${body.childrensCount}`,
+        },
         { status: 400 }
       );
     }
 
     // Validate marital status
-    const validMaritalStatus = ['single', 'married'];
+    const validMaritalStatus = ["single", "married"];
     if (!validMaritalStatus.includes(body.maridgeStatus)) {
+      console.error("Invalid marital status:", body.maridgeStatus);
       return NextResponse.json(
-        { success: false, error: "وضعیت تأهل معتبر نیست" },
+        {
+          success: false,
+          error: "وضعیت تأهل معتبر نیست",
+          message: `Invalid marital status: ${body.maridgeStatus}`,
+        },
         { status: 400 }
       );
     }
 
     // Validate time slot
-    const validTimeSlots = ['09:00', '10:00', '14:00', '15:00'];
+    const validTimeSlots = ["09:00", "10:00", "14:00", "15:00"];
     if (!validTimeSlots.includes(body.time)) {
+      console.error("Invalid time slot:", body.time);
       return NextResponse.json(
-        { success: false, error: "زمان انتخابی معتبر نیست" },
+        {
+          success: false,
+          error: "زمان انتخابی معتبر نیست",
+          message: `Invalid time slot: ${body.time}`,
+        },
         { status: 400 }
       );
     }
@@ -98,13 +144,20 @@ export async function POST(request: NextRequest) {
     // Convert date string to Date object if needed
     let appointmentDate: Date;
     try {
+      console.log("Parsing date:", body.Date);
       appointmentDate = new Date(body.Date);
+      console.log("Parsed date:", appointmentDate);
       if (isNaN(appointmentDate.getTime())) {
         throw new Error("Invalid date");
       }
     } catch (error) {
+      console.error("Date parsing error:", error, "Original date:", body.Date);
       return NextResponse.json(
-        { success: false, error: "فرمت تاریخ صحیح نیست" },
+        {
+          success: false,
+          error: "فرمت تاریخ صحیح نیست",
+          message: `Date parsing error: ${body.Date}`,
+        },
         { status: 400 }
       );
     }
@@ -113,7 +166,7 @@ export async function POST(request: NextRequest) {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     appointmentDate.setHours(0, 0, 0, 0);
-    
+
     if (appointmentDate < today) {
       return NextResponse.json(
         { success: false, error: "نمی‌توان تاریخ گذشته انتخاب کرد" },
@@ -124,7 +177,7 @@ export async function POST(request: NextRequest) {
     // Check if there's already a reservation for the same date and time
     const existingReservation = await Hozori.findOne({
       Date: appointmentDate,
-      time: body.time
+      time: body.time,
     });
 
     if (existingReservation) {
@@ -157,37 +210,46 @@ export async function POST(request: NextRequest) {
       userId: authUser.id, // Add user reference
       status: "confirmed", // Default status
       createdAt: new Date(),
-      updatedAt: new Date()
+      updatedAt: new Date(),
     });
 
     // Save to database
     const savedHozori = await newHozori.save();
 
     // Log the creation
-    console.log(`New hozori reservation created: ${savedHozori._id} for user: ${authUser.id}`);
+    console.log(
+      `New hozori reservation created: ${savedHozori._id} for user: ${authUser.id}`
+    );
 
-    return NextResponse.json({
-      success: true,
-      message: "رزرو وقت حضوری با موفقیت ثبت شد",
-      data: {
-        id: savedHozori._id,
-        name: savedHozori.name,
-        lastname: savedHozori.lastname,
-        phoneNumber: savedHozori.phoneNumber,
-        Date: savedHozori.Date,
-        time: savedHozori.time,
-        status: "confirmed"
-      }
-    }, { status: 201 });
-
+    return NextResponse.json(
+      {
+        success: true,
+        message: "رزرو وقت حضوری با موفقیت ثبت شد",
+        data: {
+          id: savedHozori._id,
+          name: savedHozori.name,
+          lastname: savedHozori.lastname,
+          phoneNumber: savedHozori.phoneNumber,
+          Date: savedHozori.Date,
+          time: savedHozori.time,
+          status: "confirmed",
+        },
+      },
+      { status: 201 }
+    );
   } catch (error) {
     console.error("Error creating hozori reservation:", error);
-    
+
     // Handle specific MongoDB errors
     if (error instanceof mongoose.Error.ValidationError) {
-      const validationErrors = Object.values(error.errors).map(err => err.message);
+      const validationErrors = Object.values(error.errors).map(
+        (err) => err.message
+      );
       return NextResponse.json(
-        { success: false, error: `خطای اعتبارسنجی: ${validationErrors.join(', ')}` },
+        {
+          success: false,
+          error: `خطای اعتبارسنجی: ${validationErrors.join(", ")}`,
+        },
         { status: 400 }
       );
     }
@@ -222,17 +284,17 @@ export async function GET(request: NextRequest) {
 
     // Parse query parameters
     const { searchParams } = new URL(request.url);
-    const page = parseInt(searchParams.get('page') || '1');
-    const limit = parseInt(searchParams.get('limit') || '10');
+    const page = parseInt(searchParams.get("page") || "1");
+    const limit = parseInt(searchParams.get("limit") || "10");
     const skip = (page - 1) * limit;
 
     // Build query filter
     const filter: HozoriQueryFilter = {
-      userId: authUser.id
+      userId: authUser.id,
     };
 
     // Add status filter if provided
-    const status = searchParams.get('status');
+    const status = searchParams.get("status");
     if (status) {
       filter.status = status;
     }
@@ -261,10 +323,9 @@ export async function GET(request: NextRequest) {
         totalCount,
         hasNextPage,
         hasPrevPage,
-        limit
-      }
+        limit,
+      },
     });
-
   } catch (error) {
     console.error("Error fetching hozori reservations:", error);
     return NextResponse.json(
@@ -300,7 +361,7 @@ export async function PUT(request: NextRequest) {
 
     // Find and validate ownership
     const hozoriReservation = await Hozori.findById(id);
-    
+
     if (!hozoriReservation) {
       return NextResponse.json(
         { success: false, error: "رزرو یافت نشد" },
@@ -325,9 +386,8 @@ export async function PUT(request: NextRequest) {
     return NextResponse.json({
       success: true,
       message: "رزرو با موفقیت به‌روزرسانی شد",
-      data: updatedHozori
+      data: updatedHozori,
     });
-
   } catch (error) {
     console.error("Error updating hozori reservation:", error);
     return NextResponse.json(
@@ -353,7 +413,7 @@ export async function DELETE(request: NextRequest) {
 
     // Parse query parameters
     const { searchParams } = new URL(request.url);
-    const id = searchParams.get('id');
+    const id = searchParams.get("id");
 
     if (!id) {
       return NextResponse.json(
@@ -364,7 +424,7 @@ export async function DELETE(request: NextRequest) {
 
     // Find and validate ownership
     const hozoriReservation = await Hozori.findById(id);
-    
+
     if (!hozoriReservation) {
       return NextResponse.json(
         { success: false, error: "رزرو یافت نشد" },
@@ -384,9 +444,8 @@ export async function DELETE(request: NextRequest) {
 
     return NextResponse.json({
       success: true,
-      message: "رزرو با موفقیت حذف شد"
+      message: "رزرو با موفقیت حذف شد",
     });
-
   } catch (error) {
     console.error("Error deleting hozori reservation:", error);
     return NextResponse.json(

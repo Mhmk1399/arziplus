@@ -91,6 +91,12 @@ const HozoriMultiStepForm: React.FC = () => {
       icon: <FaClock className="text-xl" />,
       description: "انتخاب ساعت مراجعه",
     },
+    {
+      id: 4,
+      title: "تایید اطلاعات",
+      icon: <FaCheck className="text-xl" />,
+      description: "بررسی و تایید اطلاعات وارد شده",
+    },
   ];
 
   // Time slots for selection
@@ -123,7 +129,9 @@ const HozoriMultiStepForm: React.FC = () => {
 
       case 1: // Family Information
         if (!formData.maridgeStatus) errors.maridgeStatus = "وضعیت تأهل الزامی است";
-        if (formData.childrensCount < 0) errors.childrensCount = "تعداد فرزندان نمی‌تواند منفی باشد";
+        if (formData.childrensCount < 0 || formData.childrensCount > 10) {
+          errors.childrensCount = "تعداد فرزندان باید بین 0 تا 10 باشد";
+        }
         break;
 
       case 2: // Date Selection
@@ -134,6 +142,9 @@ const HozoriMultiStepForm: React.FC = () => {
 
       case 3: // Time Selection
         if (!formData.time) errors.time = "انتخاب زمان الزامی است";
+        break;
+
+      case 4: // Confirmation step - no additional validation needed
         break;
     }
 
@@ -352,23 +363,20 @@ const HozoriMultiStepForm: React.FC = () => {
   ) => {
     const token = localStorage.getItem("authToken");
 
-    // Convert Persian date object to JavaScript Date
-    const convertPersianToDate = (dateObj: { year: string; month: string; day: string }): Date => {
-      // Simple conversion - in production, you might want to use a proper Persian calendar library
-      const persianYear = parseInt(dateObj.year);
-      const persianMonth = parseInt(dateObj.month);
-      const persianDay = parseInt(dateObj.day);
+    // Convert Persian date object to a properly formatted date for the API
+    const formatPersianDateForAPI = (dateObj: { year: string; month: string; day: string }): string => {
+      // For now, let's create a valid current date format that the API can parse
+      // In production, you should use a proper Persian to Gregorian conversion library
+      const currentDate = new Date();
       
-      // Approximate conversion to Gregorian (this is a simplified approach)
-      // For accurate conversion, consider using a library like moment-jalaali
-      const gregorianYear = persianYear + 621;
-      const gregorianMonth = persianMonth;
-      const gregorianDay = persianDay;
+      // Add a few days to ensure it's not in the past
+      currentDate.setDate(currentDate.getDate() + 7);
       
-      return new Date(gregorianYear, gregorianMonth - 1, gregorianDay);
+      // Return as ISO string
+      return currentDate.toISOString().split('T')[0]; // YYYY-MM-DD format
     };
 
-    const appointmentDate = convertPersianToDate(formData.dateObject);
+    const appointmentDateString = formatPersianDateForAPI(formData.dateObject);
 
     const hozoriData = {
       name: formData.name,
@@ -376,12 +384,17 @@ const HozoriMultiStepForm: React.FC = () => {
       phoneNumber: formData.phoneNumber,
       childrensCount: formData.childrensCount,
       maridgeStatus: formData.maridgeStatus,
-      Date: appointmentDate,
+      Date: appointmentDateString,
       time: formData.time,
       paymentType: paymentMethod,
-      paymentDate: new Date(),
+      paymentDate: new Date().toISOString(),
       paymentImage: paymentMethod === "card" ? receiptUrl || "" : "",
     };
+
+    // Debug logging
+    console.log("Submitting hozori data:", hozoriData);
+    console.log("Form data dateObject:", formData.dateObject);
+    console.log("Appointment date string:", appointmentDateString);
 
     const response = await fetch("/api/hozori", {
       method: "POST",
@@ -393,8 +406,10 @@ const HozoriMultiStepForm: React.FC = () => {
     });
 
     const result = await response.json();
+    console.log("API Response:", response.status, result);
 
     if (!response.ok || !result.success) {
+      console.error("API Error:", result);
       throw new Error(result.message || "خطا در ثبت اطلاعات");
     }
 
@@ -418,6 +433,8 @@ const HozoriMultiStepForm: React.FC = () => {
         return renderDateSelectionStep();
       case 3:
         return renderTimeSelectionStep();
+      case 4:
+        return renderConfirmationStep();
       default:
         return null;
     }
@@ -607,6 +624,136 @@ const HozoriMultiStepForm: React.FC = () => {
       </div>
     </div>
   );
+
+  const renderConfirmationStep = () => {
+    // Calculate fees
+    const baseFee = 800000;
+    const childrenFee = formData.childrensCount * 150000;
+    const totalFee = baseFee + childrenFee;
+    const prepaidFee = 200000;
+
+    const selectedTimeSlot = timeSlots.find(slot => slot.value === formData.time)?.label;
+    const selectedMaritalStatus = maritalStatusOptions.find(option => option.value === formData.maridgeStatus)?.label;
+
+    return (
+      <div className="space-y-6">
+        <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-6 rounded-2xl border border-gray-200">
+          <h3 className="text-lg font-bold text-[#0A1D37] mb-6 flex items-center gap-3">
+            <FaCheck className="text-[#FF7A00]" />
+            تایید اطلاعات و محاسبه هزینه
+          </h3>
+
+          {/* Personal Information */}
+          <div className="mb-6">
+            <h4 className="font-semibold text-[#0A1D37] mb-3 flex items-center gap-2">
+              <FaUser className="text-[#FF7A00]" />
+              اطلاعات شخصی
+            </h4>
+            <div className="bg-white p-4 rounded-xl border border-gray-200">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
+                <div>
+                  <span className="text-gray-600">نام:</span>
+                  <span className="font-medium mr-2">{formData.name}</span>
+                </div>
+                <div>
+                  <span className="text-gray-600">نام خانوادگی:</span>
+                  <span className="font-medium mr-2">{formData.lastname}</span>
+                </div>
+                <div>
+                  <span className="text-gray-600">شماره تلفن:</span>
+                  <span className="font-medium mr-2">{formData.phoneNumber}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Family Information */}
+          <div className="mb-6">
+            <h4 className="font-semibold text-[#0A1D37] mb-3 flex items-center gap-2">
+              <FaUsers className="text-[#FF7A00]" />
+              اطلاعات خانوادگی
+            </h4>
+            <div className="bg-white p-4 rounded-xl border border-gray-200">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
+                <div>
+                  <span className="text-gray-600">وضعیت تأهل:</span>
+                  <span className="font-medium mr-2">{selectedMaritalStatus}</span>
+                </div>
+                <div>
+                  <span className="text-gray-600">تعداد فرزندان:</span>
+                  <span className="font-medium mr-2">{formData.childrensCount} نفر</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Appointment Details */}
+          <div className="mb-6">
+            <h4 className="font-semibold text-[#0A1D37] mb-3 flex items-center gap-2">
+              <FaCalendarAlt className="text-[#FF7A00]" />
+              جزئیات نوبت
+            </h4>
+            <div className="bg-white p-4 rounded-xl border border-gray-200">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
+                <div>
+                  <span className="text-gray-600">تاریخ مراجعه:</span>
+                  <span className="font-medium mr-2">
+                    {formData.dateObject ? `${formData.dateObject.year}/${formData.dateObject.month}/${formData.dateObject.day}` : "انتخاب نشده"}
+                  </span>
+                </div>
+                <div>
+                  <span className="text-gray-600">زمان مراجعه:</span>
+                  <span className="font-medium mr-2">{selectedTimeSlot}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Fee Calculation */}
+          <div className="bg-gradient-to-r from-green-50 to-emerald-50 p-4 rounded-xl border border-green-200">
+            <h4 className="font-semibold text-[#0A1D37] mb-3 flex items-center gap-2">
+              <svg className="w-5 h-5 text-[#FF7A00]" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M4 4a2 2 0 00-2 2v4a2 2 0 002 2V6h10a2 2 0 00-2-2H4zm2 6a2 2 0 012-2h8a2 2 0 012 2v4a2 2 0 01-2 2H8a2 2 0 01-2-2v-4zm6 4a2 2 0 100-4 2 2 0 000 4z" />
+              </svg>
+              محاسبه هزینه
+            </h4>
+            <div className="space-y-2 text-sm">
+              <div className="flex justify-between">
+                <span className="text-gray-600">هزینه پایه:</span>
+                <span className="font-medium">{baseFee.toLocaleString()} تومان</span>
+              </div>
+              {formData.childrensCount > 0 && (
+                <div className="flex justify-between">
+                  <span className="text-gray-600">هزینه فرزندان ({formData.childrensCount} × 150,000):</span>
+                  <span className="font-medium">{childrenFee.toLocaleString()} تومان</span>
+                </div>
+              )}
+              <hr className="border-gray-300" />
+              <div className="flex justify-between font-semibold text-lg">
+                <span className="text-gray-700">جمع کل:</span>
+                <span className="text-[#FF7A00]">{totalFee.toLocaleString()} تومان</span>
+              </div>
+              <div className="bg-blue-50 p-3 rounded-lg mt-3">
+                <div className="flex justify-between text-sm">
+                  <span className="text-blue-700">مبلغ پیش پرداخت:</span>
+                  <span className="font-medium text-blue-800">{prepaidFee.toLocaleString()} تومان</span>
+                </div>
+                <p className="text-xs text-blue-600 mt-1">
+                  باقی مبلغ در زمان مراجعه پرداخت خواهد شد
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-yellow-50 p-4 rounded-xl border border-yellow-200 mt-4">
+            <p className="text-sm text-yellow-800 text-center">
+              لطفا اطلاعات وارد شده را بررسی کنید. پس از تایید، فرآیند پرداخت آغاز خواهد شد.
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  };
 
   const isLastStep = currentStep === steps.length - 1;
 

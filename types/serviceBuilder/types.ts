@@ -1,7 +1,18 @@
 export interface ServiceField {
   name: string;
   label: string;
-  type: 'string' | 'number' | 'boolean' | 'select' | 'multiselect' | 'textarea' | 'file' | 'date' | 'email' | 'password' | 'tel';
+  type:
+    | "string"
+    | "number"
+    | "boolean"
+    | "select"
+    | "multiselect"
+    | "textarea"
+    | "file"
+    | "date"
+    | "email"
+    | "password"
+    | "tel";
   placeholder?: string;
   required?: boolean;
   defaultValue?: any;
@@ -32,7 +43,7 @@ export interface DynamicService {
   wallet: boolean;
   description?: string;
   icon?: string;
-  status: 'active' | 'inactive' | 'draft';
+  status: "active" | "inactive" | "draft";
   image?: string;
   fields: ServiceField[];
   createdAt?: string;
@@ -42,11 +53,13 @@ export interface DynamicService {
 export interface ServiceBuilderFormData {
   title: string;
   slug: string;
+  category: string;
+  helper: string;
   fee: number;
   wallet: boolean;
   description: string;
   icon: string;
-  status: 'active' | 'inactive' | 'draft';
+  status: "active" | "inactive" | "draft";
   image: string;
   fields: ServiceField[];
 }
@@ -56,7 +69,7 @@ export interface ServiceRequest {
   serviceName: string;
   userInputs: Record<string, any>;
   totalAmount: number;
-  status: 'pending' | 'processing' | 'completed' | 'cancelled';
+  status: "pending" | "processing" | "completed" | "cancelled";
   createdAt?: string;
   updatedAt?: string;
 }
