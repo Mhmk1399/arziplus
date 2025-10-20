@@ -55,8 +55,6 @@ interface ServiceRequestBody extends Partial<ServiceDocument> {
   id?: string; // For PUT requests
 }
 
-
-
 // GET - Retrieve services with filters and pagination
 export async function GET(request: NextRequest) {
   try {
@@ -138,8 +136,7 @@ export async function GET(request: NextRequest) {
     }
 
     const skip = (page - 1) * limit;
-    const services = await DynamicService
-      .find(query)
+    const services = await DynamicService.find(query)
       .sort({ createdAt: -1 })
       .skip(skip)
       .limit(limit);
@@ -189,17 +186,15 @@ export async function POST(request: NextRequest) {
     if (body.fields) {
       body.fields = body.fields.map((field: ServiceField) => {
         // Ensure select/multiselect fields have options, not items
-        if (field.type === 'select' || field.type === 'multiselect') {
+        if (field.type === "select" || field.type === "multiselect") {
           return {
             ...field,
-            options: field.options || field.items || []
+            options: field.options || field.items || [],
           };
         }
         return field;
       });
     }
-
-
 
     const services = new DynamicService(body);
     await services.save();
@@ -244,17 +239,15 @@ export async function PUT(request: NextRequest) {
     if (updateData.fields) {
       updateData.fields = updateData.fields.map((field: ServiceField) => {
         // Ensure select/multiselect fields have options, not items
-        if (field.type === 'select' || field.type === 'multiselect') {
+        if (field.type === "select" || field.type === "multiselect") {
           return {
             ...field,
-            options: field.options || field.items || []
+            options: field.options || field.items || [],
           };
         }
         return field;
       });
     }
-
-
 
     if (!id) {
       return NextResponse.json(
@@ -275,8 +268,6 @@ export async function PUT(request: NextRequest) {
       { ...updateData },
       { new: true, runValidators: true }
     );
-
-
 
     if (!updatedservice) {
       return NextResponse.json(
@@ -311,8 +302,6 @@ export async function PATCH(request: NextRequest) {
     await connect();
     const body: ServiceRequestBody = await request.json();
     const { id, ...updateData } = body;
-
-
 
     if (!id) {
       return NextResponse.json(
