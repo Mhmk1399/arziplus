@@ -463,7 +463,7 @@ const HozoriMultiStepForm: React.FC = () => {
     <div className="space-y-6">
       <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-6 rounded-2xl border border-gray-200">
         <h3 className="text-lg font-bold text-[#0A1D37] mb-4 flex items-center gap-3">
-          <FaUser className="text-[#FF7A00]" />
+          <FaUser className="text-[#0A1D37]" />
           اطلاعات شخصی
         </h3>
 
@@ -477,7 +477,7 @@ const HozoriMultiStepForm: React.FC = () => {
               placeholder="نام خود را وارد کنید"
               value={formData.name}
               onChange={(e) => updateFormData("name", e.target.value)}
-              className={`w-full p-3 border rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] outline-none transition-all ${
+              className={`w-full p-3 border rounded-xl focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] outline-none transition-all ${
                 validationErrors.name ? "border-red-500" : "border-gray-300"
               }`}
               required
@@ -498,7 +498,7 @@ const HozoriMultiStepForm: React.FC = () => {
               placeholder="نام خانوادگی خود را وارد کنید"
               value={formData.lastname}
               onChange={(e) => updateFormData("lastname", e.target.value)}
-              className={`w-full p-3 border rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] outline-none transition-all ${
+              className={`w-full p-3 border rounded-xl focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] outline-none transition-all ${
                 validationErrors.lastname ? "border-red-500" : "border-gray-300"
               }`}
               required
@@ -519,7 +519,7 @@ const HozoriMultiStepForm: React.FC = () => {
               placeholder="09123456789"
               value={formData.phoneNumber}
               onChange={(e) => updateFormData("phoneNumber", e.target.value)}
-              className={`w-full p-3 border rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] outline-none transition-all ${
+              className={`w-full p-3 border rounded-xl focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] outline-none transition-all ${
                 validationErrors.phoneNumber
                   ? "border-red-500"
                   : "border-gray-300"
@@ -541,7 +541,7 @@ const HozoriMultiStepForm: React.FC = () => {
     <div className="space-y-6">
       <div className="bg-gradient-to-r from-green-50 to-emerald-50 p-6 rounded-2xl border border-gray-200">
         <h3 className="text-lg font-bold text-[#0A1D37] mb-4 flex items-center gap-3">
-          <FaUsers className="text-[#FF7A00]" />
+          <FaUsers className="text-[#0A1D37]" />
           اطلاعات خانوادگی
         </h3>
 
@@ -553,7 +553,7 @@ const HozoriMultiStepForm: React.FC = () => {
             <select
               value={formData.maridgeStatus}
               onChange={(e) => updateFormData("maridgeStatus", e.target.value)}
-              className={`w-full p-3 border rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] outline-none transition-all ${
+              className={`w-full p-3 border rounded-xl focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] outline-none transition-all ${
                 validationErrors.maridgeStatus
                   ? "border-red-500"
                   : "border-gray-300"
@@ -587,7 +587,7 @@ const HozoriMultiStepForm: React.FC = () => {
               onChange={(e) =>
                 updateFormData("childrensCount", parseInt(e.target.value) || 0)
               }
-              className={`w-full p-3 border rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] outline-none transition-all ${
+              className={`w-full p-3 border rounded-xl focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] outline-none transition-all ${
                 validationErrors.childrensCount
                   ? "border-red-500"
                   : "border-gray-300"
@@ -609,7 +609,7 @@ const HozoriMultiStepForm: React.FC = () => {
     <div className="space-y-6">
       <div className="bg-gradient-to-r from-purple-50 to-pink-50 p-6 rounded-2xl border border-gray-200">
         <h3 className="text-lg font-bold text-[#0A1D37] mb-4 flex items-center gap-3">
-          <FaCalendarAlt className="text-[#FF7A00]" />
+          <FaCalendarAlt className="text-[#0A1D37]" />
           انتخاب تاریخ مراجعه
         </h3>
 
@@ -618,7 +618,7 @@ const HozoriMultiStepForm: React.FC = () => {
             value={formData.dateObject}
             onChange={(date) => updateFormData("dateObject", date)}
             placeholder="تاریخ مراجعه را انتخاب کنید"
-            className={`w-full p-3 border rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] outline-none transition-all ${
+            className={`w-full p-3 border rounded-xl focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] outline-none transition-all ${
               validationErrors.dateObject ? "border-red-500" : "border-gray-300"
             }`}
           />
@@ -636,7 +636,7 @@ const HozoriMultiStepForm: React.FC = () => {
     <div className="space-y-6">
       <div className="bg-gradient-to-r from-orange-50 to-red-50 p-6 rounded-2xl border border-gray-200">
         <h3 className="text-lg font-bold text-[#0A1D37] mb-4 flex items-center gap-3">
-          <FaClock className="text-[#FF7A00]" />
+          <FaClock className="text-[#0A1D37]" />
           انتخاب زمان مراجعه
         </h3>
 
@@ -647,8 +647,8 @@ const HozoriMultiStepForm: React.FC = () => {
               onClick={() => updateFormData("time", slot.value)}
               className={`p-4 rounded-xl border-2 transition-all duration-300 ${
                 formData.time === slot.value
-                  ? "border-[#FF7A00] bg-[#FF7A00] text-white shadow-lg"
-                  : "border-gray-300 bg-white text-gray-700 hover:border-[#FF7A00] hover:shadow-md"
+                  ? "border-[#0A1D37] bg-[#0A1D37] text-white shadow-lg"
+                  : "border-gray-300 bg-white text-gray-700 hover:border-[#0A1D37] hover:shadow-md"
               }`}
             >
               <FaClock className="mx-auto mb-2" />
@@ -684,14 +684,16 @@ const HozoriMultiStepForm: React.FC = () => {
       <div className="space-y-6">
         <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-6 rounded-2xl border border-gray-200">
           <h3 className="text-lg font-bold text-[#0A1D37] mb-6 flex items-center gap-3">
-            <FaCheck className="text-[#FF7A00]" />
+            <FaCheck className="text-[#0A1D37]" />
             تایید اطلاعات و محاسبه هزینه
+            <br/>
+            ثبت نام حضوری + عکاسی هر نفر
           </h3>
 
           {/* Personal Information */}
           <div className="mb-6">
             <h4 className="font-semibold text-[#0A1D37] mb-3 flex items-center gap-2">
-              <FaUser className="text-[#FF7A00]" />
+              <FaUser className="text-[#0A1D37]" />
               اطلاعات شخصی
             </h4>
             <div className="bg-white p-4 rounded-xl border border-gray-200">
@@ -717,7 +719,7 @@ const HozoriMultiStepForm: React.FC = () => {
           {/* Family Information */}
           <div className="mb-6">
             <h4 className="font-semibold text-[#0A1D37] mb-3 flex items-center gap-2">
-              <FaUsers className="text-[#FF7A00]" />
+              <FaUsers className="text-[#0A1D37]" />
               اطلاعات خانوادگی
             </h4>
             <div className="bg-white p-4 rounded-xl border border-gray-200">
@@ -741,7 +743,7 @@ const HozoriMultiStepForm: React.FC = () => {
           {/* Appointment Details */}
           <div className="mb-6">
             <h4 className="font-semibold text-[#0A1D37] mb-3 flex items-center gap-2">
-              <FaCalendarAlt className="text-[#FF7A00]" />
+              <FaCalendarAlt className="text-[#0A1D37]" />
               جزئیات نوبت
             </h4>
             <div className="bg-white p-4 rounded-xl border border-gray-200">
@@ -766,7 +768,7 @@ const HozoriMultiStepForm: React.FC = () => {
           <div className="bg-gradient-to-r from-green-50 to-emerald-50 p-4 rounded-xl border border-green-200">
             <h4 className="font-semibold text-[#0A1D37] mb-3 flex items-center gap-2">
               <svg
-                className="w-5 h-5 text-[#FF7A00]"
+                className="w-5 h-5 text-[#0A1D37]"
                 fill="currentColor"
                 viewBox="0 0 20 20"
               >
@@ -780,7 +782,7 @@ const HozoriMultiStepForm: React.FC = () => {
                   <span className="text-gray-700 font-medium">
                     مبلغ بیعانه:
                   </span>
-                  <span className="font-bold text-lg text-[#FF7A00]">
+                  <span className="font-bold text-lg text-[#0A1D37]">
                     {prepaid.toLocaleString()} تومان
                   </span>
                 </div>
@@ -808,29 +810,29 @@ const HozoriMultiStepForm: React.FC = () => {
                 </h5>
                 <div className="space-y-2 text-red-700 text-xs leading-relaxed">
                   <p className="flex items-start">
-                    <span className="inline-block w-1.5 h-1.5 bg-red-500 rounded-full mt-2 mr-2 flex-shrink-0"></span>
+                    <span className="inline-block w-1.5 h-1.5 ml-2 bg-red-500 rounded-full mt-2 mr-2 flex-shrink-0"></span>
                     <span>
                       حضور تمام اعضا ثبت نامی در روز مشخص شده به همراه کارت ملی
                       و در ساعت انتخاب شده الزامی می باشد.
                     </span>
                   </p>
                   <p className="flex items-start">
-                    <span className="inline-block w-1.5 h-1.5 bg-red-500 rounded-full mt-2 mr-2 flex-shrink-0"></span>
+                    <span className="inline-block w-1.5 h-1.5 ml-2 bg-red-500 rounded-full mt-2 mr-2 flex-shrink-0"></span>
                     <span>
                       لطفاً در انتخاب زمان خود دقت نمایید، مبلغ بیعانه برای رزرو
                       وقت می باشد.
                     </span>
                   </p>
                   <p className="flex items-start">
-                    <span className="inline-block w-1.5 h-1.5 bg-red-500 rounded-full mt-2 mr-2 flex-shrink-0"></span>
+                    <span className="inline-block w-1.5 h-1.5 ml-2 bg-red-500 rounded-full mt-2 mr-2 flex-shrink-0"></span>
                     <span>در صورت عدم مراجعه، بیعانه مسترد نمی گردد.</span>
                   </p>
                   <p className="flex items-start">
-                    <span className="inline-block w-1.5 h-1.5 bg-red-500 rounded-full mt-2 mr-2 flex-shrink-0"></span>
+                    <span className="inline-block w-1.5 h-1.5 ml-2 bg-red-500 rounded-full mt-2 mr-2 flex-shrink-0"></span>
                     <span>مراجعه خارج از زمان پذیرفته نمی شود.</span>
                   </p>
                   <p className="flex items-start">
-                    <span className="inline-block w-1.5 h-1.5 bg-red-500 rounded-full mt-2 mr-2 flex-shrink-0"></span>
+                    <span className="inline-block w-1.5 h-1.5 ml-2 bg-red-500 rounded-full mt-2 mr-2 flex-shrink-0"></span>
                     <span>هزینه با احتساب هزینه دلاری رسمی می باشد.</span>
                   </p>
                 </div>
@@ -875,7 +877,7 @@ const HozoriMultiStepForm: React.FC = () => {
                 <div
                   className={`w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center text-sm font-medium mb-2 transition-all ${
                     currentStep >= index
-                      ? "bg-[#FF7A00] text-white shadow-lg"
+                      ? "bg-[#0A1D37] text-white shadow-lg"
                       : "bg-gray-200 text-gray-500"
                   }`}
                 >
@@ -893,7 +895,7 @@ const HozoriMultiStepForm: React.FC = () => {
                 {index < steps.length - 1 && (
                   <div
                     className={`hidden sm:block w-full h-0.5 mt-6 ${
-                      currentStep > index ? "bg-[#FF7A00]" : "bg-gray-200"
+                      currentStep > index ? "bg-[#0A1D37]" : "bg-gray-200"
                     }`}
                   />
                 )}
@@ -926,7 +928,7 @@ const HozoriMultiStepForm: React.FC = () => {
             <button
               onClick={handleSubmit}
               disabled={isSubmitting}
-              className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-[#FF7A00] to-[#4DBFF0] text-white rounded-xl hover:shadow-lg transition-all disabled:opacity-50"
+              className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-[#0A1D37] to-[#4DBFF0] text-white rounded-xl hover:shadow-lg transition-all disabled:opacity-50"
             >
               {isSubmitting ? "در حال پردازش..." : "تکمیل رزرو"}
               <FaCheck />
@@ -934,7 +936,7 @@ const HozoriMultiStepForm: React.FC = () => {
           ) : (
             <button
               onClick={handleNext}
-              className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-[#FF7A00] to-[#4DBFF0] text-white rounded-xl hover:shadow-lg transition-all"
+              className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-[#0A1D37] to-[#4DBFF0] text-white rounded-xl hover:shadow-lg transition-all"
             >
               بعدی
               <FaArrowLeft />
@@ -952,7 +954,7 @@ const HozoriMultiStepForm: React.FC = () => {
             </h3>
             <p className="text-center text-gray-600 mb-6">
               هزینه رزرو وقت حضوری:{" "}
-              <span className="font-bold text-[#FF7A00]">
+              <span className="font-bold text-[#0A1D37]">
                 {hozoriFee.toLocaleString()} تومان
               </span>
             </p>

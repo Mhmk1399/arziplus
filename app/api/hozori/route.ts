@@ -141,11 +141,19 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Convert date string to Date object if needed
+    // Convert date string to Date object without timezone issues
     let appointmentDate: Date;
     try {
       console.log("Parsing date:", body.Date);
-      appointmentDate = new Date(body.Date);
+      
+      // Parse date string (YYYY-MM-DD) and create UTC date to avoid timezone issues
+      if (typeof body.Date === 'string' && body.Date.match(/^\d{4}-\d{2}-\d{2}$/)) {
+        const [year, month, day] = body.Date.split('-').map(Number);
+        appointmentDate = new Date(Date.UTC(year, month - 1, day, 12, 0, 0)); // Set to noon UTC to avoid timezone shifts
+      } else {
+        appointmentDate = new Date(body.Date);
+      }
+      
       console.log("Parsed date:", appointmentDate);
       if (isNaN(appointmentDate.getTime())) {
         throw new Error("Invalid date");
@@ -164,25 +172,60 @@ export async function POST(request: NextRequest) {
 
     // Check if the selected date is not in the past
     const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    appointmentDate.setHours(0, 0, 0, 0);
+    const todayUTC = new Date(Date.UTC(today.getFullYear(), today.getMonth(), today.getDate(), 12, 0, 0));
 
-    if (appointmentDate < today) {
+    console.log("Date validation - Today UTC:", todayUTC);
+    console.log("Date validation - Appointment:", appointmentDate);
+    console.log("Date validation - Is past?", appointmentDate < todayUTC);
+
+    if (appointmentDate < todayUTC) {
+      console.error(
+        "Past date error - Today UTC:",
+        todayUTC,
+        "Appointment:",
+        appointmentDate
+      );
       return NextResponse.json(
-        { success: false, error: "نمی‌توان تاریخ گذشته انتخاب کرد" },
+        {
+          success: false,
+          error: "نمی‌توان تاریخ گذشته انتخاب کرد",
+          message: `Past date: ${appointmentDate} < ${todayUTC}`,
+        },
         { status: 400 }
       );
     }
 
     // Check if there's already a reservation for the same date and time
-    const existingReservation = await Hozori.findOne({
-      Date: appointmentDate,
-      time: body.time,
-    });
+    console.log("Checking for existing reservations...");
+    try {
+      const existingReservation = await Hozori.findOne({
+        Date: appointmentDate,
+        time: body.time,
+      });
 
-    if (existingReservation) {
+      console.log("Existing reservation check result:", existingReservation);
+
+      if (existingReservation) {
+        console.error(
+          "Conflict - existing reservation found:",
+          existingReservation
+        );
+        return NextResponse.json(
+          {
+            success: false,
+            error: "این زمان قبلاً رزرو شده است",
+            message: `Time slot already booked: ${body.time} on ${appointmentDate}`,
+          },
+          { status: 400 }
+        );
+      }
+    } catch (dbError) {
+      console.error(
+        "Database error during existing reservation check:",
+        dbError
+      );
       return NextResponse.json(
-        { success: false, error: "این زمان قبلاً رزرو شده است" },
+        { success: false, error: "خطا در بررسی رزروهای موجود" },
         { status: 400 }
       );
     }
@@ -196,6 +239,21 @@ export async function POST(request: NextRequest) {
     }
 
     // Create new hozori reservation
+    console.log("Creating new hozori reservation with data:", {
+      name: body.name.trim(),
+      lastname: body.lastname.trim(),
+      phoneNumber: body.phoneNumber.trim(),
+      childrensCount: body.childrensCount,
+      maridgeStatus: body.maridgeStatus,
+      Date: appointmentDate,
+      time: body.time,
+      paymentType: body.paymentType,
+      paymentDate: paymentDate,
+      paymentImage: body.paymentImage || "",
+      userId: authUser.id,
+      status: "confirmed",
+    });
+
     const newHozori = new Hozori({
       name: body.name.trim(),
       lastname: body.lastname.trim(),
@@ -214,7 +272,18 @@ export async function POST(request: NextRequest) {
     });
 
     // Save to database
-    const savedHozori = await newHozori.save();
+    console.log("Attempting to save hozori reservation...");
+    let savedHozori;
+    try {
+      savedHozori = await newHozori.save();
+      console.log("Successfully saved hozori reservation:", savedHozori._id);
+    } catch (saveError) {
+      console.error("Database save error:", saveError);
+      return NextResponse.json(
+        { success: false, error: "خطا در ذخیره رزرو" },
+        { status: 400 }
+      );
+    }
 
     // Log the creation
     console.log(
