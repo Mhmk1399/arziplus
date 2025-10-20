@@ -4,8 +4,13 @@ import HeroSection from "../global/heroSection";
 import { FaRocket, FaGlobe, FaShieldAlt } from "react-icons/fa";
 import Link from "next/link";
 import Image from "next/image";
+import { useState } from "react";
 
 const HomePage = () => {
+  const [imageErrors, setImageErrors] = useState<Record<number, boolean>>({});
+  const handleImageError = (serviceId: number) => {
+    setImageErrors((prev) => ({ ...prev, [serviceId]: true }));
+  };
   const serviceCategories = [
     {
       title: "خدمات بانکی بین المللی",
@@ -732,6 +737,7 @@ const HomePage = () => {
       />
 
       {/* Services Section */}
+      {/* Services Section */}
       <section
         className="py-20 px-2 md:px-8 bg-gray-50/50 backdrop-blur-md"
         dir="rtl"
@@ -768,82 +774,176 @@ const HomePage = () => {
 
               {category.subcategories?.map((subcategory, subIndex) => (
                 <div key={subIndex} className="mb-16">
-                  {/* Subcategory Header */}
-                  {/* <div className="flex items-center justify-center mb-8">
-                    <div className="flex-1 h-px bg-gradient-to-r from-transparent to-[#FF7A00]/30"></div>
-                    <h4 className="px-6 text-xl font-semibold text-[#0A1D37] bg-white/80 rounded-full py-2">
-                      {subcategory.name}
-                    </h4>
-                    <div className="flex-1 h-px bg-gradient-to-l from-transparent to-[#FF7A00]/30"></div>
-                  </div> */}
-
                   {/* Services Grid - Mobile Horizontal Scroll */}
-                  <div className="relative">
-                    {/* Mobile: Horizontal Scroll */}
-                    <div className="md:hidden">
-                      <div
-                        className="flex gap-4 overflow-x-auto pb-4 px-4 scrollbar-hide"
-                        style={{
-                          scrollbarWidth: "none",
-                          msOverflowStyle: "none",
-                        }}
-                      >
-                        {subcategory.services.map((service) => (
+                  <div className="md:hidden">
+                    <div
+                      className="flex gap-4 overflow-x-auto pb-4 px-4 scrollbar-hide"
+                      style={{
+                        scrollbarWidth: "none",
+                        msOverflowStyle: "none",
+                      }}
+                    >
+                      {subcategory.services.map((service) => {
+                        const imageError = imageErrors[service.id];
+                        return (
                           <Link
                             key={service.id}
                             href={service.href}
-                            className="group flex-shrink-0 w-48 bg-white/90 backdrop-blur-sm border border-white/20 rounded-2xl p-4 hover:bg-white hover:border-[#FF7A00]/50 transition-all duration-300 hover:scale-105 hover:shadow-xl"
+                            className="group flex-shrink-0 w-80 bg-white/90 backdrop-blur-sm border border-white/20 rounded-2xl overflow-hidden hover:bg-white hover:border-[#FF7A00]/50 transition-all duration-300 hover:scale-105 hover:shadow-xl"
                           >
-                            <div className="relative mb-3">
-                              <Image
-                                src={service.image}
-                                alt={service.title}
-                                width={200}
-                                height={120}
-                                className="w-1/2 h-1/2 mx-auto object-cover group-hover:scale-110 transition-transform duration-300"
-                              />
+                            {/* Service Image */}
+                            <div className="relative h-48 w-full overflow-hidden">
+                              {!imageError && service.image ? (
+                                <Image
+                                  src={service.image}
+                                  alt={service.title}
+                                  fill
+                                  className="object-cover transition-transform duration-500 group-hover:scale-110"
+                                  sizes="(max-width: 768px) 100vw"
+                                  unoptimized={true}
+                                  onError={() => {
+                                    console.log(
+                                      "Failed to load service image with Next.js Image:",
+                                      service.image
+                                    );
+                                    console.log(
+                                      "Falling back to regular img tag"
+                                    );
+                                    handleImageError(service.id);
+                                  }}
+                                />
+                              ) : service.image ? (
+                                <img
+                                  src={service.image}
+                                  alt={service.title}
+                                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                                  onError={(e) => {
+                                    console.log(
+                                      "Failed to load service image with img tag:",
+                                      service.image
+                                    );
+                                    const img = e.target as HTMLImageElement;
+                                    img.style.display = "none";
+                                  }}
+                                />
+                              ) : (
+                                <Image
+                                  src="/assets/images/logoArzi.webp"
+                                  alt={service.title}
+                                  fill
+                                  className="object-cover transition-transform duration-500 group-hover:scale-110"
+                                  sizes="(max-width: 768px) 100vw"
+                                />
+                              )}
+
+                              {/* Fallback Text */}
+                              {!service.image && (
+                                <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-[#FF7A00]/20 to-[#4DBFF0]/20">
+                                  <div className="text-4xl text-[#0A1D37]/10 font-bold">
+                                    {service.title.charAt(0)}
+                                  </div>
+                                </div>
+                              )}
+
+                              {/* Overlay */}
+                              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-300" />
+
+                              {/* Service Title Overlay */}
+                              <div className="absolute bottom-0 left-0 right-0 p-4">
+                                <h3 className="text-white font-bold text-base mb-2 leading-relaxed">
+                                  {service.title}
+                                </h3>
+                                <p className="text-white/90 text-xs leading-relaxed line-clamp-2">
+                                  {service.description}
+                                </p>
+                              </div>
                             </div>
-
-                            <h5 className="text-[#0A1D37] font-bold text-center text-sm mb-2 group-hover:text-[#FF7A00] transition-colors duration-300 line-clamp-2">
-                              {service.title}
-                            </h5>
-
-                            <p className="text-[#A0A0A0] text-xs text-center leading-relaxed group-hover:text-[#0A1D37]/80 transition-colors duration-300 line-clamp-3">
-                              {service.description}
-                            </p>
                           </Link>
-                        ))}
-                      </div>
+                        );
+                      })}
                     </div>
+                  </div>
 
-                    {/* Desktop: Grid Layout */}
-                    <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-6 gap-2 rounded-2xl  p-5">
-                      {subcategory.services.map((service) => (
+                  {/* Desktop: Grid Layout */}
+                  <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {subcategory.services.map((service) => {
+                      const imageError = imageErrors[service.id];
+                      return (
                         <Link
                           key={service.id}
                           href={service.href}
-                          className="group bg-white/10  shadow-xl backdrop-blur-sm border border-black/10 rounded-2xl p-6 hover:bg-white hover:border-[#FF7A00]/50 transition-all duration-300 hover:scale-105 hover:shadow-xl"
+                          className="group bg-white/10 shadow-xl backdrop-blur-sm border border-black/10 rounded-2xl overflow-hidden hover:bg-white hover:border-[#FF7A00]/50 transition-all duration-300 hover:scale-105 hover:shadow-xl"
                         >
-                          <div className="relative mb-4 overflow-hidden rounded-xl">
-                            <Image
-                              src={service.image}
-                              alt={service.title}
-                              width={300}
-                              height={200}
-                              className="w-1/2 h-1/2 mx-auto object-cover group-hover:scale-110 transition-transform duration-300"
-                            />
+                          {/* Service Image */}
+                          <div className="relative h-64 w-full overflow-hidden">
+                            {!imageError && service.image ? (
+                              <Image
+                                src={service.image}
+                                alt={service.title}
+                                fill
+                                className="object-cover transition-transform duration-500 group-hover:scale-110"
+                                sizes="(max-width: 1200px) 50vw, 33vw"
+                                unoptimized={true}
+                                onError={() => {
+                                  console.log(
+                                    "Failed to load service image with Next.js Image:",
+                                    service.image
+                                  );
+                                  console.log(
+                                    "Falling back to regular img tag"
+                                  );
+                                  handleImageError(service.id);
+                                }}
+                              />
+                            ) : service.image ? (
+                              <img
+                                src={service.image}
+                                alt={service.title}
+                                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                                onError={(e) => {
+                                  console.log(
+                                    "Failed to load service image with img tag:",
+                                    service.image
+                                  );
+                                  const img = e.target as HTMLImageElement;
+                                  img.style.display = "none";
+                                }}
+                              />
+                            ) : (
+                              <Image
+                                src="/assets/images/logoArzi.webp"
+                                alt={service.title}
+                                fill
+                                className="object-cover transition-transform duration-500 group-hover:scale-110"
+                                sizes="(max-width: 1200px) 50vw, 33vw"
+                              />
+                            )}
+
+                            {/* Fallback Text */}
+                            {!service.image && (
+                              <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-[#FF7A00]/20 to-[#4DBFF0]/20">
+                                <div className="text-5xl text-[#0A1D37]/10 font-bold">
+                                  {service.title.charAt(0)}
+                                </div>
+                              </div>
+                            )}
+
+                            {/* Overlay */}
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-300" />
+
+                            {/* Service Title Overlay */}
+                            <div className="absolute bottom-0 left-0 right-0 p-6">
+                              <h3 className="text-white font-bold text-lg mb-2 leading-relaxed">
+                                {service.title}
+                              </h3>
+                              <p className="text-white/90 text-sm leading-relaxed line-clamp-3">
+                                {service.description}
+                              </p>
+                            </div>
                           </div>
-
-                          <h5 className="text-[#0A1D37] text-center font-bold text-sm mb-2 group-hover:text-[#FF7A00] transition-colors duration-300">
-                            {service.title}
-                          </h5>
-
-                          <p className="text-[#A0A0A0] text-center text-[10px] leading-relaxed group-hover:text-[#0A1D37]/80 transition-colors duration-300 mb-4">
-                            {service.description}
-                          </p>
                         </Link>
-                      ))}
-                    </div>
+                      );
+                    })}
                   </div>
                 </div>
               ))}
