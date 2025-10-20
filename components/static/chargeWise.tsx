@@ -248,7 +248,7 @@ const WiseCharge = () => {
             icon: <FaShieldAlt />,
           },
         ]}
-        imageSrc="/assets/images/wise2.webp"
+        imageSrc="https://arziplus.storage.c2.liara.space/images/pages/every.png"
         imageAlt="شارژ حساب وایز با ارزی پلاس"
         theme={splitSectionThemes.dark}
         layout="image-left"

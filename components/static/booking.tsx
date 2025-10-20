@@ -184,7 +184,7 @@ const BookingPaymentPage = () => {
             icon: <FaShieldAlt />,
           },
         ]}
-        imageSrc="/assets/images/booking-2.webp"
+        imageSrc="https://arziplus.storage.c2.liara.space/images/pages/every.png"
         imageAlt="پرداخت هزینه Booking.com"
         theme={splitSectionThemes.dark}
         layout="image-left"

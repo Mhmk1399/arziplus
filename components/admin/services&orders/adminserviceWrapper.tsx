@@ -29,7 +29,7 @@ interface AdminStats {
 
 const ServiceWrapper: React.FC<AdminWrapperProps> = ({
   initialTab = "requests",
-  className = "mx-10 my-28",
+  className = "mx-10 my-4",
 }) => {
   const [activeTab, setActiveTab] = useState<
     "requests" | "services" | "analytics"
@@ -279,7 +279,7 @@ const ServiceWrapper: React.FC<AdminWrapperProps> = ({
   ) {
     return (
       <div
-        className={`min-h-screen bg-gradient-to-br from-red-50 via-white to-orange-50 ${className}`}
+        className={`min-h-screen    ${className}`}
         dir="rtl"
       >
         <div className="container mx-auto px-4 py-32">
@@ -312,7 +312,7 @@ const ServiceWrapper: React.FC<AdminWrapperProps> = ({
 
   return (
     <div className={`min-h-screen  ${className}`} dir="rtl">
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4  ">
         {/* Admin Welcome Section */}
         {renderAdminWelcome()}
 

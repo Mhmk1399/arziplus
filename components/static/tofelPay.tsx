@@ -171,7 +171,6 @@ const ToeflPayment = () => {
       category: "ثبت‌نام",
     },
   ];
- 
 
   return (
     <div>
@@ -256,7 +255,7 @@ const ToeflPayment = () => {
             icon: <FaShieldAlt />,
           },
         ]}
-        imageSrc="/assets/images/toefl-guide.webp"
+        imageSrc="https://arziplus.storage.c2.liara.space/images/pages/every.png"
         imageAlt="راهنمای ثبت‌نام TOEFL با ارزی پلاس"
         theme={splitSectionThemes.dark}
         layout="image-left"
@@ -309,7 +308,7 @@ const ToeflPayment = () => {
       <FAQSection
         heading="پرسش‌های متداول پرداخت TOEFL"
         description="پاسخ به سؤالات رایج متقاضیان درباره پرداخت هزینه آزمون TOEFL در ارزی پلاس"
-         faqItems={toeflFaq}
+        faqItems={toeflFaq}
         buttons={[
           {
             text: "تماس با پشتیبانی",

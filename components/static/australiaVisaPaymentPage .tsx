@@ -335,7 +335,7 @@ Subclass 600
             icon: <FaShieldAlt />,
           },
         ]}
-        imageSrc="/assets/images/australia-visa-2.webp"
+        imageSrc="https://arziplus.storage.c2.liara.space/images/pages/every.png"
         imageAlt="پرداخت هزینه سفارت استرالیا"
         theme={splitSectionThemes.dark}
         layout="image-left"

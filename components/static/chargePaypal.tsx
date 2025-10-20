@@ -202,7 +202,7 @@ const PaypalCharge = () => {
             icon: <FaShieldAlt />,
           },
         ]}
-        imageSrc="/assets/images/paypal2.webp"
+        imageSrc="https://arziplus.storage.c2.liara.space/images/pages/every.png"
         imageAlt="شارژ و مدیریت حساب پی‌پال با ارزی پلاس"
         theme={splitSectionThemes.dark}
         layout="image-left"

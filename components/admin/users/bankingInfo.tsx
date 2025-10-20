@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import {
   FaSearch,
   FaCheck,
@@ -250,11 +251,8 @@ const BankingInfoAdmin = () => {
     <div className="min-h-screen p-6" dir="rtl">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="text-center mb-8">
-          <div className="w-16 h-16 bg-gradient-to-r from-[#0A1D37] to-[#4DBFF0] rounded-full flex items-center justify-center mx-auto mb-4">
-            <FaUniversity className="text-white text-2xl" />
-          </div>
-          <h1 className="text-3xl font-bold text-[#0A1D37] mb-2">
+        <div className="  mb-8">
+          <h1 className="md:text-3xl text-xl font-bold text-[#0A1D37]">
             مدیریت اطلاعات بانکی
           </h1>
           <p className="text-gray-600">بررسی و تایید اطلاعات بانکی کاربران</p>
@@ -459,326 +457,334 @@ const BankingInfoAdmin = () => {
       </div>
 
       {/* Details Modal */}
-      {showDetailsModal && selectedBankingInfo && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="bg-white/90 backdrop-blur-sm border border-gray-200/50 rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl">
-            <div className="p-6 border-b border-gray-200/50">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-gradient-to-r from-[#0A1D37] to-[#4DBFF0] rounded-full flex items-center justify-center">
-                  <FaUniversity className="text-white" />
-                </div>
-                <div>
-                  <h2 className="text-xl font-bold text-[#0A1D37]">
-                    جزئیات اطلاعات بانکی
-                  </h2>
-                  <p className="text-sm text-gray-600">
-                    مشاهده کامل اطلاعات بانکی کاربر
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <div className="p-6 space-y-6">
-              {/* User Info Card */}
-              <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-4">
+      {showDetailsModal &&
+        selectedBankingInfo &&
+        typeof document !== "undefined" &&
+        createPortal(
+          <div dir="rtl" className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+            <div className="bg-white/90 backdrop-blur-sm border border-gray-200/50 rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl">
+              <div className="p-6 border-b border-gray-200/50">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center">
-                    <FaUser className="text-white" />
+                  <div className="w-10 h-10 bg-gradient-to-r from-[#0A1D37] to-[#4DBFF0] rounded-full flex items-center justify-center">
+                    <FaUniversity className="text-white" />
                   </div>
                   <div>
-                    <h3 className="font-bold text-blue-800">
-                      {getUserName(selectedBankingInfo.user)}
-                    </h3>
-                    <p className="text-sm text-blue-600">
-                      شناسه کاربر: {selectedBankingInfo.user._id.slice(-8)}
+                    <h2 className="text-xl font-bold text-[#0A1D37]">
+                      جزئیات اطلاعات بانکی
+                    </h2>
+                    <p className="text-sm text-gray-600">
+                      مشاهده کامل اطلاعات بانکی کاربر
                     </p>
                   </div>
                 </div>
               </div>
 
-              {/* Banking Details Grid */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="bg-white/80 backdrop-blur-sm border border-gray-200/50 rounded-xl p-4">
-                  <label className="text-sm font-medium text-[#0A1D37] flex items-center gap-2">
-                    <FaUniversity className="text-xs" />
-                    نام بانک
-                  </label>
-                  <div className="text-[#0A1D37] font-semibold mt-1">
-                    {selectedBankingInfo.bankingInfo.bankName}
+              <div className="p-6 space-y-6">
+                {/* User Info Card */}
+                <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center">
+                      <FaUser className="text-white" />
+                    </div>
+                    <div>
+                      <h3 className="font-bold text-blue-800">
+                        {getUserName(selectedBankingInfo.user)}
+                      </h3>
+                      <p className="text-sm text-blue-600">
+                        شناسه کاربر: {selectedBankingInfo.user._id.slice(-8)}
+                      </p>
+                    </div>
                   </div>
                 </div>
-                <div className="bg-white/80 backdrop-blur-sm border border-gray-200/50 rounded-xl p-4">
-                  <label className="text-sm font-medium text-[#0A1D37] flex items-center gap-2">
-                    <FaUser className="text-xs" />
-                    نام صاحب حساب
-                  </label>
-                  <div className="text-[#0A1D37] font-semibold mt-1">
-                    {selectedBankingInfo.bankingInfo.accountHolderName}
-                  </div>
-                </div>
-                <div className="bg-white/80 backdrop-blur-sm border border-gray-200/50 rounded-xl p-4">
-                  <label className="text-sm font-medium text-[#0A1D37]">
-                    شماره کارت
-                  </label>
-                  <div className="text-[#0A1D37] font-mono font-semibold mt-1">
-                    {formatCardNumber(
-                      selectedBankingInfo.bankingInfo.cardNumber
-                    )}
-                  </div>
-                </div>
-                <div className="bg-white/80 backdrop-blur-sm border border-gray-200/50 rounded-xl p-4">
-                  <label className="text-sm font-medium text-[#0A1D37]">
-                    شماره شبا
-                  </label>
-                  <div className="text-[#0A1D37] font-mono font-semibold mt-1">
-                    {selectedBankingInfo.bankingInfo.shebaNumber}
-                  </div>
-                </div>
-              </div>
 
-              {/* Status Card */}
-              <div className="bg-white/80 backdrop-blur-sm border border-gray-200/50 rounded-xl p-4">
-                <label className="text-sm font-medium text-[#0A1D37] mb-3 block">
-                  وضعیت اطلاعات
-                </label>
-                <div className="flex items-center gap-3">
-                  <span
-                    className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium border ${getStatusColor(
-                      selectedBankingInfo.bankingInfo.status
-                    )}`}
-                  >
-                    {getStatusText(selectedBankingInfo.bankingInfo.status)}
-                  </span>
-                  <span className="text-sm text-gray-600">
-                    ثبت شده در:{" "}
-                    {new Date(
-                      selectedBankingInfo.bankingInfo.createdAt
-                    ).toLocaleDateString("fa-IR")}
-                  </span>
-                </div>
-              </div>
-
-              {selectedBankingInfo.bankingInfo.rejectionNotes && (
-                <div className="bg-red-50 border border-red-200 rounded-xl p-4">
-                  <label className="text-sm font-medium text-red-700 flex items-center gap-2 mb-2">
-                    <FaTimes className="text-xs" />
-                    دلیل رد اطلاعات
-                  </label>
-                  <div className="bg-white/80 border border-red-200/50 rounded-lg p-3 text-red-800">
-                    {selectedBankingInfo.bankingInfo.rejectionNotes}
-                  </div>
-                </div>
-              )}
-            </div>
-
-            <div className="p-6 border-t border-gray-200/50 flex justify-end gap-3">
-              <button
-                onClick={() => setShowDetailsModal(false)}
-                className="flex items-center gap-2 px-6 py-3 border border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition-all"
-              >
-                <FaTimes className="text-sm" />
-                بستن
-              </button>
-              {selectedBankingInfo.bankingInfo.status ===
-                "pending_verification" && (
-                <button
-                  onClick={() => {
-                    setShowDetailsModal(false);
-                    openReviewModal(
-                      selectedBankingInfo.user,
-                      selectedBankingInfo.bankingInfo
-                    );
-                  }}
-                  className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-[#0A1D37] to-[#4DBFF0] text-white rounded-xl hover:shadow-lg transition-all"
-                >
-                  <FaCheck className="text-sm" />
-                  بررسی و تایید
-                </button>
-              )}
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Review Modal */}
-      {showReviewModal && selectedBankingInfo && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="bg-white/90 backdrop-blur-sm border border-gray-200/50 rounded-2xl max-w-xl w-full shadow-2xl">
-            <div className="p-6 border-b border-gray-200/50">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-gradient-to-r from-green-500 to-blue-500 rounded-full flex items-center justify-center">
-                  <FaCheck className="text-white" />
-                </div>
-                <div>
-                  <h2 className="text-xl font-bold text-[#0A1D37]">
-                    بررسی اطلاعات بانکی
-                  </h2>
-                  <p className="text-sm text-gray-600">
-                    تایید یا رد اطلاعات بانکی کاربر
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <div className="p-6 space-y-6">
-              <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-4">
-                <div className="flex items-center gap-3 mb-3">
-                  <FaUser className="text-blue-600" />
-                  <span className="font-medium text-blue-800">
-                    اطلاعات کاربر
-                  </span>
-                </div>
-                <div className="space-y-2 text-sm">
-                  <div>
-                    <span className="text-blue-600 font-medium">کاربر:</span>{" "}
-                    <span className="text-blue-900">
-                      {getUserName(selectedBankingInfo.user)}
-                    </span>
-                  </div>
-                  <div>
-                    <span className="text-blue-600 font-medium">بانک:</span>{" "}
-                    <span className="text-blue-900">
+                {/* Banking Details Grid */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="bg-white/80 backdrop-blur-sm border border-gray-200/50 rounded-xl p-4">
+                    <label className="text-sm font-medium text-[#0A1D37] flex items-center gap-2">
+                      <FaUniversity className="text-xs" />
+                      نام بانک
+                    </label>
+                    <div className="text-[#0A1D37] font-semibold mt-1">
                       {selectedBankingInfo.bankingInfo.bankName}
-                    </span>
+                    </div>
                   </div>
-                  <div>
-                    <span className="text-blue-600 font-medium">کارت:</span>{" "}
-                    <span className="text-blue-900 font-mono">
+                  <div className="bg-white/80 backdrop-blur-sm border border-gray-200/50 rounded-xl p-4">
+                    <label className="text-sm font-medium text-[#0A1D37] flex items-center gap-2">
+                      <FaUser className="text-xs" />
+                      نام صاحب حساب
+                    </label>
+                    <div className="text-[#0A1D37] font-semibold mt-1">
+                      {selectedBankingInfo.bankingInfo.accountHolderName}
+                    </div>
+                  </div>
+                  <div className="bg-white/80 backdrop-blur-sm border border-gray-200/50 rounded-xl p-4">
+                    <label className="text-sm font-medium text-[#0A1D37]">
+                      شماره کارت
+                    </label>
+                    <div className="text-[#0A1D37] font-mono font-semibold mt-1">
                       {formatCardNumber(
                         selectedBankingInfo.bankingInfo.cardNumber
                       )}
+                    </div>
+                  </div>
+                  <div className="bg-white/80 backdrop-blur-sm border border-gray-200/50 rounded-xl p-4">
+                    <label className="text-sm font-medium text-[#0A1D37]">
+                      شماره شبا
+                    </label>
+                    <div className="text-[#0A1D37] font-mono font-semibold mt-1">
+                      {selectedBankingInfo.bankingInfo.shebaNumber}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Status Card */}
+                <div className="bg-white/80 backdrop-blur-sm border border-gray-200/50 rounded-xl p-4">
+                  <label className="text-sm font-medium text-[#0A1D37] mb-3 block">
+                    وضعیت اطلاعات
+                  </label>
+                  <div className="flex items-center gap-3">
+                    <span
+                      className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium border ${getStatusColor(
+                        selectedBankingInfo.bankingInfo.status
+                      )}`}
+                    >
+                      {getStatusText(selectedBankingInfo.bankingInfo.status)}
                     </span>
+                    <span className="text-sm text-gray-600">
+                      ثبت شده در:{" "}
+                      {new Date(
+                        selectedBankingInfo.bankingInfo.createdAt
+                      ).toLocaleDateString("fa-IR")}
+                    </span>
+                  </div>
+                </div>
+
+                {selectedBankingInfo.bankingInfo.rejectionNotes && (
+                  <div className="bg-red-50 border border-red-200 rounded-xl p-4">
+                    <label className="text-sm font-medium text-red-700 flex items-center gap-2 mb-2">
+                      <FaTimes className="text-xs" />
+                      دلیل رد اطلاعات
+                    </label>
+                    <div className="bg-white/80 border border-red-200/50 rounded-lg p-3 text-red-800">
+                      {selectedBankingInfo.bankingInfo.rejectionNotes}
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              <div className="p-6 border-t border-gray-200/50 flex justify-end gap-3">
+                <button
+                  onClick={() => setShowDetailsModal(false)}
+                  className="flex items-center gap-2 px-6 py-3 border border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition-all"
+                >
+                  <FaTimes className="text-sm" />
+                  بستن
+                </button>
+                {selectedBankingInfo.bankingInfo.status ===
+                  "pending_verification" && (
+                  <button
+                    onClick={() => {
+                      setShowDetailsModal(false);
+                      openReviewModal(
+                        selectedBankingInfo.user,
+                        selectedBankingInfo.bankingInfo
+                      );
+                    }}
+                    className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-[#0A1D37] to-[#4DBFF0] text-white rounded-xl hover:shadow-lg transition-all"
+                  >
+                    <FaCheck className="text-sm" />
+                    بررسی و تایید
+                  </button>
+                )}
+              </div>
+            </div>
+          </div>,
+          document.body
+        )}
+
+      {/* Review Modal */}
+      {showReviewModal &&
+        selectedBankingInfo &&
+        typeof document !== "undefined" &&
+        createPortal(
+          <div dir="rtl" className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+            <div className="bg-white/90 backdrop-blur-sm border border-gray-200/50 rounded-2xl max-w-xl w-full shadow-2xl">
+              <div className="p-6 border-b border-gray-200/50">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 bg-gradient-to-r from-green-500 to-blue-500 rounded-full flex items-center justify-center">
+                    <FaCheck className="text-white" />
+                  </div>
+                  <div>
+                    <h2 className="text-xl font-bold text-[#0A1D37]">
+                      بررسی اطلاعات بانکی
+                    </h2>
+                    <p className="text-sm text-gray-600">
+                      تایید یا رد اطلاعات بانکی کاربر
+                    </p>
                   </div>
                 </div>
               </div>
 
-              <div className="bg-white/80 backdrop-blur-sm border border-gray-200/50 rounded-xl p-4">
-                <label className="block text-sm font-medium text-[#0A1D37] mb-4">
-                  تصمیم نهایی
-                </label>
-                <div className="grid grid-cols-2 gap-3">
-                  <label
-                    className={`flex items-center justify-center gap-2 p-3 rounded-lg border-2 cursor-pointer transition-all ${
-                      reviewStatus === "accepted"
-                        ? "border-green-500 bg-green-50 text-green-700"
-                        : "border-gray-200 bg-white text-gray-600 hover:border-green-200"
-                    }`}
-                  >
-                    <input
-                      type="radio"
-                      name="reviewStatus"
-                      value="accepted"
-                      checked={reviewStatus === "accepted"}
-                      onChange={(e) =>
-                        setReviewStatus(
-                          e.target.value as "accepted" | "rejected"
-                        )
-                      }
-                      className="hidden"
-                    />
-                    <FaCheck
-                      className={
-                        reviewStatus === "accepted"
-                          ? "text-green-600"
-                          : "text-gray-400"
-                      }
-                    />
-                    <span className="font-medium">تایید</span>
-                  </label>
-                  <label
-                    className={`flex items-center justify-center gap-2 p-3 rounded-lg border-2 cursor-pointer transition-all ${
-                      reviewStatus === "rejected"
-                        ? "border-red-500 bg-red-50 text-red-700"
-                        : "border-gray-200 bg-white text-gray-600 hover:border-red-200"
-                    }`}
-                  >
-                    <input
-                      type="radio"
-                      name="reviewStatus"
-                      value="rejected"
-                      checked={reviewStatus === "rejected"}
-                      onChange={(e) =>
-                        setReviewStatus(
-                          e.target.value as "accepted" | "rejected"
-                        )
-                      }
-                      className="hidden"
-                    />
-                    <FaTimes
-                      className={
-                        reviewStatus === "rejected"
-                          ? "text-red-600"
-                          : "text-gray-400"
-                      }
-                    />
-                    <span className="font-medium">رد</span>
-                  </label>
+              <div className="p-6 space-y-6">
+                <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-4">
+                  <div className="flex items-center gap-3 mb-3">
+                    <FaUser className="text-blue-600" />
+                    <span className="font-medium text-blue-800">
+                      اطلاعات کاربر
+                    </span>
+                  </div>
+                  <div className="space-y-2 text-sm">
+                    <div>
+                      <span className="text-blue-600 font-medium">کاربر:</span>{" "}
+                      <span className="text-blue-900">
+                        {getUserName(selectedBankingInfo.user)}
+                      </span>
+                    </div>
+                    <div>
+                      <span className="text-blue-600 font-medium">بانک:</span>{" "}
+                      <span className="text-blue-900">
+                        {selectedBankingInfo.bankingInfo.bankName}
+                      </span>
+                    </div>
+                    <div>
+                      <span className="text-blue-600 font-medium">کارت:</span>{" "}
+                      <span className="text-blue-900 font-mono">
+                        {formatCardNumber(
+                          selectedBankingInfo.bankingInfo.cardNumber
+                        )}
+                      </span>
+                    </div>
+                  </div>
                 </div>
+
+                <div className="bg-white/80 backdrop-blur-sm border border-gray-200/50 rounded-xl p-4">
+                  <label className="block text-sm font-medium text-[#0A1D37] mb-4">
+                    تصمیم نهایی
+                  </label>
+                  <div className="grid grid-cols-2 gap-3">
+                    <label
+                      className={`flex items-center justify-center gap-2 p-3 rounded-lg border-2 cursor-pointer transition-all ${
+                        reviewStatus === "accepted"
+                          ? "border-green-500 bg-green-50 text-green-700"
+                          : "border-gray-200 bg-white text-gray-600 hover:border-green-200"
+                      }`}
+                    >
+                      <input
+                        type="radio"
+                        name="reviewStatus"
+                        value="accepted"
+                        checked={reviewStatus === "accepted"}
+                        onChange={(e) =>
+                          setReviewStatus(
+                            e.target.value as "accepted" | "rejected"
+                          )
+                        }
+                        className="hidden"
+                      />
+                      <FaCheck
+                        className={
+                          reviewStatus === "accepted"
+                            ? "text-green-600"
+                            : "text-gray-400"
+                        }
+                      />
+                      <span className="font-medium">تایید</span>
+                    </label>
+                    <label
+                      className={`flex items-center justify-center gap-2 p-3 rounded-lg border-2 cursor-pointer transition-all ${
+                        reviewStatus === "rejected"
+                          ? "border-red-500 bg-red-50 text-red-700"
+                          : "border-gray-200 bg-white text-gray-600 hover:border-red-200"
+                      }`}
+                    >
+                      <input
+                        type="radio"
+                        name="reviewStatus"
+                        value="rejected"
+                        checked={reviewStatus === "rejected"}
+                        onChange={(e) =>
+                          setReviewStatus(
+                            e.target.value as "accepted" | "rejected"
+                          )
+                        }
+                        className="hidden"
+                      />
+                      <FaTimes
+                        className={
+                          reviewStatus === "rejected"
+                            ? "text-red-600"
+                            : "text-gray-400"
+                        }
+                      />
+                      <span className="font-medium">رد</span>
+                    </label>
+                  </div>
+                </div>
+
+                {reviewStatus === "rejected" && (
+                  <div className="bg-red-50 border border-red-200 rounded-xl p-4">
+                    <label className="flex items-center gap-2 text-sm font-medium text-red-700 mb-3">
+                      <FaTimes className="text-xs" />
+                      دلیل رد اطلاعات *
+                    </label>
+                    <textarea
+                      value={rejectionNotes}
+                      onChange={(e) => setRejectionNotes(e.target.value)}
+                      className="w-full px-4 py-3 border border-red-200 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-red-500 bg-white transition-all"
+                      rows={4}
+                      placeholder="لطفاً دلیل رد اطلاعات بانکی را به صورت واضح و مفصل توضیح دهید..."
+                      required
+                    />
+                    <p className="text-xs text-red-600 mt-2">
+                      این توضیحات برای کاربر ارسال خواهد شد
+                    </p>
+                  </div>
+                )}
               </div>
 
-              {reviewStatus === "rejected" && (
-                <div className="bg-red-50 border border-red-200 rounded-xl p-4">
-                  <label className="flex items-center gap-2 text-sm font-medium text-red-700 mb-3">
-                    <FaTimes className="text-xs" />
-                    دلیل رد اطلاعات *
-                  </label>
-                  <textarea
-                    value={rejectionNotes}
-                    onChange={(e) => setRejectionNotes(e.target.value)}
-                    className="w-full px-4 py-3 border border-red-200 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-red-500 bg-white transition-all"
-                    rows={4}
-                    placeholder="لطفاً دلیل رد اطلاعات بانکی را به صورت واضح و مفصل توضیح دهید..."
-                    required
-                  />
-                  <p className="text-xs text-red-600 mt-2">
-                    این توضیحات برای کاربر ارسال خواهد شد
-                  </p>
-                </div>
-              )}
+              <div className="p-6 border-t border-gray-200/50 flex justify-end gap-3">
+                <button
+                  onClick={() => setShowReviewModal(false)}
+                  className="flex items-center gap-2 px-6 py-3 border border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition-all"
+                >
+                  <FaTimes className="text-sm" />
+                  انصراف
+                </button>
+                <button
+                  onClick={handleStatusUpdate}
+                  disabled={
+                    submitting ||
+                    (reviewStatus === "rejected" && !rejectionNotes.trim())
+                  }
+                  className={`flex items-center gap-2 px-6 py-3 rounded-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed ${
+                    reviewStatus === "accepted"
+                      ? "bg-gradient-to-r from-green-500 to-emerald-500 text-white hover:shadow-lg"
+                      : "bg-gradient-to-r from-red-500 to-pink-500 text-white hover:shadow-lg"
+                  }`}
+                >
+                  {submitting ? (
+                    <>
+                      <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                      در حال پردازش...
+                    </>
+                  ) : (
+                    <>
+                      {reviewStatus === "accepted" ? (
+                        <FaCheck className="text-sm" />
+                      ) : (
+                        <FaTimes className="text-sm" />
+                      )}
+                      {reviewStatus === "accepted"
+                        ? "تایید اطلاعات"
+                        : "رد اطلاعات"}
+                    </>
+                  )}
+                </button>
+              </div>
             </div>
-
-            <div className="p-6 border-t border-gray-200/50 flex justify-end gap-3">
-              <button
-                onClick={() => setShowReviewModal(false)}
-                className="flex items-center gap-2 px-6 py-3 border border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition-all"
-              >
-                <FaTimes className="text-sm" />
-                انصراف
-              </button>
-              <button
-                onClick={handleStatusUpdate}
-                disabled={
-                  submitting ||
-                  (reviewStatus === "rejected" && !rejectionNotes.trim())
-                }
-                className={`flex items-center gap-2 px-6 py-3 rounded-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed ${
-                  reviewStatus === "accepted"
-                    ? "bg-gradient-to-r from-green-500 to-emerald-500 text-white hover:shadow-lg"
-                    : "bg-gradient-to-r from-red-500 to-pink-500 text-white hover:shadow-lg"
-                }`}
-              >
-                {submitting ? (
-                  <>
-                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                    در حال پردازش...
-                  </>
-                ) : (
-                  <>
-                    {reviewStatus === "accepted" ? (
-                      <FaCheck className="text-sm" />
-                    ) : (
-                      <FaTimes className="text-sm" />
-                    )}
-                    {reviewStatus === "accepted"
-                      ? "تایید اطلاعات"
-                      : "رد اطلاعات"}
-                  </>
-                )}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+          </div>,
+          document.body
+        )}
     </div>
   );
 };

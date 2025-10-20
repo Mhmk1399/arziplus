@@ -18,6 +18,11 @@ const nextConfig: NextConfig = {
         hostname: "arziplus.storage.c2.liara.space",
         pathname: "/**",
       },
+      {
+        protocol: "https",
+        hostname: "cdn.zarinpal.com",
+        pathname: "/**",
+      },
     ],
   },
 };

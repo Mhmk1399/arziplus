@@ -176,7 +176,7 @@ const USVisaPaymentPage = () => {
             icon: <FaShieldAlt />,
           },
         ]}
-        imageSrc="/assets/images/usa-visa-2.webp"
+        imageSrc="https://arziplus.storage.c2.liara.space/images/pages/every.png"
         imageAlt="پرداخت هزینه سفارت آمریکا"
         theme={splitSectionThemes.dark}
         layout="image-left"

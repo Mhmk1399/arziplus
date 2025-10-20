@@ -214,7 +214,7 @@ const PerfectMoney = () => {
             icon: <FaShieldAlt />,
           },
         ]}
-        imageSrc="/assets/images/perfect.webp"
+        imageSrc="https://arziplus.storage.c2.liara.space/images/pages/every.png"
         imageAlt="افتتاح حساب بین‌المللی در ایران با ارزی پلاس"
         theme={splitSectionThemes.dark}
         layout="image-left"

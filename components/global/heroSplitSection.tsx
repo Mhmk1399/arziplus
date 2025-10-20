@@ -2,7 +2,7 @@
 import { estedadBold } from "@/next-persian-fonts/estedad";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -72,6 +72,7 @@ export default function HeroSplitSection({
   imageWidth = "1/2",
   features = [],
 }: Props) {
+  const [imageError, setImageError] = useState(false);
   const imageClass = `md:w-${imageWidth} w-full`;
   const textClass =
     imageWidth === "1/3"
@@ -238,12 +239,25 @@ export default function HeroSplitSection({
             {/* Shimmer Effect */}
             <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent transition-transform duration-1000"></div>
 
-            <Image
-              src={imageSrc}
-              alt={imageAlt}
-              fill
-              className="object-contain p-4 md:p-8 transition-transform duration-700 group-hover:scale-105"
-            />
+            {!imageError ? (
+              <Image
+                src={imageSrc}
+                alt={imageAlt}
+                fill
+                className="object-contain p-4 md:p-8 transition-transform duration-700 group-hover:scale-105"
+                onError={() => setImageError(true)}
+              />
+            ) : (
+              <img
+                src={imageSrc}
+                alt={imageAlt}
+                className="w-full h-full object-contain p-4 md:p-8 transition-transform duration-700 group-hover:scale-105"
+                onError={(e) => {
+                  const img = e.target as HTMLImageElement;
+                  img.style.display = "none";
+                }}
+              />
+            )}
 
             {/* Glow Effect */}
             <div className="absolute -inset-4 rounded-3xl bg-gradient-to-r from-[#0A1D37]/20 via-[#4DBFF0]/20 to-[#0A1D37]/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10"></div>

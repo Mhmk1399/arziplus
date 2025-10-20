@@ -212,7 +212,7 @@ const PayeerOpening = () => {
             icon: <FaShieldAlt />,
           },
         ]}
-        imageSrc="/assets/images/payeer.jpeg"
+        imageSrc="https://arziplus.storage.c2.liara.space/images/pages/every.png"
         imageAlt="افتتاح حساب بین‌المللی پایر در ایران با ارزی پلاس"
         theme={splitSectionThemes.dark}
         layout="image-left"

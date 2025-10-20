@@ -179,7 +179,7 @@ const AirbnbPaymentPage = () => {
             icon: <FaShieldAlt />,
           },
         ]}
-        imageSrc="/assets/images/airbnb-2.webp"
+        imageSrc="https://arziplus.storage.c2.liara.space/images/pages/every.png"
         imageAlt="پرداخت هزینه Airbnb"
         theme={splitSectionThemes.dark}
         layout="image-left"

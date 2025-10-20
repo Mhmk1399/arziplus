@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
 import { showToast } from "@/utilities/toast";
 import {
@@ -10,7 +11,7 @@ import {
   FaTrash,
   FaCheck,
   FaTimes,
-   FaUser,
+  FaUser,
   FaChild,
   FaIdCard,
   FaMapMarkerAlt,
@@ -149,9 +150,12 @@ const LotteryAdminList = () => {
   const [pageSize, setPageSize] = useState(10);
 
   // Modal states
-  const [selectedLottery, setSelectedLottery] = useState<LotteryRegistration | null>(null);
+  const [selectedLottery, setSelectedLottery] =
+    useState<LotteryRegistration | null>(null);
   const [showLotteryDetails, setShowLotteryDetails] = useState(false);
   const [showEditLottery, setShowEditLottery] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [lotteryToDelete, setLotteryToDelete] = useState<LotteryRegistration | null>(null);
 
   // Edit form state
   const [editForm, setEditForm] = useState({
@@ -199,7 +203,40 @@ const LotteryAdminList = () => {
   };
 
   // Delete lottery registration
-  const handleDeleteLottery = async (lotteryId: string) => {
+  const openDeleteModal = (lottery: LotteryRegistration) => {
+    setLotteryToDelete(lottery);
+    setShowDeleteModal(true);
+  };
+
+  const handleDeleteLottery = async () => {
+    if (!lotteryToDelete) return;
+
+    try {
+      const token = localStorage.getItem("authToken");
+      const response = await fetch(`/api/lottery?id=${lotteryToDelete._id}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "خطا در حذف ثبتنام");
+      }
+
+      showToast.success("ثبتنام با موفقیت حذف شد");
+      setShowDeleteModal(false);
+      setLotteryToDelete(null);
+      await fetchLotteries();
+    } catch (err) {
+      showToast.error(
+        err instanceof Error ? err.message : "خطا در حذف ثبتنام"
+      );
+    }
+  };
+
+  const oldHandleDeleteLottery = async (lotteryId: string) => {
     if (!confirm("آیا مطمئن هستید که می‌خواهید این ثبت‌نام را حذف کنید؟")) {
       return;
     }
@@ -221,7 +258,9 @@ const LotteryAdminList = () => {
       showToast.success("ثبت‌نام با موفقیت حذف شد");
       await fetchLotteries();
     } catch (err) {
-      showToast.error(err instanceof Error ? err.message : "خطا در حذف ثبت‌نام");
+      showToast.error(
+        err instanceof Error ? err.message : "خطا در حذف ثبت‌نام"
+      );
     }
   };
 
@@ -405,12 +444,11 @@ const LotteryAdminList = () => {
         <div className="mb-8">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-3">
-              <FaUsers className="text-3xl text-[#0A1D37]" />
               <div>
-                <h1 className="text-3xl font-bold text-gray-900">
+                <h1 className="md:text-3xl text-xl font-bold text-gray-900">
                   مدیریت ثبت‌نام‌های لاتاری
                 </h1>
-                <p className="text-gray-600">
+                <p className="text-gray-600 text-xs md:text-sm">
                   مشاهده و مدیریت درخواست‌های ثبت‌نام در قرعه‌کشی گرین کارت
                 </p>
               </div>
@@ -557,7 +595,9 @@ const LotteryAdminList = () => {
                           <div className="flex items-center gap-2">
                             <FaChild className="text-blue-500 text-xs" />
                             <span>
-                              {lottery.famillyInformations[0]?.numberOfChildren || 0} فرزند
+                              {lottery.famillyInformations[0]
+                                ?.numberOfChildren || 0}{" "}
+                              فرزند
                             </span>
                           </div>
                         </div>
@@ -568,12 +608,16 @@ const LotteryAdminList = () => {
                             {lottery.isPaid ? (
                               <>
                                 <FaCheck className="text-green-500 text-xs" />
-                                <span className="text-green-700 font-medium">پرداخت شده</span>
+                                <span className="text-green-700 font-medium">
+                                  پرداخت شده
+                                </span>
                               </>
                             ) : (
                               <>
                                 <FaTimes className="text-red-500 text-xs" />
-                                <span className="text-red-700 font-medium">پرداخت نشده</span>
+                                <span className="text-red-700 font-medium">
+                                  پرداخت نشده
+                                </span>
                               </>
                             )}
                           </div>
@@ -585,13 +629,16 @@ const LotteryAdminList = () => {
                                 <FaMoneyBillWave className="text-green-500 text-xs" />
                               )}
                               <span className="text-gray-600 text-xs">
-                                {lottery.paymentMethod === "card" ? "کارت" : "زرین‌پال"}
+                                {lottery.paymentMethod === "card"
+                                  ? "کارت"
+                                  : "زرین‌پال"}
                               </span>
                             </div>
                           )}
                           {lottery.paymentAmount && (
                             <div className="text-xs text-gray-500 mt-1">
-                              {lottery.paymentAmount.toLocaleString("fa-IR")} تومان
+                              {lottery.paymentAmount.toLocaleString("fa-IR")}{" "}
+                              تومان
                             </div>
                           )}
                         </div>
@@ -606,7 +653,9 @@ const LotteryAdminList = () => {
                         </span>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                        {new Date(lottery.submittedAt).toLocaleDateString("fa-IR")}
+                        {new Date(lottery.submittedAt).toLocaleDateString(
+                          "fa-IR"
+                        )}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-left text-sm font-medium">
                         <div className="flex items-center gap-2">
@@ -628,7 +677,10 @@ const LotteryAdminList = () => {
                             <>
                               <button
                                 onClick={() =>
-                                  handleQuickStatusUpdate(lottery._id, "approved")
+                                  handleQuickStatusUpdate(
+                                    lottery._id,
+                                    "approved"
+                                  )
                                 }
                                 className="text-green-600 hover:text-green-800 p-1 rounded"
                                 title="تایید"
@@ -654,7 +706,7 @@ const LotteryAdminList = () => {
                             </>
                           )}
                           <button
-                            onClick={() => handleDeleteLottery(lottery._id)}
+                            onClick={() => openDeleteModal(lottery)}
                             className="text-red-600 hover:text-red-800 p-1 rounded"
                             title="حذف"
                           >
@@ -756,18 +808,26 @@ const LotteryAdminList = () => {
                     <div>
                       <p className="text-sm text-gray-600 mb-1">تاریخ بررسی</p>
                       <p className="text-sm font-medium text-gray-900">
-                        {new Date(selectedLottery.reviewedAt).toLocaleDateString(
-                          "fa-IR"
-                        )}
+                        {new Date(
+                          selectedLottery.reviewedAt
+                        ).toLocaleDateString("fa-IR")}
                       </p>
                     </div>
                   )}
                   {selectedLottery.reviewedBy && (
                     <div>
-                      <p className="text-sm text-gray-600 mb-1">بررسی شده توسط</p>
+                      <p className="text-sm text-gray-600 mb-1">
+                        بررسی شده توسط
+                      </p>
                       <p className="text-sm font-medium text-gray-900">
-                        {selectedLottery.reviewedBy.nationalCredentials?.firstName}{" "}
-                        {selectedLottery.reviewedBy.nationalCredentials?.lastName}
+                        {
+                          selectedLottery.reviewedBy.nationalCredentials
+                            ?.firstName
+                        }{" "}
+                        {
+                          selectedLottery.reviewedBy.nationalCredentials
+                            ?.lastName
+                        }
                       </p>
                     </div>
                   )}
@@ -819,7 +879,9 @@ const LotteryAdminList = () => {
                           <FaMoneyBillWave className="text-green-500 text-sm" />
                         )}
                         <p className="text-sm font-medium text-gray-900">
-                          {selectedLottery.paymentMethod === "card" ? "کارت به کارت" : "پرداخت مستقیم (زرین‌پال)"}
+                          {selectedLottery.paymentMethod === "card"
+                            ? "کارت به کارت"
+                            : "پرداخت مستقیم (زرین‌پال)"}
                         </p>
                       </div>
                     </div>
@@ -828,7 +890,8 @@ const LotteryAdminList = () => {
                     <div>
                       <p className="text-sm text-gray-600 mb-1">مبلغ پرداخت</p>
                       <p className="text-sm font-medium text-gray-900">
-                        {selectedLottery.paymentAmount.toLocaleString("fa-IR")} تومان
+                        {selectedLottery.paymentAmount.toLocaleString("fa-IR")}{" "}
+                        تومان
                       </p>
                     </div>
                   )}
@@ -836,7 +899,9 @@ const LotteryAdminList = () => {
                     <div>
                       <p className="text-sm text-gray-600 mb-1">تاریخ پرداخت</p>
                       <p className="text-sm font-medium text-gray-900">
-                        {new Date(selectedLottery.paymentDate).toLocaleDateString("fa-IR")}
+                        {new Date(
+                          selectedLottery.paymentDate
+                        ).toLocaleDateString("fa-IR")}
                       </p>
                     </div>
                   )}
@@ -857,7 +922,7 @@ const LotteryAdminList = () => {
                     </div>
                   )}
                 </div>
-                
+
                 {/* Payment Receipt Image */}
                 {selectedLottery.receiptUrl && (
                   <div className="mt-4">
@@ -870,20 +935,34 @@ const LotteryAdminList = () => {
                         src={selectedLottery.receiptUrl}
                         alt="رسید پرداخت"
                         className="max-w-full h-auto max-h-64 rounded-lg border border-gray-200 cursor-pointer hover:opacity-90 transition-opacity"
-                        onClick={() => window.open(selectedLottery.receiptUrl, '_blank')}
+                        onClick={() =>
+                          window.open(selectedLottery.receiptUrl, "_blank")
+                        }
                         onError={(e) => {
-                          console.error('Error loading receipt image:', selectedLottery.receiptUrl);
-                          (e.target as HTMLImageElement).style.display = 'none';
-                          const errorDiv = document.createElement('div');
-                          errorDiv.innerHTML = '<p class="text-red-500 text-sm">خطا در بارگذاری تصویر</p>';
-                          (e.target as HTMLImageElement).parentNode?.appendChild(errorDiv);
+                          console.error(
+                            "Error loading receipt image:",
+                            selectedLottery.receiptUrl
+                          );
+                          (e.target as HTMLImageElement).style.display = "none";
+                          const errorDiv = document.createElement("div");
+                          errorDiv.innerHTML =
+                            '<p class="text-red-500 text-sm">خطا در بارگذاری تصویر</p>';
+                          (
+                            e.target as HTMLImageElement
+                          ).parentNode?.appendChild(errorDiv);
                         }}
-                        onLoad={() => console.log('Receipt image loaded successfully')}
+                        onLoad={() =>
+                          console.log("Receipt image loaded successfully")
+                        }
                       />
                       <div className="mt-2 flex items-center justify-between">
-                        <p className="text-xs text-gray-500">کلیک کنید برای مشاهده تمام صفحه</p>
+                        <p className="text-xs text-gray-500">
+                          کلیک کنید برای مشاهده تمام صفحه
+                        </p>
                         <button
-                          onClick={() => window.open(selectedLottery.receiptUrl, '_blank')}
+                          onClick={() =>
+                            window.open(selectedLottery.receiptUrl, "_blank")
+                          }
                           className="text-xs text-[#FF7A00] hover:text-[#FF7A00]/80 font-medium"
                         >
                           مشاهده اصل تصویر
@@ -912,13 +991,17 @@ const LotteryAdminList = () => {
                   <div>
                     <p className="text-sm text-gray-600 mb-1">تعداد فرزندان</p>
                     <p className="text-sm font-medium text-gray-900">
-                      {selectedLottery.famillyInformations[0]?.numberOfChildren || 0}
+                      {selectedLottery.famillyInformations[0]
+                        ?.numberOfChildren || 0}
                     </p>
                   </div>
                   <div>
-                    <p className="text-sm text-gray-600 mb-1">ثبت‌نام دو نفره</p>
+                    <p className="text-sm text-gray-600 mb-1">
+                      ثبت‌نام دو نفره
+                    </p>
                     <p className="text-sm font-medium text-gray-900">
-                      {selectedLottery.famillyInformations[0]?.towPeopleRegistration
+                      {selectedLottery.famillyInformations[0]
+                        ?.towPeopleRegistration
                         ? "بله"
                         : "خیر"}
                     </p>
@@ -943,39 +1026,69 @@ const LotteryAdminList = () => {
                         <div>
                           <p className="text-xs text-gray-600 mb-1">نام</p>
                           <p className="text-sm font-medium">
-                            {selectedLottery.registererInformations[0].initialInformations.firstName}
+                            {
+                              selectedLottery.registererInformations[0]
+                                .initialInformations.firstName
+                            }
                           </p>
                         </div>
                         <div>
-                          <p className="text-xs text-gray-600 mb-1">نام خانوادگی</p>
+                          <p className="text-xs text-gray-600 mb-1">
+                            نام خانوادگی
+                          </p>
                           <p className="text-sm font-medium">
-                            {selectedLottery.registererInformations[0].initialInformations.lastName}
+                            {
+                              selectedLottery.registererInformations[0]
+                                .initialInformations.lastName
+                            }
                           </p>
                         </div>
                         <div>
                           <p className="text-xs text-gray-600 mb-1">جنسیت</p>
                           <p className="text-sm font-medium">
-                            {selectedLottery.registererInformations[0].initialInformations.gender === "male" ? "مرد" : "زن"}
+                            {selectedLottery.registererInformations[0]
+                              .initialInformations.gender === "male"
+                              ? "مرد"
+                              : "زن"}
                           </p>
                         </div>
                         <div>
-                          <p className="text-xs text-gray-600 mb-1">تاریخ تولد</p>
+                          <p className="text-xs text-gray-600 mb-1">
+                            تاریخ تولد
+                          </p>
                           <p className="text-sm font-medium">
-                            {selectedLottery.registererInformations[0].initialInformations.dayOfBirth}/
-                            {selectedLottery.registererInformations[0].initialInformations.monthOfBirth}/
-                            {selectedLottery.registererInformations[0].initialInformations.yearOfBirth}
+                            {
+                              selectedLottery.registererInformations[0]
+                                .initialInformations.dayOfBirth
+                            }
+                            /
+                            {
+                              selectedLottery.registererInformations[0]
+                                .initialInformations.monthOfBirth
+                            }
+                            /
+                            {
+                              selectedLottery.registererInformations[0]
+                                .initialInformations.yearOfBirth
+                            }
                           </p>
                         </div>
                         <div>
                           <p className="text-xs text-gray-600 mb-1">کشور</p>
                           <p className="text-sm font-medium">
-                            {selectedLottery.registererInformations[0].initialInformations.country}
+                            {
+                              selectedLottery.registererInformations[0]
+                                .initialInformations.country
+                            }
                           </p>
                         </div>
                         <div>
                           <p className="text-xs text-gray-600 mb-1">شهر</p>
                           <p className="text-sm font-medium">
-                            {selectedLottery.registererInformations[0].initialInformations.city}
+                            {
+                              selectedLottery.registererInformations[0]
+                                .initialInformations.city
+                            }
                           </p>
                         </div>
                       </div>
@@ -989,15 +1102,23 @@ const LotteryAdminList = () => {
                       </h4>
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         <div>
-                          <p className="text-xs text-gray-600 mb-1">تلفن اصلی</p>
+                          <p className="text-xs text-gray-600 mb-1">
+                            تلفن اصلی
+                          </p>
                           <p className="text-sm font-medium">
-                            {selectedLottery.registererInformations[0].contactInformations[0]?.activePhoneNumber}
+                            {
+                              selectedLottery.registererInformations[0]
+                                .contactInformations[0]?.activePhoneNumber
+                            }
                           </p>
                         </div>
                         <div>
                           <p className="text-xs text-gray-600 mb-1">ایمیل</p>
                           <p className="text-sm font-medium">
-                            {selectedLottery.registererInformations[0].contactInformations[0]?.email}
+                            {
+                              selectedLottery.registererInformations[0]
+                                .contactInformations[0]?.email
+                            }
                           </p>
                         </div>
                       </div>
@@ -1011,21 +1132,34 @@ const LotteryAdminList = () => {
                       </h4>
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         <div>
-                          <p className="text-xs text-gray-600 mb-1">کشور سکونت</p>
+                          <p className="text-xs text-gray-600 mb-1">
+                            کشور سکونت
+                          </p>
                           <p className="text-sm font-medium">
-                            {selectedLottery.registererInformations[0].residanceInformation[0]?.residanceCountry}
+                            {
+                              selectedLottery.registererInformations[0]
+                                .residanceInformation[0]?.residanceCountry
+                            }
                           </p>
                         </div>
                         <div>
-                          <p className="text-xs text-gray-600 mb-1">شهر سکونت</p>
+                          <p className="text-xs text-gray-600 mb-1">
+                            شهر سکونت
+                          </p>
                           <p className="text-sm font-medium">
-                            {selectedLottery.registererInformations[0].residanceInformation[0]?.residanceCity}
+                            {
+                              selectedLottery.registererInformations[0]
+                                .residanceInformation[0]?.residanceCity
+                            }
                           </p>
                         </div>
                         <div className="sm:col-span-2">
                           <p className="text-xs text-gray-600 mb-1">آدرس</p>
                           <p className="text-sm font-medium">
-                            {selectedLottery.registererInformations[0].residanceInformation[0]?.residanseAdress}
+                            {
+                              selectedLottery.registererInformations[0]
+                                .residanceInformation[0]?.residanseAdress
+                            }
                           </p>
                         </div>
                       </div>
@@ -1045,19 +1179,28 @@ const LotteryAdminList = () => {
                     <div>
                       <p className="text-xs text-gray-600 mb-1">نام</p>
                       <p className="text-sm font-medium">
-                        {selectedLottery.registererPartnerInformations[0].initialInformations.firstName}
+                        {
+                          selectedLottery.registererPartnerInformations[0]
+                            .initialInformations.firstName
+                        }
                       </p>
                     </div>
                     <div>
                       <p className="text-xs text-gray-600 mb-1">نام خانوادگی</p>
                       <p className="text-sm font-medium">
-                        {selectedLottery.registererPartnerInformations[0].initialInformations.lastName}
+                        {
+                          selectedLottery.registererPartnerInformations[0]
+                            .initialInformations.lastName
+                        }
                       </p>
                     </div>
                     <div>
                       <p className="text-xs text-gray-600 mb-1">جنسیت</p>
                       <p className="text-sm font-medium">
-                        {selectedLottery.registererPartnerInformations[0].initialInformations.gender === "male" ? "مرد" : "زن"}
+                        {selectedLottery.registererPartnerInformations[0]
+                          .initialInformations.gender === "male"
+                          ? "مرد"
+                          : "زن"}
                       </p>
                     </div>
                   </div>
@@ -1072,33 +1215,44 @@ const LotteryAdminList = () => {
                     اطلاعات فرزندان
                   </h3>
                   <div className="space-y-4">
-                    {selectedLottery.registererChildformations.map((child, index) => (
-                      <div key={index} className="border border-gray-200 rounded-lg p-3">
-                        <h4 className="text-sm font-semibold text-gray-700 mb-2">
-                          فرزند {index + 1}
-                        </h4>
-                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                          <div>
-                            <p className="text-xs text-gray-600 mb-1">نام</p>
-                            <p className="text-sm font-medium">
-                              {child.initialInformations.firstName}
-                            </p>
-                          </div>
-                          <div>
-                            <p className="text-xs text-gray-600 mb-1">نام خانوادگی</p>
-                            <p className="text-sm font-medium">
-                              {child.initialInformations.lastName}
-                            </p>
-                          </div>
-                          <div>
-                            <p className="text-xs text-gray-600 mb-1">جنسیت</p>
-                            <p className="text-sm font-medium">
-                              {child.initialInformations.gender === "male" ? "پسر" : "دختر"}
-                            </p>
+                    {selectedLottery.registererChildformations.map(
+                      (child, index) => (
+                        <div
+                          key={index}
+                          className="border border-gray-200 rounded-lg p-3"
+                        >
+                          <h4 className="text-sm font-semibold text-gray-700 mb-2">
+                            فرزند {index + 1}
+                          </h4>
+                          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                            <div>
+                              <p className="text-xs text-gray-600 mb-1">نام</p>
+                              <p className="text-sm font-medium">
+                                {child.initialInformations.firstName}
+                              </p>
+                            </div>
+                            <div>
+                              <p className="text-xs text-gray-600 mb-1">
+                                نام خانوادگی
+                              </p>
+                              <p className="text-sm font-medium">
+                                {child.initialInformations.lastName}
+                              </p>
+                            </div>
+                            <div>
+                              <p className="text-xs text-gray-600 mb-1">
+                                جنسیت
+                              </p>
+                              <p className="text-sm font-medium">
+                                {child.initialInformations.gender === "male"
+                                  ? "پسر"
+                                  : "دختر"}
+                              </p>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    ))}
+                      )
+                    )}
                   </div>
                 </div>
               )}
@@ -1132,8 +1286,7 @@ const LotteryAdminList = () => {
           <div className="bg-white rounded-2xl max-w-2xl w-full shadow-2xl border border-[#0A1D37]/10">
             <div className="p-4 sm:p-6 border-b border-[#0A1D37]/10">
               <h2 className="text-xl font-bold text-[#0A1D37] flex items-center gap-3">
-                <span className="w-3 h-3 bg-[#0A1D37] rounded-full"></span>
-                ویرایش وضعیت ثبت‌نام
+                 ویرایش وضعیت ثبت‌نام
               </h2>
             </div>
 
@@ -1214,6 +1367,53 @@ const LotteryAdminList = () => {
           </div>
         </div>
       )}
+
+      {/* Delete Confirmation Modal */}
+      {showDeleteModal &&
+        lotteryToDelete &&
+        typeof document !== "undefined" &&
+        createPortal(
+          <div
+            className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4"
+            dir="rtl"
+          >
+            <div className="bg-white rounded-2xl max-w-md w-full shadow-2xl border border-red-200">
+              <div className="p-6 text-center">
+                <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <FaTrash className="text-red-600 text-2xl" />
+                </div>
+                <h3 className="text-lg font-bold text-gray-900 mb-2">
+                  حذف ثبت نام لاتاری
+                </h3>
+                <p className="text-gray-600 mb-6">
+                  آیا مطمئن هستید که میخواهید ثبت نام{" "}
+                  <span className="font-semibold text-gray-900">
+                    {getRegistererName(lotteryToDelete)}
+                  </span>{" "}
+                  را حذف کنید؟ این عمل قابل بازگشت نیست.
+                </p>
+                <div className="flex gap-3 justify-center">
+                  <button
+                    onClick={() => {
+                      setShowDeleteModal(false);
+                      setLotteryToDelete(null);
+                    }}
+                    className="px-4 py-2 text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+                  >
+                    انصراف
+                  </button>
+                  <button
+                    onClick={handleDeleteLottery}
+                    className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+                  >
+                    حذف ثبت نام
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>,
+          document.body
+        )}
     </div>
   );
 };

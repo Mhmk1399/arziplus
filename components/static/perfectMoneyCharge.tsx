@@ -196,7 +196,7 @@ const PerfectCharge = () => {
             icon: <FaShieldAlt />,
           },
         ]}
-        imageSrc="/assets/images/perfect.webp"
+        imageSrc="https://arziplus.storage.c2.liara.space/images/pages/every.png"
         imageAlt="ارزی پلاس"
         theme={splitSectionThemes.dark}
         layout="image-left"

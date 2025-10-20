@@ -181,7 +181,7 @@ const CashingPayeer = () => {
             icon: <FaShieldAlt />,
           },
         ]}
-        imageSrc="/assets/images/cash-payeer-2.webp"
+        imageSrc="https://arziplus.storage.c2.liara.space/images/pages/every.png"
         imageAlt="ارزی پلاس"
         theme={splitSectionThemes.dark}
         layout="image-left"

@@ -243,7 +243,7 @@ const WisePayout = () => {
             icon: <FaShieldAlt />,
           },
         ]}
-        imageSrc="/assets/images/wise-payout-2.webp"
+        imageSrc="https://arziplus.storage.c2.liara.space/images/pages/every.png"
         imageAlt="نقد درآمد وایز با ارزی پلاس"
         theme={splitSectionThemes.dark}
         layout="image-left"

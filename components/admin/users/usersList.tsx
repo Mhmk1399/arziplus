@@ -92,6 +92,8 @@ const UsersList = () => {
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [showUserDetails, setShowUserDetails] = useState(false);
   const [showEditUser, setShowEditUser] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [userToDelete, setUserToDelete] = useState<User | null>(null);
 
   // Edit form state
   const [editForm, setEditForm] = useState({
@@ -168,7 +170,38 @@ const UsersList = () => {
   };
 
   // Delete user
-  const handleDeleteUser = async (userId: string) => {
+  const openDeleteModal = (user: User) => {
+    setUserToDelete(user);
+    setShowDeleteModal(true);
+  };
+
+  const handleDeleteUser = async () => {
+    if (!userToDelete) return;
+
+    try {
+      const token = localStorage.getItem("authToken");
+      const response = await fetch(`/api/users?userId=${userToDelete._id}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || "خطا در حذف کاربر");
+      }
+
+      showToast.success("کاربر با موفقیت حذف شد");
+      setShowDeleteModal(false);
+      setUserToDelete(null);
+      await fetchUsers();
+    } catch (err) {
+      showToast.error(err instanceof Error ? err.message : "خطا در حذف کاربر");
+    }
+  };
+
+  const oldHandleDeleteUser = async (userId: string) => {
     if (!confirm("آیا مطمئن هستید که می‌خواهید این کاربر را حذف کنید؟")) {
       return;
     }
@@ -450,12 +483,11 @@ const UsersList = () => {
         <div className="mb-8">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-3">
-              <FaUser className="text-3xl text-blue-600" />
-              <div>
-                <h1 className="text-3xl font-bold text-gray-900">
+               <div>
+                <h1 className="text-xl md:text-3xl font-bold text-gray-900">
                   مدیریت کاربران
                 </h1>
-                <p className="text-gray-600">
+                <p className="text-gray-600 text-xs md:text-sm">
                   مشاهده و مدیریت اطلاعات کاربران سیستم
                 </p>
               </div>
@@ -634,7 +666,7 @@ const UsersList = () => {
                             </button>
 
                             <button
-                              onClick={() => handleDeleteUser(user._id)}
+                              onClick={() => openDeleteModal(user)}
                               className="text-red-600 hover:text-red-900"
                               title="حذف"
                             >
@@ -690,7 +722,7 @@ const UsersList = () => {
         typeof document !== "undefined" &&
         createPortal(
           <div
-            className="fixed inset-0 h-screen overflow-hidden bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-2 sm:p-4"
+            className="fixed inset-0 h-screen overflow-hidden bg-black/50 backdrop-blur-sm flex items-center justify-center z-555 p-2 sm:p-4"
             dir="rtl"
           >
             <div className="bg-white rounded-2xl w-full max-w-6xl max-h-screen overflow-hidden shadow-2xl border border-[#0A1D37]/20">
@@ -1852,6 +1884,53 @@ const UsersList = () => {
                 >
                   {submitting ? "در حال بروزرسانی..." : "ذخیره تغییرات"}
                 </button>
+              </div>
+            </div>
+          </div>,
+          document.body
+        )}
+
+      {/* Delete Confirmation Modal */}
+      {showDeleteModal &&
+        userToDelete &&
+        typeof document !== "undefined" &&
+        createPortal(
+          <div
+            className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4"
+            dir="rtl"
+          >
+            <div className="bg-white rounded-2xl max-w-md w-full shadow-2xl border border-red-200">
+              <div className="p-6 text-center">
+                <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <FaTrash className="text-red-600 text-2xl" />
+                </div>
+                <h3 className="text-lg font-bold text-gray-900 mb-2">
+                  حذف کاربر
+                </h3>
+                <p className="text-gray-600 mb-6">
+                  آیا مطمئن هستید که میخواهید کاربر{" "}
+                  <span className="font-semibold text-gray-900">
+                    {getUserName(userToDelete)}
+                  </span>{" "}
+                  را حذف کنید؟ این عمل قابل بازگشت نیست.
+                </p>
+                <div className="flex gap-3 justify-center">
+                  <button
+                    onClick={() => {
+                      setShowDeleteModal(false);
+                      setUserToDelete(null);
+                    }}
+                    className="px-4 py-2 text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+                  >
+                    انصراف
+                  </button>
+                  <button
+                    onClick={handleDeleteUser}
+                    className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+                  >
+                    حذف کاربر
+                  </button>
+                </div>
               </div>
             </div>
           </div>,
