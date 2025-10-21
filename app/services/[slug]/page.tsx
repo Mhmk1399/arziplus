@@ -27,6 +27,7 @@ interface ServiceField {
   required: boolean;
   placeholder?: string;
   description?: string;
+  pricecondition: string;
   options?: Array<{
     key: string;
     value: string;
@@ -145,7 +146,9 @@ const ServiceSummary = ({ service }: { service: Service }) => {
               src={service.image}
               alt={service.title}
               fill
-              className={`object-cover transition-all duration-300 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
+              className={`object-cover transition-all duration-300 ${
+                imageLoaded ? "opacity-100" : "opacity-0"
+              }`}
               unoptimized={true}
               onLoad={() => setImageLoaded(true)}
               onError={() => setImageError(true)}
@@ -294,6 +297,10 @@ export default function ServiceDetailPage() {
   const [showPaymentSelector, setShowPaymentSelector] = useState(false);
   const [showCardPaymentModal, setShowCardPaymentModal] = useState(false);
   const [walletBalance, setWalletBalance] = useState(0);
+  const [currencyValue, setCurrencyValue] = useState(0);
+  const [numberValue, setNumberValue] = useState(0);
+  const [accountValue, setAccountValue] = useState(0);
+  const [calculatedFee, setCalculatedFee] = useState(0);
   const { user: currentUser } = useCurrentUser();
 
   // Fetch service using SWR
@@ -308,6 +315,10 @@ export default function ServiceDetailPage() {
       revalidateOnFocus: false,
     }
   );
+
+  // const conditions = service?.fields.
+
+  console.log(service, "[[[[[[[[");
 
   // Fetch wallet balance
   const fetchWalletBalance = async () => {
@@ -348,6 +359,93 @@ export default function ServiceDetailPage() {
     setShowHelperModal(false);
     setHelperRead(true);
   };
+
+  // Calculate service fee based on price conditions
+  const calculateServiceFee = () => {
+    if (!service) return 0;
+
+    let baseFee = service.fee;
+    let currencySum = 0;
+    let tempNumber = 0;
+    let accountSum = 0;
+
+    service.fields.forEach((field) => {
+      const fieldValue = formData[field.name];
+
+      if (field.pricecondition === "currency" && fieldValue) {
+        if (field.type === "multiselect" && Array.isArray(fieldValue)) {
+          fieldValue.forEach((key) => {
+            const option = [
+              ...(field.options || []),
+              ...(field.items || []),
+            ].find((opt) => opt.key === key);
+            if (option) {
+              currencySum += parseFloat(option.value) || 0;
+            }
+          });
+        } else if (field.type === "select") {
+          const option = [
+            ...(field.options || []),
+            ...(field.items || []),
+          ].find((opt) => opt.key === fieldValue);
+          if (option) {
+            currencySum += parseFloat(option.value) || 0;
+          }
+        }
+      }
+
+      if (
+        field.pricecondition === "number" &&
+        fieldValue !== "" &&
+        fieldValue !== null &&
+        fieldValue !== undefined
+      ) {
+        tempNumber = parseFloat(String(fieldValue)) || 0;
+      }
+
+      if (field.pricecondition === "accountFee" && fieldValue) {
+        if (field.type === "multiselect" && Array.isArray(fieldValue)) {
+          fieldValue.forEach((key) => {
+            const option = [
+              ...(field.options || []),
+              ...(field.items || []),
+            ].find((opt) => opt.key === key);
+            if (option) {
+              accountSum += parseFloat(option.value) || 0;
+            }
+          });
+        } else if (field.type === "select") {
+          const option = [
+            ...(field.options || []),
+            ...(field.items || []),
+          ].find((opt) => opt.key === fieldValue);
+          if (option) {
+            accountSum += parseFloat(option.value) || 0;
+          }
+        }
+      }
+    });
+
+    console.log("Calculation:", {
+      baseFee,
+      currencySum,
+      tempNumber,
+      accountSum,
+    });
+
+    // Final calculation: fee = baseFee + (currencySum * number) + (accountSum * number)
+    const totalFee = baseFee + (currencySum * tempNumber) + (accountSum * tempNumber);
+    console.log("Total Fee:", totalFee);
+    return totalFee;
+  };
+
+  // Update calculated fee when form data changes
+  useEffect(() => {
+    if (service) {
+      const newFee = calculateServiceFee();
+      setCalculatedFee(newFee);
+    }
+  }, [formData, service]);
 
   // Form field helper functions
   const handleInputChange = (fieldName: string, value: FormFieldValue) => {
@@ -431,9 +529,11 @@ export default function ServiceDetailPage() {
             <input
               type="number"
               value={typeof value === "number" ? value : ""}
-              onChange={(e) =>
-                handleInputChange(field.name, parseFloat(e.target.value) || "")
-              }
+              onChange={(e) => {
+                const numValue =
+                  e.target.value === "" ? "" : parseFloat(e.target.value) || 0;
+                handleInputChange(field.name, numValue);
+              }}
               placeholder={field.placeholder}
               className={baseInputClasses}
               required={field.required}
@@ -503,7 +603,7 @@ export default function ServiceDetailPage() {
                           );
                         }
                       }}
-                       className="rounded text-[#4DBFF0] focus:ring-[#4DBFF0]"
+                      className="rounded text-[#4DBFF0] focus:ring-[#4DBFF0]"
                     />
                     <span>{option.value}</span>
                   </label>
@@ -676,8 +776,10 @@ export default function ServiceDetailPage() {
   // Handle wallet payment
   const handleWalletPayment = async () => {
     try {
+      const finalAmount = calculatedFee || service!.fee;
+
       // Check wallet balance
-      if (walletBalance < service!.fee) {
+      if (walletBalance < finalAmount) {
         showToast.error("موجودی کیف پول کافی نیست");
         // Redirect to wallet page
         window.location.href = "/dashboard?tab=wallet";
@@ -685,14 +787,14 @@ export default function ServiceDetailPage() {
       }
 
       // Create request with wallet payment
-      await createServiceRequest("wallet", service!.fee);
+      await createServiceRequest("wallet", finalAmount);
 
       showToast.success(
-        `درخواست با پرداخت کیف پول ثبت شد. مبلغ ${service!.fee.toLocaleString()} تومان از کیف پول کسر گردید.`
+        `درخواست با پرداخت کیف پول ثبت شد. مبلغ ${finalAmount.toLocaleString()} تومان از کیف پول کسر گردید.`
       );
 
       // Update wallet balance
-      setWalletBalance((prev) => prev - service!.fee);
+      setWalletBalance((prev) => prev - finalAmount);
       setFormData({});
     } catch (error) {
       throw error;
@@ -703,10 +805,11 @@ export default function ServiceDetailPage() {
   const handleDirectPayment = async () => {
     try {
       const token = localStorage.getItem("authToken");
+      const finalAmount = calculatedFee || service!.fee;
 
       // Prepare payment data similar to addamount.tsx
       const paymentData = {
-        amount: service!.fee, // Send in Toman directly
+        amount: finalAmount, // Send in Toman directly
         description: `پرداخت خدمت: ${service!.title}`,
         serviceId: service!._id,
         orderId: `SERVICE-${Date.now()}`, // Generate unique order ID
@@ -942,6 +1045,18 @@ export default function ServiceDetailPage() {
                       </div>
                     )}
 
+                    {/* Calculated Fee Display */}
+                    {calculatedFee > service.fee && (
+                      <div className="p-4 bg-gradient-to-l from-[#4DBFF0]/10 to-[#0A1D37]/10 rounded-xl border border-[#4DBFF0]/30">
+                        <div className="flex items-center justify-between">
+                          <span className="text-[#0A1D37]/70">مبلغ نهایی:</span>
+                          <span className="text-2xl font-bold text-[#0A1D37]">
+                            {calculatedFee.toLocaleString()} تومان
+                          </span>
+                        </div>
+                      </div>
+                    )}
+
                     {/* Submit Button */}
                     <div className="flex justify-center pt-6">
                       <button
@@ -1011,7 +1126,7 @@ export default function ServiceDetailPage() {
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm   flex items-center justify-center z-80 p-4">
           <div className="bg-white rounded-lg p-6 max-w-3xl w-full">
             <PaymentMethodSelector
-              amount={service?.fee || 0}
+              amount={calculatedFee || service?.fee || 0}
               walletBalance={walletBalance}
               onPaymentMethodSelect={(method) => {
                 setShowPaymentSelector(false);
@@ -1023,7 +1138,9 @@ export default function ServiceDetailPage() {
                   handleCardPayment();
                 }
               }}
-              isWalletEnabled={walletBalance >= (service?.fee || 0)}
+              isWalletEnabled={
+                walletBalance >= (calculatedFee || service?.fee || 0)
+              }
             />
             <button
               onClick={() => setShowPaymentSelector(false)}
@@ -1039,12 +1156,12 @@ export default function ServiceDetailPage() {
       <CardPaymentModal
         isOpen={showCardPaymentModal}
         onClose={() => setShowCardPaymentModal(false)}
-        amount={service?.fee || 0}
+        amount={calculatedFee || service?.fee || 0}
         serviceName={service?.title || ""}
         onPaymentComplete={async (receiptUrl: string) => {
           await createServiceRequest(
             "card",
-            service?.fee || 0,
+            calculatedFee || service?.fee || 0,
             true,
             receiptUrl
           );

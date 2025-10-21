@@ -43,9 +43,9 @@ const ServiceBuilder: React.FC<ServiceBuilderProps> = ({
   // Update image URL when uploadedImageUrl changes
   useEffect(() => {
     if (uploadedImageUrl) {
-      setFormData(prev => ({
+      setFormData((prev) => ({
         ...prev,
-        image: uploadedImageUrl
+        image: uploadedImageUrl,
       }));
     }
   }, [uploadedImageUrl]);
@@ -59,7 +59,10 @@ const ServiceBuilder: React.FC<ServiceBuilderProps> = ({
       .trim();
   };
 
-  const handleInputChange = (key: keyof ServiceBuilderFormData, value: string) => {
+  const handleInputChange = (
+    key: keyof ServiceBuilderFormData,
+    value: string
+  ) => {
     setFormData((prev) => {
       const newData = { ...prev, [key]: value };
 
@@ -80,6 +83,7 @@ const ServiceBuilder: React.FC<ServiceBuilderProps> = ({
       type: "string",
       required: false,
       placeholder: `فیلد شماره ${fieldNumber} را وارد کنید`,
+      pricecondition: "",
     };
 
     setFormData((prev) => ({
@@ -154,8 +158,6 @@ const ServiceBuilder: React.FC<ServiceBuilderProps> = ({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-
-
     // Basic validation
     if (!formData.title.trim()) {
       showToast.error("عنوان سرویس الزامی است");
@@ -182,6 +184,7 @@ const ServiceBuilder: React.FC<ServiceBuilderProps> = ({
     setIsSubmitting(true);
     try {
       await onSave(formData);
+      console.log(formData , "......................")
       // Success toast will be handled by the parent component
     } catch (error) {
       console.log("Error saving service:", error);
@@ -298,9 +301,11 @@ const ServiceBuilder: React.FC<ServiceBuilderProps> = ({
                     متن کاشن(helper) *
                   </label>
                   <textarea
-                  rows={5}
+                    rows={5}
                     value={formData.helper}
-                    onChange={(e) => handleInputChange("helper", e.target.value)}
+                    onChange={(e) =>
+                      handleInputChange("helper", e.target.value)
+                    }
                     className="w-full px-4 py-3 bg-white/10 border border-[#4DBFF0] rounded-lg text-[#0A1D37] placeholder:text-[#0A1D37]"
                     placeholder="chatgpt-account-creation"
                     required
@@ -308,12 +313,14 @@ const ServiceBuilder: React.FC<ServiceBuilderProps> = ({
                 </div>
                 <div>
                   <label className="block text-[#0A1D37] text-sm mb-2">
-                   دسته بندی *
+                    دسته بندی *
                   </label>
                   <input
                     type="text"
                     value={formData.category}
-                    onChange={(e) => handleInputChange("category", e.target.value)}
+                    onChange={(e) =>
+                      handleInputChange("category", e.target.value)
+                    }
                     className="w-full px-4 py-3 bg-white/10 border border-[#4DBFF0] rounded-lg text-[#0A1D37] placeholder:text-[#0A1D37]"
                     placeholder="chatgpt-account-creation"
                     required
@@ -328,7 +335,10 @@ const ServiceBuilder: React.FC<ServiceBuilderProps> = ({
                     type="number"
                     value={formData.fee}
                     onChange={(e) =>
-                      handleInputChange("fee", (parseInt(e.target.value) || 0).toString())
+                      handleInputChange(
+                        "fee",
+                        (parseInt(e.target.value) || 0).toString()
+                      )
                     }
                     className="w-full px-4 py-3 bg-white/10 border border-[#4DBFF0] rounded-lg text-[#0A1D37] placeholder:text-[#0A1D37]/50"
                     placeholder="50000"
@@ -371,7 +381,9 @@ const ServiceBuilder: React.FC<ServiceBuilderProps> = ({
                       <input
                         type="url"
                         value={formData.image}
-                        onChange={(e) => handleInputChange("image", e.target.value)}
+                        onChange={(e) =>
+                          handleInputChange("image", e.target.value)
+                        }
                         className="flex-1 px-4 py-3 bg-white/10 border border-[#4DBFF0] rounded-lg text-[#0A1D37] placeholder:text-[#0A1D37]/50"
                         placeholder="https://example.com/image.jpg یا از دکمه آپلود استفاده کنید"
                       />
@@ -385,22 +397,24 @@ const ServiceBuilder: React.FC<ServiceBuilderProps> = ({
                         </button>
                       )}
                     </div>
-                    
+
                     {/* Image Preview */}
                     {formData.image && (
                       <div className="mt-3 p-3 bg-white/5 rounded-lg border border-[#4DBFF0]/30">
-                        <p className="text-[#0A1D37]/70 text-sm mb-2">پیش‌نمایش تصویر:</p>
+                        <p className="text-[#0A1D37]/70 text-sm mb-2">
+                          پیش‌نمایش تصویر:
+                        </p>
                         <img
                           src={formData.image}
                           alt="پیش‌نمایش"
                           className="w-32 h-32 object-cover rounded-lg border border-[#4DBFF0]/50"
                           onError={(e) => {
                             const img = e.target as HTMLImageElement;
-                            img.style.display = 'none';
+                            img.style.display = "none";
                           }}
                           onLoad={(e) => {
                             const img = e.target as HTMLImageElement;
-                            img.style.display = 'block';
+                            img.style.display = "block";
                           }}
                         />
                       </div>
@@ -436,7 +450,6 @@ const ServiceBuilder: React.FC<ServiceBuilderProps> = ({
                   />
                   <span className="text-[#0A1D37]">نیاز به کیف پول دارد</span>
                 </label>
-
               </div>
             </div>
 

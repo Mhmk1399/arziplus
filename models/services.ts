@@ -5,6 +5,10 @@ const FieldDefinitionSchema = new mongoose.Schema({
   name: { type: String, required: true }, // e.g., "account_number"
   label: { type: String }, // e.g., "Account Number"
   type: { type: String, default: "string" }, // Can be string, number, etc.
+  pricecondition: {
+    type: String,
+    enum: ["neverUsed", "accountFee", "currency", "number"],
+  },
   required: { type: Boolean, default: false },
   placeholder: { type: String }, // Field placeholder text
   description: { type: String }, // Field description
