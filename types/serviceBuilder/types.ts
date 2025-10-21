@@ -16,6 +16,7 @@ export interface ServiceField {
   placeholder?: string;
   required?: boolean;
   defaultValue?: any;
+  pricecondition: string;
   validation?: {
     minLength?: number;
     maxLength?: number;

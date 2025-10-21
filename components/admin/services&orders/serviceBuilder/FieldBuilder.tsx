@@ -40,23 +40,30 @@ const FieldBuilder: React.FC<FieldBuilderProps> = ({
     { value: "file", label: "فایل" },
   ];
 
-  const handleFieldChange = (key: keyof ServiceField, value:string|boolean|{ key: string; value: string; }[]|{ field: string; value: string | boolean; } ) => {
+  const handleFieldChange = (
+    key: keyof ServiceField,
+    value:
+      | string
+      | boolean
+      | { key: string; value: string }[]
+      | { field: string; value: string | boolean }
+  ) => {
     let updatedField = { ...field, [key]: value };
-    
+
     // Clear options when field type is changed to non-select type
-    if (key === 'type' && value !== 'select' && value !== 'multiselect') {
+    if (key === "type" && value !== "select" && value !== "multiselect") {
       // Remove options property entirely for non-select fields
       const { options, ...fieldWithoutOptions } = updatedField;
       updatedField = fieldWithoutOptions as ServiceField;
     }
-    
+
     // Add empty options array when type is changed to select/multiselect
-    if (key === 'type' && (value === 'select' || value === 'multiselect')) {
+    if (key === "type" && (value === "select" || value === "multiselect")) {
       if (!updatedField.options || updatedField.options.length === 0) {
         updatedField = { ...updatedField, options: [] };
       }
     }
-    
+
     onUpdate(updatedField);
   };
 
@@ -76,7 +83,10 @@ const FieldBuilder: React.FC<FieldBuilderProps> = ({
     handleFieldChange("options", newOptions);
   };
 
-  const handleShowIfChange = (key: "field" | "value", value: string|boolean) => {
+  const handleShowIfChange = (
+    key: "field" | "value",
+    value: string | boolean
+  ) => {
     const currentShowIf = field.showIf || { field: "", value: "" };
     const newShowIf = { ...currentShowIf, [key]: value };
 
@@ -113,8 +123,6 @@ const FieldBuilder: React.FC<FieldBuilderProps> = ({
     }
   };
 
- 
-
   return (
     <div
       className="relative group bg-gradient-to-br from-white/15 via-white/8 to-white/5 backdrop-blur-xl rounded-2xl border border-[#4DBFF0] shadow-2xl hover:shadow-[#0A1D37]/20 transition-all duration-500 overflow-hidden"
@@ -139,10 +147,12 @@ const FieldBuilder: React.FC<FieldBuilderProps> = ({
                 ◄
               </span>
             </button>
+
             <div className="flex items-center gap-3">
               <h4 className="text-xl font-bold  text-[#0A1D37]">
                 {field.label || field.name || "فیلد جدید"}
               </h4>
+
               {field.required && (
                 <span className="px-2 py-1 bg-gradient-to-r from-red-500/20 to-red-600/20 text-red-300 text-xs rounded-full border border-red-400/30">
                   اجباری
@@ -428,7 +438,6 @@ const FieldBuilder: React.FC<FieldBuilderProps> = ({
                                       </option>
                                     ))}
                                   </select>
-                               
                                 </>
                               );
                             } else {
@@ -456,13 +465,13 @@ const FieldBuilder: React.FC<FieldBuilderProps> = ({
                       <div className="flex items-center gap-2 text-[#0A1D37] text-xs">
                         <span className="text-sm">ℹ️</span>
                         <span>
-                          این فیلد فقط زمانی نمایش داده می‌شود که فیلد 
+                          این فیلد فقط زمانی نمایش داده می‌شود که فیلد
                           {
                             allFields.find(
                               (f) => f.name === field.showIf?.field
                             )?.label
                           }
-                           برابر با 
+                          برابر با
                           {(() => {
                             const targetField = allFields.find(
                               (f) => f.name === field.showIf?.field
@@ -480,7 +489,7 @@ const FieldBuilder: React.FC<FieldBuilderProps> = ({
                               ? matchingOption.value
                               : field.showIf?.value;
                           })()}
-                           باشد.
+                          باشد.
                         </span>
                       </div>
                     </div>
@@ -507,10 +516,37 @@ const FieldBuilder: React.FC<FieldBuilderProps> = ({
                       className="w-5 h-5 rounded border-white/20 bg-white/10 text-[#4DBFF0] focus:ring-[#4DBFF0]/20 focus:ring-2 transition-all duration-300"
                     />
                   </div>
+
                   <span className="text-[#0A1D37] text-sm font-medium">
                     اجباری
                   </span>
                 </label>
+              </div>
+              <div className="mt-4">
+                {" "}
+                <label  htmlFor="">
+                  فیلد محاسبه قیمت
+                </label>
+                <select
+                  value={field.pricecondition}
+                  onChange={(e) =>
+                    handleFieldChange("pricecondition", e.target.value)
+                  }
+                  className="w-full px-4 py-3 mt-3 bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-sm border border-[#4DBFF0] rounded-xl text-[#0A1D37] placeholder:text-[#0A1D37]/50 focus:border-[#4DBFF0]/50 focus:outline-none focus:ring-2 focus:ring-[#4DBFF0] transition-all duration-300 appearance-none"
+                >
+                  <option className="  text-[#0A1D37]" value="neverUSed">
+                    در محاسبه حساب نشود
+                  </option>
+                  <option className="  text-[#0A1D37]" value="accountFee">
+                    قیمت اکانت
+                  </option>
+                  <option className="  text-[#0A1D37]" value="currency">
+                    قیمت ارز
+                  </option>
+                  <option className="  text-[#0A1D37]" value="number">
+                    تعداد درخواست
+                  </option>
+                </select>
               </div>
             </div>
           </div>
