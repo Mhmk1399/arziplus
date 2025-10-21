@@ -1,5 +1,6 @@
 // models/Service.js
 import mongoose from "mongoose";
+
 const FieldDefinitionSchema = new mongoose.Schema({
   name: { type: String, required: true }, // e.g., "account_number"
   label: { type: String }, // e.g., "Account Number"
@@ -26,21 +27,28 @@ const FieldDefinitionSchema = new mongoose.Schema({
   },
 });
 
-const DynamicServiceSchema = new mongoose.Schema({
-  title: { type: String, required: true },
-  slug: { type: String, unique: true },
-  fee: { type: Number, required: true },
-  wallet: { type: Boolean, required: true },
-  description: { type: String },
-  helper:{type:String},
-  category:{type:String},
-  icon: { type: String },
-  status: { type: String, default: "draft", enum: ["active", "inactive", "draft"] },
-  image: { type: String },
-  fields: [FieldDefinitionSchema],
-}, {
-  timestamps: true // This adds createdAt and updatedAt automatically
-});
+const DynamicServiceSchema = new mongoose.Schema(
+  {
+    title: { type: String, required: true },
+    slug: { type: String, unique: true },
+    fee: { type: Number, required: true },
+    wallet: { type: Boolean, required: true },
+    description: { type: String },
+    helper: { type: String },
+    category: { type: String },
+    icon: { type: String },
+    status: {
+      type: String,
+      default: "draft",
+      enum: ["active", "inactive", "draft"],
+    },
+    image: { type: String },
+    fields: [FieldDefinitionSchema],
+  },
+  {
+    timestamps: true, // This adds createdAt and updatedAt automatically
+  }
+);
 
 export default mongoose.models.dynamicServices ||
   mongoose.model("dynamicServices", DynamicServiceSchema);

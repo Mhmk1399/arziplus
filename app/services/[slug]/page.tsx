@@ -503,7 +503,7 @@ export default function ServiceDetailPage() {
                           );
                         }
                       }}
-                      className="rounded text-[#4DBFF0] focus:ring-[#4DBFF0]"
+                       className="rounded text-[#4DBFF0] focus:ring-[#4DBFF0]"
                     />
                     <span>{option.value}</span>
                   </label>
