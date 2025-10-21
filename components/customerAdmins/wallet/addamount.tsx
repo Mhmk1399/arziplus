@@ -153,6 +153,11 @@ const AddAmountComponent: React.FC<AddAmountComponentProps> = ({
         body: JSON.stringify({
           ...formData,
           amount: amount, // Send in Toman directly
+          orderId: `WALLET-${Date.now()}`, // Set wallet order ID
+          metadata: {
+            type: "wallet_charge",
+            description: "شارژ کیف پول"
+          }
         }),
       });
 

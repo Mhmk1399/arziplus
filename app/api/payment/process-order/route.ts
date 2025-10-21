@@ -120,6 +120,7 @@ export async function POST(request: NextRequest) {
       orderId.startsWith("WALLET-") ||
       payment.description.includes("شارژ کیف پول") ||
       payment.description.includes("شارژ") ||
+      payment.metadata?.type === "wallet_charge" ||
       !payment.serviceId
     ) {
       // Create wallet charge - handle cases where orderId starts with WALLET- or description indicates wallet charge or no serviceId
