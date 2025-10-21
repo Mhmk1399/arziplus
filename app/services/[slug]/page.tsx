@@ -364,7 +364,7 @@ export default function ServiceDetailPage() {
   const calculateServiceFee = () => {
     if (!service) return 0;
 
-    let baseFee = service.fee;
+    const baseFee = service.fee;
     let currencySum = 0;
     let tempNumber = 0;
     let accountSum = 0;
