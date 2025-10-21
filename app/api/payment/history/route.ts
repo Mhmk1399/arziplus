@@ -179,11 +179,7 @@ export async function POST(request: NextRequest) {
     }
 
     const payment = await Payment.findOne(query)
-      .populate(
-        "userId",
-        "nationalCredentials.firstName nationalCredentials.lastName contactInfo.mobilePhone"
-      )
-      .lean();
+    .lean();
 
     if (!payment) {
       return NextResponse.json({ error: "پرداخت یافت نشد" }, { status: 404 });
