@@ -1,5 +1,47 @@
 import Image from "next/image";
-import React from "react";
+import React, { useState } from "react";
+
+const ImageWithFallback = ({
+  src,
+  alt,
+  width,
+  height,
+  className,
+}: {
+  src: string;
+  alt: string;
+  width: number;
+  height: number;
+  className?: string;
+}) => {
+  const [imageError, setImageError] = useState(false);
+
+  return (
+    <>
+      {!imageError ? (
+        <Image
+          className={className}
+          alt={alt}
+          width={width}
+          height={height}
+          src={src}
+          onError={() => setImageError(true)}
+        />
+      ) : (
+        <img
+          className={className}
+          alt={alt}
+          src={src}
+          style={{ width, height }}
+          onError={(e) => {
+            const img = e.target as HTMLImageElement;
+            img.style.display = "none";
+          }}
+        />
+      )}
+    </>
+  );
+};
 
 const COLORS = {
   primary: "#0A1D37",
@@ -21,7 +63,7 @@ export const modalContents = {
           شرایط ثبت نام لاتاری آمریکا 1404 با ارزی پلاس
         </h2>
 
-        <Image
+        <ImageWithFallback
           className="mx-auto my-4 w-1/3 h-1/3"
           alt="شرایط ثبت نام لاتاری آمریکا 1404 با ارزی پلاس"
           width={500}
@@ -334,7 +376,7 @@ export const modalContents = {
           >
             عکس مناسب برای ثبت‌نام لاتاری گرین کارت آمریکا
           </h3>
-          <Image
+          <ImageWithFallback
             className="mx-auto my-4 "
             alt="شرایط ثبت نام لاتاری آمریکا 1404 با ارزی پلاس"
             width={300}
@@ -417,7 +459,7 @@ export const modalContents = {
           >
             شرایط عکس لاتاری برای آقایان
           </h3>
-          <Image
+          <ImageWithFallback
             className="mx-auto my-4 "
             alt="شرایط ثبت نام لاتاری آمریکا 1404 با ارزی پلاس"
             width={300}
@@ -451,7 +493,7 @@ export const modalContents = {
           >
             شرایط عکس لاتاری برای بانوان
           </h3>
-          <Image
+          <ImageWithFallback
             className="mx-auto my-4 "
             alt="شرایط ثبت نام لاتاری آمریکا 1404 با ارزی پلاس"
             width={300}
@@ -482,7 +524,7 @@ export const modalContents = {
           >
             شرایط عکس لاتاری برای نوزادان و کودکان
           </h3>
-          <Image
+          <ImageWithFallback
             className="mx-auto my-4 "
             alt="شرایط ثبت نام لاتاری آمریکا 1404 با ارزی پلاس"
             width={300}

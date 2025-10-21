@@ -147,7 +147,7 @@ const HeroSection = () => {
               <ArrowLeft className="w-5 h-5" />
             </button>{" "}
           </Link>
-          <Link href="/lottery/present">
+          <Link href="/lottery/form/present">
             {" "}
             <button
               className="md:px-8 md:py-4 px-4 py-2 rounded-lg font-bold text-sm md:text-lg cursor-pointer  transition-all duration-300 shadow-lg flex items-center gap-2"

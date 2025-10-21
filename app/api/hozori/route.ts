@@ -244,7 +244,7 @@ export async function POST(request: NextRequest) {
     let paymentDate: Date;
     try {
       paymentDate = body.paymentDate ? new Date(body.paymentDate) : new Date();
-    } catch (error) {
+    } catch {
       paymentDate = new Date();
     }
 

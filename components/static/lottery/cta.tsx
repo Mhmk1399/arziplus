@@ -155,7 +155,7 @@ const CTASection = () => {
               <ArrowRight className="w-6 h-6" />
             </button>
           </Link>
-          <Link href="/lottery/present">
+          <Link href="/lottery/form/present">
             {" "}
             <button
               className="px-10 py-5 rounded-xl font-bold text-xl transition-all hover:scale-105 shadow-2xl flex items-center gap-3"

@@ -13,7 +13,6 @@ import {
   FaChevronLeft,
   FaHome,
   FaSignOutAlt,
-  FaBell,
   FaWallet,
   FaMoneyBillWave,
   FaChevronRight,
@@ -31,6 +30,7 @@ import PaymentWrapper from "@/components/admin/payments/paymentWrapper";
 import LotteryAdminWrapper from "@/components/admin/lottery/lotteryWrapper";
 import CustomerLotteryWrapper from "@/components/customerAdmins/lottery/lotteryWrapper";
 import Link from "next/link";
+import Image from "next/image";
 
 interface MenuItem {
   id: string;
@@ -285,10 +285,7 @@ const Dashboard: React.FC = () => {
   }
 
   return (
-    <div
-      className="min-h-screen "
-      dir="rtl"
-    >
+    <div className="min-h-screen " dir="rtl">
       {/* Mobile Sidebar Overlay */}
       {sidebarOpen && (
         <div
@@ -307,9 +304,19 @@ const Dashboard: React.FC = () => {
         <div className="p-6 border-b border-gray-200/50 bg-gradient-to-r from-[#0A1D37]/5 to-[#4DBFF0]/5">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <div className="w-14 h-14 bg-gradient-to-r from-[#0A1D37] to-[#4DBFF0] rounded-2xl flex items-center justify-center shadow-lg transform hover:scale-105 transition-transform duration-200">
-                <FaHome className="text-white text-xl" />
-              </div>
+              <Link href="/">
+                {" "}
+                <div className="flex items-center cursor-pointer">
+                  <Image
+                    src="/assets/images/loggo.png"
+                    width={70}
+                    height={70}
+                    alt="logo"
+                    priority
+                    className="transition-all duration-300"
+                  />
+                </div>
+              </Link>
               <div>
                 <h1 className="text-xl font-bold text-[#0A1D37] mb-1">
                   ارزی پلاس
@@ -468,7 +475,6 @@ const Dashboard: React.FC = () => {
             </div>
 
             <div className="flex items-center gap-3 lg:gap-4 flex-shrink-0">
-              
               <Link
                 href="/"
                 className="flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-[#0A1D37] to-[#4DBFF0] rounded-xl text-white font-bold text-sm hover:shadow-lg transition-all duration-300 hover:scale-105 active:scale-95"
@@ -482,7 +488,7 @@ const Dashboard: React.FC = () => {
 
         {/* Page Content */}
         <div className="min-h-[calc(100vh-80px)] bg-gradient-to-br from-gray-50/50 via-white to-blue-50/30">
-          <div className="   ">
+          <div className="">
             {selectedMenuItem === "wallet" ? (
               <div className="max-w-7xl mx-auto">
                 <div className="mb-6">
@@ -515,7 +521,7 @@ const Dashboard: React.FC = () => {
                 />
               </div>
             ) : (
-              <div className="max-w-7xl mx-auto">
+              <div className="max-w-7xl  mx-auto">
                 <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
                   <ActiveComponent />
                 </div>

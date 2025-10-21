@@ -1,5 +1,6 @@
 "use client";
 import React, { useState } from "react";
+import { createPortal } from "react-dom";
 import {
   ServiceBuilderFormData,
   DynamicService,
@@ -249,6 +250,10 @@ const AdminServiceList: React.FC<{
   const [filterStatus, setFilterStatus] = useState<
     "active" | "inactive" | "draft" | "all"
   >("all");
+  const [deleteModal, setDeleteModal] = useState<{
+    isOpen: boolean;
+    service: DynamicService | null;
+  }>({ isOpen: false, service: null });
   const {
     data: services,
     loading,
@@ -262,19 +267,21 @@ const AdminServiceList: React.FC<{
   });
   console.log(setFilterStatus);
 
-  const handleDelete = async (service: DynamicService) => {
-    if (!confirm("آیا از حذف این سرویس اطمینان دارید؟")) {
-      return;
-    }
+  const handleDelete = async () => {
+    if (!deleteModal.service) return;
 
     try {
-      const response = await fetch(`/api/dynamicServices?id=${service._id}`, {
-        method: "DELETE",
-      });
+      const response = await fetch(
+        `/api/dynamicServices?id=${deleteModal.service._id}`,
+        {
+          method: "DELETE",
+        }
+      );
 
       if (response.ok) {
-        showToast.service.deleted(service.title);
+        showToast.service.deleted(deleteModal.service.title);
         mutate();
+        setDeleteModal({ isOpen: false, service: null });
       } else {
         showToast.error("خطا در حذف سرویس");
       }
@@ -351,7 +358,7 @@ const AdminServiceList: React.FC<{
                   <span
                     className={`text-xs px-2 py-1 rounded-full ${
                       service.status === "active"
-                        ? "bg-green-500/20 text-green-300"
+                        ? "bg-green-500/20 text-gray-700"
                         : service.status === "draft"
                         ? "bg-yellow-500/20 text-yellow-300"
                         : "bg-red-500/20 text-red-300"
@@ -370,25 +377,82 @@ const AdminServiceList: React.FC<{
             <div className="flex items-center gap-2">
               <button
                 onClick={() => onEdit(service)}
-                className="px-3 py-1 text-[#0A1D37] border border-[#4DBFF0] rounded-md transition-colors text-sm"
+                className="p-2 text-blue-600 hover:bg-blue-50 rounded-md transition-colors"
+                title="ویرایش"
               >
-                ویرایش
+                <svg
+                  className="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                  />
+                </svg>
               </button>
               <button
                 onClick={() => toggleStatus(service)}
-                className={`px-3 py-1 rounded-md transition-colors text-sm ${
+                className={`p-2 rounded-md transition-colors ${
                   service.status === "active"
-                    ? "bg-yellow-200 text-[#0A1D37] border border-[#4DBFF0]"
-                    : "bg-green-600/20 text-[#0A1D37] border border-[#4DBFF0]"
+                    ? "text-yellow-600 hover:bg-yellow-50"
+                    : "text-green-600 hover:bg-green-50"
                 }`}
+                title={
+                  service.status === "active" ? "غیرفعال کردن" : "فعال کردن"
+                }
               >
-                {service.status === "active" ? "غیرفعال کردن" : "فعال کردن"}
+                {service.status === "active" ? (
+                  <svg
+                    className="w-5 h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"
+                    />
+                  </svg>
+                ) : (
+                  <svg
+                    className="w-5 h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                    />
+                  </svg>
+                )}
               </button>
               <button
-                onClick={() => handleDelete(service)}
-                className="px-3 py-1 text-[#0A1D37] border-[#0A1D37] border rounded-md transition-colors text-sm"
+                onClick={() => setDeleteModal({ isOpen: true, service })}
+                className="p-2 text-red-600 hover:bg-red-50 rounded-md transition-colors"
+                title="حذف"
               >
-                حذف
+                <svg
+                  className="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                  />
+                </svg>
               </button>
             </div>
           </div>
@@ -400,6 +464,42 @@ const AdminServiceList: React.FC<{
           هیچ سرویسی یافت نشد
         </div>
       )}
+
+      {/* Delete Confirmation Modal */}
+      {deleteModal.isOpen &&
+        typeof document !== "undefined" &&
+        createPortal(
+          <div
+            className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4"
+            dir="rtl"
+          >
+            <div className="bg-white rounded-2xl p-6 max-w-md w-full shadow-2xl">
+              <h3 className="text-xl font-bold text-[#0A1D37] mb-4">
+                تایید حذف
+              </h3>
+              <p className="text-[#0A1D37]/70 mb-6">
+                آیا از حذف سرویس "{deleteModal.service?.title}" اطمینان دارید؟
+              </p>
+              <div className="flex gap-3 justify-end">
+                <button
+                  onClick={() =>
+                    setDeleteModal({ isOpen: false, service: null })
+                  }
+                  className="px-4 py-2 bg-gray-200 text-[#0A1D37] rounded-lg hover:bg-gray-300 transition-colors"
+                >
+                  انصراف
+                </button>
+                <button
+                  onClick={handleDelete}
+                  className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors"
+                >
+                  حذف
+                </button>
+              </div>
+            </div>
+          </div>,
+          document.body
+        )}
     </div>
   );
 };

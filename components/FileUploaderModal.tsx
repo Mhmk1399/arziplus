@@ -56,38 +56,52 @@ const FileUploaderModal: React.FC<FileUploaderModalProps> = ({
     setIsUploading(true);
     setUploadProgress(0);
 
-    try {
-      const formData = new FormData();
-      formData.append("file", file);
+    const formData = new FormData();
+    formData.append("file", file);
 
-      const response = await fetch("/api/upload", {
-        method: "POST",
-        body: formData,
-      });
+    const xhr = new XMLHttpRequest();
 
-      const result = await response.json();
-
-      if (result.success) {
-        const uploadedFile = result.data;
-        setUploadedFiles([uploadedFile]); // Only keep the latest file for modal
-        showToast.success(`فایل "${file.name}" با موفقیت آپلود شد!`);
-        setUploadProgress(100);
-
-        // Auto-select the uploaded file after a short delay
-        setTimeout(() => {
-          onFileUploaded(uploadedFile.url);
-          handleClose();
-        }, 1500);
-      } else {
-        showToast.error(result.error || "آپلود ناموفق بود");
+    // Track upload progress
+    xhr.upload.addEventListener("progress", (event) => {
+      if (event.lengthComputable) {
+        const percentComplete = Math.round((event.loaded / event.total) * 100);
+        setUploadProgress(percentComplete);
       }
-    } catch (error) {
-      console.log("Upload error:", error);
+    });
+
+    // Handle completion
+    xhr.addEventListener("load", () => {
+      try {
+        const result = JSON.parse(xhr.responseText);
+
+        if (xhr.status === 200 && result.success) {
+          const uploadedFile = result.data;
+          setUploadedFiles([uploadedFile]);
+          showToast.success(`فایل "${file.name}" با موفقیت آپلود شد!`);
+          setUploadProgress(100);
+        } else {
+          showToast.error(result.error || "آپلود ناموفق بود");
+        }
+      } catch (error) {
+        console.log("Upload error:", error);
+        showToast.error("خطا در آپلود فایل");
+      } finally {
+        setIsUploading(false);
+        setTimeout(() => setUploadProgress(0), 1000);
+      }
+    });
+
+    // Handle errors
+    xhr.addEventListener("error", () => {
+      console.log("Upload error");
       showToast.error("خطا در آپلود فایل");
-    } finally {
       setIsUploading(false);
-      setTimeout(() => setUploadProgress(0), 2000);
-    }
+      setTimeout(() => setUploadProgress(0), 1000);
+    });
+
+    // Start upload
+    xhr.open("POST", "/api/upload");
+    xhr.send(formData);
   };
 
   const handleDrag = (e: React.DragEvent) => {

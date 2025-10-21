@@ -110,7 +110,7 @@ const ServiceHelperModal = ({
         {/* Modal Content */}
         <div className="p-8">
           <div className="prose prose-lg max-w-none text-[#0A1D37] leading-relaxed">
-            <div className="whitespace-pre-wrap">{helper}</div>
+            <div className="whitespace-break-spaces">{helper}</div>
           </div>
 
           {/* Action Button */}
@@ -131,18 +131,50 @@ const ServiceHelperModal = ({
 
 // Service Summary Component
 const ServiceSummary = ({ service }: { service: Service }) => {
+  const [imageError, setImageError] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
+  const LOGO_PLACEHOLDER = "/assets/images/loggo.png";
+
   return (
     <div className="sticky top-8">
       {/* Service Image/Icon */}
       <div className="mb-6 relative overflow-hidden rounded-2xl shadow-lg">
-        {service.image ? (
+        {!imageError && service.image ? (
           <div className="relative h-48 w-full">
             <Image
               src={service.image}
               alt={service.title}
               fill
-              className="object-cover"
-              sizes="(max-width: 768px) 100vw, 50vw"
+              className={`object-cover transition-all duration-300 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
+              unoptimized={true}
+              onLoad={() => setImageLoaded(true)}
+              onError={() => setImageError(true)}
+            />
+            {!imageLoaded && (
+              <Image
+                src={LOGO_PLACEHOLDER}
+                alt="لوگوی placeholder"
+                fill
+                className="object-contain opacity-50"
+                unoptimized={true}
+                onError={(e) => {
+                  const target = e.target as HTMLImageElement;
+                  target.style.display = "none";
+                }}
+              />
+            )}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+          </div>
+        ) : service.image ? (
+          <div className="relative h-48 w-full">
+            <img
+              src={imageError ? LOGO_PLACEHOLDER : service.image}
+              alt={service.title}
+              className="w-full h-full object-contain opacity-70"
+              onError={(e) => {
+                const img = e.target as HTMLImageElement;
+                img.style.display = "none";
+              }}
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
           </div>
@@ -436,7 +468,7 @@ export default function ServiceDetailPage() {
                     value={option.key}
                     className="bg-white text-[#0A1D37]"
                   >
-                    {option.value}
+                    {option.key}
                   </option>
                 )
               )}
@@ -471,7 +503,7 @@ export default function ServiceDetailPage() {
                           );
                         }
                       }}
-                      className="rounded text-[#4DBFF0] focus:ring-[#4DBFF0]"
+                       className="rounded text-[#4DBFF0] focus:ring-[#4DBFF0]"
                     />
                     <span>{option.value}</span>
                   </label>
@@ -807,23 +839,39 @@ export default function ServiceDetailPage() {
   if (error || !service) {
     return (
       <div
-        className="min-h-screen bg-gradient-to-br from-white via-[#E8F4FD] to-[#F0F9FF] flex items-center justify-center"
+        className="min-h-screen   flex items-center justify-center p-4"
         dir="rtl"
       >
-        <div className="text-center p-8">
-          <div className="text-red-500 text-6xl mb-4">❌</div>
-          <h2 className="text-3xl font-bold text-[#0A1D37] mb-4">
-            خدمت یافت نشد
-          </h2>
-          <p className="text-[#0A1D37]/60 mb-8">
-            خدمت مورد نظر شما وجود ندارد یا در حال حاضر فعال نیست
-          </p>
-          <Link href="/services">
-            <button className="flex items-center gap-2 bg-gradient-to-l from-[#0A1D37] to-[#4DBFF0] text-white font-bold py-3 px-6 rounded-xl hover:opacity-90 transition-opacity mx-auto">
-              <FaArrowRight />
-              بازگشت به خدمات
-            </button>
-          </Link>
+        <div className="max-w-md w-full">
+          <div className="bg-white rounded-3xl shadow-lg p-8 text-center border border-red-100">
+            <div className="w-24 h-24 bg-red-50 rounded-full flex items-center justify-center mx-auto mb-6">
+              <svg
+                className="w-12 h-12 text-red-500"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                />
+              </svg>
+            </div>
+            <h2 className="text-2xl font-bold text-[#0A1D37] mb-3">
+              خدمت یافت نشد
+            </h2>
+            <p className="text-[#0A1D37]/60 mb-6 leading-relaxed">
+              خدمت مورد نظر شما وجود ندارد یا در حال حاضر فعال نیست
+            </p>
+            <Link href="/services">
+              <button className="flex items-center justify-center gap-2 bg-gradient-to-l from-[#0A1D37] to-[#4DBFF0] text-white font-bold py-3 px-6 rounded-xl hover:scale-105 transition-transform w-full">
+                <FaArrowRight />
+                بازگشت به خدمات
+              </button>
+            </Link>
+          </div>
         </div>
       </div>
     );

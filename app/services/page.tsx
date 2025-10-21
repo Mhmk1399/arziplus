@@ -69,15 +69,15 @@ const groupServicesByCategory = (services: Service[]) => {
   return Object.fromEntries(sortedEntries);
 };
 
-// Service Card Component  
+// Service Card Component
 const ServiceCard = ({ service }: { service: Service }) => {
   const [imageError, setImageError] = useState(false);
-  
+
   console.log("Service data:", service);
   console.log("Service image URL:", service.image);
-  
+
   return (
-    <div className="group relative overflow-hidden bg-white rounded-2xl sm:rounded-3xl shadow-sm hover:shadow-2xl transition-all duration-500 transform hover:scale-[1.03] border border-gray-100">
+    <div className="group relative overflow-hidden  w-60 md:w-full rounded-2xl sm:rounded-3xl  hover:shadow-2xl transition-all duration-500  border border-[#0A1D37]/40 ">
       {/* Service Image */}
       <div className="relative h-48 sm:h-56 lg:h-64 w-full overflow-hidden">
         {!imageError && service.image ? (
@@ -85,11 +85,13 @@ const ServiceCard = ({ service }: { service: Service }) => {
             src={service.image}
             alt={service.title}
             fill
-            className="object-cover transition-transform duration-500 group-hover:scale-110"
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            unoptimized={true}
+            className="object-contain transition-transform duration-500 group-hover:scale-110"
+             unoptimized={true}
             onError={() => {
-              console.log("Failed to load service image with Next.js Image:", service.image);
+              console.log(
+                "Failed to load service image with Next.js Image:",
+                service.image
+              );
               console.log("Falling back to regular img tag");
               setImageError(true);
             }}
@@ -98,9 +100,12 @@ const ServiceCard = ({ service }: { service: Service }) => {
           <img
             src={service.image}
             alt={service.title}
-            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+            className="w-1/2 h-1/2 object-cover transition-transform duration-500 group-hover:scale-110"
             onError={(e) => {
-              console.log("Failed to load service image with img tag:", service.image);
+              console.log(
+                "Failed to load service image with img tag:",
+                service.image
+              );
               const img = e.target as HTMLImageElement;
               img.style.display = "none";
             }}
@@ -124,9 +129,7 @@ const ServiceCard = ({ service }: { service: Service }) => {
           </div>
         )}
 
-        {/* Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-300" />
-
+  
         {/* Badge - if wallet is enabled */}
         {service.wallet && (
           <div className="absolute top-3 left-3 sm:top-4 sm:left-4 bg-green-500 text-white px-3 py-1.5 rounded-lg text-xs sm:text-sm font-bold flex items-center gap-1.5 shadow-lg">
@@ -134,31 +137,29 @@ const ServiceCard = ({ service }: { service: Service }) => {
             <span>پرداخت کیف پول</span>
           </div>
         )}
-
-        {/* Service Title Overlay */}
-        <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-5 lg:p-6">
-          <h3
-            className={`text-white font-bold text-base sm:text-lg lg:text-xl mb-2 leading-relaxed ${estedadBold.className}`}
-          >
-            {service.title}
-          </h3>
-          {service.fee > 0 && (
-            <div className="flex items-center gap-2 text-white/90">
-              <span className="text-sm sm:text-base">هزینه:</span>
-              <span className="text-base sm:text-lg font-bold">
-                {service.fee.toLocaleString()} تومان
-              </span>
-            </div>
-          )}
-        </div>
       </div>
 
-
+      {/* Service Title Below Image */}
+      <div className="p-1 mt-2 lg:p-2">
+        <h3
+          className={`text-[#0A1D37] font-bold text-center text-base   lg:text-lg   leading-relaxed ${estedadBold.className}`}
+        >
+          {service.title}
+        </h3>
+        {/* {service.fee > 0 && (
+          <div className="flex items-center gap-2 text-[#0A1D37]/70">
+            <span className="text-sm sm:text-base">هزینه:</span>
+            <span className="text-base sm:text-lg font-bold text-[#0A1D37]">
+              {service.fee.toLocaleString()} تومان
+            </span>
+          </div>
+        )} */}
+      </div>
 
       {/* CTA Button */}
-      <div className="p-3 sm:p-4 lg:p-5 bg-gradient-to-br from-gray-50 to-white">
+      <div className="p-1 lg:p-4  ">
         <Link href={`/services/${service.slug}`}>
-          <button className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-[#0A1D37] to-[#0A1D37]/90 hover:from-[#0A1D37]/90 hover:to-[#0A1D37] text-white font-bold py-3 sm:py-3.5 lg:py-4 px-4 sm:px-5 lg:px-6 rounded-xl sm:rounded-2xl transition-all duration-300 shadow-md hover:shadow-xl transform hover:scale-[1.02] active:scale-95">
+          <button className="w-full flex items-center cursor-pointer shadow-[10px_8px_30px_rgb(0,0,0,0.4)] hover:shadow-[0_20px_60px_rgb(0,0,0,0.3)]  justify-center gap-2 bg-gradient-to-r from-[#0A1D37] to-[#0A1D37]/90 hover:from-[#0A1D37]/90 hover:to-[#0A1D37] text-white font-bold py-3 sm:py-3.5 lg:py-4 px-4 sm:px-5 lg:px-6 rounded-xl sm:rounded-2xl transition-all duration-300   active:scale-95">
             <span className="text-sm sm:text-base">ثبت درخواست</span>
             <FaArrowLeft className="text-xs sm:text-sm" />
           </button>
@@ -452,7 +453,7 @@ export default function ServicesPage() {
         <div className="text-center mb-12 sm:mb-16 lg:mb-20">
           <div className="inline-block mb-4 sm:mb-6 px-4 sm:px-6 py-2 sm:py-3 bg-gradient-to-r from-[#0A1D37]/10 to-[#4DBFF0]/10 rounded-full">
             <span className="text-sm sm:text-base font-bold text-[#0A1D37]">
-                خدمات حرفه‌ای ارزی
+              خدمات حرفه‌ای ارزی
             </span>
           </div>
 

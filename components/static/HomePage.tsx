@@ -6,13 +6,22 @@ import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
 
+const LOGO_PLACEHOLDER = "/assets/images/loggo.png"; // مثلاً لوگوی ارزی‌پلاس
 const HomePage = () => {
   const [imageErrors, setImageErrors] = useState<{ [key: number]: boolean }>(
+    {}
+  );
+  const [imageLoaded, setImageLoaded] = useState<{ [key: number]: boolean }>(
     {}
   );
 
   const handleImageError = (serviceId: number) => {
     setImageErrors((prev) => ({ ...prev, [serviceId]: true }));
+  };
+
+  // **جدید: handler برای onLoad (minimal اضافه)**
+  const handleImageLoad = (serviceId: number) => {
+    setImageLoaded((prev) => ({ ...prev, [serviceId]: true }));
   };
   const serviceCategories = [
     {
@@ -696,8 +705,8 @@ const HomePage = () => {
   ];
 
   return (
-    <div className="  min-h-screen">
-      {/* Hero Section */}
+    <div className="min-h-screen">
+      {/* Hero Section – بدون تغییر */}
       <HeroSection
         heading="ارزی پلاس - پرداخت های بین المللی"
         subheading="خدمات ارزی معتبر"
@@ -766,10 +775,10 @@ const HomePage = () => {
 
           {serviceCategories.map((category, categoryIndex) => (
             <div key={categoryIndex} className="mb-20">
-              {/* Category Header */}
+              {/* Category Header – بدون تغییر */}
               <div className="text-center mb-12">
                 <div className="inline-flex items-center gap-3 px-6 py-3 bg-gradient-to-r from-[#0A1D37]/10 to-[#0A1D37]/10 rounded-xl border border-[#0A1D37]/20 backdrop-blur-sm">
-                  <h3 className="md:text-xl   font-bold text-[#0A1D37]">
+                  <h3 className="md:text-xl font-bold text-[#0A1D37]">
                     {category.title}
                   </h3>
                 </div>
@@ -777,15 +786,6 @@ const HomePage = () => {
 
               {category.subcategories?.map((subcategory, subIndex) => (
                 <div key={subIndex} className="mb-16">
-                  {/* Subcategory Header */}
-                  {/* <div className="flex items-center justify-center mb-8">
-                    <div className="flex-1 h-px bg-gradient-to-r from-transparent to-[#0A1D37]/30"></div>
-                    <h4 className="px-6 text-xl font-semibold text-[#0A1D37] bg-white/80 rounded-full py-2">
-                      {subcategory.name}
-                    </h4>
-                    <div className="flex-1 h-px bg-gradient-to-l from-transparent to-[#0A1D37]/30"></div>
-                  </div> */}
-
                   {/* Services Grid - Mobile Horizontal Scroll */}
                   <div className="relative">
                     {/* Mobile: Horizontal Scroll */}
@@ -805,19 +805,46 @@ const HomePage = () => {
                           >
                             <div className="relative mb-3 h-36 w-full overflow-hidden rounded-lg">
                               {!imageErrors[service.id] && service.image ? (
-                                <Image
-                                  src={service.image}
-                                  alt={service.title}
-                                  fill
-                                  className="object-cover group-hover:scale-110 transition-transform duration-300"
-                                   unoptimized={true}
-                                  onError={() => handleImageError(service.id)}
-                                />
+                                <>
+                                  {/* **اصلاح: Image اصلی با opacity بر اساس loaded */}
+                                  <Image
+                                    src={service.image}
+                                    alt={service.title}
+                                    fill
+                                    className={`object-cover group-hover:scale-110 transition-all duration-300 ${
+                                      imageLoaded[service.id]
+                                        ? "opacity-100"
+                                        : "opacity-0"
+                                    }`}
+                                    unoptimized={true}
+                                    onLoad={() => handleImageLoad(service.id)}
+                                    onError={() => handleImageError(service.id)}
+                                  />
+                                  {/* **جدید: لوگو overlay فقط موقع loading */}
+                                  {!imageLoaded[service.id] && (
+                                    <Image
+                                      src={LOGO_PLACEHOLDER}
+                                      alt="لوگوی placeholder"
+                                      fill
+                                      className="object-contain opacity-50" // محو برای UX بهتر
+                                      unoptimized={true}
+                                      onError={(e) => {
+                                        const target =
+                                          e.target as HTMLImageElement;
+                                        target.style.display = "none";
+                                      }}
+                                    />
+                                  )}
+                                </>
                               ) : service.image ? (
                                 <img
-                                  src={service.image}
+                                  src={
+                                    imageErrors[service.id]
+                                      ? LOGO_PLACEHOLDER
+                                      : service.image
+                                  }
                                   alt={service.title}
-                                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                                  className="w-full h-full object-contain opacity-70 group-hover:scale-110 transition-transform duration-300"
                                   onError={(e) => {
                                     const img = e.target as HTMLImageElement;
                                     img.style.display = "none";
@@ -836,7 +863,7 @@ const HomePage = () => {
                               {service.title}
                             </h5>
 
-                            <p className="text-[#A0A0A0] text-xs text-center leading-relaxed group-hover:text-[#0A1D37]/80 transition-colors duration-300 line-clamp-3">
+                            <p className="text-[#A0A0A0] text-xs text-center leading-relaxed group-hover:text-[#0A1D37]/80 transition-colors duration-300 line-clamp-2">
                               {service.description}
                             </p>
                           </Link>
@@ -845,7 +872,7 @@ const HomePage = () => {
                     </div>
 
                     {/* Desktop: Grid Layout */}
-                    <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-6 gap-2 rounded-2xl  p-5">
+                    <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-6 gap-2 rounded-2xl p-5">
                       {subcategory.services.map((service) => (
                         <Link
                           key={service.id}
@@ -854,19 +881,46 @@ const HomePage = () => {
                         >
                           <div className="relative h-36 w-full overflow-hidden rounded-lg mb-4">
                             {!imageErrors[service.id] && service.image ? (
-                              <Image
-                                src={service.image}
-                                alt={service.title}
-                                fill
-                                className="object-cover group-hover:scale-90 transition-transform duration-300"
-                                 unoptimized={true}
-                                onError={() => handleImageError(service.id)}
-                              />
+                              <>
+                                {/* **اصلاح: همون منطق برای دسکتاپ – scale-110 برای consistency */}
+                                <Image
+                                  src={service.image}
+                                  alt={service.title}
+                                  fill
+                                  className={`object-cover group-hover:scale-90 transition-all duration-300 ${
+                                    imageLoaded[service.id]
+                                      ? "opacity-100"
+                                      : "opacity-0"
+                                  }`}
+                                  unoptimized={true}
+                                  onLoad={() => handleImageLoad(service.id)}
+                                  onError={() => handleImageError(service.id)}
+                                />
+                                {/* **جدید: لوگو overlay فقط موقع loading */}
+                                {!imageLoaded[service.id] && (
+                                  <Image
+                                    src={LOGO_PLACEHOLDER}
+                                    alt="لوگوی placeholder"
+                                    fill
+                                    className="object-contain opacity-50"
+                                    unoptimized={true}
+                                    onError={(e) => {
+                                      const target =
+                                        e.target as HTMLImageElement;
+                                      target.style.display = "none";
+                                    }}
+                                  />
+                                )}
+                              </>
                             ) : service.image ? (
                               <img
-                                src={service.image}
+                                src={
+                                  imageErrors[service.id]
+                                    ? LOGO_PLACEHOLDER
+                                    : service.image
+                                }
                                 alt={service.title}
-                                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                                className="w-full h-full object-contain group-hover:scale-90 opacity-70 transition-transform duration-300"
                                 onError={(e) => {
                                   const img = e.target as HTMLImageElement;
                                   img.style.display = "none";
@@ -885,7 +939,7 @@ const HomePage = () => {
                             {service.title}
                           </h5>
 
-                          <p className="text-[#A0A0A0] text-xs text-center leading-relaxed group-hover:text-[#0A1D37]/80 transition-colors duration-300 line-clamp-3">
+                          <p className="text-[#A0A0A0] text-xs text-center leading-relaxed group-hover:text-[#0A1D37]/80 transition-colors duration-300 line-clamp-2">
                             {service.description}
                           </p>
                         </Link>

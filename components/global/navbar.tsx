@@ -65,14 +65,14 @@ export default function NewNavbar() {
       if (navRef.current) {
         if (scrolled) {
           gsap.to(navRef.current, {
-            backgroundColor: "rgba(255, 255, 255, 0.3)",
+            backgroundColor: "rgba(255, 255, 255, 0.5)",
             boxShadow: "0 4px 30px rgba(0, 0, 0, 0.1)",
             duration: 0.3,
             ease: "power2.out",
           });
         } else {
           gsap.to(navRef.current, {
-            backgroundColor: "rgba(255, 255, 255, 0.7)",
+            backgroundColor: "rgba(255, 255, 255, 0.9)",
             boxShadow: "0 2px 10px rgba(0, 0, 0, 0.05)",
             duration: 0.3,
             ease: "power2.out",

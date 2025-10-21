@@ -98,6 +98,7 @@ const LotteryMultiStepForm: React.FC = () => {
   const [showCardPaymentModal, setShowCardPaymentModal] = useState(false);
   const [showFileUploader, setShowFileUploader] = useState(false);
   const [showPhotoInfoModal, setShowPhotoInfoModal] = useState(false);
+  const [uploadContext, setUploadContext] = useState<'registerer' | 'partner' | null>(null);
   const [walletBalance, setWalletBalance] = useState(0);
   const [validationErrors, setValidationErrors] = useState<{
     [key: string]: string;
@@ -366,6 +367,7 @@ const LotteryMultiStepForm: React.FC = () => {
     if (validateStep(currentStep)) {
       const visibleSteps = getVisibleSteps();
       setCurrentStep(Math.min(visibleSteps.length - 1, currentStep + 1));
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     } else {
       showToast.error("لطفاً تمامی فیلدهای الزامی را تکمیل کنید");
     }
@@ -467,8 +469,8 @@ const LotteryMultiStepForm: React.FC = () => {
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50 flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#FF7A00] mx-auto mb-4"></div>
-          <p className="text-gray-600">در حال بررسی احراز هویت...</p>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#0A1D37] mx-auto mb-4"></div>
+          <p className="text-gray-600">در حال بررسی احراز هویت</p>
         </div>
       </div>
     );
@@ -487,7 +489,7 @@ const LotteryMultiStepForm: React.FC = () => {
           </p>
           <button
             onClick={() => router.push("/auth/sms")}
-            className="bg-[#FF7A00] text-white px-6 py-3 rounded-xl font-medium hover:bg-[#FF7A00]/90 transition-colors"
+            className="bg-[#0A1D37] text-white px-6 py-3 rounded-xl font-medium hover:bg-[#0A1D37]/90 transition-colors"
           >
             ورود به حساب کاربری
           </button>
@@ -1399,13 +1401,13 @@ const LotteryMultiStepForm: React.FC = () => {
       </div>
 
       {/* Other Informations */}
-      <div className="bg-gradient-to-r from-orange-50 to-red-50 p-6 rounded-2xl border border-gray-200">
+      <div className="bg-gradient-to-r from-gray-50 to-slate-50 p-4 sm:p-6 rounded-2xl border border-gray-200">
         <h3 className="text-lg font-bold text-[#0A1D37] mb-4 flex items-center gap-3">
           <FaGlobe className="text-orange-500" />
           سایر اطلاعات
         </h3>
 
-        <div className="grid md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <input
             type="text"
             placeholder="نام فارسی"
@@ -1489,12 +1491,12 @@ const LotteryMultiStepForm: React.FC = () => {
               همسر متقاضی، مقیم یا شهروند ایالات متحده می‌باشد.
             </option>
           </select>
-          <div className="md:col-span-2">
-            <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-4">
-              <h4 className="text-lg font-bold text-[#0A1D37] mb-3 flex items-center gap-2">
+          <div className="sm:col-span-2">
+            <div className="bg-gray-50 border border-gray-200 rounded-lg p-3 sm:p-4 mb-4">
+              <h4 className="text-base sm:text-lg font-bold text-[#0A1D37] mb-3 flex items-center gap-2">
                 📸 شرایط الزامی عکس لاتاری شما
               </h4>
-              <div className="space-y-2 text-sm text-gray-700">
+              <div className="space-y-2 text-xs sm:text-sm text-gray-700">
                 <p>• باید زاویه مستقیم به دوربین داشته باشید.</p>
                 <p>
                   • عکس به شکل مربع و طول 600 پیکسل تا 1200 پیکسل مورد قبول است.
@@ -1523,7 +1525,7 @@ const LotteryMultiStepForm: React.FC = () => {
               </div>
               <button
                 onClick={() => setShowPhotoInfoModal(true)}
-                className="mt-3 px-4 py-2 bg-[#4DBFF0] text-white rounded-lg hover:bg-[#4DBFF0]/80 transition-colors text-sm font-medium"
+                className="mt-3 px-3 sm:px-4 py-2 bg-[#4DBFF0] text-white rounded-lg hover:bg-[#4DBFF0]/80 transition-colors text-xs sm:text-sm font-medium"
               >
                 اطلاعات بیشتر
               </button>
@@ -1535,7 +1537,7 @@ const LotteryMultiStepForm: React.FC = () => {
               {/* Image Preview */}
               {formData.registererInformations[0]?.otherInformations[0]
                 ?.imageUrl && (
-                <div className="relative w-32 h-32 mx-auto">
+                <div className="relative w-24 h-24 sm:w-32 sm:h-32 mx-auto">
                   <img
                     src={
                       formData.registererInformations[0]?.otherInformations[0]
@@ -1548,7 +1550,7 @@ const LotteryMultiStepForm: React.FC = () => {
                     onClick={() =>
                       updateRegistererInfo("otherInformations", "imageUrl", "")
                     }
-                    className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full text-xs hover:bg-red-600 transition-colors"
+                    className="absolute -top-2 -right-2 w-5 h-5 sm:w-6 sm:h-6 bg-red-500 text-white rounded-full text-xs hover:bg-red-600 transition-colors"
                   >
                     ×
                   </button>
@@ -1558,11 +1560,14 @@ const LotteryMultiStepForm: React.FC = () => {
               {/* Upload Button */}
               <button
                 type="button"
-                onClick={() => setShowFileUploader(true)}
-                className="w-full p-3 border-2 border-dashed border-[#4DBFF0] bg-[#4DBFF0]/5 rounded-xl hover:bg-[#4DBFF0]/10 transition-all duration-300 flex items-center justify-center gap-2 text-[#4DBFF0] font-medium"
+                onClick={() => {
+                  setUploadContext('registerer');
+                  setShowFileUploader(true);
+                }}
+                className="w-full p-3 border-2 border-dashed border-[#4DBFF0] bg-[#4DBFF0]/5 rounded-xl hover:bg-[#4DBFF0]/10 transition-all duration-300 flex items-center justify-center gap-2 text-[#4DBFF0] font-medium text-sm"
               >
                 <svg
-                  className="w-5 h-5"
+                  className="w-4 h-4 sm:w-5 sm:h-5"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -1887,7 +1892,10 @@ const LotteryMultiStepForm: React.FC = () => {
               </label>
               <button
                 type="button"
-                onClick={() => setShowFileUploader(true)}
+                onClick={() => {
+                  setUploadContext('partner');
+                  setShowFileUploader(true);
+                }}
                 className={`w-full p-2 md:p-3 border-2 border-dashed rounded-xl text-gray-500 hover:border-[#FF7A00] hover:text-[#FF7A00] transition-all ${
                   validationErrors.partnerImageUrl
                     ? "border-red-500"
@@ -2004,13 +2012,13 @@ const LotteryMultiStepForm: React.FC = () => {
       className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50 p-2 sm:p-4"
       dir="rtl"
     >
-      <div className="max-w-4xl mx-auto mt-16 sm:mt-20 md:mt-28">
+      <div className="max-w-4xl mx-auto mt-28 sm:mt-20 md:mt-28">
         {/* Header */}
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-[#0A1D37] mb-4">
-            فرم ثبت‌نام قرعه‌کشی
+        <div className="text-center my-8">
+          <h1 className="md:text-3xl text-xl font-bold text-[#0A1D37] mb-4">
+            فرم ثبت‌نام آنلاین لاتاری
           </h1>
-          <p className="text-gray-600">
+          <p className="text-gray-600 text-sm md:text-base">
             لطفاً تمام اطلاعات مورد نیاز را با دقت تکمیل کنید
           </p>
         </div>
@@ -2075,7 +2083,7 @@ const LotteryMultiStepForm: React.FC = () => {
 
         {/* Important Information Box */}
         {currentStep === 0 && (
-          <div className="bg-gradient-to-r h-80 overflow-auto from-red-50 to-orange-50 rounded-2xl shadow-lg border border-red-200 p-6 mb-8">
+          <div className="bg-gradient-to-r h-80 overflow-auto from-gray-50 to-slate-50 rounded-2xl shadow-lg border border-red-200 p-6 mb-8">
             <div className="space-y-6">
               {/* Important Notice */}
               <div className="bg-red-100 border-r-4 border-red-500 p-4 rounded-lg">
@@ -2227,7 +2235,10 @@ const LotteryMultiStepForm: React.FC = () => {
           <div className="border-t border-gray-200 p-3 sm:p-6 bg-gray-50">
             <div className="flex flex-col sm:flex-row justify-between items-center gap-3 sm:gap-0">
               <button
-                onClick={() => setCurrentStep(Math.max(0, currentStep - 1))}
+                onClick={() => {
+                  setCurrentStep(Math.max(0, currentStep - 1));
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }}
                 disabled={currentStep === 0}
                 className={`w-full sm:w-auto flex items-center justify-center gap-2 px-4 sm:px-6 py-2 sm:py-3 rounded-xl font-medium transition-all duration-300 ${
                   currentStep === 0
@@ -2342,12 +2353,20 @@ const LotteryMultiStepForm: React.FC = () => {
       {/* File Uploader Modal */}
       <FileUploaderModal
         isOpen={showFileUploader}
-        onClose={() => setShowFileUploader(false)}
-        onFileUploaded={(fileUrl: string) => {
-          updateRegistererInfo("otherInformations", "imageUrl", fileUrl);
+        onClose={() => {
           setShowFileUploader(false);
+          setUploadContext(null);
         }}
-        title="آپلود تصویر شخصی"
+        onFileUploaded={(fileUrl: string) => {
+          if (uploadContext === 'partner') {
+            updatePartnerOtherInfo("imageUrl", fileUrl);
+          } else {
+            updateRegistererInfo("otherInformations", "imageUrl", fileUrl);
+          }
+          setShowFileUploader(false);
+          setUploadContext(null);
+        }}
+        title={uploadContext === 'partner' ? "آپلود تصویر همسر" : "آپلود تصویر شخصی"}
         acceptedTypes={[".jpg", ".jpeg", ".png", ".gif", ".webp"]}
         maxFileSize={5 * 1024 * 1024} // 5MB
       />

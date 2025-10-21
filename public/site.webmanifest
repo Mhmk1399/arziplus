@@ -1,0 +1,16 @@
+{
+  "name": "ارزی پلاس",
+  "short_name": "ArziPlus",
+  "description": "خدمات ارزی معتبر و پرداخت های بین المللی",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0A1D37",
+  "theme_color": "#0A1D37",
+  "icons": [
+    {
+      "src": "/assets/images/loggo.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ]
+}

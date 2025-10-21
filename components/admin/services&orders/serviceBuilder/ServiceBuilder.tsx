@@ -297,8 +297,8 @@ const ServiceBuilder: React.FC<ServiceBuilderProps> = ({
                   <label className="block text-[#0A1D37] text-sm mb-2">
                     متن کاشن(helper) *
                   </label>
-                  <input
-                    type="text"
+                  <textarea
+                  rows={5}
                     value={formData.helper}
                     onChange={(e) => handleInputChange("helper", e.target.value)}
                     className="w-full px-4 py-3 bg-white/10 border border-[#4DBFF0] rounded-lg text-[#0A1D37] placeholder:text-[#0A1D37]"
