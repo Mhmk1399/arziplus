@@ -296,7 +296,7 @@ function SMSAuthContent() {
                 <div
                   className={`inline-flex items-center gap-2 px-4 py-2 rounded-full backdrop-blur-sm border ${
                     isExistingUser
-                      ? "bg-gradient-to-r from-green-500/20 to-blue-500/20 border-green-500/30 text-green-400"
+                      ? "bg-gradient-to-r from-green-500/20 to-blue-500/20 border-green-500/30 text-gray-800"
                       : "bg-gradient-to-r from-[#0A1D37]/20 to-[#4DBFF0]/20 border-[#0A1D37]/30 text-[#0A1D37]"
                   }`}
                 >

@@ -4,17 +4,14 @@ import { useRouter } from "next/navigation";
 import {
   FaUser,
   FaUsers,
-  FaChild,
   FaArrowRight,
   FaArrowLeft,
   FaCheck,
   FaClock,
   FaCalendarAlt,
-  FaPhone,
-  FaIdCard,
 } from "react-icons/fa";
 import { showToast } from "@/utilities/toast";
-import PersianDatePicker from "@/components/ui/PersianDatePicker";
+import PersianDatePickerPresent from "@/components/ui/PersianDatePickerPresent";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
 import PaymentMethodSelector from "@/components/payment/PaymentMethodSelector";
 import CardPaymentModal from "@/components/payment/CardPaymentModal";
@@ -27,7 +24,6 @@ interface HozoriFormData {
   childrensCount: number;
   maridgeStatus: string;
   dateObject: {
-    year: string;
     month: string;
     day: string;
   };
@@ -56,7 +52,6 @@ const HozoriMultiStepForm: React.FC = () => {
     childrensCount: 0,
     maridgeStatus: "",
     dateObject: {
-      year: "",
       month: "",
       day: "",
     },
@@ -138,12 +133,14 @@ const HozoriMultiStepForm: React.FC = () => {
         break;
 
       case 2: // Date Selection
-        if (
-          !formData.dateObject.year ||
-          !formData.dateObject.month ||
-          !formData.dateObject.day
-        ) {
+        if (!formData.dateObject.month || !formData.dateObject.day) {
           errors.dateObject = "انتخاب تاریخ الزامی است";
+        } else {
+          const selectedMonth = parseInt(formData.dateObject.month);
+          const selectedDay = parseInt(formData.dateObject.day);
+          if (selectedMonth === 9 && selectedDay > 9) {
+            errors.dateObject = "تاریخ انتخابی نباید بعد از ۹ آذر باشد";
+          }
         }
         break;
 
@@ -162,6 +159,7 @@ const HozoriMultiStepForm: React.FC = () => {
   const handleNext = () => {
     if (validateStep(currentStep)) {
       setCurrentStep(Math.min(steps.length - 1, currentStep + 1));
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     } else {
       showToast.error("لطفاً تمامی فیلدهای الزامی را تکمیل کنید");
     }
@@ -169,6 +167,7 @@ const HozoriMultiStepForm: React.FC = () => {
 
   const handlePrevious = () => {
     setCurrentStep(Math.max(0, currentStep - 1));
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   // Fetch wallet balance
@@ -305,11 +304,10 @@ const HozoriMultiStepForm: React.FC = () => {
 
       // Convert Persian date for metadata
       const convertPersianToDate = (dateObj: {
-        year: string;
         month: string;
         day: string;
       }): Date => {
-        const persianYear = parseInt(dateObj.year);
+        const persianYear = 1404; // Fixed year
         const persianMonth = parseInt(dateObj.month);
         const persianDay = parseInt(dateObj.day);
         const gregorianYear = persianYear + 621;
@@ -380,7 +378,6 @@ const HozoriMultiStepForm: React.FC = () => {
 
     // Convert Persian date object to a properly formatted date for the API
     const formatPersianDateForAPI = (dateObj: {
-      year: string;
       month: string;
       day: string;
     }): string => {
@@ -437,7 +434,7 @@ const HozoriMultiStepForm: React.FC = () => {
 
   const updateFormData = (
     field: keyof HozoriFormData,
-    value: string | number | { year: string; month: string; day: string }
+    value: string | number | { month: string; day: string }
   ) => {
     setFormData((prev) => ({
       ...prev,
@@ -617,19 +614,19 @@ const HozoriMultiStepForm: React.FC = () => {
         </h3>
 
         <div className="max-w-md mx-auto">
-          <PersianDatePicker
+          <PersianDatePickerPresent
             value={formData.dateObject}
             onChange={(date) => updateFormData("dateObject", date)}
             placeholder="تاریخ مراجعه را انتخاب کنید"
-            className={`w-full p-3 border rounded-xl focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] outline-none transition-all ${
-              validationErrors.dateObject ? "border-red-500" : "border-gray-300"
-            }`}
           />
           {validationErrors.dateObject && (
             <p className="text-red-500 text-xs mt-1 text-center">
               {validationErrors.dateObject}
             </p>
           )}
+          <p className="text-gray-500 text-xs mt-2 text-center">
+            تاریخ مراجعه در سال ۱۴۰۴ (از امروز تا ۹ آذر)
+          </p>
         </div>
       </div>
     </div>
@@ -754,8 +751,8 @@ const HozoriMultiStepForm: React.FC = () => {
                 <div>
                   <span className="text-gray-600">تاریخ مراجعه:</span>
                   <span className="font-medium mr-2">
-                    {formData.dateObject
-                      ? `${formData.dateObject.year}/${formData.dateObject.month}/${formData.dateObject.day}`
+                    {formData.dateObject.month && formData.dateObject.day
+                      ? `1404/${formData.dateObject.month}/${formData.dateObject.day}`
                       : "انتخاب نشده"}
                   </span>
                 </div>
@@ -861,7 +858,7 @@ const HozoriMultiStepForm: React.FC = () => {
       className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50 p-2 sm:p-4"
       dir="rtl"
     >
-      <div className="max-w-4xl mx-auto mt-16 sm:mt-20 md:mt-28">
+      <div className="max-w-4xl mx-auto mt-28 sm:mt-20 md:mt-28">
         {/* Header */}
         <div className="text-center mb-8">
           <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#0A1D37] mb-2">
@@ -878,7 +875,7 @@ const HozoriMultiStepForm: React.FC = () => {
             {steps.map((step, index) => (
               <div key={step.id} className="flex flex-col items-center flex-1">
                 <div
-                  className={`w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center text-sm font-medium mb-2 transition-all ${
+                  className={`md:w-10 md:h-10 w-7 h-7 sm:w-12 sm:h-12 rounded-full flex items-center justify-center text-sm font-medium mb-2 transition-all ${
                     currentStep >= index
                       ? "bg-[#0A1D37] text-white shadow-lg"
                       : "bg-gray-200 text-gray-500"
@@ -888,20 +885,13 @@ const HozoriMultiStepForm: React.FC = () => {
                 </div>
                 <div className="text-center">
                   <p
-                    className={`text-xs sm:text-sm font-medium ${
+                    className={`text-[10px] sm:text-sm font-medium ${
                       currentStep >= index ? "text-[#0A1D37]" : "text-gray-500"
                     }`}
                   >
                     {step.title}
                   </p>
                 </div>
-                {index < steps.length - 1 && (
-                  <div
-                    className={`hidden sm:block w-full h-0.5 mt-6 ${
-                      currentStep > index ? "bg-[#0A1D37]" : "bg-gray-200"
-                    }`}
-                  />
-                )}
               </div>
             ))}
           </div>

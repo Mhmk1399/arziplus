@@ -281,7 +281,7 @@ export default function Footer() {
                         className="group relative p-4 rounded-xl   hover:border-[#0A1D37]/50 transition-all duration-300 hover:scale-110  "
                         title={social.label}
                       >
-                        <social.icon className="text-2xl text-white/80 group-hover:text-[#0A1D37] transition-colors duration-300" />
+                        <social.icon className="text-2xl text-white/80 group-hover:text-[#4DBFF0] transition-colors duration-300" />
 
                         {/* Tooltip */}
                         <span className="absolute top-2 left-1/2 -translate-x-1/2 px-3 py-1 bg-[#0A1D37] text-white text-xs rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap pointer-events-none">

@@ -311,8 +311,8 @@ const ServiceWrapper: React.FC<AdminWrapperProps> = ({
     tabs.find((tab) => tab.id === activeTab)?.component || AdminRequestsTable;
 
   return (
-    <div className={`min-h-screen  ${className}`} dir="rtl">
-      <div className="container mx-auto px-4  ">
+    <div className={`min-h-screen   `} dir="rtl">
+      <div className="container mx-auto px-4 ">
         {/* Admin Welcome Section */}
         {renderAdminWelcome()}
 

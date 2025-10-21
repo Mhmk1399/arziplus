@@ -12,13 +12,9 @@ import {
   FaTimes,
   FaUser,
   FaChild,
-  FaIdCard,
-  FaMapMarkerAlt,
-  FaPhone,
-  FaCreditCard,
-  FaMoneyBillWave,
-  FaReceipt,
-  FaHeart,
+    FaPhone,
+   FaMoneyBillWave,
+   FaHeart,
   FaCalendarAlt,
   FaClock,
   FaCheckCircle,
@@ -483,27 +479,27 @@ const HozoriAdminList = () => {
                       {getStatusBadge(reservation.status)}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                      <div className="flex space-x-2 space-x-reverse">
+                      <div className="flex gap-3 ">
                         <button
                           onClick={() => {
                             setSelectedReservation(reservation);
                             setShowReservationDetails(true);
                           }}
-                          className="text-[#4DBFF0] hover:text-[#4DBFF0]/80 p-2 rounded"
+                          className="text-[#4DBFF0] hover:text-[#4DBFF0]/80   rounded"
                           title="مشاهده جزئیات"
                         >
                           <FaEye />
                         </button>
                         <button
                           onClick={() => openEditModal(reservation)}
-                          className="text-[#0A1D37] hover:text-[#0A1D37]/80 p-2 rounded"
+                          className="text-[#0A1D37] hover:text-[#0A1D37]/80   rounded"
                           title="ویرایش"
                         >
                           <FaEdit />
                         </button>
                         <button
                           onClick={() => openDeleteConfirm(reservation)}
-                          className="text-red-600 hover:text-red-800 p-2 rounded"
+                          className="text-red-600 hover:text-red-800   rounded"
                           title="حذف"
                         >
                           <FaTrash />

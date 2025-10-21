@@ -39,7 +39,7 @@ const plans = [
   },
   {
     type: "inperson",
-    href: "/lottery/present",
+    href: "/lottery/form/present",
 
     title: " پذیرش حضوری",
     icon: <MapPin className="w-8 h-8" />,

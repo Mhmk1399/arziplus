@@ -309,7 +309,7 @@ console.log(hoveredService,currentRotation)
 
                       {/* Icon */}
                       {service.icon && (
-                        <div className="text-sm sm:text-xl md:text-2xl mb-1 sm:mb-2 text-[#0A1D37] relative z-10">
+                        <div className="text-sm sm:text-xl md:text-2xl mb-1 sm:mb-2 text-[#4DBFF0] relative z-10">
                           {service.icon}
                         </div>
                       )}
