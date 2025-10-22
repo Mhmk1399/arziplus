@@ -21,6 +21,7 @@ import {
   FaExclamationTriangle,
   FaClock,
 } from "react-icons/fa";
+import Link from "next/link";
 
 interface ServiceField {
   name: string;
@@ -395,13 +396,13 @@ export default function CustomerRequestsTable({
                 ? "لطفاً فیلتر دیگری را امتحان کنید"
                 : "از طریق دکمه زیر اولین درخواست خود را ثبت کنید"}
             </p>
-            <a
+            <Link
               href="/services"
               className="inline-flex items-center gap-2 px-6 py-3 sm:py-4 bg-gradient-to-r from-[#4DBFF0] to-[#0A1D37] text-white rounded-xl sm:rounded-2xl hover:shadow-xl transition-all duration-300 hover:scale-105 font-bold text-sm sm:text-base"
             >
               <FaPlus className="text-sm" />
               <span>ثبت درخواست جدید</span>
-            </a>
+            </Link>
           </div>
         ) : (
           <>
