@@ -434,7 +434,8 @@ export default function ServiceDetailPage() {
     });
 
     // Final calculation: fee = baseFee + (currencySum * number) + (accountSum * number)
-    const totalFee = baseFee + (currencySum * tempNumber) + (accountSum * tempNumber);
+    const totalFee =
+      baseFee + currencySum * tempNumber + accountSum * tempNumber;
     console.log("Total Fee:", totalFee);
     return totalFee;
   };
