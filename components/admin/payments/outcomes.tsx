@@ -24,10 +24,13 @@ interface WithdrawRequest {
   user: {
     _id: string;
     username: string;
-    firstName?: string;
-    lastName?: string;
-    phone: string;
-    contactInfo?: string;
+    nationalCredentials?: {
+      firstName?: string;
+      lastName?: string;
+    };
+    contactInfo?: {
+      mobilePhone?: string;
+    };
     bankingInfo?: banckinfo[];
   };
   amount: number;
@@ -117,6 +120,18 @@ const WithdrawRequestsList: React.FC = () => {
     }
   };
 
+  // Helper functions to get user data
+  const getUserName = (user: WithdrawRequest["user"]) => {
+    const { firstName, lastName } = user.nationalCredentials || {};
+    if (firstName && lastName) return `${firstName} ${lastName}`;
+    if (firstName) return firstName;
+    return "نام تعریف نشده";
+  };
+
+  const getUserPhone = (user: WithdrawRequest["user"]) => {
+    return user.contactInfo?.mobilePhone || "تلفن تعریف نشده";
+  };
+
   // Filter requests based on search and filters
   useEffect(() => {
     let filtered = withdrawRequests;
@@ -128,15 +143,10 @@ const WithdrawRequestsList: React.FC = () => {
           request.user.username
             .toLowerCase()
             .includes(searchTerm.toLowerCase()) ||
-          request.user.phone.includes(searchTerm) ||
-          (request.user.firstName &&
-            request.user.firstName
-              .toLowerCase()
-              .includes(searchTerm.toLowerCase())) ||
-          (request.user.lastName &&
-            request.user.lastName
-              .toLowerCase()
-              .includes(searchTerm.toLowerCase()))
+          getUserPhone(request.user).includes(searchTerm) ||
+          getUserName(request.user)
+            .toLowerCase()
+            .includes(searchTerm.toLowerCase())
       );
     }
 
@@ -315,10 +325,8 @@ const WithdrawRequestsList: React.FC = () => {
       ...filteredRequests.map((request) =>
         [
           request.user.username,
-          `${request.user.firstName || ""} ${
-            request.user.lastName || ""
-          }`.trim(),
-          request.user.phone,
+          getUserName(request.user),
+          getUserPhone(request.user),
           request.amount,
           getStatusText(request.status),
           new Date(request.createdAt).toLocaleDateString("fa-IR"),
@@ -350,7 +358,7 @@ const WithdrawRequestsList: React.FC = () => {
   }
 
   return (
-    <div className="space-y-6 my-32">
+    <div className="space-y-6 my-8">
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
@@ -494,16 +502,11 @@ const WithdrawRequestsList: React.FC = () => {
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center">
                       <div>
-                        <div className="text-sm font-medium text-gray-900">
-                          {request.user.username}
-                        </div>
                         <div className="text-sm text-gray-500">
-                          {`${request.user.firstName || ""} ${
-                            request.user.lastName || ""
-                          }`.trim() || "نام تعریف نشده"}
+                          {getUserName(request.user)}
                         </div>
                         <div className="text-xs text-gray-400 font-mono">
-                          {request.user.phone}
+                          {getUserPhone(request.user)}
                         </div>
                       </div>
                     </div>
@@ -606,9 +609,11 @@ const WithdrawRequestsList: React.FC = () => {
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-2xl max-w-4xl w-full h-[90vh] overflow-y-auto shadow-2xl border border-[#0A1D37]/10">
             <div className="p-4 sm:p-6 border-b border-[#0A1D37]/10">
-              <h2 className="text-xl font-bold text-[#0A1D37] flex items-center gap-3">
+              <h2 className="md:text-xl font-bold text-[#0A1D37] flex items-center gap-3">
                 <span className="w-3 h-3 bg-[#0A1D37] rounded-full"></span>
-                جزئیات درخواست برداشت - {selectedRequest.user.username}
+                جزئیات درخواست برداشت{" "}
+                {selectedRequest.user.nationalCredentials?.firstName}{" "}
+                {selectedRequest.user.nationalCredentials?.lastName}
               </h2>
             </div>
 
@@ -682,7 +687,7 @@ const WithdrawRequestsList: React.FC = () => {
                         })}
                       </div>
                     </div>
-                    {selectedRequest.processedBy && (
+                    {/* {selectedRequest.processedBy && (
                       <div>
                         <label className="text-xs sm:text-sm font-medium text-gray-600">
                           بررسی شده توسط
@@ -694,7 +699,7 @@ const WithdrawRequestsList: React.FC = () => {
                             : selectedRequest.processedBy.username}
                         </div>
                       </div>
-                    )}
+                    )} */}
                   </div>
                 )}
 
@@ -730,9 +735,7 @@ const WithdrawRequestsList: React.FC = () => {
                       نام کامل
                     </label>
                     <div className="text-sm sm:text-base text-[#0A1D37] mt-1 bg-white px-3 py-2 rounded-lg border border-[#0A1D37]/10">
-                      {`${selectedRequest.user.firstName || ""} ${
-                        selectedRequest.user.lastName || ""
-                      }`.trim() || "تعریف نشده"}
+                      {getUserName(selectedRequest.user)}
                     </div>
                   </div>
                   <div>
@@ -740,7 +743,7 @@ const WithdrawRequestsList: React.FC = () => {
                       شماره تلفن
                     </label>
                     <div className="text-sm sm:text-base text-[#0A1D37] mt-1 bg-white px-3 py-2 rounded-lg border border-[#0A1D37]/10 font-mono">
-                      {selectedRequest.user.phone}
+                      {getUserPhone(selectedRequest.user)}
                     </div>
                   </div>
                 </div>
@@ -830,9 +833,11 @@ const WithdrawRequestsList: React.FC = () => {
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-2xl max-w-2xl w-full shadow-2xl border border-[#0A1D37]/10">
             <div className="p-4 sm:p-6 border-b border-[#0A1D37]/10">
-              <h2 className="text-xl font-bold text-[#0A1D37] flex items-center gap-3">
+              <h2 className="md:text-xl font-bold text-[#0A1D37] flex items-center gap-3">
                 <span className="w-3 h-3 bg-[#0A1D37] rounded-full"></span>
-                ویرایش درخواست برداشت - {selectedRequest.user.username}
+                ویرایش درخواست برداشت{" "}
+                {selectedRequest.user.nationalCredentials?.firstName}{" "}
+                {selectedRequest.user.nationalCredentials?.lastName}
               </h2>
             </div>
 

@@ -26,10 +26,10 @@ const PaymentWrapper: React.FC = () => {
   const ActiveComponent = tabs.find(tab => tab.id === activeTab)?.component || WithdrawRequestsList;
 
   return (
-    <div className="space-y-6 my-32 mx-12">
+    <div className="space-y-6 my-8 px-4">
       {/* Tab Navigation */}
-      <div className="bg-white rounded-xl border border-[#0A1D37]/10 p-4">
-        <div className="flex flex-col sm:flex-row gap-2">
+      <div className="bg-white rounded-xl">
+        <div className="flex flex-row gap-2 justify-center items-center">
           {tabs.map((tab) => (
             <button
               key={tab.id}
@@ -41,7 +41,7 @@ const PaymentWrapper: React.FC = () => {
               }`}
             >
               {tab.icon}
-              <span className="text-sm font-medium">{tab.label}</span>
+              <span className="text-xs md:text-sm font-medium">{tab.label}</span>
             </button>
           ))}
         </div>

@@ -147,12 +147,12 @@ const ServiceSummary = ({
       {/* Service Image/Icon */}
       <div className="mb-6 relative overflow-hidden rounded-2xl shadow-lg">
         {!imageError && service.image ? (
-          <div className="relative h-48 w-full">
+          <div className="relative h-48 w-full lg:block hidden">
             <Image
               src={service.image}
               alt={service.title}
               fill
-              className={`object-cover transition-all duration-300 ${
+              className={`object-contain transition-all duration-300 ${
                 imageLoaded ? "opacity-100" : "opacity-0"
               }`}
               unoptimized={true}
@@ -172,7 +172,6 @@ const ServiceSummary = ({
                 }}
               />
             )}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
           </div>
         ) : service.image ? (
           <div className="relative h-48 w-full">
@@ -577,7 +576,7 @@ export default function ServiceDetailPage() {
               className={baseInputClasses}
               required={field.required}
             >
-              <option value="">انتخاب کنید</option>
+              <option value="">{field.placeholder || "انتخاب کنید"}</option>
               {[...(field.options || []), ...(field.items || [])].map(
                 (option, index) => (
                   <option
@@ -1005,9 +1004,9 @@ export default function ServiceDetailPage() {
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Two Column Layout */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-2 lg:gap-8">
             {/* Left Column - Service Summary */}
-            <div className="lg:col-span-1">
+            <div className="lg:col-span-1 order-1">
               <ServiceSummary service={service} calculatedFee={calculatedFee} />
             </div>
 
@@ -1017,11 +1016,11 @@ export default function ServiceDetailPage() {
                 {/* Form Header */}
                 <div className="bg-gradient-to-l from-[#0A1D37] to-[#4DBFF0] p-6">
                   <h2
-                    className={`text-2xl font-bold text-white ${estedadBold.className}`}
+                    className={`md:text-2xl text-lg font-bold text-white ${estedadBold.className}`}
                   >
-                    فرم درخواست خدمت
+                    فرم درخواست {service.title}
                   </h2>
-                  <p className="text-white/90 mt-1">
+                  <p className="text-white/90 text-xs md:text-base mt-1">
                     لطفاً اطلاعات مورد نیاز را با دقت تکمیل کنید
                   </p>
                 </div>
@@ -1084,6 +1083,28 @@ export default function ServiceDetailPage() {
                         </Link>{" "}
                         استفاده از خدمات را مطالعه کرده و قبول دارم
                       </label>
+                    </div>
+
+                    {/* Pricing Summary */}
+                    <div className="bg-gradient-to-l block md:hidden from-[#0A1D37]/10 to-[#4DBFF0]/10 rounded-xl p-4 border border-[#4DBFF0]/30 space-y-3">
+                      <div className="flex items-center justify-between pb-3 border-b border-[#4DBFF0]/20">
+                        <span className="text-sm text-[#0A1D37]/70">
+                          کارمزد:
+                        </span>
+                        <span className="text-lg font-bold text-[#0A1D37]">
+                          {service.fee.toLocaleString()} تومان
+                        </span>
+                      </div>
+                      {calculatedFee > service.fee && (
+                        <div className="flex items-center justify-between pt-2">
+                          <span className="text-sm text-[#0A1D37]/70">
+                            مبلغ نهایی:
+                          </span>
+                          <span className="text-2xl font-bold text-green-600">
+                            {calculatedFee.toLocaleString()} تومان
+                          </span>
+                        </div>
+                      )}
                     </div>
 
                     {/* Submit Button */}

@@ -196,6 +196,34 @@ const BankingInfoAdmin = () => {
     return cardNumber.replace(/(\d{4})(?=\d)/g, "$1-");
   };
 
+  const formatDate = (dateString: string) => {
+    try {
+      const date = new Date(dateString);
+      return date.toLocaleDateString("fa-IR", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      });
+    } catch {
+      return "تاریخ نامشخص";
+    }
+  };
+
+  const formatDateTime = (dateString: string) => {
+    try {
+      const date = new Date(dateString);
+      return date.toLocaleDateString("fa-IR", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+      });
+    } catch {
+      return "تاریخ نامشخص";
+    }
+  };
+
   const getUserName = (user: UserBankingData) => {
     const { firstName, lastName } = user.nationalCredentials || {};
     if (firstName && lastName) return `${firstName} ${lastName}`;
@@ -346,9 +374,7 @@ const BankingInfoAdmin = () => {
                               <div className="text-sm font-medium text-gray-900">
                                 {getUserName(user)}
                               </div>
-                              <div className="text-sm text-gray-500">
-                                {user._id.slice(-8)}
-                              </div>
+                             
                             </div>
                           </div>
                         </td>
@@ -378,9 +404,7 @@ const BankingInfoAdmin = () => {
                           </span>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                          {new Date(bankInfo.createdAt).toLocaleDateString(
-                            "fa-IR"
-                          )}
+                          {formatDate(user.createdAt)}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                           <div className="flex gap-2">
@@ -544,10 +568,7 @@ const BankingInfoAdmin = () => {
                       {getStatusText(selectedBankingInfo.bankingInfo.status)}
                     </span>
                     <span className="text-sm text-gray-600">
-                      ثبت شده در:{" "}
-                      {new Date(
-                        selectedBankingInfo.bankingInfo.createdAt
-                      ).toLocaleDateString("fa-IR")}
+                      ثبت شده در: {formatDateTime(selectedBankingInfo.user.createdAt)}
                     </span>
                   </div>
                 </div>
@@ -633,7 +654,7 @@ const BankingInfoAdmin = () => {
                     <div>
                       <span className="text-blue-600 font-medium">کاربر:</span>{" "}
                       <span className="text-blue-900">
-                        {getUserName(selectedBankingInfo.user)}
+                        { (selectedBankingInfo.bankingInfo.accountHolderName)}
                       </span>
                     </div>
                     <div>
@@ -648,6 +669,12 @@ const BankingInfoAdmin = () => {
                         {formatCardNumber(
                           selectedBankingInfo.bankingInfo.cardNumber
                         )}
+                      </span>
+                    </div>
+                    <div>
+                      <span className="text-blue-600 font-medium">شبا:</span>{" "}
+                      <span className="text-blue-900 font-mono">
+                        {selectedBankingInfo.bankingInfo.shebaNumber}
                       </span>
                     </div>
                   </div>

@@ -436,7 +436,7 @@ export default function NewNavbar() {
                       <img
                         src={user.profile.avatar}
                         alt="Avatar"
-                        className="w-12 h-12 rounded-full object-cover border-2 border-[#4DBFF0]"
+                        className="w-6 h-6 rounded-full object-cover border-2 border-[#4DBFF0]"
                         onError={(e) => {
                           const img = e.target as HTMLImageElement;
                           img.style.display = "none";
@@ -811,7 +811,7 @@ export default function NewNavbar() {
                       <img
                         src={user.profile.avatar}
                         alt="Avatar"
-                        className="w-12 h-12 rounded-full object-cover border-2 border-[#4DBFF0]"
+                        className="w-6 h-6 rounded-full object-cover border-2 border-[#4DBFF0]"
                         onError={(e) => {
                           const img = e.target as HTMLImageElement;
                           img.style.display = "none";

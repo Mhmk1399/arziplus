@@ -33,7 +33,7 @@ export async function GET(request: NextRequest) {
 
     // Get all wallets with user information
     const wallets = await Wallet.find({})
-      .populate("userId", "username firstName lastName phone")
+      .populate("userId" )
       .sort({ updatedAt: -1 });
 
     return NextResponse.json({
