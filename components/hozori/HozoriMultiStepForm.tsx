@@ -274,8 +274,70 @@ const HozoriMultiStepForm: React.FC = () => {
         return;
       }
 
-      // Submit hozori registration with wallet payment
-      await submitHozoriRegistration("wallet", hozoriFee);
+      const token = localStorage.getItem("authToken");
+      
+      // Convert Persian date for hozori data
+      const convertPersianToDate = (dateObj: {
+        month: string;
+        day: string;
+      }): Date => {
+        const persianYear = 1404;
+        const persianMonth = parseInt(dateObj.month);
+        const persianDay = parseInt(dateObj.day);
+        const gregorianYear = persianYear + 621;
+        const gregorianMonth = persianMonth;
+        const gregorianDay = persianDay;
+        return new Date(gregorianYear, gregorianMonth - 1, gregorianDay);
+      };
+
+      const appointmentDate = convertPersianToDate(formData.dateObject);
+
+      // Create hozori reservation directly
+      const hozoriData = {
+        name: formData.name,
+        lastname: formData.lastname,
+        phoneNumber: formData.phoneNumber,
+        childrensCount: formData.childrensCount,
+        maridgeStatus: formData.maridgeStatus,
+        Date: appointmentDate.toISOString(),
+        time: formData.time,
+        paymentType: "wallet",
+        paymentDate: new Date().toISOString(),
+        paymentImage: "",
+      };
+
+      // Create hozori reservation
+      const hozoriResponse = await fetch("/api/hozori", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(hozoriData),
+      });
+
+      if (!hozoriResponse.ok) {
+        const errorData = await hozoriResponse.json();
+        throw new Error(errorData.error || "خطا در رزرو وقت");
+      }
+
+      // Deduct from wallet after successful reservation
+      const walletResponse = await fetch("/api/wallet", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          action: "withdraw",
+          amount: hozoriFee,
+          description: `رزرو وقت حضوری - ${formData.name} ${formData.lastname}`,
+        }),
+      });
+
+      if (!walletResponse.ok) {
+        throw new Error("خطا در کسر از کیف پول");
+      }
 
       showToast.success(
         `رزرو وقت حضوری با موفقیت انجام شد. مبلغ ${hozoriFee.toLocaleString()} تومان از کیف پول کسر گردید.`
@@ -317,19 +379,26 @@ const HozoriMultiStepForm: React.FC = () => {
       };
 
       const appointmentDate = convertPersianToDate(formData.dateObject);
+      const orderId = `HOZORI-${Date.now()}`;
+
+      // Store hozori data in localStorage with orderId as key
+      const hozoriData = {
+        ...formData,
+        Date: appointmentDate.toISOString(),
+        paymentType: "direct",
+        paymentDate: new Date().toISOString(),
+        paymentImage: "",
+      };
+      localStorage.setItem(`hozori_${orderId}`, JSON.stringify(hozoriData));
 
       const paymentData = {
         amount: hozoriFee,
         description: `رزرو وقت حضوری - ${formData.name} ${formData.lastname}`,
-        orderId: `HOZORI-${Date.now()}`,
+        orderId,
         currency: "IRT",
         metadata: {
           mobile: currentUser!.phone,
-          order_id: `HOZORI-${Date.now()}`,
-          hozoriData: JSON.stringify({
-            ...formData,
-            Date: appointmentDate,
-          }),
+          order_id: orderId,
           customerName: `${formData.name} ${formData.lastname}`,
           customerPhone: formData.phoneNumber,
           type: "hozori_payment",
@@ -368,69 +437,7 @@ const HozoriMultiStepForm: React.FC = () => {
     setShowCardPaymentModal(true);
   };
 
-  // Submit hozori registration after successful payment
-  const submitHozoriRegistration = async (
-    paymentMethod: string,
-    amount: number,
-    receiptUrl?: string
-  ) => {
-    const token = localStorage.getItem("authToken");
 
-    // Convert Persian date object to a properly formatted date for the API
-    const formatPersianDateForAPI = (dateObj: {
-      month: string;
-      day: string;
-    }): string => {
-      // For now, let's create a valid current date format that the API can parse
-      // In production, you should use a proper Persian to Gregorian conversion library
-      const currentDate = new Date();
-
-      // Add a few days to ensure it's not in the past
-      currentDate.setDate(currentDate.getDate() + 7);
-
-      // Return as ISO string
-      return currentDate.toISOString().split("T")[0]; // YYYY-MM-DD format
-    };
-
-    const appointmentDateString = formatPersianDateForAPI(formData.dateObject);
-
-    const hozoriData = {
-      name: formData.name,
-      lastname: formData.lastname,
-      phoneNumber: formData.phoneNumber,
-      childrensCount: formData.childrensCount,
-      maridgeStatus: formData.maridgeStatus,
-      Date: appointmentDateString,
-      time: formData.time,
-      paymentType: paymentMethod,
-      paymentDate: new Date().toISOString(),
-      paymentImage: paymentMethod === "card" ? receiptUrl || "" : "",
-    };
-
-    // Debug logging
-    console.log("Submitting hozori data:", hozoriData);
-    console.log("Form data dateObject:", formData.dateObject);
-    console.log("Appointment date string:", appointmentDateString);
-
-    const response = await fetch("/api/hozori", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(hozoriData),
-    });
-
-    const result = await response.json();
-    console.log("API Response:", response.status, result);
-
-    if (!response.ok || !result.success) {
-      console.error("API Error:", result);
-      throw new Error(result.message || "خطا در ثبت اطلاعات");
-    }
-
-    return result;
-  };
 
   const updateFormData = (
     field: keyof HozoriFormData,
@@ -983,7 +990,6 @@ const HozoriMultiStepForm: React.FC = () => {
         amount={hozoriFee}
         serviceName="رزرو وقت حضوری"
         onPaymentComplete={async (receiptUrl: string) => {
-          await submitHozoriRegistration("card", hozoriFee, receiptUrl);
           setShowCardPaymentModal(false);
           showToast.success("رزرو وقت حضوری با موفقیت انجام شد");
 

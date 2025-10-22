@@ -195,13 +195,31 @@ const PaymentSuccessPage: React.FC = () => {
     setProcessingOrder(true);
     try {
       const token = localStorage.getItem("authToken");
+      // Check if this is a hozori payment and get data from localStorage
+      let requestBody: any = { authority };
+      
+      // Look for hozori data in localStorage
+      const storageKeys = Object.keys(localStorage);
+      const hozoriKey = storageKeys.find(key => key.startsWith('hozori_HOZORI-'));
+      
+      if (hozoriKey) {
+        try {
+          const hozoriData = JSON.parse(localStorage.getItem(hozoriKey) || '{}');
+          requestBody.hozoriData = hozoriData;
+          // Clean up localStorage after use
+          localStorage.removeItem(hozoriKey);
+        } catch (e) {
+          console.log('Failed to parse hozori data from localStorage');
+        }
+      }
+      
       const response = await fetch("/api/payment/process-order", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ authority }),
+        body: JSON.stringify(requestBody),
       });
 
       const data = await response.json();
@@ -591,6 +609,8 @@ ${
                           "ثبت‌نام در قرعه‌کشی موفق"}
                         {orderCreated.type === "wallet" &&
                           `کیف پول ${orderCreated.amount.toLocaleString()} تومان شارژ شد`}
+                        {orderCreated.type === "hozori" &&
+                          "رزرو وقت حضوری با موفقیت انجام شد"}
                       </span>
                     </div>
                   ) : (
@@ -652,6 +672,16 @@ ${
                 >
                   <FaReceipt />
                   مشاهده کیف پول
+                </button>
+              )}
+
+              {orderCreated?.type === "hozori" && (
+                <button
+                  onClick={() => router.push("/dashboard")}
+                  className="flex items-center justify-center gap-2 px-4 py-3 border border-blue-300 text-blue-700 rounded-xl hover:bg-blue-50 transition-colors"
+                >
+                  <FaReceipt />
+                  مشاهده رزروها
                 </button>
               )}
 

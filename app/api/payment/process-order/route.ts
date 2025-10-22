@@ -4,6 +4,7 @@ import Payment from "@/models/payment";
 import Request from "@/models/request";
 import Lottery from "@/models/lottery";
 import Wallet from "@/models/wallet";
+import Hozori from "@/models/hozori";
 import mongoose from "mongoose";
 import { getAuthUser } from "@/lib/auth";
 
@@ -14,6 +15,7 @@ interface payment {
     serviceId: string;
     customerName: string;
     lotteryData: string;
+    hozoriData: string;
   };
   serviceId: string;
   userId: string;
@@ -65,7 +67,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const { authority } = await request.json();
+    const { authority, hozoriData } = await request.json();
 
     if (!authority) {
       return NextResponse.json(
@@ -118,16 +120,16 @@ export async function POST(request: NextRequest) {
       result = await createLotteryRegistration(payment, authUser.id);
     } else if (
       orderId.startsWith("WALLET-") ||
-      payment.description.includes("شارژ کیف پول") ||
-      payment.description.includes("شارژ") ||
-      payment.metadata?.type === "wallet_charge" ||
-      !payment.serviceId
+      (payment.description.includes("شارژ کیف پول") && !orderId.startsWith("HOZORI-")) ||
+      (payment.description.includes("شارژ") && !orderId.startsWith("HOZORI-")) ||
+      (payment.metadata?.type === "wallet_charge" && !orderId.startsWith("HOZORI-")) ||
+      (!payment.serviceId && !orderId.startsWith("HOZORI-"))
     ) {
-      // Create wallet charge - handle cases where orderId starts with WALLET- or description indicates wallet charge or no serviceId
+      // Create wallet charge - only for actual wallet charges, not hozori payments
       result = await createWalletCharge(payment, authUser.id);
     } else if (orderId.startsWith("HOZORI-")) {
-      // Handle hozori (in-person) requests - similar to service requests
-      result = await createServiceRequest(payment, authUser.id);
+      // Handle hozori (in-person) requests
+      result = await createHozoriReservation(payment, authUser.id, hozoriData);
     } else {
       return NextResponse.json(
         { success: false, error: "نوع پرداخت شناسایی نشد" },
@@ -273,6 +275,74 @@ async function createWalletCharge(payment: payment, userId: string) {
     };
   } catch (error) {
     console.log("Error creating wallet charge:", error);
+    throw error;
+  }
+}
+
+async function createHozoriReservation(payment: payment, userId: string, hozoriData?: any) {
+  try {
+    // Use provided hozoriData or try to get from metadata
+    let reservationData = hozoriData;
+    
+    if (!reservationData && payment.metadata?.hozoriData) {
+      try {
+        reservationData = JSON.parse(payment.metadata.hozoriData);
+      } catch (e) {
+        console.log("Failed to parse hozoriData from metadata");
+      }
+    }
+
+    if (!reservationData) {
+      // Create a basic reservation with available data
+      const customerName = payment.metadata?.customerName || "کاربر";
+      const [name, lastname] = customerName.split(" ");
+      
+      reservationData = {
+        name: name || "کاربر",
+        lastname: lastname || "",
+        phoneNumber: payment.metadata?.customerPhone || "",
+        childrensCount: 0,
+        maridgeStatus: "single",
+        Date: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days from now
+        time: "09:00",
+      };
+    }
+
+    // Parse the date from hozoriData
+    let appointmentDate: Date;
+    if (reservationData.Date) {
+      appointmentDate = new Date(reservationData.Date);
+    } else {
+      appointmentDate = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
+    }
+
+    // Create hozori reservation
+    const hozoriReservation = new Hozori({
+      name: reservationData.name,
+      lastname: reservationData.lastname,
+      phoneNumber: reservationData.phoneNumber,
+      childrensCount: reservationData.childrensCount || 0,
+      maridgeStatus: reservationData.maridgeStatus,
+      Date: appointmentDate,
+      time: reservationData.time,
+      paymentType: "direct",
+      paymentDate: payment.verifiedAt || new Date(),
+      paymentImage: "",
+      userId: userId,
+      status: "confirmed",
+    });
+
+    await hozoriReservation.save();
+
+    return {
+      type: "hozori",
+      id: hozoriReservation._id,
+      status: hozoriReservation.status,
+      appointmentDate: appointmentDate,
+      time: reservationData.time,
+    };
+  } catch (error) {
+    console.log("Error creating hozori reservation:", error);
     throw error;
   }
 }
