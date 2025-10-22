@@ -25,7 +25,7 @@ const PaymentMethodSelector: React.FC<PaymentMethodSelectorProps> = ({
   className = "",
 }) => {
   const [selectedMethod, setSelectedMethod] = useState<
-    "wallet" | "direct" | "card" | null
+    "wallet" | "direct"  | null
   >(null);
   if (!walletBalance) {
     walletBalance = 0;
@@ -59,21 +59,10 @@ const PaymentMethodSelector: React.FC<PaymentMethodSelectorProps> = ({
       textColor: "text-blue-700",
       hoverBorder: "hover:border-blue-300",
     },
-    {
-      id: "card" as const,
-      title: "واریز کارت به کارت",
-      description: "واریز مبلغ به شماره کارت و ارسال رسید",
-      icon: <FaMoneyBillWave className="text-2xl" />,
-      available: true,
-      color: "from-orange-500 to-red-500",
-      bgColor: "bg-orange-50",
-      borderColor: "border-orange-500",
-      textColor: "text-orange-700",
-      hoverBorder: "hover:border-orange-300",
-    },
+  
   ];
 
-  const handleMethodSelect = (methodId: "wallet" | "direct" | "card") => {
+  const handleMethodSelect = (methodId: "wallet" | "direct" ) => {
     setSelectedMethod(methodId);
   };
 

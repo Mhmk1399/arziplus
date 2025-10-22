@@ -278,37 +278,65 @@ const HozoriMultiStepForm: React.FC = () => {
 
       const token = localStorage.getItem("authToken");
 
-      // Convert Persian date for hozori data
-      const convertPersianToDate = (dateObj: {
+      // Convert Persian date to Gregorian date
+      const convertPersianToGregorian = (dateObj: {
         month: string;
         day: string;
-      }): Date => {
-        const persianYear = 1404;
+      }): string => {
         const persianMonth = parseInt(dateObj.month);
         const persianDay = parseInt(dateObj.day);
-        const gregorianYear = persianYear + 621;
-        const gregorianMonth = persianMonth;
-        const gregorianDay = persianDay;
-        return new Date(gregorianYear, gregorianMonth - 1, gregorianDay);
+        
+        // Persian to Gregorian conversion for year 1404 (March 2025 - March 2026)
+        // Month 8 (Aban) = October 23 - November 21
+        // Month 9 (Azar) = November 22 - December 21
+        
+        const gregorianYear = 2025;
+        let gregorianMonth = 10; // October
+        let gregorianDay = persianDay + 22; // Aban 1 = October 23
+        
+        if (persianMonth === 9) {
+          // Azar month
+          gregorianMonth = 11; // November
+          gregorianDay = persianDay + 21; // Azar 1 = November 22
+          
+          if (gregorianDay > 30) {
+            // Overflow to December
+            gregorianMonth = 12;
+            gregorianDay = gregorianDay - 30;
+          }
+        } else if (persianMonth === 8) {
+          // Aban month
+          if (gregorianDay > 31) {
+            // Overflow to November
+            gregorianMonth = 11;
+            gregorianDay = gregorianDay - 31;
+          }
+        }
+        
+        // Format as YYYY-MM-DD
+        const month = gregorianMonth.toString().padStart(2, '0');
+        const day = gregorianDay.toString().padStart(2, '0');
+        return `${gregorianYear}-${month}-${day}`;
       };
 
-      const appointmentDate = convertPersianToDate(formData.dateObject);
+      const appointmentDate = convertPersianToGregorian(formData.dateObject);
+      const orderId = `HOZORI-WALLET-${Date.now()}`;
 
-      // Create hozori reservation directly
+      // Prepare hozori data
       const hozoriData = {
         name: formData.name,
         lastname: formData.lastname,
         phoneNumber: formData.phoneNumber,
         childrensCount: formData.childrensCount,
         maridgeStatus: formData.maridgeStatus,
-        Date: appointmentDate.toISOString(),
+        Date: appointmentDate, // Send as YYYY-MM-DD string
         time: formData.time,
         paymentType: "wallet",
         paymentDate: new Date().toISOString(),
         paymentImage: "",
       };
 
-      // Create hozori reservation
+      // Create hozori reservation via API
       const hozoriResponse = await fetch("/api/hozori", {
         method: "POST",
         headers: {
@@ -343,8 +371,6 @@ const HozoriMultiStepForm: React.FC = () => {
         throw new Error(errorData.error || "خطا در کسر از کیف پول");
       }
 
-      const orderId = `HOZORI-WALLET-${Date.now()}`;
-
       showToast.success(
         `رزرو وقت حضوری با موفقیت انجام شد. مبلغ ${hozoriFee.toLocaleString()} تومان از کیف پول کسر گردید.`
       );
@@ -360,7 +386,9 @@ const HozoriMultiStepForm: React.FC = () => {
       }, 1500);
     } catch (error) {
       console.log("Wallet payment error:", error);
-      showToast.error("خطا در پرداخت از کیف پول");
+      showToast.error(
+        error instanceof Error ? error.message : "خطا در پرداخت از کیف پول"
+      );
     } finally {
       setIsSubmitting(false);
     }
@@ -372,27 +400,55 @@ const HozoriMultiStepForm: React.FC = () => {
     try {
       const token = localStorage.getItem("authToken");
 
-      // Convert Persian date for metadata
-      const convertPersianToDate = (dateObj: {
+      // Convert Persian date to Gregorian date
+      const convertPersianToGregorian = (dateObj: {
         month: string;
         day: string;
-      }): Date => {
-        const persianYear = 1404; // Fixed year
+      }): string => {
+        const persianYear = 1404;
         const persianMonth = parseInt(dateObj.month);
         const persianDay = parseInt(dateObj.day);
-        const gregorianYear = persianYear + 621;
-        const gregorianMonth = persianMonth;
-        const gregorianDay = persianDay;
-        return new Date(gregorianYear, gregorianMonth - 1, gregorianDay);
+        
+        // Persian to Gregorian conversion for year 1404 (March 2025 - March 2026)
+        // Month 8 (Aban) = October 23 - November 21
+        // Month 9 (Azar) = November 22 - December 21
+
+        const gregorianYear = 2025;
+        let gregorianMonth = 10; // October
+        let gregorianDay = persianDay + 22; // Aban 1 = October 23
+        
+        if (persianMonth === 9) {
+          // Azar month
+          gregorianMonth = 11; // November
+          gregorianDay = persianDay + 21; // Azar 1 = November 22
+          
+          if (gregorianDay > 30) {
+            // Overflow to December
+            gregorianMonth = 12;
+            gregorianDay = gregorianDay - 30;
+          }
+        } else if (persianMonth === 8) {
+          // Aban month
+          if (gregorianDay > 31) {
+            // Overflow to November
+            gregorianMonth = 11;
+            gregorianDay = gregorianDay - 31;
+          }
+        }
+        
+        // Format as YYYY-MM-DD
+        const month = gregorianMonth.toString().padStart(2, '0');
+        const day = gregorianDay.toString().padStart(2, '0');
+        return `${gregorianYear}-${month}-${day}`;
       };
 
-      const appointmentDate = convertPersianToDate(formData.dateObject);
+      const appointmentDate = convertPersianToGregorian(formData.dateObject);
       const orderId = `HOZORI-${Date.now()}`;
 
       // Store hozori data in localStorage with orderId as key
       const hozoriData = {
         ...formData,
-        Date: appointmentDate.toISOString(),
+        Date: appointmentDate, // Send as YYYY-MM-DD string
         paymentType: "direct",
         paymentDate: new Date().toISOString(),
         paymentImage: "",
