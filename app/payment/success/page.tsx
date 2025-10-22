@@ -16,6 +16,10 @@ import {
 } from "react-icons/fa";
 import { showToast } from "@/utilities/toast";
 
+interface loteryData {
+  lotteryData: string;
+}
+
 interface ordercreation {
   type: string;
   requestNumber: number;
@@ -24,6 +28,7 @@ interface ordercreation {
 
 interface PaymentDetails {
   _id: string;
+  hozoriData: string;
   authority: string;
   amount: number;
   currency: "IRR" | "IRT";
@@ -43,6 +48,7 @@ interface PaymentDetails {
     lastName?: string;
     phone?: string;
   };
+  lotteryData: string;
 }
 
 const PaymentSuccessPage: React.FC = () => {
@@ -189,30 +195,58 @@ const PaymentSuccessPage: React.FC = () => {
     }
   };
 
-  const processOrder = async (authority: string) => {
+  const processOrder = async (authority: PaymentDetails | string) => {
     if (orderCreated) return; // Prevent duplicate processing
 
     setProcessingOrder(true);
     try {
       const token = localStorage.getItem("authToken");
-      // Check if this is a hozori payment and get data from localStorage
-      let requestBody: any = { authority };
-      
+      // Determine authority string whether we received a PaymentDetails or a string
+      const authorityValue =
+        typeof authority === "string" ? authority : authority.authority;
+
+      // Request body expects an authority string and optional data
+      const requestBody: {
+        authority: string;
+        hozoriData?: PaymentDetails;
+        lotteryData?: string;
+      } = {
+        authority: authorityValue,
+      };
+
       // Look for hozori data in localStorage
       const storageKeys = Object.keys(localStorage);
-      const hozoriKey = storageKeys.find(key => key.startsWith('hozori_HOZORI-'));
-      
+      const hozoriKey = storageKeys.find((key) =>
+        key.startsWith("hozori_HOZORI-")
+      );
+
       if (hozoriKey) {
         try {
-          const hozoriData = JSON.parse(localStorage.getItem(hozoriKey) || '{}');
+          const hozoriData = JSON.parse(
+            localStorage.getItem(hozoriKey) || "{}"
+          );
           requestBody.hozoriData = hozoriData;
-          // Clean up localStorage after use
           localStorage.removeItem(hozoriKey);
         } catch (e) {
-          console.log('Failed to parse hozori data from localStorage');
+          console.log("Failed to parse hozori data from localStorage");
         }
       }
-      
+
+      const lotteryKey = storageKeys.find((key) =>
+        key.startsWith("lottery_LOTTERY-")
+      );
+      if (lotteryKey) {
+        try {
+          const lotteryData = JSON.parse(
+            localStorage.getItem(lotteryKey) || "{}"
+          );
+          requestBody.lotteryData = lotteryData;
+          localStorage.removeItem(lotteryKey);
+        } catch (e) {
+          console.log("Failed to parse lottery data from localStorage");
+        }
+      }
+
       const response = await fetch("/api/payment/process-order", {
         method: "POST",
         headers: {

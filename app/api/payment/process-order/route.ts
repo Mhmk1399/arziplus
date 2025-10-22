@@ -16,6 +16,7 @@ interface payment {
     customerName: string;
     lotteryData: string;
     hozoriData: string;
+    customerPhone: string;
   };
   serviceId: string;
   userId: string;
@@ -31,6 +32,24 @@ interface payment {
   verifiedAt: Date;
   _id: string;
   __v: number;
+}
+
+interface hozoridata {
+  Date: Date;
+  name: string;
+  lastname: string;
+  childrensCount: number;
+  phoneNumber: number | string;
+  maridgeStatus: string;
+  time: string;
+  reservationData?: {
+    Date: Date;
+    name: string;
+    lastname: string;
+    childrensCount: number;
+    maridgeStatus: string;
+    time: string;
+  };
 }
 
 // Helper function to generate unique request number
@@ -67,7 +86,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const { authority, hozoriData } = await request.json();
+    const { authority, hozoriData, lotteryData } = await request.json();
 
     if (!authority) {
       return NextResponse.json(
@@ -117,12 +136,19 @@ export async function POST(request: NextRequest) {
       result = await createServiceRequest(payment, authUser.id);
     } else if (orderId.startsWith("LOTTERY-")) {
       // Create lottery registration
-      result = await createLotteryRegistration(payment, authUser.id);
+      result = await createLotteryRegistration(
+        payment,
+        authUser.id,
+        lotteryData
+      );
     } else if (
       orderId.startsWith("WALLET-") ||
-      (payment.description.includes("شارژ کیف پول") && !orderId.startsWith("HOZORI-")) ||
-      (payment.description.includes("شارژ") && !orderId.startsWith("HOZORI-")) ||
-      (payment.metadata?.type === "wallet_charge" && !orderId.startsWith("HOZORI-")) ||
+      (payment.description.includes("شارژ کیف پول") &&
+        !orderId.startsWith("HOZORI-")) ||
+      (payment.description.includes("شارژ") &&
+        !orderId.startsWith("HOZORI-")) ||
+      (payment.metadata?.type === "wallet_charge" &&
+        !orderId.startsWith("HOZORI-")) ||
       (!payment.serviceId && !orderId.startsWith("HOZORI-"))
     ) {
       // Create wallet charge - only for actual wallet charges, not hozori payments
@@ -194,12 +220,26 @@ async function createServiceRequest(payment: payment, userId: string) {
   }
 }
 
-async function createLotteryRegistration(payment: payment, userId: string) {
+async function createLotteryRegistration(
+  payment: payment,
+  userId: string,
+  lotteryData?: object
+) {
   try {
-    // Get lottery data from payment metadata
-    const lotteryData = payment.metadata?.lotteryData
-      ? JSON.parse(payment.metadata.lotteryData)
-      : {};
+    // Use provided lotteryData or try to get from metadata
+    let registrationData = lotteryData;
+
+    if (!registrationData && payment.metadata?.lotteryData) {
+      try {
+        registrationData = JSON.parse(payment.metadata.lotteryData);
+      } catch (e) {
+        console.log("Failed to parse lotteryData from metadata");
+      }
+    }
+
+    if (!registrationData) {
+      throw new Error("اطلاعات قرعهکشی یافت نشد");
+    }
 
     // Create lottery registration
     const lotteryRegistration = new Lottery({
@@ -210,7 +250,7 @@ async function createLotteryRegistration(payment: payment, userId: string) {
       isPaid: true,
       paymentDate: payment.verifiedAt || new Date(),
       // Copy all lottery form data
-      ...lotteryData,
+      ...registrationData,
       submittedAt: new Date(),
     });
 
@@ -279,11 +319,15 @@ async function createWalletCharge(payment: payment, userId: string) {
   }
 }
 
-async function createHozoriReservation(payment: payment, userId: string, hozoriData?: any) {
+async function createHozoriReservation(
+  payment: payment,
+  userId: string,
+  hozoriData: hozoridata
+) {
   try {
     // Use provided hozoriData or try to get from metadata
     let reservationData = hozoriData;
-    
+
     if (!reservationData && payment.metadata?.hozoriData) {
       try {
         reservationData = JSON.parse(payment.metadata.hozoriData);
@@ -296,7 +340,7 @@ async function createHozoriReservation(payment: payment, userId: string, hozoriD
       // Create a basic reservation with available data
       const customerName = payment.metadata?.customerName || "کاربر";
       const [name, lastname] = customerName.split(" ");
-      
+
       reservationData = {
         name: name || "کاربر",
         lastname: lastname || "",

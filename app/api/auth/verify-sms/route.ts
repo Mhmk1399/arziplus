@@ -27,10 +27,7 @@ export async function POST(request: NextRequest) {
     // Find user
     const user = await User.findById(userId);
     if (!user) {
-      return NextResponse.json(
-        { error: "کاربر یافت نشد" },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: "کاربر یافت نشد" }, { status: 404 });
     }
 
     // Verify phone matches
@@ -42,8 +39,10 @@ export async function POST(request: NextRequest) {
     }
 
     // Check if code is expired
-    if (!user.verifications.phone.verificationCodeExpires || 
-        new Date() > user.verifications.phone.verificationCodeExpires) {
+    if (
+      !user.verifications.phone.verificationCodeExpires ||
+      new Date() > user.verifications.phone.verificationCodeExpires
+    ) {
       return NextResponse.json(
         { error: "کد تایید منقضی شده است" },
         { status: 400 }
@@ -63,8 +62,8 @@ export async function POST(request: NextRequest) {
     user.verifications.phone.verifiedAt = new Date();
     user.verifications.phone.verificationCode = undefined;
     user.verifications.phone.verificationCodeExpires = undefined;
-    user.status = 'active';
-    
+    user.status = "active";
+
     await user.save();
 
     // Generate JWT token
@@ -73,28 +72,25 @@ export async function POST(request: NextRequest) {
       roles: user.roles,
       firstName: user.nationalCredentials?.firstName,
       lastName: user.nationalCredentials?.lastName,
-      phone: user.contactInfo.mobilePhone
+      phone: user.contactInfo.mobilePhone,
+      profile: user.profile,
     });
 
     // Check if user has complete profile (firstName exists)
-    const isCompleteProfile = !!(user.nationalCredentials?.firstName);
-    
+    const isCompleteProfile = !!user.nationalCredentials?.firstName;
+
     const { password: _, ...userWithoutPassword } = user.toObject();
-    console.log(_)
+    console.log(_);
 
     return NextResponse.json({
       message: "شماره تلفن با موفقیت تایید شد",
       token,
       user: userWithoutPassword,
       isCompleteProfile,
-      redirectTo: isCompleteProfile ? '/dashboard' : '/dashboard'
+      redirectTo: isCompleteProfile ? "/dashboard" : "/dashboard",
     });
-
   } catch (error) {
-    console.log('SMS verification error:', error);
-    return NextResponse.json(
-      { error: "خطای سرور" },
-      { status: 500 }
-    );
+    console.log("SMS verification error:", error);
+    return NextResponse.json({ error: "خطای سرور" }, { status: 500 });
   }
 }

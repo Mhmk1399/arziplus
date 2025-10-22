@@ -98,7 +98,9 @@ const LotteryMultiStepForm: React.FC = () => {
   const [showCardPaymentModal, setShowCardPaymentModal] = useState(false);
   const [showFileUploader, setShowFileUploader] = useState(false);
   const [showPhotoInfoModal, setShowPhotoInfoModal] = useState(false);
-  const [uploadContext, setUploadContext] = useState<'registerer' | 'partner' | null>(null);
+  const [uploadContext, setUploadContext] = useState<
+    "registerer" | "partner" | null
+  >(null);
   const [walletBalance, setWalletBalance] = useState(0);
   const [validationErrors, setValidationErrors] = useState<{
     [key: string]: string;
@@ -367,7 +369,7 @@ const LotteryMultiStepForm: React.FC = () => {
     if (validateStep(currentStep)) {
       const visibleSteps = getVisibleSteps();
       setCurrentStep(Math.min(visibleSteps.length - 1, currentStep + 1));
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      window.scrollTo({ top: 0, behavior: "smooth" });
     } else {
       showToast.error("لطفاً تمامی فیلدهای الزامی را تکمیل کنید");
     }
@@ -521,7 +523,7 @@ const LotteryMultiStepForm: React.FC = () => {
   };
 
   const lotteryFee =
-    500000 + (formData.famillyInformations[0]?.numberOfChildren || 0) * 150000;
+    5000 + (formData.famillyInformations[0]?.numberOfChildren || 0) * 150000;
 
   // Handle wallet payment
   const handleWalletPayment = async () => {
@@ -562,17 +564,20 @@ const LotteryMultiStepForm: React.FC = () => {
     setIsSubmitting(true);
     try {
       const token = localStorage.getItem("authToken");
+      const orderId = `LOTTERY-${Date.now()}`;
+
+      // Store lottery data in localStorage with orderId as key
+      localStorage.setItem(`lottery_${orderId}`, JSON.stringify(formData));
 
       // Prepare payment data
       const paymentData = {
         amount: lotteryFee,
         description: `ثبت‌نام در قرعه‌کشی`,
-        orderId: `LOTTERY-${Date.now()}`,
+        orderId,
         currency: "IRT",
         metadata: {
           mobile: currentUser!.phone,
           order_id: `LOTTERY-${Date.now()}`,
-          lotteryData: JSON.stringify(formData),
           customerName:
             currentUser!.firstName && currentUser!.lastName
               ? `${currentUser!.firstName} ${currentUser!.lastName}`
@@ -1561,7 +1566,7 @@ const LotteryMultiStepForm: React.FC = () => {
               <button
                 type="button"
                 onClick={() => {
-                  setUploadContext('registerer');
+                  setUploadContext("registerer");
                   setShowFileUploader(true);
                 }}
                 className="w-full p-3 border-2 border-dashed border-[#4DBFF0] bg-[#4DBFF0]/5 rounded-xl hover:bg-[#4DBFF0]/10 transition-all duration-300 flex items-center justify-center gap-2 text-[#4DBFF0] font-medium text-sm"
@@ -1893,7 +1898,7 @@ const LotteryMultiStepForm: React.FC = () => {
               <button
                 type="button"
                 onClick={() => {
-                  setUploadContext('partner');
+                  setUploadContext("partner");
                   setShowFileUploader(true);
                 }}
                 className={`w-full p-2 md:p-3 border-2 border-dashed rounded-xl text-gray-500 hover:border-[#FF7A00] hover:text-[#FF7A00] transition-all ${
@@ -2237,7 +2242,7 @@ const LotteryMultiStepForm: React.FC = () => {
               <button
                 onClick={() => {
                   setCurrentStep(Math.max(0, currentStep - 1));
-                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                  window.scrollTo({ top: 0, behavior: "smooth" });
                 }}
                 disabled={currentStep === 0}
                 className={`w-full sm:w-auto flex items-center justify-center gap-2 px-4 sm:px-6 py-2 sm:py-3 rounded-xl font-medium transition-all duration-300 ${
@@ -2358,7 +2363,7 @@ const LotteryMultiStepForm: React.FC = () => {
           setUploadContext(null);
         }}
         onFileUploaded={(fileUrl: string) => {
-          if (uploadContext === 'partner') {
+          if (uploadContext === "partner") {
             updatePartnerOtherInfo("imageUrl", fileUrl);
           } else {
             updateRegistererInfo("otherInformations", "imageUrl", fileUrl);
@@ -2366,7 +2371,9 @@ const LotteryMultiStepForm: React.FC = () => {
           setShowFileUploader(false);
           setUploadContext(null);
         }}
-        title={uploadContext === 'partner' ? "آپلود تصویر همسر" : "آپلود تصویر شخصی"}
+        title={
+          uploadContext === "partner" ? "آپلود تصویر همسر" : "آپلود تصویر شخصی"
+        }
         acceptedTypes={[".jpg", ".jpeg", ".png", ".gif", ".webp"]}
         maxFileSize={5 * 1024 * 1024} // 5MB
       />
