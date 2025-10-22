@@ -172,15 +172,9 @@ const ServiceWrapper: React.FC<AdminWrapperProps> = ({
       fetchAdminStats();
     }
 
-    // Show appropriate message
-    const tabLabels = {
-      requests: "مدیریت درخواست‌ها",
-      services: "مدیریت سرویس‌ها",
-      analytics: "آنالیز و گزارشات",
-    };
+    
 
-    showToast.info(`بخش ${tabLabels[tabId]} باز شد`);
-  };
+   };
 
   // Admin welcome section
   const renderAdminWelcome = () => {
@@ -192,12 +186,9 @@ const ServiceWrapper: React.FC<AdminWrapperProps> = ({
         : currentUser.firstName || "مدیر محترم";
 
     return (
-      <div className=" backdrop-blur-sm  rounded-2xl p-6 mb-8">
+      <div className=" backdrop-blur-sm  rounded-2xl p-6  ">
         <div className="flex items-center justify-between flex-wrap gap-4">
           <div className="flex items-center gap-4">
-            <div className="w-12 h-12  rounded-full flex items-center justify-center">
-              <FaCog className="text-[#0A1D37] text-xl" />
-            </div>
             <div>
               <h2 className="sm:text-2xl text-base font-bold mb-2 text-[#0A1D37]">
                 سلام {adminName} عزیز
@@ -221,21 +212,27 @@ const ServiceWrapper: React.FC<AdminWrapperProps> = ({
     if (!isLoggedIn || statsLoading) return null;
 
     return (
-      <div className="grid grid-cols-2 md:grid-cols-4 w-full max-w-3xl  mx-auto gap-4 mb-8">
+      <div className="grid  grid-cols-4 w-full max-w-3xl  mx-auto gap-1 md:gap-4 mb-8">
         {statsCards.map((stat, index) => (
           <div
             key={index}
-            className={`${stat.bgColor} backdrop-blur-sm border border-[#0A1D37]/10 rounded-xl p-4 hover:shadow-lg transition-all  duration-300`}
+            className={`${stat.bgColor} backdrop-blur-sm border border-[#0A1D37]/10 rounded-xl p-2 md:p-4 hover:shadow-lg transition-all  duration-300`}
           >
             <div className="flex items-center justify-between mb-2">
-              <div className={`p-2 bg-gradient-to-r ${stat.color} rounded-lg `}>
+              <div
+                className={`p-2 bg-gradient-to-r ${stat.color} rounded-lg hidden md:block `}
+              >
                 {stat.icon}
               </div>
               <div className="text-right">
-                <p className="text-2xl font-bold text-gray-900">{stat.value}</p>
+                <p className="md:text-2xl tet-sm font-bold text-gray-900">
+                  {stat.value}
+                </p>
               </div>
             </div>
-            <p className="text-sm text-gray-600 font-medium">{stat.title}</p>
+            <p className="text-[10px] md:text-sm text-nowrap text-gray-600 font-medium">
+              {stat.title}
+            </p>
           </div>
         ))}
       </div>
@@ -278,10 +275,7 @@ const ServiceWrapper: React.FC<AdminWrapperProps> = ({
     !currentUser?.roles.includes("super_admin")
   ) {
     return (
-      <div
-        className={`min-h-screen    ${className}`}
-        dir="rtl"
-      >
+      <div className={`min-h-screen    ${className}`} dir="rtl">
         <div className="container mx-auto px-4 py-32">
           <div className="max-w-md mx-auto text-center">
             <div className="w-20 h-20 bg-gradient-to-r from-red-500 to-orange-500 rounded-full flex items-center justify-center mx-auto mb-6">
@@ -321,12 +315,12 @@ const ServiceWrapper: React.FC<AdminWrapperProps> = ({
 
         {/* Navigation Tabs */}
         <div className=" backdrop-blur-sm border border-white/20 rounded-2xl p-2 mb-8 ">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid  grid-cols-3 gap-1 md:gap-3">
             {tabs.map((tab) => (
               <button
                 key={tab.id}
                 onClick={() => handleTabChange(tab.id)}
-                className={`relative flex items-center justify-center gap-3 px-6 py-4 rounded-xl font-medium transition-all duration-300 ${
+                className={`relative flex items-center justify-center gap-3 md:px-6 p-2 md:py-4 rounded-xl font-medium transition-all duration-300 ${
                   activeTab === tab.id
                     ? "border-[#0A1D37] border bg-gray-50 text-[#0A1D37] shadow-lg scale-105"
                     : "text-gray-700  hover:scale-105"
@@ -334,22 +328,17 @@ const ServiceWrapper: React.FC<AdminWrapperProps> = ({
               >
                 {tab.icon}
                 <div className="text-center">
-                  <div className="font-bold text-sm">{tab.label}</div>
+                  <div className="font-bold text-xs md:text-sm">
+                    {tab.label}
+                  </div>
                   <div
-                    className={`text-xs ${
+                    className={`text-xs md:block hidden ${
                       activeTab === tab.id ? "text-[#0A1D37]" : "text-gray-500"
                     }`}
                   >
                     {tab.description}
                   </div>
                 </div>
-
-                {/* Notification Badge */}
-                {tab.badge && (
-                  <div className="absolute -top-4 -right-4 w-6 h-6 bg-red-500 text-white text-xs rounded-full flex items-center justify-center font-bold">
-                    {tab.badge}
-                  </div>
-                )}
               </button>
             ))}
           </div>

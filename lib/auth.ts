@@ -7,7 +7,10 @@ export interface AuthUser {
   firstName?: string;
   lastName?: string;
   phone?: string;
-  isLoading?:string
+  isLoading?: string;
+  profile: {
+    avatar: string;
+  };
 }
 
 export function verifyToken(token: string): AuthUser | null {

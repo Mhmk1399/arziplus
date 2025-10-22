@@ -276,11 +276,7 @@ const AddAmountComponent: React.FC<AddAmountComponentProps> = ({
             {/* User Info */}
             <div className="bg-white/80 backdrop-blur-sm border border-gray-100 rounded-2xl sm:rounded-3xl p-4 sm:p-5 lg:p-6 shadow-sm">
               <div className="flex items-center gap-3 sm:gap-4">
-                <div className="w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-r from-[#0A1D37]/20 to-[#4DBFF0]/20 rounded-full sm:rounded-2xl flex items-center justify-center flex-shrink-0 border-2 border-[#0A1D37]/20">
-                  <span className="text-[#0A1D37] font-bold text-lg sm:text-xl">
-                    {(currentUser.firstName || "ک").charAt(0)}
-                  </span>
-                </div>
+            
                 <div className="flex-1 min-w-0">
                   <p className="font-bold text-[#0A1D37] text-sm sm:text-base lg:text-lg truncate">
                     {currentUser.firstName && currentUser.lastName

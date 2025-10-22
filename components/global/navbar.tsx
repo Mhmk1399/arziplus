@@ -38,21 +38,49 @@ export default function NewNavbar() {
   // Hydration fix and user authentication
   useEffect(() => {
     setIsMounted(true);
-    const currentUser = getCurrentUser();
-    setUser(currentUser);
-    
+
+    const fetchFullUser = async () => {
+      const currentUser = getCurrentUser();
+      if (!currentUser) {
+        setUser(null);
+        return;
+      }
+
+      try {
+        const token = localStorage.getItem("authToken");
+        const response = await fetch("/api/auth/me", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          setUser({ ...currentUser, ...data.user });
+        } else {
+          setUser(currentUser);
+        }
+      } catch (error) {
+        console.log("Error fetching user:", error);
+        setUser(currentUser);
+      }
+    };
+
+    fetchFullUser();
+
     // Listen for login events to refresh user state
     const handleUserLogin = () => {
-      const updatedUser = getCurrentUser();
-      setUser(updatedUser);
+      fetchFullUser();
     };
-    
-    window.addEventListener('userLoggedIn', handleUserLogin);
-    
+
+    window.addEventListener("userLoggedIn", handleUserLogin);
+
     return () => {
-      window.removeEventListener('userLoggedIn', handleUserLogin);
+      window.removeEventListener("userLoggedIn", handleUserLogin);
     };
   }, []);
+
+  console.log(user, "]]]]]]]]]]]]]]]]]]]");
 
   // Scroll handler
   useEffect(() => {
@@ -404,7 +432,22 @@ export default function NewNavbar() {
                     className="group relative cursor-pointer px-4 py-3 font-bold text-sm text-[#0A1D37] overflow-hidden rounded-xl transition-all duration-300 hover:scale-105 bg-gradient-to-r from-[#0A1D37]/10 to-[#4DBFF0]/10 hover:from-[#0A1D37]/20 hover:to-[#4DBFF0]/20 border border-[#0A1D37]/20 hover:border-[#0A1D37]/40 flex items-center gap-2"
                     suppressHydrationWarning
                   >
-                    <FaUser className="text-[#0A1D37]" />
+                    {user?.profile?.avatar ? (
+                      <Image
+                        src={user.profile.avatar}
+                        alt="Avatar"
+                        width={50}
+                        height={50}
+                        className="w-8 h-8 rounded-full object-cover border-2 border-[#4DBFF0]"
+                        onError={(e) => {
+                          const img = e.target as HTMLImageElement;
+                          img.style.display = "none";
+                        }}
+                      />
+                    ) : null}
+                    {!user?.profile?.avatar && (
+                      <FaUser className="text-[#0A1D37]" />
+                    )}
                     <span className="relative z-10">
                       {getUserDisplayName()}
                     </span>
@@ -763,7 +806,22 @@ export default function NewNavbar() {
               {user ? (
                 <div className="space-y-3">
                   <div className="flex items-center justify-center gap-3 p-4 bg-gradient-to-r from-[#0A1D37]/10 to-[#4DBFF0]/10 rounded-xl">
-                    <FaUser className="text-[#0A1D37]" />
+                    {user?.profile?.avatar ? (
+                      <Image
+                        src={user.profile.avatar}
+                        alt="Avatar"
+                        width={50}
+                        height={50}
+                        className="w-8 h-8 rounded-full object-cover border-2 border-[#4DBFF0]"
+                        onError={(e) => {
+                          const img = e.target as HTMLImageElement;
+                          img.style.display = "none";
+                        }}
+                      />
+                    ) : null}
+                    {!user?.profile?.avatar && (
+                      <FaUser className="text-[#0A1D37]" />
+                    )}
                     <span className="font-bold text-[#0A1D37]">
                       {getUserDisplayName()}
                     </span>

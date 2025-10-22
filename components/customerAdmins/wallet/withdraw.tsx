@@ -287,19 +287,19 @@ const WithdrawComponent: React.FC<WithdrawComponentProps> = ({
   const renderBankingStatus = () => {
     if (!bankingInfo) {
       return (
-        <div className="bg-gradient-to-br from-red-50 to-red-100/50 border-2 border-red-200 rounded-2xl sm:rounded-3xl p-6 sm:p-8 text-center shadow-lg">
+        <div className=" rounded-2xl sm:rounded-3xl p-6 sm:p-8 text-center shadow-lg">
           <div className="w-16 h-16 sm:w-20 sm:h-20 bg-red-500 rounded-2xl flex items-center justify-center mx-auto mb-4 sm:mb-6 shadow-xl">
             <FaUniversity className="text-white text-2xl sm:text-3xl" />
           </div>
-          <h3 className="text-xl sm:text-2xl font-bold text-red-800 mb-3 sm:mb-4">
-            اطلاعات بانکی ثبت نشده ❌
+          <h3 className="text-xl sm:text-2xl font-bold text-slate-900 mb-3 sm:mb-4">
+            اطلاعات بانکی ثبت نشده 
           </h3>
-          <p className="text-sm sm:text-base text-red-600 mb-6 sm:mb-8 leading-relaxed">
+          <p className="text-sm sm:text-base text-gray-600 mb-6 sm:mb-8 leading-relaxed">
             برای انجام برداشت از کیف پول، ابتدا اطلاعات بانکی خود را تکمیل کنید
           </p>
           <button
             onClick={() => router.push("/complete-profile")}
-            className="inline-flex items-center gap-2 px-6 sm:px-8 py-3 sm:py-4 bg-red-500 text-white rounded-xl sm:rounded-2xl hover:shadow-xl transition-all duration-300 hover:scale-105 font-bold text-sm sm:text-base"
+            className="inline-flex items-center gap-2 px-6 sm:px-8 py-3 sm:py-4 bg-slate-800 text-white rounded-xl sm:rounded-2xl hover:shadow-xl transition-all duration-300 hover:scale-105 font-bold text-sm sm:text-base"
           >
             <FaEdit />
             <span>تکمیل اطلاعات بانکی</span>

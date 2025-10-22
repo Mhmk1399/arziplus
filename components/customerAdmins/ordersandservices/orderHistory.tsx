@@ -323,7 +323,7 @@ export default function CustomerRequestsTable({
               <h1
                 className={`text-2xl lg:text-3xl   ${estedadBold.className} text-[#0A1D37] mb-2`}
               >
-                درخواست‌های من  
+                درخواست‌های من
               </h1>
               <p className="text-sm sm:text-base text-gray-600">
                 مدیریت و پیگیری درخواست‌های شما
@@ -385,9 +385,6 @@ export default function CustomerRequestsTable({
           </div>
         ) : requests.length === 0 ? (
           <div className="text-center py-12 sm:py-16 lg:py-20 px-4">
-            <div className="w-20 h-20 sm:w-24 sm:h-24 bg-gradient-to-r from-[#4DBFF0]/20 to-[#0A1D37]/20 rounded-2xl flex items-center justify-center mx-auto mb-6">
-              <span className="text-4xl sm:text-5xl">📋</span>
-            </div>
             <h3 className="text-xl sm:text-2xl font-bold text-[#0A1D37] mb-3 sm:mb-4">
               {statusFilter
                 ? "درخواستی با این فیلتر یافت نشد"
@@ -399,7 +396,7 @@ export default function CustomerRequestsTable({
                 : "از طریق دکمه زیر اولین درخواست خود را ثبت کنید"}
             </p>
             <a
-              href="/services-client"
+              href="/services"
               className="inline-flex items-center gap-2 px-6 py-3 sm:py-4 bg-gradient-to-r from-[#4DBFF0] to-[#0A1D37] text-white rounded-xl sm:rounded-2xl hover:shadow-xl transition-all duration-300 hover:scale-105 font-bold text-sm sm:text-base"
             >
               <FaPlus className="text-sm" />

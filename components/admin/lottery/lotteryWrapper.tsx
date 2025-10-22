@@ -43,7 +43,7 @@ const LotteryAdminWrapper = () => {
           <div className="flex items-center gap-4 mb-6">
             <div>
               <h1 className="md:text-3xl text-xl font-bold text-[#0A1D37]">
-                مدیریت خدمات آرزی پلاس
+                مدیریت خدمات ارزی پلاس
               </h1>
               <p className="text-gray-600 text-xs md:text-sm mt-1">
                 مدیریت کامل ثبت‌نام‌های لاتاری و رزروهای حضوری

@@ -131,7 +131,13 @@ const ServiceHelperModal = ({
 };
 
 // Service Summary Component
-const ServiceSummary = ({ service }: { service: Service }) => {
+const ServiceSummary = ({
+  service,
+  calculatedFee,
+}: {
+  service: Service;
+  calculatedFee: number;
+}) => {
   const [imageError, setImageError] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
   const LOGO_PLACEHOLDER = "/assets/images/loggo.png";
@@ -218,18 +224,27 @@ const ServiceSummary = ({ service }: { service: Service }) => {
           <h3 className="text-lg font-medium text-[#0A1D37] mb-3">
             هزینه خدمت:
           </h3>
-          <div className="bg-gradient-to-l from-[#0A1D37]/10 to-[#4DBFF0]/10 rounded-xl p-4 border border-[#4DBFF0]/30">
-            <div className="flex items-center justify-between">
-              <span className="text-[#0A1D37]/70">مبلغ:</span>
-              <span className="text-2xl font-bold text-[#0A1D37]">
+          <div className="bg-gradient-to-l from-[#0A1D37]/10 to-[#4DBFF0]/10 rounded-xl p-4 border border-[#4DBFF0]/30 space-y-3">
+            <div className="flex items-center justify-between pb-3 border-b border-[#4DBFF0]/20">
+              <span className="text-sm text-[#0A1D37]/70">کارمزد:</span>
+              <span className="text-lg font-bold text-[#0A1D37]">
                 {service.fee.toLocaleString()} تومان
               </span>
             </div>
 
+            {calculatedFee > service.fee && (
+              <div className="flex items-center justify-between pt-2">
+                <span className="text-sm text-[#0A1D37]/70">مبلغ نهایی:</span>
+                <span className="text-2xl font-bold text-green-600">
+                  {calculatedFee.toLocaleString()} تومان
+                </span>
+              </div>
+            )}
+
             {service.wallet && (
-              <div className="mt-3 flex items-center gap-2 text-green-600">
-                <FaWallet />
-                <span className="text-sm font-medium">
+              <div className="flex items-center gap-2 text-green-600 pt-2 border-t border-[#4DBFF0]/20">
+                <FaWallet className="text-sm" />
+                <span className="text-xs font-medium">
                   قابل پرداخت با کیف پول
                 </span>
               </div>
@@ -301,6 +316,7 @@ export default function ServiceDetailPage() {
   const [numberValue, setNumberValue] = useState(0);
   const [accountValue, setAccountValue] = useState(0);
   const [calculatedFee, setCalculatedFee] = useState(0);
+  const [acceptedTerms, setAcceptedTerms] = useState(false);
   const { user: currentUser } = useCurrentUser();
 
   // Fetch service using SWR
@@ -992,7 +1008,7 @@ export default function ServiceDetailPage() {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Left Column - Service Summary */}
             <div className="lg:col-span-1">
-              <ServiceSummary service={service} />
+              <ServiceSummary service={service} calculatedFee={calculatedFee} />
             </div>
 
             {/* Right Column - Service Form */}
@@ -1046,25 +1062,37 @@ export default function ServiceDetailPage() {
                       </div>
                     )}
 
-                    {/* Calculated Fee Display */}
-                    {calculatedFee > service.fee && (
-                      <div className="p-4 bg-gradient-to-l from-[#4DBFF0]/10 to-[#0A1D37]/10 rounded-xl border border-[#4DBFF0]/30">
-                        <div className="flex items-center justify-between">
-                          <span className="text-[#0A1D37]/70">مبلغ نهایی:</span>
-                          <span className="text-2xl font-bold text-[#0A1D37]">
-                            {calculatedFee.toLocaleString()} تومان
-                          </span>
-                        </div>
-                      </div>
-                    )}
+                    {/* Terms Checkbox */}
+                    <div className="flex items-start gap-3 p-4 bg-[#4DBFF0]/5 rounded-xl border border-[#4DBFF0]/30">
+                      <input
+                        type="checkbox"
+                        id="acceptTerms"
+                        checked={acceptedTerms}
+                        onChange={(e) => setAcceptedTerms(e.target.checked)}
+                        className="mt-1 w-5 h-5 text-[#4DBFF0] border-[#4DBFF0] rounded focus:ring-[#4DBFF0]"
+                      />
+                      <label
+                        htmlFor="acceptTerms"
+                        className="text-xs md:text-sm text-[#0A1D37] cursor-pointer"
+                      >
+                        <Link
+                          href="/terms-and-conditions"
+                          target="_blank"
+                          className="text-[#4DBFF0] hover:underline-offset-0 underline"
+                        >
+                          قوانین و مقررات
+                        </Link>{" "}
+                        استفاده از خدمات را مطالعه کرده و قبول دارم
+                      </label>
+                    </div>
 
                     {/* Submit Button */}
                     <div className="flex justify-center pt-6">
                       <button
                         type="submit"
-                        disabled={submitting || !currentUser}
+                        disabled={submitting || !currentUser || !acceptedTerms}
                         className={`flex items-center gap-3 px-8 py-4 rounded-xl font-bold text-lg transition-all duration-300 ${
-                          submitting || !currentUser
+                          submitting || !currentUser || !acceptedTerms
                             ? "bg-gray-300 text-gray-500 cursor-not-allowed"
                             : "bg-gradient-to-l from-[#0A1D37] to-[#4DBFF0] text-white hover:opacity-90 transform hover:scale-105 shadow-lg"
                         }`}

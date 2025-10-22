@@ -248,86 +248,7 @@ const IncomesHistory: React.FC = () => {
           </div>
         </div>
 
-        {/* Summary Cards */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-6 mb-6 sm:mb-8">
-          <div className="bg-gradient-to-br from-green-50 to-green-100/50 border-2 border-green-200 rounded-2xl sm:rounded-3xl p-4 sm:p-5 lg:p-6 hover:shadow-lg transition-all duration-300 hover:scale-[1.02]">
-            <div className="flex flex-col gap-3">
-              <div className="flex items-center justify-between">
-                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-green-500 rounded-xl sm:rounded-2xl flex items-center justify-center shadow-md">
-                  <FaArrowUp className="text-white text-base sm:text-lg lg:text-xl" />
-                </div>
-                <div className="text-right">
-                  <p className="text-lg sm:text-xl lg:text-2xl text-green-700 font-bold">
-                    {summary.totalIncome.toLocaleString("fa-IR")}
-                  </p>
-                  <p className="text-xs sm:text-sm text-green-600">تومان</p>
-                </div>
-              </div>
-              <p className="text-xs sm:text-sm lg:text-base text-green-700 font-semibold">
-                کل واریزها
-              </p>
-            </div>
-          </div>
-
-          <div className="bg-gradient-to-br from-red-50 to-red-100/50 border-2 border-red-200 rounded-2xl sm:rounded-3xl p-4 sm:p-5 lg:p-6 hover:shadow-lg transition-all duration-300 hover:scale-[1.02]">
-            <div className="flex flex-col gap-3">
-              <div className="flex items-center justify-between">
-                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-red-500 rounded-xl sm:rounded-2xl flex items-center justify-center shadow-md">
-                  <FaArrowDown className="text-white text-base sm:text-lg lg:text-xl" />
-                </div>
-                <div className="text-right">
-                  <p className="text-lg sm:text-xl lg:text-2xl text-red-700 font-bold">
-                    {summary.totalOutcome.toLocaleString("fa-IR")}
-                  </p>
-                  <p className="text-xs sm:text-sm text-red-600">تومان</p>
-                </div>
-              </div>
-              <p className="text-xs sm:text-sm lg:text-base text-red-700 font-semibold">
-                کل برداشت‌ها
-              </p>
-            </div>
-          </div>
-
-          <div className="bg-gradient-to-br from-yellow-50 to-yellow-100/50 border-2 border-yellow-200 rounded-2xl sm:rounded-3xl p-4 sm:p-5 lg:p-6 hover:shadow-lg transition-all duration-300 hover:scale-[1.02]">
-            <div className="flex flex-col gap-3">
-              <div className="flex items-center justify-between">
-                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-yellow-500 rounded-xl sm:rounded-2xl flex items-center justify-center shadow-md">
-                  <FaClock className="text-white text-base sm:text-lg lg:text-xl" />
-                </div>
-                <div className="text-right">
-                  <p className="text-lg sm:text-xl lg:text-2xl text-yellow-700 font-bold">
-                    {summary.pendingIncome.toLocaleString("fa-IR")}
-                  </p>
-                  <p className="text-xs sm:text-sm text-yellow-600">تومان</p>
-                </div>
-              </div>
-              <p className="text-xs sm:text-sm lg:text-base text-yellow-700 font-semibold">
-                در انتظار واریز
-              </p>
-            </div>
-          </div>
-
-          <div className="bg-gradient-to-br from-blue-50 to-blue-100/50 border-2 border-blue-200 rounded-2xl sm:rounded-3xl p-4 sm:p-5 lg:p-6 hover:shadow-lg transition-all duration-300 hover:scale-[1.02]">
-            <div className="flex flex-col gap-3">
-              <div className="flex items-center justify-between">
-                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-blue-500 rounded-xl sm:rounded-2xl flex items-center justify-center shadow-md">
-                  <FaClock className="text-white text-base sm:text-lg lg:text-xl" />
-                </div>
-                <div className="text-right">
-                  <p className="text-lg sm:text-xl lg:text-2xl text-blue-700 font-bold">
-                    {summary.pendingOutcome.toLocaleString("fa-IR")}
-                  </p>
-                  <p className="text-xs sm:text-sm text-blue-600">تومان</p>
-                </div>
-              </div>
-              <p className="text-xs sm:text-sm lg:text-base text-blue-700 font-semibold">
-                در انتظار برداشت
-              </p>
-            </div>
-          </div>
-        </div>
-
-        {/* Filters Panel */}
+           {/* Filters Panel */}
         {showFilters && (
           <div className="bg-white border-2 border-gray-100 rounded-2xl sm:rounded-3xl p-4 sm:p-6 lg:p-8 mb-6 sm:mb-8 shadow-lg">
             <div className="flex items-center gap-3 mb-6">
@@ -468,6 +389,87 @@ const IncomesHistory: React.FC = () => {
             </div>
           </div>
         )}
+
+        {/* Summary Cards */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-6 mb-6 sm:mb-8">
+          <div className="bg-gradient-to-br from-green-50 to-green-100/50 border-2 border-green-200 rounded-2xl sm:rounded-3xl p-4 sm:p-5 lg:p-6 hover:shadow-lg transition-all duration-300 hover:scale-[1.02]">
+            <div className="flex flex-col gap-3">
+              <div className="flex items-center justify-between">
+                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-green-500 rounded-xl sm:rounded-2xl flex items-center justify-center shadow-md">
+                  <FaArrowUp className="text-white text-base sm:text-lg lg:text-xl" />
+                </div>
+                <div className="text-right">
+                  <p className="text-lg sm:text-xl lg:text-2xl text-green-700 font-bold">
+                    {summary.totalIncome.toLocaleString("fa-IR")}
+                  </p>
+                  <p className="text-xs sm:text-sm text-green-600">تومان</p>
+                </div>
+              </div>
+              <p className="text-xs sm:text-sm lg:text-base text-green-700 font-semibold">
+                کل واریزها
+              </p>
+            </div>
+          </div>
+
+          <div className="bg-gradient-to-br from-red-50 to-red-100/50 border-2 border-red-200 rounded-2xl sm:rounded-3xl p-4 sm:p-5 lg:p-6 hover:shadow-lg transition-all duration-300 hover:scale-[1.02]">
+            <div className="flex flex-col gap-3">
+              <div className="flex items-center justify-between">
+                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-red-500 rounded-xl sm:rounded-2xl flex items-center justify-center shadow-md">
+                  <FaArrowDown className="text-white text-base sm:text-lg lg:text-xl" />
+                </div>
+                <div className="text-right">
+                  <p className="text-lg sm:text-xl lg:text-2xl text-red-700 font-bold">
+                    {summary.totalOutcome.toLocaleString("fa-IR")}
+                  </p>
+                  <p className="text-xs sm:text-sm text-red-600">تومان</p>
+                </div>
+              </div>
+              <p className="text-xs sm:text-sm lg:text-base text-red-700 font-semibold">
+                کل برداشت‌ها
+              </p>
+            </div>
+          </div>
+
+          <div className="bg-gradient-to-br from-yellow-50 to-yellow-100/50 border-2 border-yellow-200 rounded-2xl sm:rounded-3xl p-4 sm:p-5 lg:p-6 hover:shadow-lg transition-all duration-300 hover:scale-[1.02]">
+            <div className="flex flex-col gap-3">
+              <div className="flex items-center justify-between">
+                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-yellow-500 rounded-xl sm:rounded-2xl flex items-center justify-center shadow-md">
+                  <FaClock className="text-white text-base sm:text-lg lg:text-xl" />
+                </div>
+                <div className="text-right">
+                  <p className="text-lg sm:text-xl lg:text-2xl text-yellow-700 font-bold">
+                    {summary.pendingIncome.toLocaleString("fa-IR")}
+                  </p>
+                  <p className="text-xs sm:text-sm text-yellow-600">تومان</p>
+                </div>
+              </div>
+              <p className="text-xs sm:text-sm lg:text-base text-yellow-700 font-semibold">
+                در انتظار واریز
+              </p>
+            </div>
+          </div>
+
+          <div className="bg-gradient-to-br from-blue-50 to-blue-100/50 border-2 border-blue-200 rounded-2xl sm:rounded-3xl p-4 sm:p-5 lg:p-6 hover:shadow-lg transition-all duration-300 hover:scale-[1.02]">
+            <div className="flex flex-col gap-3">
+              <div className="flex items-center justify-between">
+                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-blue-500 rounded-xl sm:rounded-2xl flex items-center justify-center shadow-md">
+                  <FaClock className="text-white text-base sm:text-lg lg:text-xl" />
+                </div>
+                <div className="text-right">
+                  <p className="text-lg sm:text-xl lg:text-2xl text-blue-700 font-bold">
+                    {summary.pendingOutcome.toLocaleString("fa-IR")}
+                  </p>
+                  <p className="text-xs sm:text-sm text-blue-600">تومان</p>
+                </div>
+              </div>
+              <p className="text-xs sm:text-sm lg:text-base text-blue-700 font-semibold">
+                در انتظار برداشت
+              </p>
+            </div>
+          </div>
+        </div>
+
+     
 
         {/* Transactions Table/Cards */}
         <div className="bg-white rounded-2xl sm:rounded-3xl border-2 border-gray-100 overflow-hidden shadow-sm">

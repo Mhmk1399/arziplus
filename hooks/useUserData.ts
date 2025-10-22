@@ -68,6 +68,7 @@ export const useUserData = (userId?: string) => {
       }
 
       const result = await response.json();
+      console.log(result , "ssssssssssssss")
       setUserData(result.user);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'خطای نامشخص');

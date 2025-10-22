@@ -343,7 +343,7 @@ export default function AdminRequestsTable({
     <div className={`  p-1`} dir="rtl">
       {/* Filters */}
       <div className="bg-gradient-to-r from-[#4DBFF0]/10 to-[#0A1D37]/10 backdrop-blur-sm border border-[#4DBFF0]/30 rounded-2xl p-6 mb-6">
-        <div className="flex flex-wrap gap-4 items-center">
+        <div className="flex justify-center  gap-4 items-center">
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
@@ -369,10 +369,7 @@ export default function AdminRequestsTable({
               </option>
             ))}
           </select>
-
-          <div className="text-sm text-[#0A1D37]/70 flex items-center font-medium">
-            مجموع: {total} درخواست
-          </div>
+ 
         </div>
       </div>
 

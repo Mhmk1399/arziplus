@@ -221,14 +221,14 @@ const ServiceManager: React.FC<ServiceManagerProps> = ({
           <div>
             {/* Badge */}
 
-            <h1 className="text-4xl font-black text-[#0A1D37] mb-3 relative">
+            <h1 className="md:text-4xl text-base font-black text-[#0A1D37]  relative">
               مدیریت سرویس‌ها
             </h1>
           </div>
 
           <button
             onClick={() => setCurrentView("create")}
-            className="group relative overflow-hidden px-8 py-4 border-[#4DBFF0] text-[#0A1D37] font-bold rounded-md transition-all duration-500 shadow-xl  border hover:bg-[#0A1D37]/10 backdrop-blur-sm transform-gpu perspective-1000"
+            className="group relative overflow-hidden text-sm p-2 md:px-8 md:py-4 border-[#4DBFF0] text-[#0A1D37] font-bold rounded-md transition-all duration-500 shadow-xl  border hover:bg-[#0A1D37]/10 backdrop-blur-sm transform-gpu perspective-1000"
           >
             {/* Content */}
             <span className="relative flex items-center justify-center gap-3 z-10">

@@ -338,7 +338,7 @@ const CustomerHozoriList = () => {
             </p>
           </div>
           <a
-            href="/lottery/form/hozori"
+            href="/lottery/form/present"
             className="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-[#0A1D37] to-[#4DBFF0] text-white font-bold rounded-xl hover:shadow-2xl hover:scale-105 active:scale-95 transition-all duration-300 shadow-lg"
           >
             <FaPlus className="text-lg" />

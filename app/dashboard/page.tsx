@@ -335,24 +335,39 @@ const Dashboard: React.FC = () => {
 
         {/* User Info */}
         <div className="p-6 border-b border-gray-200/50 bg-gradient-to-b from-transparent to-gray-50/30">
-          <div className="flex items-center gap-4 mb-4">
+          <div className="flex items-center gap-4  ">
+            {currentUser.profile?.avatar ? (
+              <img
+                src={currentUser.profile.avatar}
+                alt="Avatar"
+                className="w-12 h-12 rounded-full object-cover border-2 border-[#4DBFF0]"
+                onError={(e) => {
+                  const img = e.target as HTMLImageElement;
+                  img.style.display = "none";
+                  const fallback = img.nextElementSibling as HTMLElement;
+                  if (fallback) fallback.style.display = "flex";
+                }}
+              />
+            ) : null}
+            <div
+              className="w-12 h-12 rounded-full bg-gradient-to-r from-[#0A1D37] to-[#4DBFF0] flex items-center justify-center text-white font-bold"
+              style={{ display: currentUser.profile?.avatar ? "none" : "flex" }}
+            >
+              {getUserName().charAt(0)}
+            </div>
             <div className="flex-1 min-w-0">
               <p className="font-bold text-[#0A1D37] text-sm mb-1 truncate">
                 {getUserName()} - {getUserRole()}
               </p>
+              {currentUser.phone && (
+                <p className="text-xs text-gray-600">{currentUser.phone}</p>
+              )}
             </div>
-            {currentUser.phone && (
-              <div className="bg-gradient-to-r from-gray-50 to-blue-50/50 rounded-xl p-3.5 border border-gray-100">
-                <p className="text-sm text-gray-700 flex items-center gap-2.5">
-                  <span className="font-medium">{currentUser.phone}</span>
-                </p>
-              </div>
-            )}
           </div>
         </div>
 
         {/* Navigation Menu */}
-        <nav className="p-6 flex-1 overflow-y-auto max-h-[calc(100vh-400px)]">
+        <nav className="p-6 flex-1 overflow-y-auto max-h-[calc(100vh-300px)]">
           <div className="space-y-2.5">
             {menuItems.map((item) => (
               <button
@@ -363,7 +378,6 @@ const Dashboard: React.FC = () => {
                   if (window.innerWidth < 1024) {
                     setSidebarOpen(false);
                   }
-                  showToast.info(`بخش ${item.label} باز شد`);
                 }}
                 className={`w-full flex items-center gap-4 p-4 rounded-2xl transition-all duration-300 group relative overflow-hidden ${
                   selectedMenuItem === item.id
@@ -530,16 +544,6 @@ const Dashboard: React.FC = () => {
           </div>
         </div>
       </main>
-
-      {/* Floating Toggle Button for Mobile */}
-      {!sidebarOpen && (
-        <button
-          onClick={toggleSidebar}
-          className="lg:hidden fixed bottom-6 right-6 w-14 h-14 bg-gradient-to-r from-[#0A1D37] to-[#4DBFF0] rounded-full shadow-2xl flex items-center justify-center z-40 hover:scale-110 active:scale-95 transition-all duration-300 animate-bounce"
-        >
-          <FaBars className="text-white text-xl" />
-        </button>
-      )}
     </div>
   );
 };

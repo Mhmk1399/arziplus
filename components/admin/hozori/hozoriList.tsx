@@ -12,9 +12,9 @@ import {
   FaTimes,
   FaUser,
   FaChild,
-    FaPhone,
-   FaMoneyBillWave,
-   FaHeart,
+  FaPhone,
+  FaMoneyBillWave,
+  FaHeart,
   FaCalendarAlt,
   FaClock,
   FaCheckCircle,
@@ -305,12 +305,12 @@ const HozoriAdminList = () => {
     <div className="space-y-6">
       {/* Header and Controls */}
       <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-6">
+        <div className="flex   lg:items-center  justify-between gap-4 mb-6">
           <div>
-            <h2 className="text-2xl font-bold text-[#0A1D37] mb-2">
+            <h2 className="md:text-2xl text-base font-bold text-[#0A1D37] mb-2">
               مدیریت رزروهای حضوری
             </h2>
-            <p className="text-gray-600">
+            <p className="text-gray-600 text-xs md:text-base">
               مجموع {pagination.totalCount} رزرو ثبت شده
             </p>
           </div>
@@ -326,7 +326,7 @@ const HozoriAdminList = () => {
         </div>
 
         {/* Filters */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 justify-center items-center gap-4">
           {/* Search */}
           <div className="relative">
             <FaSearch className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
@@ -339,33 +339,34 @@ const HozoriAdminList = () => {
               className="w-full pr-10 pl-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#4DBFF0] focus:border-transparent"
             />
           </div>
-
-          {/* Status Filter */}
-          <select
-            value={statusFilter}
-            onChange={(e) => handleStatusFilterChange(e.target.value)}
-            className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#4DBFF0] focus:border-transparent"
-          >
-            <option value="">همه وضعیت‌ها</option>
-            <option value="pending">در انتظار</option>
-            <option value="confirmed">تأیید شده</option>
-            <option value="completed">تکمیل شده</option>
-            <option value="cancelled">لغو شده</option>
-          </select>
-
-          {/* Page Size */}
-          <select
-            value={pageSize}
-            onChange={(e) => {
-              setPageSize(Number(e.target.value));
-              setCurrentPage(1);
-            }}
-            className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#4DBFF0] focus:border-transparent"
-          >
-            <option value={10}>10 رزرو در صفحه</option>
-            <option value={25}>25 رزرو در صفحه</option>
-            <option value={50}>50 رزرو در صفحه</option>
-          </select>
+          <div className="flex ">
+            {" "}
+            {/* Status Filter */}
+            <select
+              value={statusFilter}
+              onChange={(e) => handleStatusFilterChange(e.target.value)}
+              className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#4DBFF0] focus:border-transparent"
+            >
+              <option value="">همه وضعیت‌ها</option>
+              <option value="pending">در انتظار</option>
+              <option value="confirmed">تأیید شده</option>
+              <option value="completed">تکمیل شده</option>
+              <option value="cancelled">لغو شده</option>
+            </select>
+            {/* Page Size */}
+            <select
+              value={pageSize}
+              onChange={(e) => {
+                setPageSize(Number(e.target.value));
+                setCurrentPage(1);
+              }}
+              className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#4DBFF0] focus:border-transparent"
+            >
+              <option value={10}>10 رزرو در صفحه</option>
+              <option value={25}>25 رزرو در صفحه</option>
+              <option value={50}>50 رزرو در صفحه</option>
+            </select>
+          </div>
         </div>
 
         {/* Search Button */}
