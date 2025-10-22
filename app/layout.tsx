@@ -8,6 +8,9 @@ import { Toaster } from "react-hot-toast";
 import NewNavbar from "@/components/global/navbar";
 import SchemaProvider from "@/components/global/SchemaProvider";
 
+// Start currency sync worker
+import "@/lib/currency-sync-worker";
+
 export const metadata: Metadata = {
   title: "ارزی پلاس؛ سرویس کامل پرداخت‌های بین‌المللی",
   description:

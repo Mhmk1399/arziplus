@@ -210,7 +210,7 @@ const WalletPaymentSuccessPage: React.FC = () => {
 
   return (
     <div
-      className="min-h-screen bg-gradient-to-br from-green-50 via-white to-blue-50 py-12 px-4 sm:px-6 lg:px-8"
+      className="min-h-screen mt-32 bg-gradient-to-br from-green-50 via-white to-blue-50 py-12 px-4 sm:px-6 lg:px-8"
       dir="rtl"
     >
       <div className="max-w-3xl mx-auto">

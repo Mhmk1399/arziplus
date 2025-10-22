@@ -11,6 +11,30 @@ export interface AuthUser {
   profile: {
     avatar: string;
   };
+  nationalCredentials?: {
+    status?: "accepted" | "rejected" | "pending_verification";
+    firstName?: string;
+    lastName?: string;
+    nationalNumber?: string;
+    nationalCardImageUrl?: string;
+    verificationImageUrl?: string;
+    rejectionNotes?: string;
+  };
+  bankingInfo?: Array<{
+    status?: "accepted" | "rejected" | "pending_verification";
+    bankName?: string;
+    cardNumber?: string;
+    shebaNumber?: string;
+    accountHolderName?: string;
+    rejectionNotes?: string;
+  }> | {
+    status?: "accepted" | "rejected" | "pending_verification";
+    bankName?: string;
+    cardNumber?: string;
+    shebaNumber?: string;
+    accountHolderName?: string;
+    rejectionNotes?: string;
+  };
 }
 
 export function verifyToken(token: string): AuthUser | null {

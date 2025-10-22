@@ -65,6 +65,22 @@ interface ServiceResponse {
   message?: string;
 }
 
+interface Currency {
+  name: string;
+  salePrise: number;
+  buyPrice: number;
+}
+
+interface CurrencyMap {
+  [key: string]: {
+    buy: number;
+    sell: number;
+  };
+}
+
+interface banckingInfo {
+  status: string;
+}
 // Fetcher function for SWR
 const fetcher = async (url: string): Promise<Service> => {
   const response = await fetch(url);
@@ -311,9 +327,8 @@ export default function ServiceDetailPage() {
   const [showPaymentSelector, setShowPaymentSelector] = useState(false);
   const [showCardPaymentModal, setShowCardPaymentModal] = useState(false);
   const [walletBalance, setWalletBalance] = useState(0);
-  const [currencyValue, setCurrencyValue] = useState(0);
-  const [numberValue, setNumberValue] = useState(0);
-  const [accountValue, setAccountValue] = useState(0);
+  const [currencies, setCurrencies] = useState<CurrencyMap | null>(null);
+
   const [calculatedFee, setCalculatedFee] = useState(0);
   const [acceptedTerms, setAcceptedTerms] = useState(false);
   const { user: currentUser } = useCurrentUser();
@@ -350,11 +365,64 @@ export default function ServiceDetailPage() {
       if (response.ok) {
         const data = await response.json();
         // Access the correct property: data.stats.currentBalance or data.wallet.currentBalance
-        setWalletBalance(data.stats?.currentBalance || data.wallet?.currentBalance || 0);
+        setWalletBalance(
+          data.stats?.currentBalance || data.wallet?.currentBalance || 0
+        );
       }
     } catch (error) {
       console.log("Error fetching wallet balance:", error);
     }
+  };
+
+  // Fetch currency prices from database
+  const fetchCurrencyPrices = async () => {
+    try {
+      const response = await fetch("/api/currencies");
+      if (response.ok) {
+        const data = await response.json();
+        if (data.success && data.currencies) {
+          // Convert array to object format
+          const currencyMap: CurrencyMap = {};
+          data.currencies.forEach((curr: Currency) => {
+            currencyMap[curr.name] = {
+              buy: curr.buyPrice,
+              sell: curr.salePrise,
+            };
+          });
+          setCurrencies(currencyMap);
+          console.log("💱 Currency prices loaded:", currencyMap);
+        }
+      }
+    } catch (error) {
+      console.log("Error fetching currency prices:", error);
+    }
+  };
+
+  // Calculate price for a currency option (USD-SELL, EUR-BUY, etc.)
+  const getCurrencyPrice = (currencyValue: string): number => {
+    if (!currencies) return 0;
+
+    // Parse format: "USD-SELL" or "EUR-BUY"
+    const parts = currencyValue.split("-");
+    if (parts.length !== 2) return 0;
+
+    const [currencyCode, type] = parts;
+    const currency = currencies[currencyCode as keyof typeof currencies];
+
+    if (!currency) return 0;
+
+    let basePrice = type === "SELL" ? currency.sell : currency.buy;
+
+    // Apply markup/discount
+    if (type === "SELL") {
+      // Add 10% for selling
+      basePrice = basePrice * 1.1;
+    } else if (type === "BUY") {
+      // Reduce 10% for buying
+      basePrice = basePrice * 0.9;
+    }
+
+    return Math.round(basePrice);
   };
 
   // Show helper modal when service loads and has helper text
@@ -364,11 +432,12 @@ export default function ServiceDetailPage() {
     }
   }, [service, helperRead]);
 
-  // Fetch wallet balance when user loads
+  // Fetch wallet balance and currencies when user loads
   useEffect(() => {
     if (currentUser) {
       fetchWalletBalance();
     }
+    fetchCurrencyPrices();
   }, [currentUser]);
 
   const handleHelperClose = () => {
@@ -396,7 +465,9 @@ export default function ServiceDetailPage() {
               ...(field.items || []),
             ].find((opt) => opt.key === key);
             if (option) {
-              currencySum += parseFloat(option.value) || 0;
+              // Get actual currency price from database
+              const currencyPrice = getCurrencyPrice(option.value);
+              currencySum += currencyPrice;
             }
           });
         } else if (field.type === "select") {
@@ -405,7 +476,9 @@ export default function ServiceDetailPage() {
             ...(field.items || []),
           ].find((opt) => opt.key === fieldValue);
           if (option) {
-            currencySum += parseFloat(option.value) || 0;
+            // Get actual currency price from database
+            const currencyPrice = getCurrencyPrice(option.value);
+            currencySum += currencyPrice;
           }
         }
       }
@@ -447,6 +520,7 @@ export default function ServiceDetailPage() {
       currencySum,
       tempNumber,
       accountSum,
+      currencies,
     });
 
     // Final calculation: fee = baseFee + (currencySum * number) + (accountSum * number)
@@ -579,15 +653,26 @@ export default function ServiceDetailPage() {
             >
               <option value="">{field.placeholder || "انتخاب کنید"}</option>
               {[...(field.options || []), ...(field.items || [])].map(
-                (option, index) => (
-                  <option
-                    key={index}
-                    value={option.key}
-                    className="bg-white text-[#0A1D37]"
-                  >
-                    {option.key}
-                  </option>
-                )
+                (option, index) => {
+                  // Check if this is a currency field and show price
+                  const isCurrency = field.pricecondition === "currency";
+                  const currencyPrice = isCurrency
+                    ? getCurrencyPrice(option.value)
+                    : 0;
+
+                  return (
+                    <option
+                      key={index}
+                      value={option.key}
+                      className="bg-white text-[#0A1D37]"
+                    >
+                      {option.key}
+                      {isCurrency &&
+                        currencyPrice > 0 &&
+                        ` - ${currencyPrice.toLocaleString()} تومان`}
+                    </option>
+                  );
+                }
               )}
             </select>
           );
@@ -596,35 +681,52 @@ export default function ServiceDetailPage() {
           return (
             <div className="space-y-2">
               {[...(field.options || []), ...(field.items || [])].map(
-                (option, index) => (
-                  <label
-                    key={index}
-                    className="flex items-center space-x-reverse space-x-2 text-[#0A1D37]/90"
-                  >
-                    <input
-                      type="checkbox"
-                      checked={
-                        Array.isArray(value) && value.includes(option.key)
-                      }
-                      onChange={(e) => {
-                        const currentArray = Array.isArray(value) ? value : [];
-                        if (e.target.checked) {
-                          handleInputChange(field.name, [
-                            ...currentArray,
-                            option.key,
-                          ]);
-                        } else {
-                          handleInputChange(
-                            field.name,
-                            currentArray.filter((v) => v !== option.key)
-                          );
-                        }
-                      }}
-                      className="rounded text-[#4DBFF0] focus:ring-[#4DBFF0]"
-                    />
-                    <span>{option.value}</span>
-                  </label>
-                )
+                (option, index) => {
+                  // Check if this is a currency field and show price
+                  const isCurrency = field.pricecondition === "currency";
+                  const currencyPrice = isCurrency
+                    ? getCurrencyPrice(option.value)
+                    : 0;
+
+                  return (
+                    <label
+                      key={index}
+                      className="flex items-center justify-between space-x-reverse space-x-2 text-[#0A1D37]/90 p-2 rounded-lg hover:bg-[#4DBFF0]/5"
+                    >
+                      <div className="flex items-center space-x-reverse space-x-2">
+                        <input
+                          type="checkbox"
+                          checked={
+                            Array.isArray(value) && value.includes(option.key)
+                          }
+                          onChange={(e) => {
+                            const currentArray = Array.isArray(value)
+                              ? value
+                              : [];
+                            if (e.target.checked) {
+                              handleInputChange(field.name, [
+                                ...currentArray,
+                                option.key,
+                              ]);
+                            } else {
+                              handleInputChange(
+                                field.name,
+                                currentArray.filter((v) => v !== option.key)
+                              );
+                            }
+                          }}
+                          className="rounded text-[#4DBFF0] focus:ring-[#4DBFF0]"
+                        />
+                        <span>{option.key}</span>
+                      </div>
+                      {isCurrency && currencyPrice > 0 && (
+                        <span className="text-sm text-[#4DBFF0] font-medium">
+                          {currencyPrice.toLocaleString()} تومان
+                        </span>
+                      )}
+                    </label>
+                  );
+                }
               )}
             </div>
           );
@@ -761,6 +863,28 @@ export default function ServiceDetailPage() {
       return;
     }
 
+    // Check if user is completely verified
+    // bankingInfo is an array, check if at least one is accepted
+    const hasBankingAccepted = Array.isArray(currentUser.bankingInfo)
+      ? currentUser.bankingInfo.some(
+          (bank: banckingInfo) => bank.status === "accepted"
+        )
+      : currentUser.bankingInfo?.status === "accepted";
+
+    const isCompletelyVerified =
+      currentUser.nationalCredentials?.status === "accepted" &&
+      hasBankingAccepted;
+
+    if (!isCompletelyVerified) {
+      showToast.error(
+        "برای ثبت درخواست، لطفاً ابتدا اطلاعات هویتی و بانکی خود را تکمیل و تایید کنید"
+      );
+      setTimeout(() => {
+        window.location.href = "/dashboard";
+      }, 2000);
+      return;
+    }
+
     if (!validateForm()) return;
 
     // Show payment method selection
@@ -779,7 +903,7 @@ export default function ServiceDetailPage() {
         await handleWalletPayment();
       } else if (paymentMethod === "direct") {
         await handleDirectPayment();
-      } 
+      }
     } catch (error) {
       console.log("Payment error:", error);
       showToast.error("خطا در پردازش پرداخت");
@@ -915,7 +1039,6 @@ export default function ServiceDetailPage() {
       throw error;
     }
   };
-
 
   // Handle card payment completion
 
@@ -1131,12 +1254,71 @@ export default function ServiceDetailPage() {
                     </div>
 
                     {/* Submit Button */}
-                    <div className="flex justify-center pt-6">
+                    <div className="flex flex-col items-center pt-6 w-full">
+                      {currentUser &&
+                        (() => {
+                          const hasBankingAccepted = Array.isArray(
+                            currentUser.bankingInfo
+                          )
+                            ? currentUser.bankingInfo.some(
+                                (bank: banckingInfo) =>
+                                  bank.status === "accepted"
+                              )
+                            : currentUser.bankingInfo?.status === "accepted";
+
+                          const isNationalAccepted =
+                            currentUser.nationalCredentials?.status ===
+                            "accepted";
+
+                          if (!isNationalAccepted || !hasBankingAccepted) {
+                            return (
+                              <div className="mb-4 p-4 bg-yellow-50 border border-yellow-200 rounded-xl w-full">
+                                <p className="text-yellow-800 font-medium text-center text-sm">
+                                  ⚠️ برای ثبت درخواست، لطفاً ابتدا{" "}
+                                  {!isNationalAccepted && "احراز هویت"}
+                                  {!isNationalAccepted &&
+                                    !hasBankingAccepted &&
+                                    " و "}
+                                  {!hasBankingAccepted && "اطلاعات بانکی"} خود
+                                  را تکمیل کنید
+                                </p>
+                                <Link href="/dashboard">
+                                  <div className="text-blue-600 mt-2 text-center mx-auto hover:underline">
+                                    تکمیل پروفایل{" "}
+                                  </div>
+                                </Link>
+                              </div>
+                            );
+                          }
+                          return null;
+                        })()}
                       <button
                         type="submit"
-                        disabled={submitting || !currentUser || !acceptedTerms}
+                        disabled={
+                          submitting ||
+                          !currentUser ||
+                          !acceptedTerms ||
+                          currentUser?.nationalCredentials?.status !==
+                            "accepted" ||
+                          !(Array.isArray(currentUser?.bankingInfo)
+                            ? currentUser.bankingInfo.some(
+                                (bank: banckingInfo) =>
+                                  bank.status === "accepted"
+                              )
+                            : currentUser?.bankingInfo?.status === "accepted")
+                        }
                         className={`flex items-center gap-3 px-8 py-4 rounded-xl font-bold text-lg transition-all duration-300 ${
-                          submitting || !currentUser || !acceptedTerms
+                          submitting ||
+                          !currentUser ||
+                          !acceptedTerms ||
+                          currentUser?.nationalCredentials?.status !==
+                            "accepted" ||
+                          !(Array.isArray(currentUser?.bankingInfo)
+                            ? currentUser.bankingInfo.some(
+                                (bank: banckingInfo) =>
+                                  bank.status === "accepted"
+                              )
+                            : currentUser?.bankingInfo?.status === "accepted")
                             ? "bg-gray-300 text-gray-500 cursor-not-allowed"
                             : "bg-gradient-to-l from-[#0A1D37] to-[#4DBFF0] text-white hover:opacity-90 transform hover:scale-105 shadow-lg"
                         }`}
@@ -1207,7 +1389,7 @@ export default function ServiceDetailPage() {
                   handleWalletPayment();
                 } else if (method === "direct") {
                   handleDirectPayment();
-                } 
+                }
               }}
               isWalletEnabled={
                 walletBalance >= (calculatedFee || service?.fee || 0)
