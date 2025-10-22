@@ -192,30 +192,7 @@ const CustomerHozoriList = () => {
     setSelectedReservation(reservation);
     setShowReservationDetails(true);
   };
-
-  if (!isLoggedIn) {
-    return (
-      <div className="min-h-[60vh] flex items-center justify-center p-4">
-        <div className="text-center space-y-4 bg-white p-8 sm:p-12 rounded-2xl shadow-lg border border-gray-100 max-w-md">
-          <div className="w-20 h-20 bg-gradient-to-r from-[#0A1D37] to-[#4DBFF0] rounded-full flex items-center justify-center mx-auto">
-            <FaUser className="text-white text-3xl" />
-          </div>
-          <h2 className="text-xl sm:text-2xl font-bold text-[#0A1D37]">
-            ورود به سیستم لازم است
-          </h2>
-          <p className="text-gray-600 text-sm sm:text-base">
-            لطفاً برای مشاهده رزروهای خود وارد حساب کاربری شوید
-          </p>
-          <a
-            href="/auth/sms"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-[#0A1D37] to-[#4DBFF0] text-white rounded-xl hover:shadow-lg hover:scale-105 transition-all duration-300"
-          >
-            ورود به سیستم
-          </a>
-        </div>
-      </div>
-    );
-  }
+ 
 
   return (
     <div className="space-y-6 sm:space-y-8" dir="rtl">
@@ -346,107 +323,110 @@ const CustomerHozoriList = () => {
           </a>
         </div>
       ) : (
-        <div className="space-y-4 sm:space-y-5">
+        <div className="space-y-5 sm:space-y-6">
           {reservations.map((reservation) => (
             <div
               key={reservation._id}
-              className="group bg-white rounded-xl sm:rounded-2xl shadow-md border border-gray-200 p-5 sm:p-6 hover:shadow-xl hover:border-[#0A1D37]/30 transition-all duration-300 hover:-translate-y-1"
+              className="group bg-white rounded-2xl sm:rounded-3xl shadow-sm hover:shadow-2xl border border-gray-100 overflow-hidden transition-all duration-300 hover:-translate-y-1"
             >
-              <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 sm:gap-6">
-                {/* Left Section - Info */}
-                <div className="flex items-start gap-4 flex-1">
-                  <div className="flex-shrink-0 w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-r from-[#0A1D37] to-[#4DBFF0] rounded-xl sm:rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
-                    <FaCalendarCheck className="text-white text-xl sm:text-2xl" />
-                  </div>
-
-                  <div className="flex-1 space-y-3">
-                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-                      <h3 className="text-lg sm:text-xl font-bold text-[#0A1D37] group-hover:text-[#4DBFF0] transition-colors duration-300">
+              <div className="bg-gradient-to-r from-[#0A1D37]/5 to-[#4DBFF0]/5 px-5 sm:px-6 py-4 border-b border-gray-100">
+                <div className="flex items-center justify-between gap-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-r from-[#0A1D37] to-[#4DBFF0] rounded-xl flex items-center justify-center shadow-md group-hover:scale-110 transition-transform duration-300">
+                      <FaCalendarCheck className="text-white text-xl sm:text-2xl" />
+                    </div>
+                    <div>
+                      <h3 className="text-base sm:text-lg font-bold text-[#0A1D37] group-hover:text-[#4DBFF0] transition-colors">
                         {reservation.name} {reservation.lastname}
                       </h3>
-                      <div className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full border text-xs sm:text-sm font-medium ${getStatusColor(reservation.status)}`}>
-                        {getStatusIcon(reservation.status)}
-                        {getStatusText(reservation.status)}
-                      </div>
-                    </div>
-
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 text-sm">
-                      <div className="flex items-center gap-2">
-                        <FaCalendarAlt className="text-[#4DBFF0] flex-shrink-0" />
-                        <span className="text-gray-600">تاریخ:</span>
-                        <span className="font-medium text-[#0A1D37]">
-                          {formatDate(reservation.Date)}
-                        </span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <FaClock className="text-[#4DBFF0] flex-shrink-0" />
-                        <span className="text-gray-600">زمان:</span>
-                        <span className="font-medium text-[#0A1D37]">
-                          {formatTime(reservation.time)}
-                        </span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <FaPhone className="text-[#4DBFF0] flex-shrink-0" />
-                        <span className="text-gray-600">تلفن:</span>
-                        <span className="font-medium text-[#0A1D37]">
-                          {reservation.phoneNumber}
-                        </span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <FaHeart className="text-[#4DBFF0] flex-shrink-0" />
-                        <span className="text-gray-600">وضعیت تأهل:</span>
-                        <span className="font-medium text-[#0A1D37]">
-                          {reservation.maridgeStatus === "married" ? "متأهل" : "مجرد"}
-                        </span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <FaChild className="text-[#4DBFF0] flex-shrink-0" />
-                        <span className="text-gray-600">فرزندان:</span>
-                        <span className="font-medium text-[#0A1D37]">
-                          {reservation.childrensCount} نفر
-                        </span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <FaMoneyBillWave className="text-[#4DBFF0] flex-shrink-0" />
-                        <span className="text-gray-600">پرداخت:</span>
-                        {getPaymentTypeBadge(reservation.paymentType)}
-                      </div>
-                    </div>
-
-                    <div className="text-xs text-gray-500">
-                      رزرو شده در: {formatDate(reservation.createdAt)}
+                      <p className="text-xs text-gray-500 mt-0.5">
+                        رزرو شده: {formatDate(reservation.createdAt)}
+                      </p>
                     </div>
                   </div>
-                </div>
-
-                {/* Right Section - Action */}
-                <div className="flex items-center gap-3">
-                  <button
-                    onClick={() => openReservationDetails(reservation)}
-                    className="flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-[#0A1D37] to-[#4DBFF0] text-white font-medium rounded-xl hover:shadow-lg hover:scale-105 active:scale-95 transition-all duration-300 text-sm"
-                  >
-                    <FaEye className="text-sm" />
-                    جزئیات
-                  </button>
+                  <div className={`inline-flex items-center gap-1.5  px-3 py-1.5 rounded-full border text-nowrap text-xs sm:text-sm font-semibold ${getStatusColor(reservation.status)}`}>
+                    {getStatusIcon(reservation.status)}
+                    {getStatusText(reservation.status)}
+                  </div>
                 </div>
               </div>
 
-              {/* Admin Notes */}
-              {reservation.adminNotes && (
-                <div className="mt-5 p-4 bg-blue-50 border-r-4 border-blue-500 rounded-lg animate-in slide-in-from-top duration-300">
-                  <div className="flex items-start gap-3">
-                    <FaIdCard className="text-blue-500 text-lg flex-shrink-0 mt-0.5" />
-                    <div>
-                      <p className="font-semibold text-blue-900 text-sm mb-1">
-                        یادداشت مدیر
-                      </p>
-                      <p className="text-blue-800 text-sm leading-relaxed">
-                        {reservation.adminNotes}
+              <div className="p-5 sm:p-6">
+                <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-5">
+                  <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-xl">
+                    <FaCalendarAlt className="text-[#4DBFF0] text-lg flex-shrink-0" />
+                    <div className="flex-1 min-w-0">
+                      <p className="text-xs text-gray-500 mb-0.5">تاریخ</p>
+                      <p className="font-semibold text-[#0A1D37] text-sm truncate">
+                        {formatDate(reservation.Date)}
                       </p>
                     </div>
                   </div>
+                  <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-xl">
+                    <FaClock className="text-[#4DBFF0] text-lg flex-shrink-0" />
+                    <div className="flex-1 min-w-0">
+                      <p className="text-xs text-gray-500 mb-0.5">زمان</p>
+                      <p className="font-semibold text-[#0A1D37] text-sm truncate">
+                        {formatTime(reservation.time)}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-xl">
+                    <FaPhone className="text-[#4DBFF0] text-lg flex-shrink-0" />
+                    <div className="flex-1 min-w-0">
+                      <p className="text-xs text-gray-500 mb-0.5">تلفن</p>
+                      <p className="font-semibold text-[#0A1D37] text-sm truncate">
+                        {reservation.phoneNumber}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-xl">
+                    <FaHeart className="text-[#4DBFF0] text-lg flex-shrink-0" />
+                    <div className="flex-1 min-w-0">
+                      <p className="text-xs text-gray-500 mb-0.5">وضعیت تأهل</p>
+                      <p className="font-semibold text-[#0A1D37] text-sm">
+                        {reservation.maridgeStatus === "married" ? "متأهل" : "مجرد"}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-xl">
+                    <FaChild className="text-[#4DBFF0] text-lg flex-shrink-0" />
+                    <div className="flex-1 min-w-0">
+                      <p className="text-xs text-gray-500 mb-0.5">تعداد فرزندان</p>
+                      <p className="font-semibold text-[#0A1D37] text-sm">
+                        {reservation.childrensCount} نفر
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-xl">
+                    <FaMoneyBillWave className="text-[#4DBFF0] text-lg flex-shrink-0" />
+                    <div className="flex-1 min-w-0">
+                      <p className="text-xs text-gray-500 mb-0.5">نوع پرداخت</p>
+                      {getPaymentTypeBadge(reservation.paymentType)}
+                    </div>
+                  </div>
                 </div>
-              )}
+
+                {reservation.adminNotes && (
+                  <div className="p-4 bg-blue-50 border-2 border-blue-200 rounded-xl mb-4">
+                    <div className="flex items-start gap-3">
+                      <FaIdCard className="text-blue-500 text-lg flex-shrink-0 mt-0.5" />
+                      <div className="flex-1">
+                        <p className="font-bold text-blue-900 text-sm mb-2">یادداشت مدیر</p>
+                        <p className="text-blue-800 text-xs max-w-sm whitespace-break-spaces leading-relaxed">{reservation.adminNotes}</p>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                <button
+                  onClick={() => openReservationDetails(reservation)}
+                  className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-r from-[#0A1D37] to-[#4DBFF0] text-white font-bold rounded-xl hover:shadow-xl hover:scale-[1.02] active:scale-95 transition-all duration-300 text-sm"
+                >
+                  <FaEye className="text-base" />
+                  مشاهده جزئیات کامل
+                </button>
+              </div>
             </div>
           ))}
         </div>
@@ -582,7 +562,7 @@ const CustomerHozoriList = () => {
               )}
 
               {/* Timestamps */}
-              <div className="bg-gradient-to-br from-gray-50 to-slate-50 rounded-xl sm:rounded-2xl p-5 sm:p-6 border-2 border-gray-200">
+              <div className="bg-gradient-to-br from-gray-50 to-slate-50 rounded-xl mb-12 sm:rounded-2xl p-5 sm:p-6 border-2 border-gray-200">
                 <h3 className="text-lg font-bold text-[#0A1D37] mb-4">تاریخچه</h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
                   <div className="space-y-2">

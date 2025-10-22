@@ -160,10 +160,7 @@ const UserWrapper: React.FC<AdminWrapperProps> = ({
     if (isLoggedIn) {
       fetchAdminStats();
     }
-
- 
-
-   };
+  };
 
   // Admin welcome section
   const renderAdminWelcome = () => {
@@ -178,7 +175,6 @@ const UserWrapper: React.FC<AdminWrapperProps> = ({
       <div className=" backdrop-blur-sm  rounded-2xl  sm:p-6 mb-8">
         <div className="flex items-center justify-between flex-wrap gap-4">
           <div className="flex items-center gap-4">
-         
             <div>
               <h2 className="sm:text-2xl text-base font-bold mb-2 text-[#0A1D37]">
                 سلام {adminName} عزیز
@@ -209,50 +205,25 @@ const UserWrapper: React.FC<AdminWrapperProps> = ({
             className={`${stat.bgColor} backdrop-blur-sm border border-[#0A1D37]/10 rounded-xl p-2 md:p-4 hover:shadow-lg transition-all  duration-300`}
           >
             <div className="flex items-center justify-between mb-2">
-              <div className={`p-2 bg-gradient-to-r ${stat.color} rounded-lg hidden md:block `}>
+              <div
+                className={`p-2 bg-gradient-to-r ${stat.color} rounded-lg hidden md:block `}
+              >
                 {stat.icon}
               </div>
               <div className="text-right">
-                <p className="md:text-2xl font-bold text-gray-900">{stat.value}</p>
+                <p className="md:text-2xl font-bold text-gray-900">
+                  {stat.value}
+                </p>
               </div>
             </div>
-            <p className="text-xs md:text-sm text-gray-600 font-medium">{stat.title}</p>
+            <p className="text-xs md:text-sm text-gray-600 font-medium">
+              {stat.title}
+            </p>
           </div>
         ))}
       </div>
     );
   };
-
-  if (!isLoggedIn) {
-    return (
-      <div
-        className={`min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 ${className}`}
-        dir="rtl"
-      >
-        <div className="container mx-auto px-4 py-32">
-          <div className="max-w-md mx-auto text-center">
-            <div className="w-20 h-20 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-6">
-              <FaCog className="text-white text-3xl" />
-            </div>
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">
-              ورود به سیستم لازم است
-            </h2>
-            <p className="text-gray-600 mb-8 leading-relaxed">
-              برای دسترسی به پنل مدیریت، لطفاً وارد حساب کاربری خود شوید
-            </p>
-            <div className="space-y-4">
-              <a
-                href="/auth/sms"
-                className="block w-full px-6 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl font-bold hover:shadow-lg transition-all duration-300 hover:scale-105"
-              >
-                ورود / ثبت نام
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
 
   if (
     !currentUser?.roles.includes("admin") &&
@@ -315,7 +286,9 @@ const UserWrapper: React.FC<AdminWrapperProps> = ({
               >
                 {tab.icon}
                 <div className="text-center">
-                  <div className="font-bold text-xs md:text-sm">{tab.label}</div>
+                  <div className="font-bold text-xs md:text-sm">
+                    {tab.label}
+                  </div>
                   <div
                     className={`text-xs hidden md:block ${
                       activeTab === tab.id ? "text-[#0A1D37]" : "text-gray-500"

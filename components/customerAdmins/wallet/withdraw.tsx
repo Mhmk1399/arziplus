@@ -413,7 +413,7 @@ const WithdrawComponent: React.FC<WithdrawComponentProps> = ({
                   <FaArrowDown className="text-white text-xl sm:text-2xl lg:text-3xl" />
                 </div>
                 <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-[#0A1D37] mb-2 sm:mb-3">
-                  درخواست برداشت 💸
+                  درخواست برداشت 
                 </h2>
                 <p className="text-xs sm:text-sm lg:text-base text-gray-600">
                   برداشت از موجودی کیف پول
@@ -762,9 +762,9 @@ const WithdrawComponent: React.FC<WithdrawComponentProps> = ({
                               </div>
                             )}
                             <div className="flex-1 min-w-0">
-                              <p className="text-xs sm:text-sm font-medium text-gray-900 truncate">
+                              {/* <p className="text-xs sm:text-sm font-medium text-gray-900 truncate">
                                 {transaction.description || transaction.tag}
-                              </p>
+                              </p> */}
                               <p className="text-xs text-gray-500">
                                 {new Date(transaction.date).toLocaleDateString(
                                   "fa-IR"
@@ -814,7 +814,7 @@ const WithdrawComponent: React.FC<WithdrawComponentProps> = ({
                   </div>
                   <div className="flex-1">
                     <p className="font-bold text-orange-800 text-sm sm:text-base mb-1 sm:mb-2">
-                      زمان پردازش ⏱️
+                      زمان پردازش  
                     </p>
                     <p className="text-xs sm:text-sm text-orange-600 leading-relaxed">
                       برداشت پس از تایید، حداکثر ۳ روز کاری پردازش می‌شود
@@ -831,7 +831,7 @@ const WithdrawComponent: React.FC<WithdrawComponentProps> = ({
                   </div>
                   <div className="flex-1">
                     <p className="font-bold text-blue-800 text-sm sm:text-base mb-1 sm:mb-2">
-                      برداشت امن 🔐
+                      برداشت امن  
                     </p>
                     <p className="text-xs sm:text-sm text-blue-600 leading-relaxed">
                       تمامی برداشت‌ها به حساب بانکی تایید شده شما انجام می‌شود

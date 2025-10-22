@@ -248,7 +248,7 @@ const IncomesHistory: React.FC = () => {
           </div>
         </div>
 
-           {/* Filters Panel */}
+        {/* Filters Panel */}
         {showFilters && (
           <div className="bg-white border-2 border-gray-100 rounded-2xl sm:rounded-3xl p-4 sm:p-6 lg:p-8 mb-6 sm:mb-8 shadow-lg">
             <div className="flex items-center gap-3 mb-6">
@@ -469,8 +469,6 @@ const IncomesHistory: React.FC = () => {
           </div>
         </div>
 
-     
-
         {/* Transactions Table/Cards */}
         <div className="bg-white rounded-2xl sm:rounded-3xl border-2 border-gray-100 overflow-hidden shadow-sm">
           {loading ? (
@@ -506,6 +504,9 @@ const IncomesHistory: React.FC = () => {
                   <thead className="bg-gradient-to-r from-gray-50 to-gray-100">
                     <tr>
                       <th className="px-6 py-4 text-right text-sm font-bold text-[#0A1D37]">
+                        #
+                      </th>
+                      <th className="px-6 py-4 text-right text-sm font-bold text-[#0A1D37]">
                         نوع
                       </th>
                       <th className="px-6 py-4 text-right text-sm font-bold text-[#0A1D37]">
@@ -526,7 +527,7 @@ const IncomesHistory: React.FC = () => {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-100">
-                    {transactions.map((transaction) => {
+                    {transactions.map((transaction, idx) => {
                       const typeDisplay = getTypeDisplay(transaction.type);
                       const statusDisplay = getStatusDisplay(
                         transaction.status
@@ -537,6 +538,11 @@ const IncomesHistory: React.FC = () => {
                           key={transaction._id}
                           className="hover:bg-gray-50 transition-colors"
                         >
+                          <td className="px-6 py-4">
+                            <span className="text-gray-900 text-sm">
+                              {idx + 1}
+                            </span>
+                          </td>
                           <td className="px-6 py-4">
                             <div
                               className={`flex items-center gap-2 ${typeDisplay.color}`}
@@ -564,13 +570,11 @@ const IncomesHistory: React.FC = () => {
                           </td>
                           <td className="px-6 py-4">
                             <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-gray-100 text-gray-700 rounded-lg text-sm font-medium border border-gray-200">
-                              <FaTags className="text-xs" />
                               {transaction.tag || "-"}
                             </span>
                           </td>
                           <td className="px-6 py-4">
                             <div className="flex items-center gap-2 text-gray-600">
-                              <FaCalendarAlt className="text-sm" />
                               <span className="text-sm font-medium">
                                 {new Date(transaction.date).toLocaleDateString(
                                   "fa-IR"
@@ -580,9 +584,9 @@ const IncomesHistory: React.FC = () => {
                           </td>
                           <td className="px-6 py-4">
                             <span
-                              className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-bold border ${statusDisplay.color}`}
+                              className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs text-nowrap font-bold border ${statusDisplay.color}`}
                             >
-                              {statusDisplay.icon}
+                              {/* {statusDisplay.icon} */}
                               {statusDisplay.text}
                             </span>
                           </td>

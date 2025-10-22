@@ -290,16 +290,7 @@ const HozoriAdminList = () => {
   useEffect(() => {
     fetchReservations();
   }, [currentPage, pageSize, statusFilter, isLoggedIn]);
-
-  if (!isLoggedIn) {
-    return (
-      <div className="flex items-center justify-center py-12">
-        <div className="text-center">
-          <p className="text-gray-600">برای مشاهده این صفحه باید وارد شوید</p>
-        </div>
-      </div>
-    );
-  }
+ 
 
   return (
     <div className="space-y-6">

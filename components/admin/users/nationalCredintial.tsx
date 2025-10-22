@@ -216,18 +216,7 @@ const NationalCredentialAdmin = () => {
     setShowImageModal(true);
   };
 
-  if (!isLoggedIn) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">
-            ورود به سیستم لازم است
-          </h2>
-          <p className="text-gray-600">لطفاً وارد حساب کاربری خود شوید</p>
-        </div>
-      </div>
-    );
-  }
+ 
 
   if (
     !currentUser?.roles.includes("admin") &&

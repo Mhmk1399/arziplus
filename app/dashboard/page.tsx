@@ -506,7 +506,7 @@ const Dashboard: React.FC = () => {
             {selectedMenuItem === "wallet" ? (
               <div className="max-w-7xl mx-auto">
                 <div className="mb-6">
-                  <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+                  <div className="bg-white rounded-2xl  p-6">
                     <div className="flex items-center gap-4 mb-2">
                       <div className="w-12 h-12 bg-gradient-to-r from-[#0A1D37]/10 to-[#4DBFF0]/10 rounded-xl flex items-center justify-center">
                         <FaWallet className="text-[#0A1D37] text-xl" />

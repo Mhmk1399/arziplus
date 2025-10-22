@@ -433,15 +433,16 @@ export default function NewNavbar() {
                     suppressHydrationWarning
                   >
                     {user?.profile?.avatar ? (
-                      <Image
+                      <img
                         src={user.profile.avatar}
                         alt="Avatar"
-                        width={50}
-                        height={50}
-                        className="w-8 h-8 rounded-full object-cover border-2 border-[#4DBFF0]"
+                        className="w-12 h-12 rounded-full object-cover border-2 border-[#4DBFF0]"
                         onError={(e) => {
                           const img = e.target as HTMLImageElement;
                           img.style.display = "none";
+                          const fallback =
+                            img.nextElementSibling as HTMLElement;
+                          if (fallback) fallback.style.display = "flex";
                         }}
                       />
                     ) : null}
@@ -807,15 +808,16 @@ export default function NewNavbar() {
                 <div className="space-y-3">
                   <div className="flex items-center justify-center gap-3 p-4 bg-gradient-to-r from-[#0A1D37]/10 to-[#4DBFF0]/10 rounded-xl">
                     {user?.profile?.avatar ? (
-                      <Image
+                      <img
                         src={user.profile.avatar}
                         alt="Avatar"
-                        width={50}
-                        height={50}
-                        className="w-8 h-8 rounded-full object-cover border-2 border-[#4DBFF0]"
+                        className="w-12 h-12 rounded-full object-cover border-2 border-[#4DBFF0]"
                         onError={(e) => {
                           const img = e.target as HTMLImageElement;
                           img.style.display = "none";
+                          const fallback =
+                            img.nextElementSibling as HTMLElement;
+                          if (fallback) fallback.style.display = "flex";
                         }}
                       />
                     ) : null}

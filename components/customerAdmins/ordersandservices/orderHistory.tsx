@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { showToast } from "@/utilities/toast";
 import { estedadBold } from "@/next-persian-fonts/estedad";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
@@ -21,6 +22,7 @@ import {
   FaExclamationTriangle,
   FaClock,
 } from "react-icons/fa";
+import Link from "next/link";
 
 interface ServiceField {
   name: string;
@@ -283,32 +285,7 @@ export default function CustomerRequestsTable({
     return "کارشناس";
   };
 
-  if (!isLoggedIn) {
-    return (
-      <div
-        className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50/30 flex items-center justify-center px-4"
-        dir="rtl"
-      >
-        <div className="text-center p-6 sm:p-8 lg:p-12 bg-white rounded-3xl shadow-xl max-w-md border border-gray-100">
-          <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-r from-[#4DBFF0]/20 to-[#0A1D37]/20 rounded-2xl flex items-center justify-center mx-auto mb-4 sm:mb-6">
-            <span className="text-3xl sm:text-4xl">🔐</span>
-          </div>
-          <h3 className="text-xl sm:text-2xl font-bold text-[#0A1D37] mb-3 sm:mb-4">
-            ورود به سیستم لازم است
-          </h3>
-          <p className="text-sm sm:text-base text-gray-600 mb-6 sm:mb-8 leading-relaxed">
-            برای مشاهده درخواست‌های خود لطفاً وارد حساب کاربری شوید
-          </p>
-          <a
-            href="/auth/sms"
-            className="inline-flex items-center gap-2 px-6 py-3 sm:py-4 bg-gradient-to-r from-[#4DBFF0] to-[#0A1D37] text-white rounded-xl sm:rounded-2xl hover:shadow-xl transition-all duration-300 hover:scale-105 font-bold text-sm sm:text-base"
-          >
-            ورود / ثبت نام
-          </a>
-        </div>
-      </div>
-    );
-  }
+  
 
   return (
     <div
@@ -321,23 +298,23 @@ export default function CustomerRequestsTable({
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
             <div>
               <h1
-                className={`text-2xl lg:text-3xl   ${estedadBold.className} text-[#0A1D37] mb-2`}
+                className={`text-xl lg:text-3xl   ${estedadBold.className} text-[#0A1D37]`}
               >
                 درخواست‌های من
               </h1>
-              <p className="text-sm sm:text-base text-gray-600">
+              <p className="text-xs sm:text-base text-gray-600">
                 مدیریت و پیگیری درخواست‌های شما
               </p>
             </div>
 
             {/* New Request Button - Desktop */}
-            <a
-              href="/services-client"
+            <Link
+              href="/services"
               className="hidden sm:inline-flex items-center gap-2 px-4 lg:px-6 py-2.5 lg:py-3 bg-gradient-to-r from-[#4DBFF0] to-[#0A1D37] text-white rounded-xl lg:rounded-2xl hover:shadow-xl transition-all duration-300 hover:scale-105 font-bold text-sm lg:text-base whitespace-nowrap"
             >
               <FaPlus className="text-sm" />
               <span>درخواست جدید</span>
-            </a>
+            </Link>
           </div>
 
           {/* Filters */}
@@ -409,7 +386,7 @@ export default function CustomerRequestsTable({
               {requests.map((request) => (
                 <div
                   key={request._id}
-                  className="bg-white rounded-2xl sm:rounded-3xl shadow-sm hover:shadow-xl border border-gray-100 overflow-hidden transition-all duration-300 hover:scale-[1.02] flex flex-col"
+                  className="bg-white rounded-2xl sm:rounded-3xl shadow-sm hover:shadow-xl border border-gray-100 overflow-hidden transition-all duration-300   flex flex-col"
                 >
                   {/* Header */}
                   <div className="bg-gradient-to-r from-[#4DBFF0]/10 to-[#0A1D37]/10 px-4 sm:px-5 lg:px-6 py-4 sm:py-5 border-b border-gray-100">
@@ -642,268 +619,281 @@ export default function CustomerRequestsTable({
             )}
           </>
         )}
-
-        {/* Mobile Floating Action Button */}
-        <a
-          href="/services-client"
-          className="fixed bottom-6 left-6 sm:hidden w-14 h-14 bg-gradient-to-r from-[#4DBFF0] to-[#0A1D37] rounded-full shadow-2xl flex items-center justify-center z-40 hover:scale-110 active:scale-95 transition-all duration-300"
-        >
-          <FaPlus className="text-white text-xl" />
-        </a>
       </div>
 
       {/* Detail Modal */}
-      {showDetailModal && selectedRequest && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-2xl sm:rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl">
-            <div className="sticky top-0 bg-gradient-to-r from-[#4DBFF0]/10 to-[#0A1D37]/10 p-4 sm:p-6 border-b border-gray-100 backdrop-blur-sm z-10">
-              <div className="flex items-center justify-between">
-                <h2
-                  className={`text-lg sm:text-xl lg:text-2xl ${estedadBold.className} text-[#0A1D37]`}
-                >
-                  جزئیات درخواست {selectedRequest.requestNumber}
-                </h2>
-                <button
-                  onClick={() => setShowDetailModal(false)}
-                  className="p-2 hover:bg-gray-100 rounded-xl transition-colors"
-                >
-                  <FaTimes className="text-xl text-gray-600" />
-                </button>
-              </div>
-            </div>
-
-            <div className="p-4 sm:p-6 lg:p-8 space-y-4 sm:space-y-6">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
-                <div className="p-4 bg-gray-50 rounded-xl">
-                  <label className="text-xs sm:text-sm font-medium text-gray-600 mb-2 block">
-                    سرویس
-                  </label>
-                  <div className="text-sm sm:text-base text-[#0A1D37] font-bold">
-                    {selectedRequest.service.title}
-                  </div>
-                </div>
-                <div className="p-4 bg-gray-50 rounded-xl">
-                  <label className="text-xs sm:text-sm font-medium text-gray-600 mb-2 block">
-                    وضعیت
-                  </label>
-                  <span
-                    className={`inline-flex items-center px-3 py-1.5 rounded-lg text-xs sm:text-sm font-bold border ${
-                      statusColors[
-                        selectedRequest.status as keyof typeof statusColors
-                      ]
-                    }`}
-                  >
-                    {
-                      statusLabels[
-                        selectedRequest.status as keyof typeof statusLabels
-                      ]
-                    }
-                  </span>
-                </div>
-                <div className="p-4 bg-gray-50 rounded-xl">
-                  <label className="text-xs sm:text-sm font-medium text-gray-600 mb-2 block">
-                    مبلغ
-                  </label>
-                  <div className="text-sm sm:text-base text-[#0A1D37] font-bold">
-                    {selectedRequest.paymentAmount?.toLocaleString("fa-IR")}{" "}
-                    تومان
-                  </div>
-                </div>
-                <div className="p-4 bg-gray-50 rounded-xl">
-                  <label className="text-xs sm:text-sm font-medium text-gray-600 mb-2 block">
-                    تاریخ ثبت
-                  </label>
-                  <div className="text-sm sm:text-base text-[#0A1D37] font-medium">
-                    {formatDate(selectedRequest.createdAt)}
-                  </div>
-                </div>
-              </div>
-
-              {selectedRequest.rejectedReason && (
-                <div className="p-4 sm:p-5 bg-red-50 border-2 border-red-200 rounded-xl sm:rounded-2xl">
-                  <label className="text-sm sm:text-base font-bold text-red-800 mb-2 sm:mb-3   flex items-center gap-2">
-                    <FaExclamationTriangle />
-                    دلیل رد
-                  </label>
-                  <div className="text-sm sm:text-base text-red-700 leading-relaxed">
-                    {selectedRequest.rejectedReason}
-                  </div>
-                </div>
-              )}
-
-              {selectedRequest.adminNotes.filter((n) => n.isVisibleToCustomer)
-                .length > 0 && (
-                <div className="p-4 sm:p-5 bg-blue-50 border-2 border-blue-200 rounded-xl sm:rounded-2xl">
-                  <label className="text-sm sm:text-base font-bold text-blue-800 mb-3 sm:mb-4 block">
-                    💬 پیام‌های کارشناس
-                  </label>
-                  <div className="space-y-3 max-h-60 overflow-y-auto">
-                    {selectedRequest.adminNotes
-                      .filter((n) => n.isVisibleToCustomer)
-                      .map((note, index) => (
-                        <div
-                          key={index}
-                          className="p-3 sm:p-4 bg-white border border-blue-200 rounded-xl"
-                        >
-                          <div className="text-sm sm:text-base text-blue-700 leading-relaxed mb-2">
-                            {note.note}
-                          </div>
-                          <div className="text-xs text-blue-600">
-                            {formatDate(note.addedAt)}
-                          </div>
-                        </div>
-                      ))}
-                  </div>
-                </div>
-              )}
-            </div>
-
-            <div className="sticky bottom-0 p-4 sm:p-6 border-t border-gray-100 bg-white/95 backdrop-blur-sm flex justify-end">
-              <button
-                onClick={() => setShowDetailModal(false)}
-                className="px-6 sm:px-8 py-3 sm:py-3.5 bg-gradient-to-r from-[#4DBFF0] to-[#0A1D37] text-white rounded-xl sm:rounded-2xl hover:shadow-xl transition-all font-bold text-sm sm:text-base"
-              >
-                بستن
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Response Modal */}
-      {showResponseModal && selectedRequest && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-2xl sm:rounded-3xl max-w-xl w-full shadow-2xl">
-            <div className="p-4 sm:p-6 border-b border-gray-100">
-              <div className="flex items-center justify-between">
-                <h2
-                  className={`text-lg sm:text-xl ${estedadBold.className} text-[#0A1D37]`}
-                >
-                  پاسخ به رد درخواست
-                </h2>
-                <button
-                  onClick={() => setShowResponseModal(false)}
-                  className="p-2 hover:bg-gray-100 rounded-xl transition-colors"
-                >
-                  <FaTimes className="text-xl text-gray-600" />
-                </button>
-              </div>
-            </div>
-
-            <div className="p-4 sm:p-6 lg:p-8">
-              {selectedRequest.rejectedReason && (
-                <div className="mb-4 sm:mb-6 p-4 bg-red-50 border-2 border-red-200 rounded-xl">
-                  <div className="text-sm font-bold text-red-800 mb-2 flex items-center gap-2">
-                    <FaExclamationTriangle />
-                    دلیل رد:
-                  </div>
-                  <div className="text-sm text-red-700 leading-relaxed">
-                    {selectedRequest.rejectedReason}
-                  </div>
-                </div>
-              )}
-
-              <div>
-                <label className="block text-sm sm:text-base font-bold text-[#0A1D37] mb-3">
-                  پاسخ شما
-                </label>
-                <textarea
-                  value={customerResponse}
-                  onChange={(e) => setCustomerResponse(e.target.value)}
-                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-[#4DBFF0]/30 focus:border-[#4DBFF0] focus:outline-none text-sm sm:text-base resize-none"
-                  rows={5}
-                  placeholder="توضیحات و پاسخ خود را در مورد دلیل رد وارد کنید..."
-                />
-              </div>
-            </div>
-
-            <div className="p-4 sm:p-6 border-t border-gray-100 flex flex-col-reverse sm:flex-row gap-3 sm:gap-4 justify-end">
-              <button
-                onClick={() => setShowResponseModal(false)}
-                className="w-full sm:w-auto px-5 py-3 text-[#0A1D37] border-2 border-gray-200 rounded-xl hover:bg-gray-50 transition-all font-medium"
-              >
-                لغو
-              </button>
-              <button
-                onClick={handleSubmitResponse}
-                disabled={submittingResponse || !customerResponse.trim()}
-                className="w-full sm:w-auto px-6 sm:px-8 py-3 bg-gradient-to-r from-[#4DBFF0] to-[#0A1D37] text-white rounded-xl hover:shadow-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed font-bold flex items-center justify-center gap-2"
-              >
-                {submittingResponse ? (
-                  <>
-                    <FaSpinner className="animate-spin" />
-                    <span>در حال ارسال...</span>
-                  </>
-                ) : (
-                  <>
-                    <FaReply />
-                    <span>ارسال پاسخ</span>
-                  </>
-                )}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Service Renderer Modal for Updating Request */}
-      {showServiceRenderer && selectedRequest && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-2xl sm:rounded-3xl max-w-4xl w-full max-h-[90vh] overflow-y-auto shadow-2xl">
-            <div className="sticky top-0 bg-gradient-to-r from-[#4DBFF0]/10 to-[#0A1D37]/10 p-4 sm:p-6 border-b border-gray-100 backdrop-blur-sm z-10">
-              <div className="flex items-center justify-between mb-4">
-                <div>
+      {showDetailModal &&
+        selectedRequest &&
+        typeof document !== "undefined" &&
+        createPortal(
+          <div
+            dir="rtl"
+            className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4"
+          >
+            <div className="bg-white rounded-2xl sm:rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl">
+              <div className="sticky top-0 bg-gradient-to-r from-[#4DBFF0]/10 to-[#0A1D37]/10 p-4 sm:p-6 border-b border-gray-100 backdrop-blur-sm z-10">
+                <div className="flex items-center justify-between">
                   <h2
                     className={`text-lg sm:text-xl lg:text-2xl ${estedadBold.className} text-[#0A1D37]`}
                   >
-                    ویرایش درخواست {selectedRequest.requestNumber}
+                    جزئیات درخواست {selectedRequest.requestNumber}
                   </h2>
-                  <p className="text-xs sm:text-sm text-gray-600 mt-1">
-                    سرویس: {selectedRequest.service.title}
-                  </p>
+                  <button
+                    onClick={() => setShowDetailModal(false)}
+                    className="p-2 hover:bg-gray-100 rounded-xl transition-colors"
+                  >
+                    <FaTimes className="text-xl text-gray-600" />
+                  </button>
                 </div>
+              </div>
+
+              <div className="p-4 sm:p-6 lg:p-8 space-y-4 sm:space-y-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+                  <div className="p-4 bg-gray-50 rounded-xl">
+                    <label className="text-xs sm:text-sm font-medium text-gray-600 mb-2 block">
+                      سرویس
+                    </label>
+                    <div className="text-sm sm:text-base text-[#0A1D37] font-bold">
+                      {selectedRequest.service.title}
+                    </div>
+                  </div>
+                  <div className="p-4 bg-gray-50 rounded-xl">
+                    <label className="text-xs sm:text-sm font-medium text-gray-600 mb-2 block">
+                      وضعیت
+                    </label>
+                    <span
+                      className={`inline-flex items-center px-3 py-1.5 rounded-lg text-xs sm:text-sm font-bold border ${
+                        statusColors[
+                          selectedRequest.status as keyof typeof statusColors
+                        ]
+                      }`}
+                    >
+                      {
+                        statusLabels[
+                          selectedRequest.status as keyof typeof statusLabels
+                        ]
+                      }
+                    </span>
+                  </div>
+                  <div className="p-4 bg-gray-50 rounded-xl">
+                    <label className="text-xs sm:text-sm font-medium text-gray-600 mb-2 block">
+                      مبلغ
+                    </label>
+                    <div className="text-sm sm:text-base text-[#0A1D37] font-bold">
+                      {selectedRequest.paymentAmount?.toLocaleString("fa-IR")}{" "}
+                      تومان
+                    </div>
+                  </div>
+                  <div className="p-4 bg-gray-50 rounded-xl">
+                    <label className="text-xs sm:text-sm font-medium text-gray-600 mb-2 block">
+                      تاریخ ثبت
+                    </label>
+                    <div className="text-sm sm:text-base text-[#0A1D37] font-medium">
+                      {formatDate(selectedRequest.createdAt)}
+                    </div>
+                  </div>
+                </div>
+
+                {selectedRequest.rejectedReason && (
+                  <div className="p-4 sm:p-5 bg-red-50 border-2 border-red-200 rounded-xl sm:rounded-2xl">
+                    <label className="text-sm sm:text-base font-bold text-red-800 mb-2 sm:mb-3   flex items-center gap-2">
+                      <FaExclamationTriangle />
+                      دلیل رد
+                    </label>
+                    <div className="text-sm sm:text-base text-red-700 leading-relaxed">
+                      {selectedRequest.rejectedReason}
+                    </div>
+                  </div>
+                )}
+
+                {selectedRequest.adminNotes.filter((n) => n.isVisibleToCustomer)
+                  .length > 0 && (
+                  <div className="p-4 sm:p-5 bg-blue-50 border-2 border-blue-200 rounded-xl sm:rounded-2xl">
+                    <label className="text-sm sm:text-base font-bold text-blue-800 mb-3 sm:mb-4 block">
+                      💬 پیام‌های کارشناس
+                    </label>
+                    <div className="space-y-3 max-h-60 overflow-y-auto">
+                      {selectedRequest.adminNotes
+                        .filter((n) => n.isVisibleToCustomer)
+                        .map((note, index) => (
+                          <div
+                            key={index}
+                            className="p-3 sm:p-4 bg-white border border-blue-200 rounded-xl"
+                          >
+                            <div className="text-sm sm:text-base text-blue-700 leading-relaxed mb-2">
+                              {note.note}
+                            </div>
+                            <div className="text-xs text-blue-600">
+                              {formatDate(note.addedAt)}
+                            </div>
+                          </div>
+                        ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              <div className="sticky bottom-0 p-4 sm:p-6 border-t border-gray-100 bg-white/95 backdrop-blur-sm flex justify-end">
                 <button
-                  onClick={() => {
-                    setShowServiceRenderer(false);
-                    setSelectedRequest(null);
-                  }}
-                  className="p-2 hover:bg-white/50 rounded-xl transition-colors"
+                  onClick={() => setShowDetailModal(false)}
+                  className="px-6 sm:px-8 py-3 sm:py-3.5 bg-gradient-to-r from-[#4DBFF0] to-[#0A1D37] text-white rounded-xl sm:rounded-2xl hover:shadow-xl transition-all font-bold text-sm sm:text-base"
                 >
-                  <FaTimes className="text-xl sm:text-2xl text-gray-600" />
+                  بستن
                 </button>
               </div>
+            </div>
+          </div>,
+          document.body
+        )}
 
-              {/* Show rejection reason */}
-              {selectedRequest.rejectedReason && (
-                <div className="p-3 sm:p-4 bg-red-50 border-2 border-red-200 rounded-xl mb-3">
-                  <div className="text-xs sm:text-sm font-bold text-red-800 mb-2 flex items-center gap-2">
-                    <FaExclamationTriangle />
-                    دلیل رد قبلی:
-                  </div>
-                  <div className="text-xs sm:text-sm text-red-700 leading-relaxed">
-                    {selectedRequest.rejectedReason}
-                  </div>
-                </div>
-              )}
-
-              <div className="p-3 sm:p-4 bg-blue-50 border-2 border-blue-200 rounded-xl">
-                <div className="text-xs sm:text-sm text-blue-700 leading-relaxed">
-                  ℹ️ لطفاً اطلاعات درخواست خود را با توجه به دلیل رد مجدداً
-                  تکمیل کنید. پس از ثبت، وضعیت درخواست به در انتظار بررسی تغییر
-                  خواهد کرد.
+      {/* Response Modal */}
+      {showResponseModal &&
+        selectedRequest &&
+        typeof document !== "undefined" &&
+        createPortal(
+          <div
+            dir="rtl"
+            className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4"
+          >
+            <div className="bg-white rounded-2xl sm:rounded-3xl max-w-xl w-full shadow-2xl">
+              <div className="p-4 sm:p-6 border-b border-gray-100">
+                <div className="flex items-center justify-between">
+                  <h2
+                    className={`text-lg sm:text-xl ${estedadBold.className} text-[#0A1D37]`}
+                  >
+                    پاسخ به رد درخواست
+                  </h2>
+                  <button
+                    onClick={() => setShowResponseModal(false)}
+                    className="p-2 hover:bg-gray-100 rounded-xl transition-colors"
+                  >
+                    <FaTimes className="text-xl text-gray-600" />
+                  </button>
                 </div>
               </div>
-            </div>
 
-            <div className="p-4 sm:p-6 lg:p-8">
-              <ServiceRenderer
-                serviceId={selectedRequest.service._id}
-                onRequestSubmit={handleRequestUpdate}
-              />
+              <div className="p-4 sm:p-6 lg:p-8">
+                {selectedRequest.rejectedReason && (
+                  <div className="mb-4 sm:mb-6 p-4 bg-red-50 border-2 border-red-200 rounded-xl">
+                    <div className="text-sm font-bold text-red-800 mb-2 flex items-center gap-2">
+                      <FaExclamationTriangle />
+                      دلیل رد:
+                    </div>
+                    <div className="text-sm text-red-700 leading-relaxed">
+                      {selectedRequest.rejectedReason}
+                    </div>
+                  </div>
+                )}
+
+                <div>
+                  <label className="block text-sm sm:text-base font-bold text-[#0A1D37] mb-3">
+                    پاسخ شما
+                  </label>
+                  <textarea
+                    value={customerResponse}
+                    onChange={(e) => setCustomerResponse(e.target.value)}
+                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-[#4DBFF0]/30 focus:border-[#4DBFF0] focus:outline-none text-sm sm:text-base resize-none"
+                    rows={5}
+                    placeholder="توضیحات و پاسخ خود را در مورد دلیل رد وارد کنید..."
+                  />
+                </div>
+              </div>
+
+              <div className="p-4 sm:p-6 border-t border-gray-100 flex flex-col-reverse sm:flex-row gap-3 sm:gap-4 justify-end">
+                <button
+                  onClick={() => setShowResponseModal(false)}
+                  className="w-full sm:w-auto px-5 py-3 text-[#0A1D37] border-2 border-gray-200 rounded-xl hover:bg-gray-50 transition-all font-medium"
+                >
+                  لغو
+                </button>
+                <button
+                  onClick={handleSubmitResponse}
+                  disabled={submittingResponse || !customerResponse.trim()}
+                  className="w-full sm:w-auto px-6 sm:px-8 py-3 bg-gradient-to-r from-[#4DBFF0] to-[#0A1D37] text-white rounded-xl hover:shadow-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed font-bold flex items-center justify-center gap-2"
+                >
+                  {submittingResponse ? (
+                    <>
+                      <FaSpinner className="animate-spin" />
+                      <span>در حال ارسال...</span>
+                    </>
+                  ) : (
+                    <>
+                      <FaReply />
+                      <span>ارسال پاسخ</span>
+                    </>
+                  )}
+                </button>
+              </div>
             </div>
-          </div>
-        </div>
-      )}
+          </div>,
+          document.body
+        )}
+
+      {/* Service Renderer Modal for Updating Request */}
+      {showServiceRenderer &&
+        selectedRequest &&
+        typeof document !== "undefined" &&
+        createPortal(
+          <div
+            dir="rtl"
+            className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4"
+          >
+            <div className="bg-white rounded-2xl sm:rounded-3xl max-w-4xl w-full max-h-[90vh] overflow-y-auto shadow-2xl">
+              <div className="sticky top-0 bg-gradient-to-r from-[#4DBFF0]/10 to-[#0A1D37]/10 p-4 sm:p-6 border-b border-gray-100 backdrop-blur-sm z-10">
+                <div className="flex items-center justify-between mb-4">
+                  <div>
+                    <h2
+                      className={`text-lg sm:text-xl lg:text-2xl ${estedadBold.className} text-[#0A1D37]`}
+                    >
+                      ویرایش درخواست {selectedRequest.requestNumber}
+                    </h2>
+                    <p className="text-xs sm:text-sm text-gray-600 mt-1">
+                      سرویس: {selectedRequest.service.title}
+                    </p>
+                  </div>
+                  <button
+                    onClick={() => {
+                      setShowServiceRenderer(false);
+                      setSelectedRequest(null);
+                    }}
+                    className="p-2 hover:bg-white/50 rounded-xl transition-colors"
+                  >
+                    <FaTimes className="text-xl sm:text-2xl text-gray-600" />
+                  </button>
+                </div>
+
+                {/* Show rejection reason */}
+                {selectedRequest.rejectedReason && (
+                  <div className="p-3 sm:p-4 bg-red-50 border-2 border-red-200 rounded-xl mb-3">
+                    <div className="text-xs sm:text-sm font-bold text-red-800 mb-2 flex items-center gap-2">
+                      <FaExclamationTriangle />
+                      دلیل رد قبلی:
+                    </div>
+                    <div className="text-xs sm:text-sm text-red-700 leading-relaxed">
+                      {selectedRequest.rejectedReason}
+                    </div>
+                  </div>
+                )}
+
+                <div className="p-3 sm:p-4 bg-blue-50 border-2 border-blue-200 rounded-xl">
+                  <div className="text-xs sm:text-sm text-blue-700 leading-relaxed">
+                    ℹ️ لطفاً اطلاعات درخواست خود را با توجه به دلیل رد مجدداً
+                    تکمیل کنید. پس از ثبت، وضعیت درخواست به در انتظار بررسی
+                    تغییر خواهد کرد.
+                  </div>
+                </div>
+              </div>
+
+              <div className="p-4 sm:p-6 lg:p-8">
+                <ServiceRenderer
+                  serviceId={selectedRequest.service._id}
+                  onRequestSubmit={handleRequestUpdate}
+                />
+              </div>
+            </div>
+          </div>,
+          document.body
+        )}
     </div>
   );
 }

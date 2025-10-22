@@ -239,36 +239,7 @@ const ServiceWrapper: React.FC<AdminWrapperProps> = ({
     );
   };
 
-  if (!isLoggedIn) {
-    return (
-      <div
-        className={`min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 ${className}`}
-        dir="rtl"
-      >
-        <div className="container mx-auto px-4 py-32">
-          <div className="max-w-md mx-auto text-center">
-            <div className="w-20 h-20 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-6">
-              <FaCog className="text-white text-3xl" />
-            </div>
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">
-              ورود به سیستم لازم است
-            </h2>
-            <p className="text-gray-600 mb-8 leading-relaxed">
-              برای دسترسی به پنل مدیریت، لطفاً وارد حساب کاربری خود شوید
-            </p>
-            <div className="space-y-4">
-              <a
-                href="/auth/sms"
-                className="block w-full px-6 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl font-bold hover:shadow-lg transition-all duration-300 hover:scale-105"
-              >
-                ورود / ثبت نام
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
+  
 
   if (
     !currentUser?.roles.includes("admin") &&

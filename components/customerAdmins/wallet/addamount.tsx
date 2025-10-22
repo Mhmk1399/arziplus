@@ -285,7 +285,7 @@ const AddAmountComponent: React.FC<AddAmountComponentProps> = ({
                   </p>
                   {currentUser.phone && (
                     <p className="text-xs sm:text-sm text-gray-600">
-                      {currentUser.phone}
+                      {currentUser.phone.toLocaleString("fa-IR")}
                     </p>
                   )}
                 </div>
@@ -522,9 +522,9 @@ const AddAmountComponent: React.FC<AddAmountComponentProps> = ({
                             </div>
                           )}
                           <div className="flex-1 min-w-0">
-                            <p className="text-xs sm:text-sm font-medium text-gray-900 truncate">
+                            {/* <p className="text-xs sm:text-sm font-medium text-gray-900 truncate">
                               {transaction.description || transaction.tag}
-                            </p>
+                            </p> */}
                             <p className="text-xs text-gray-500">
                               {new Date(transaction.date).toLocaleDateString(
                                 "fa-IR"
