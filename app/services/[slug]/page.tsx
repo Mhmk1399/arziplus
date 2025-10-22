@@ -976,7 +976,7 @@ export default function ServiceDetailPage() {
 
       // Prepare payment data similar to addamount.tsx
       const paymentData = {
-        amount: finalAmount, // Send in Toman directly
+        amount: finalAmount, // Send in Toman directly - use calculated fee
         description: `پرداخت خدمت: ${service!.title}`,
         serviceId: service!._id,
         orderId: `SERVICE-${Date.now()}`, // Generate unique order ID
@@ -994,6 +994,7 @@ export default function ServiceDetailPage() {
           serviceTitle: service!.title,
           serviceSlug: service!.slug,
           type: "service_payment", // Mark as service payment
+          calculatedAmount: finalAmount, // Store calculated amount
         },
       };
 

@@ -70,6 +70,9 @@ const WalletPaymentSuccessPage: React.FC = () => {
 
     setLoading(false);
 
+    // Send SMS notification
+    sendOrderSMS(orderId);
+
     // Show success message
     showToast.success("پرداخت از کیف پول با موفقیت انجام شد");
   }, [orderId, amount, type, isLoggedIn, userLoading, router]);
@@ -97,6 +100,30 @@ const WalletPaymentSuccessPage: React.FC = () => {
         return "پرداخت سرویس";
       default:
         return "پرداخت";
+    }
+  };
+
+  const sendOrderSMS = async (orderId: string) => {
+    try {
+      const token = localStorage.getItem("authToken");
+      const customerName = currentUser?.firstName && currentUser?.lastName
+        ? `${currentUser.firstName} ${currentUser.lastName}`
+        : currentUser?.firstName || "کاربر";
+
+      await fetch("/api/sms/order-confirmation", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          orderId,
+          customerName,
+        }),
+      });
+    } catch (error) {
+      console.log("Failed to send SMS notification:", error);
+      // Don't show error to user, SMS is not critical
     }
   };
 

@@ -195,6 +195,30 @@ const PaymentSuccessPage: React.FC = () => {
     }
   };
 
+  const sendOrderSMS = async (authority: string, orderId: string) => {
+    try {
+      const token = localStorage.getItem("authToken");
+      const customerName = currentUser?.firstName && currentUser?.lastName
+        ? `${currentUser.firstName} ${currentUser.lastName}`
+        : currentUser?.firstName || "کاربر";
+
+      await fetch("/api/sms/order-confirmation", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          orderId: orderId || authority,
+          customerName,
+        }),
+      });
+    } catch (error) {
+      console.log("Failed to send SMS notification:", error);
+      // Don't show error to user, SMS is not critical
+    }
+  };
+
   const processOrder = async (authority: PaymentDetails | string) => {
     if (orderCreated) return; // Prevent duplicate processing
 
@@ -260,6 +284,9 @@ const PaymentSuccessPage: React.FC = () => {
 
       if (response.ok && data.success) {
         setOrderCreated(data.data);
+
+        // Send SMS notification
+        await sendOrderSMS(authorityValue, data.data.requestNumber || authorityValue);
 
         // Show success message based on order type
         if (data.data.type === "service") {
