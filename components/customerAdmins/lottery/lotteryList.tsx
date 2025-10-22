@@ -320,30 +320,6 @@ const CustomerLotteryList = () => {
     }
   };
 
-  if (!isLoggedIn) {
-    return (
-      <div className="min-h-[60vh] flex items-center justify-center p-4">
-        <div className="text-center space-y-4 bg-white p-8 sm:p-12 rounded-2xl shadow-lg border border-gray-100 max-w-md">
-          <div className="w-20 h-20 bg-gradient-to-r from-[#0A1D37] to-[#4DBFF0] rounded-full flex items-center justify-center mx-auto">
-            <FaUser className="text-white text-3xl" />
-          </div>
-          <h2 className="text-xl sm:text-2xl font-bold text-[#0A1D37]">
-            ورود به سیستم لازم است
-          </h2>
-          <p className="text-gray-600 text-sm sm:text-base">
-            لطفاً برای مشاهده ثبت‌نام‌های خود وارد حساب کاربری شوید
-          </p>
-          <a
-            href="/auth/login"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-[#0A1D37] to-[#4DBFF0] text-white rounded-xl hover:shadow-lg hover:scale-105 transition-all duration-300"
-          >
-            ورود به سیستم
-          </a>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="space-y-6 sm:space-y-8" dir="rtl">
       {/* Stats Cards - Improved Grid */}
@@ -462,77 +438,120 @@ const CustomerLotteryList = () => {
           {lotteries.map((lottery) => (
             <div
               key={lottery._id}
-              className="group bg-white rounded-xl sm:rounded-2xl shadow-md border border-gray-200 p-5 sm:p-6 hover:shadow-xl hover:border-[#0A1D37]/30 transition-all duration-300 hover:-translate-y-1"
+              className="group bg-white rounded-2xl sm:rounded-3xl shadow-sm hover:shadow-2xl border border-gray-100 overflow-hidden transition-all duration-300 hover:-translate-y-1"
             >
-              <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 sm:gap-6">
-                {/* Left Section - Info */}
-                <div className="flex items-start gap-4 flex-1">
-                  <div className="flex-shrink-0 w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-r from-[#0A1D37] to-[#4DBFF0] rounded-xl sm:rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
-                    <FaTicketAlt className="text-white text-xl sm:text-2xl" />
-                  </div>
-
-                  <div className="flex-1 space-y-3">
-                    {/* Title and Status */}
-                    <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3">
-                      <h3 className="text-base sm:text-lg font-bold text-[#0A1D37]">
-                        ثبت‌نام لاتاری گرین کارت
+              <div className="bg-gradient-to-r from-[#0A1D37]/5 to-[#4DBFF0]/5 px-5 sm:px-6 py-4 border-b border-gray-100">
+                <div className="flex items-center justify-between gap-4">
+                  <div className="flex items-center gap-3">
+                  
+                    <div>
+                      <h3 className="text-xs sm:text-lg font-bold text-[#0A1D37] group-hover:text-[#4DBFF0] transition-colors">
+                        ثبت نام لاتاری گرین کارت
                       </h3>
-                      <span
-                        className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-xs sm:text-sm font-semibold rounded-full border w-fit ${getStatusColor(
-                          lottery.status
-                        )}`}
-                      >
-                        {getStatusIcon(lottery.status)}
-                        {getStatusText(lottery.status)}
-                      </span>
-                    </div>
-
-                    {/* Meta Info */}
-                    <div className="flex flex-wrap items-center gap-3 sm:gap-6 text-xs sm:text-sm text-gray-600">
-                      <div className="flex items-center gap-2">
-                        <FaCalendarAlt className="text-gray-400 text-sm" />
-                        <span className="font-medium">
-                          {new Date(lottery.submittedAt).toLocaleDateString(
-                            "fa-IR"
-                          )}
-                        </span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        {lottery.famillyInformations[0]?.maridgeState ? (
-                          <FaHeart className="text-pink-500 text-sm" />
-                        ) : (
-                          <FaUser className="text-gray-400 text-sm" />
+                      <p className="text-xs text-gray-500 mt-0.5">
+                        {new Date(lottery.submittedAt).toLocaleDateString(
+                          "fa-IR"
                         )}
-                        <span>
-                          {lottery.famillyInformations[0]?.maridgeState
-                            ? "متأهل"
-                            : "مجرد"}
-                        </span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <FaChild className="text-blue-500 text-sm" />
-                        <span>
-                          {lottery.famillyInformations[0]?.numberOfChildren ||
-                            0}{" "}
-                          فرزند
-                        </span>
-                      </div>
+                      </p>
+                    </div>
+                  </div>
+                  <span
+                    className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border text-nowrap text-xs sm:text-sm font-semibold ${getStatusColor(
+                      lottery.status
+                    )}`}
+                  >
+                    {getStatusIcon(lottery.status)}
+                    {getStatusText(lottery.status)}
+                  </span>
+                </div>
+              </div>
+
+              <div className="p-5 sm:p-6">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-5">
+                  <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-xl">
+                    <FaHeart
+                      className={`text-lg flex-shrink-0 ${
+                        lottery.famillyInformations[0]?.maridgeState
+                          ? "text-pink-500"
+                          : "text-gray-400"
+                      }`}
+                    />
+                    <div className="flex-1 min-w-0">
+                      <p className="text-xs text-gray-500 mb-0.5">وضعیت تأهل</p>
+                      <p className="font-semibold text-[#0A1D37] text-sm">
+                        {lottery.famillyInformations[0]?.maridgeState
+                          ? "متأهل"
+                          : "مجرد"}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-xl">
+                    <FaChild className="text-blue-500 text-lg flex-shrink-0" />
+                    <div className="flex-1 min-w-0">
+                      <p className="text-xs text-gray-500 mb-0.5">
+                        تعداد فرزندان
+                      </p>
+                      <p className="font-semibold text-[#0A1D37] text-sm">
+                        {lottery.famillyInformations[0]?.numberOfChildren || 0}{" "}
+                        نفر
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-xl">
+                    <FaUser className="text-[#4DBFF0] text-lg flex-shrink-0" />
+                    <div className="flex-1 min-w-0">
+                      <p className="text-xs text-gray-500 mb-0.5">
+                        ثبت نام دو نفره
+                      </p>
+                      <p className="font-semibold text-[#0A1D37] text-sm">
+                        {lottery.famillyInformations[0]?.towPeopleRegistration
+                          ? "بله"
+                          : "خیر"}
+                      </p>
                     </div>
                   </div>
                 </div>
 
-                {/* Right Section - Action */}
-                <div className="flex items-center gap-3">
+                {lottery.status === "rejected" && lottery.rejectionReason && (
+                  <div className="p-4 bg-red-50 border-2 border-red-200 rounded-xl mb-4">
+                    <div className="flex items-start gap-3">
+                      <FaExclamationTriangle className="text-red-500 text-lg flex-shrink-0 mt-0.5" />
+                      <div className="flex-1">
+                        <p className="font-bold text-red-900 text-sm mb-2">
+                          دلیل رد
+                        </p>
+                        <p className="text-red-700 text-sm leading-relaxed">
+                          {lottery.rejectionReason}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {lottery.adminNotes && (
+                  <div className="p-4 bg-blue-50 border-2 border-blue-200 rounded-xl mb-4">
+                    <div className="flex items-start gap-3">
+                      <FaIdCard className="text-blue-500 text-lg flex-shrink-0 mt-0.5" />
+                      <div className="flex-1">
+                        <p className="font-bold text-blue-900 text-sm mb-2">
+                          یادداشت مدیر
+                        </p>
+                        <p className="text-blue-700 text-sm leading-relaxed">
+                          {lottery.adminNotes}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                <div className="flex gap-2">
                   <button
                     onClick={() => openLotteryDetails(lottery)}
-                    className="flex items-center gap-2 px-5 py-2.5 text-[#4DBFF0] hover:text-white bg-[#4DBFF0]/10 hover:bg-gradient-to-r hover:from-[#0A1D37] hover:to-[#4DBFF0] rounded-xl transition-all duration-300 font-medium text-sm border border-[#4DBFF0]/20 hover:border-transparent hover:shadow-lg"
+                    className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-r from-[#0A1D37] to-[#4DBFF0] text-white font-bold rounded-xl hover:shadow-xl hover:scale-[1.02] active:scale-95 transition-all duration-300 text-sm"
                   >
                     <FaEye className="text-base" />
-                    <span className="hidden sm:inline">مشاهده جزئیات</span>
-                    <span className="sm:hidden">جزئیات</span>
+                    مشاهده جزئیات
                   </button>
-
-                  {/* Edit Button - Only show for pending or in_review status */}
                   {(lottery.status === "pending" ||
                     lottery.status === "in_review") && (
                     <button
@@ -540,49 +559,14 @@ const CustomerLotteryList = () => {
                         openLotteryDetails(lottery);
                         startEdit(lottery);
                       }}
-                      className="flex items-center gap-2 px-5 py-2.5 text-[#0A1D37] hover:text-white bg-[#0A1D37]/10 hover:bg-gradient-to-r hover:from-[#0A1D37] hover:to-[#4DBFF0] rounded-xl transition-all duration-300 font-medium text-sm  hover:border-transparent hover:shadow-lg"
+                      className="flex items-center justify-center gap-2 px-4 py-3 bg-green-600 text-white font-bold rounded-xl hover:bg-green-700 hover:shadow-xl hover:scale-[1.02] active:scale-95 transition-all duration-300 text-sm"
                     >
                       <FaEdit className="text-base" />
-                      <span className="hidden sm:inline">ویرایش</span>
-                      <span className="sm:hidden">ویرایش</span>
+                      ویرایش
                     </button>
                   )}
                 </div>
               </div>
-
-              {/* Rejection Reason */}
-              {lottery.status === "rejected" && lottery.rejectionReason && (
-                <div className="mt-5 p-4 bg-red-50 border-r-4 border-red-500 rounded-lg animate-in slide-in-from-top duration-300">
-                  <div className="flex items-start gap-3">
-                    <FaExclamationTriangle className="text-red-500 text-lg flex-shrink-0 mt-0.5" />
-                    <div className="flex-1">
-                      <p className="text-red-700 font-semibold text-sm mb-1">
-                        دلیل رد:
-                      </p>
-                      <p className="text-red-600 text-sm leading-relaxed">
-                        {lottery.rejectionReason}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {/* Admin Notes */}
-              {lottery.adminNotes && (
-                <div className="mt-5 p-4 bg-blue-50 border-r-4 border-blue-500 rounded-lg animate-in slide-in-from-top duration-300">
-                  <div className="flex items-start gap-3">
-                    <FaIdCard className="text-blue-500 text-lg flex-shrink-0 mt-0.5" />
-                    <div className="flex-1">
-                      <p className="text-blue-700 font-semibold text-sm mb-1">
-                        یادداشت مدیر:
-                      </p>
-                      <p className="text-blue-600 text-sm leading-relaxed">
-                        {lottery.adminNotes}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              )}
             </div>
           ))}
         </div>

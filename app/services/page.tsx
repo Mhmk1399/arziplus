@@ -70,16 +70,16 @@ const groupServicesByCategory = (services: Service[]) => {
 };
 
 // Service Card Component
-const ServiceCard = ({ service }: { service: Service }) => {
+const ServiceCard = ({ service }: { service: Service }) => {  
   const [imageError, setImageError] = useState(false);
 
   console.log("Service data:", service);
   console.log("Service image URL:", service.image);
 
   return (
-    <div className="group relative overflow-hidden  w-60 md:w-full rounded-2xl sm:rounded-3xl  hover:shadow-lg transition-all duration-500  border border-[#0A1D37]/40 ">
+    <div className="group relative overflow-hidden  w-54 md:w-54 md:h-[280px] rounded-2xl sm:rounded-3xl  hover:shadow-lg transition-all duration-500  border border-[#0A1D37]/20 ">
       {/* Service Image */}
-      <div className="relative h-48 sm:h-56 lg:h-64 w-full overflow-hidden">
+      <div className="relative h-36   lg:h-40 w-full overflow-hidden">
         {!imageError && service.image ? (
           <Image
             src={service.image}
@@ -140,9 +140,9 @@ const ServiceCard = ({ service }: { service: Service }) => {
       </div>
 
       {/* Service Title Below Image */}
-      <div className="p-1 mt-2 lg:p-2">
+      <div className=" mt-2  ">
         <h3
-          className={`text-[#0A1D37] font-bold text-center text-base   lg:text-lg   leading-relaxed ${estedadBold.className}`}
+          className={`text-[#0A1D37] font-bold text-center text-sm   lg:text-base   leading-relaxed ${estedadBold.className}`}
         >
           {service.title}
         </h3>
@@ -157,10 +157,10 @@ const ServiceCard = ({ service }: { service: Service }) => {
       </div>
 
       {/* CTA Button */}
-      <div className="p-2 lg:p-4  ">
+      <div className="p-4 lg:p-5   ">
         <Link href={`/services/${service.slug}`}>
-          <button className="w-full flex items-center cursor-pointer shadow-[10px_8px_30px_rgb(0,0,0,0.4)] hover:shadow-[0_20px_60px_rgb(0,0,0,0.3)]  justify-center gap-2 bg-gradient-to-r from-[#0A1D37] to-[#0A1D37]/90 hover:from-[#0A1D37]/90 hover:to-[#0A1D37] text-white font-bold py-3 sm:py-3.5 lg:py-4 px-4 sm:px-5 lg:px-6 rounded-xl sm:rounded-2xl transition-all duration-300   active:scale-95">
-            <span className="text-sm sm:text-base">ثبت درخواست</span>
+          <button className="w-full flex items-center cursor-pointer shadow-[10px_8px_30px_rgb(0,0,0,0.4)] hover:shadow-[0_20px_60px_rgb(0,0,0,0.3)]  justify-center gap-2 bg-gradient-to-r from-[#0A1D37] to-[#0A1D37]/90 hover:from-[#0A1D37]/90 hover:to-[#0A1D37] text-white font-bold py-3   lg:py-3 px-4 sm:px-5 lg:px-6 rounded-xl sm:rounded-2xl transition-all duration-300   active:scale-95">
+            <span className="text-sm sm:text-sm">ثبت درخواست</span>
             <FaArrowLeft className="text-xs sm:text-sm" />
           </button>
         </Link>
@@ -276,21 +276,20 @@ const CategorySection = ({
   }, [services.length]);
 
   return (
-    <section className="mb-12 sm:mb-16 lg:mb-20">
+    <section className="mb-8 sm:mb-12 lg:mb-16">
       {/* Category Header */}
       <div className="mb-6 sm:mb-8 lg:mb-10 px-2">
         <div className="flex items-center justify-between flex-wrap gap-3">
           <div>
             <h2
-              className={`text-2xl sm:text-3xl lg:text-4xl font-bold text-[#0A1D37] mb-2 sm:mb-3 ${estedadBold.className}`}
+              className={`text-xl  lg:text-2xl font-bold text-[#0A1D37] mb-2 sm:mb-3 ${estedadBold.className}`}
             >
               {category}
             </h2>
             <div className="w-16 sm:w-20 lg:w-24 h-1 bg-gradient-to-l from-[#0A1D37] to-[#4DBFF0] rounded-full" />
           </div>
           <div className="flex items-center gap-2 bg-gradient-to-r from-[#0A1D37]/10 to-[#4DBFF0]/10 px-3 sm:px-4 py-2 rounded-xl">
-            <FaStar className="text-[#0A1D37] text-sm sm:text-base" />
-            <span className="text-xs sm:text-sm font-bold text-[#0A1D37]">
+             <span className="text-xs sm:text-sm font-bold text-[#0A1D37]">
               {services.length} خدمت
             </span>
           </div>
@@ -326,7 +325,7 @@ const CategorySection = ({
         {/* Scrollable Services Grid */}
         <div
           ref={scrollContainerRef}
-          className="flex gap-4 sm:gap-5 lg:gap-6 overflow-x-auto scrollbar-hide pb-4 cursor-grab active:cursor-grabbing"
+          className="flex gap-4 sm:gap-5 lg:gap-6 overflow-x-auto scrollbar-hide   cursor-grab active:cursor-grabbing"
           style={{
             scrollbarWidth: "none",
             msOverflowStyle: "none",
@@ -346,7 +345,7 @@ const CategorySection = ({
               className="flex-shrink-0 w-full sm:w-[calc(50%-10px)] md:w-[calc(33.333%-14px)] lg:w-[calc(25%-18px)]"
               style={{
                 minWidth: "280px",
-                maxWidth: "320px",
+                maxWidth: "200px",
                 userSelect: isDragging ? "none" : "auto",
               }}
             >
@@ -445,7 +444,7 @@ export default function ServicesPage() {
 
   return (
     <div
-      className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50/30 py-20 sm:py-24 lg:py-32"
+      className="min-h-screen  py-8"
       dir="rtl"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

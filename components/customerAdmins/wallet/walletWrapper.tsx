@@ -151,7 +151,7 @@ const WalletWrapper: React.FC<WalletWrapperProps> = ({
   const statsCards = [
     {
       title: "موجودی فعلی",
-      value: walletStats.currentBalance.toLocaleString(),
+      value: walletStats.currentBalance.toLocaleString("fa-IR"),
       suffix: "تومان",
       icon: <FaWallet className="text-xl sm:text-2xl" />,
       bgColor: "bg-gradient-to-br from-[#0A1D37]/5 to-[#0A1D37]/10",
@@ -161,7 +161,7 @@ const WalletWrapper: React.FC<WalletWrapperProps> = ({
     },
     {
       title: "کل واریزی‌ها",
-      value: walletStats.totalIncomes.toLocaleString(),
+      value: walletStats.totalIncomes.toLocaleString("fa-IR"),
       suffix: "تومان",
       icon: <FaArrowUp className="text-xl sm:text-2xl" />,
       bgColor: "bg-gradient-to-br from-green-50 to-green-100/50",
@@ -171,7 +171,7 @@ const WalletWrapper: React.FC<WalletWrapperProps> = ({
     },
     {
       title: "کل برداشت‌ها",
-      value: walletStats.totalOutcomes.toLocaleString(),
+      value: walletStats.totalOutcomes.toLocaleString("fa-IR"),
       suffix: "تومان",
       icon: <FaArrowDown className="text-xl sm:text-2xl" />,
       bgColor: "bg-gradient-to-br from-red-50 to-red-100/50",
@@ -196,8 +196,6 @@ const WalletWrapper: React.FC<WalletWrapperProps> = ({
   ) => {
     setActiveTab(tabId);
     fetchWalletData(); // Refresh data when switching tabs
-
-    
   };
 
   // Stats cards section
@@ -276,37 +274,6 @@ const WalletWrapper: React.FC<WalletWrapperProps> = ({
               در حال بارگذاری...
             </p>
             <p className="text-xs sm:text-sm text-gray-600">لطفاً صبر کنید</p>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  if (!isLoggedIn) {
-    return (
-      <div
-        className={`min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 ${className}`}
-        dir="rtl"
-      >
-        <div className="container mx-auto px-4 py-16 sm:py-24 lg:py-32">
-          <div className="max-w-md mx-auto text-center">
-            <div className="w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24 bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl sm:rounded-3xl flex items-center justify-center mx-auto mb-6 sm:mb-8 shadow-xl animate-pulse">
-              <FaUser className="text-white text-2xl sm:text-3xl lg:text-4xl" />
-            </div>
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-3 sm:mb-4">
-              ورود به سیستم لازم است
-            </h2>
-            <p className="text-sm sm:text-base lg:text-lg text-gray-600 mb-6 sm:mb-8 leading-relaxed px-4">
-              برای دسترسی به کیف پول، لطفاً وارد حساب کاربری خود شوید
-            </p>
-            <div className="space-y-4 px-4">
-              <a
-                href="/auth/sms"
-                className="block w-full px-6 py-3 sm:py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl sm:rounded-2xl font-bold hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-300"
-              >
-                ورود / ثبت نام
-              </a>
-            </div>
           </div>
         </div>
       </div>
@@ -397,8 +364,6 @@ const WalletWrapper: React.FC<WalletWrapperProps> = ({
                     {tab.description}
                   </div>
                 </div>
-
-                
               </button>
             ))}
           </div>
