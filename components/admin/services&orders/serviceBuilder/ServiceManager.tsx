@@ -478,7 +478,7 @@ const AdminServiceList: React.FC<{
                 تایید حذف
               </h3>
               <p className="text-[#0A1D37]/70 mb-6">
-                آیا از حذف سرویس "{deleteModal.service?.title}" اطمینان دارید؟
+                آیا از حذف سرویس {deleteModal.service?.title} اطمینان دارید؟
               </p>
               <div className="flex gap-3 justify-end">
                 <button

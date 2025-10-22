@@ -33,9 +33,6 @@ export async function GET(request: NextRequest) {
     const skip = (page - 1) * limit;
     const requests = await Request
       .find(query)
-      .populate('service', 'title icon slug fee')
-      .populate('assignedTo', 'nationalCredentials.firstName nationalCredentials.lastName')
-      .populate('adminNotes.addedBy', 'nationalCredentials.firstName nationalCredentials.lastName')
       .sort({ createdAt: -1 })
       .skip(skip)
       .limit(limit);
