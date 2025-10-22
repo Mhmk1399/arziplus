@@ -285,7 +285,125 @@ export default function CustomerRequestsTable({
     return "کارشناس";
   };
 
-  
+  const renderFormData = (
+    data: Record<string, any> | undefined,
+    service: Request["service"]
+  ) => {
+    if (!service?.fields || service.fields.length === 0) {
+      return (
+        <div className="text-center py-8">
+          <div className="text-4xl mb-2">📝</div>
+          <p className="text-[#0A1D37]/60">هیچ فیلدی برای نمایش وجود ندارد</p>
+        </div>
+      );
+    }
+
+    return service.fields.map((fieldDef) => {
+      const value = data?.[fieldDef.name];
+      const displayLabel = fieldDef.label;
+      const fieldType = fieldDef.type;
+
+      const displayValue = () => {
+        if (value === null || value === undefined || value === "") {
+          return <span className="text-[#0A1D37]/40 italic">خالی</span>;
+        }
+
+        if (fieldType === "select" && fieldDef?.options) {
+          const selectedOption = fieldDef.options.find(
+            (opt: any) => opt.value === value || opt.key === value
+          );
+          if (selectedOption) {
+            return (
+              <span className="px-3 py-1.5 bg-[#4DBFF0]/10 text-[#4DBFF0] rounded-md text-sm font-medium">
+                {selectedOption.key}
+              </span>
+            );
+          }
+        }
+
+        if (Array.isArray(value)) {
+          return (
+            <div className="flex flex-wrap gap-2">
+              {value.map((item, idx) => (
+                <span
+                  key={idx}
+                  className="px-2 py-1 bg-[#4DBFF0]/10 text-[#4DBFF0] rounded-md text-sm"
+                >
+                  {String(item)}
+                </span>
+              ))}
+            </div>
+          );
+        }
+
+        if (typeof value === "boolean") {
+          return (
+            <span
+              className={`px-2 py-1 rounded-md text-sm ${
+                value
+                  ? "bg-green-100 text-green-700"
+                  : "bg-red-100 text-red-700"
+              }`}
+            >
+              {value ? "بله" : "خیر"}
+            </span>
+          );
+        }
+
+        if (
+          typeof value === "string" &&
+          (value.startsWith("http") ||
+            value.includes("amazonaws.com") ||
+            value.includes("storage") ||
+            value.includes("liara.space"))
+        ) {
+          const isImage =
+            value.match(/\.(jpg|jpeg|png|gif|webp)$/i) ||
+            value.includes("image");
+          return (
+            <div className="space-y-2">
+              <a
+                href={value}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-3 py-2 bg-[#4DBFF0]/10 text-[#4DBFF0] rounded-lg hover:bg-[#4DBFF0]/20 transition-colors text-sm"
+              >
+                <span>{isImage ? "🖼️" : "📁"}</span>
+                {isImage ? "مشاهده تصویر" : "مشاهده فایل"}
+              </a>
+              {isImage && (
+                <img
+                  src={value}
+                  alt="پیشنمایش"
+                  className="max-w-xs h-auto rounded-lg border border-[#4DBFF0]/30 shadow-sm mt-2"
+                  onError={(e) => {
+                    const img = e.target as HTMLImageElement;
+                    img.style.display = "none";
+                  }}
+                />
+              )}
+            </div>
+          );
+        }
+
+        return <span className="text-[#0A1D37]">{String(value)}</span>;
+      };
+
+      return (
+        <div key={fieldDef.name} className="p-3 sm:p-4 bg-gray-50 rounded-xl">
+          <label className="text-xs sm:text-sm font-medium text-gray-600 mb-2 block">
+            {displayLabel}
+            {fieldDef.required && (
+              <span className="text-red-500 text-xs mr-1">*</span>
+            )}
+          </label>
+          <div className="text-sm sm:text-base text-[#0A1D37]">
+            {displayValue()}
+          </div>
+        </div>
+      );
+    });
+  };
 
   return (
     <div
@@ -636,7 +754,7 @@ export default function CustomerRequestsTable({
                   <h2
                     className={`text-lg sm:text-xl lg:text-2xl ${estedadBold.className} text-[#0A1D37]`}
                   >
-                    جزئیات درخواست {selectedRequest.requestNumber}
+                    جزئیات درخواست {selectedRequest.service.title}
                   </h2>
                   <button
                     onClick={() => setShowDetailModal(false)}
@@ -693,6 +811,24 @@ export default function CustomerRequestsTable({
                     </div>
                   </div>
                 </div>
+
+                {/* User Submitted Form Data */}
+                {selectedRequest.data &&
+                  Object.keys(selectedRequest.data).length > 0 && (
+                    <div>
+                      <h3
+                        className={`text-base sm:text-lg ${estedadBold.className} text-[#0A1D37] mb-3 sm:mb-4`}
+                      >
+                        اطلاعات ارسالی
+                      </h3>
+                      <div className="grid grid-cols-1 gap-3 sm:gap-4">
+                        {renderFormData(
+                          selectedRequest.data,
+                          selectedRequest.service
+                        )}
+                      </div>
+                    </div>
+                  )}
 
                 {selectedRequest.rejectedReason && (
                   <div className="p-4 sm:p-5 bg-red-50 border-2 border-red-200 rounded-xl sm:rounded-2xl">

@@ -33,6 +33,7 @@ export async function GET(request: NextRequest) {
     const skip = (page - 1) * limit;
     const requests = await Request
       .find(query)
+      .populate('service' )
       .sort({ createdAt: -1 })
       .skip(skip)
       .limit(limit);
