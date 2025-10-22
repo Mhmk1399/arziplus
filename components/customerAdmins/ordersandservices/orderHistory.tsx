@@ -286,7 +286,7 @@ export default function CustomerRequestsTable({
   };
 
   const renderFormData = (
-    data: Record<string, any> | undefined,
+    data: Record<string, FormFieldValue> | undefined,
     service: Request["service"]
   ) => {
     if (!service?.fields || service.fields.length === 0) {
@@ -310,7 +310,8 @@ export default function CustomerRequestsTable({
 
         if (fieldType === "select" && fieldDef?.options) {
           const selectedOption = fieldDef.options.find(
-            (opt: any) => opt.value === value || opt.key === value
+            (opt: { value: string; key: string }) =>
+              opt.value === value || opt.key === value
           );
           if (selectedOption) {
             return (
@@ -508,23 +509,7 @@ export default function CustomerRequestsTable({
                 >
                   {/* Header */}
                   <div className="bg-gradient-to-r from-[#4DBFF0]/10 to-[#0A1D37]/10 px-4 sm:px-5 lg:px-6 py-4 sm:py-5 border-b border-gray-100">
-                    <div className="flex items-start justify-between gap-3 mb-3">
-                      <div className="flex items-center gap-2 sm:gap-3 flex-1 min-w-0">
-                        {request.service.icon && (
-                          <span className="text-xl sm:text-2xl flex-shrink-0">
-                            {request.service.icon}
-                          </span>
-                        )}
-                        <div className="flex-1 min-w-0">
-                          <h3 className="font-bold text-[#0A1D37] text-sm sm:text-base truncate">
-                            {request.service.title}
-                          </h3>
-                          <p className="text-xs sm:text-sm text-gray-600 font-mono">
-                            {request.requestNumber}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
+                    <div className="flex items-start justify-between gap-3 mb-3"></div>
                     <span
                       className={`inline-flex items-center px-3 py-1.5 rounded-lg text-xs sm:text-sm font-bold border ${
                         statusColors[

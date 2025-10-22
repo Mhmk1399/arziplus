@@ -159,7 +159,7 @@ const HozoriMultiStepForm: React.FC = () => {
   const handleNext = () => {
     if (validateStep(currentStep)) {
       setCurrentStep(Math.min(steps.length - 1, currentStep + 1));
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      window.scrollTo({ top: 0, behavior: "smooth" });
     } else {
       showToast.error("لطفاً تمامی فیلدهای الزامی را تکمیل کنید");
     }
@@ -167,7 +167,7 @@ const HozoriMultiStepForm: React.FC = () => {
 
   const handlePrevious = () => {
     setCurrentStep(Math.max(0, currentStep - 1));
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   // Fetch wallet balance
@@ -184,7 +184,9 @@ const HozoriMultiStepForm: React.FC = () => {
 
       if (response.ok) {
         const data = await response.json();
-        setWalletBalance(data.balance || 0);
+        console.log(data,"wallet data");
+        // Access the correct property: data.stats.currentBalance or data.wallet.currentBalance
+        setWalletBalance(data.stats?.currentBalance || data.wallet?.currentBalance || 0);
       }
     } catch (error) {
       console.log("Error fetching wallet balance:", error);
@@ -275,7 +277,7 @@ const HozoriMultiStepForm: React.FC = () => {
       }
 
       const token = localStorage.getItem("authToken");
-      
+
       // Convert Persian date for hozori data
       const convertPersianToDate = (dateObj: {
         month: string;
@@ -329,15 +331,19 @@ const HozoriMultiStepForm: React.FC = () => {
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
-          action: "withdraw",
+          action: "add_outcome",
           amount: hozoriFee,
           description: `رزرو وقت حضوری - ${formData.name} ${formData.lastname}`,
+          tag: "hozori_payment",
         }),
       });
 
       if (!walletResponse.ok) {
-        throw new Error("خطا در کسر از کیف پول");
+        const errorData = await walletResponse.json();
+        throw new Error(errorData.error || "خطا در کسر از کیف پول");
       }
+
+      const orderId = `HOZORI-WALLET-${Date.now()}`;
 
       showToast.success(
         `رزرو وقت حضوری با موفقیت انجام شد. مبلغ ${hozoriFee.toLocaleString()} تومان از کیف پول کسر گردید.`
@@ -346,10 +352,12 @@ const HozoriMultiStepForm: React.FC = () => {
       // Update wallet balance
       setWalletBalance((prev) => prev - hozoriFee);
 
-      // Redirect to dashboard after successful submission
+      // Redirect to wallet success page
       setTimeout(() => {
-        router.push("/dashboard");
-      }, 2000);
+        router.push(
+          `/payment/wallet-success?orderId=${orderId}&amount=${hozoriFee}&type=hozori`
+        );
+      }, 1500);
     } catch (error) {
       console.log("Wallet payment error:", error);
       showToast.error("خطا در پرداخت از کیف پول");
@@ -431,8 +439,6 @@ const HozoriMultiStepForm: React.FC = () => {
       setIsSubmitting(false);
     }
   };
-
-  
 
   const updateFormData = (
     field: keyof HozoriFormData,

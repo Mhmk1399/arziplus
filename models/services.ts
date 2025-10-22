@@ -7,7 +7,7 @@ const FieldDefinitionSchema = new mongoose.Schema({
   type: { type: String, default: "string" }, // Can be string, number, etc.
   pricecondition: {
     type: String,
-    enum: ["neverUsed", "accountFee", "currency", "number"],
+    enum: ["neverUsed", "accountFee", "currency", "number",""],
   },
   required: { type: Boolean, default: false },
   placeholder: { type: String }, // Field placeholder text

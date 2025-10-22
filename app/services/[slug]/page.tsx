@@ -349,7 +349,8 @@ export default function ServiceDetailPage() {
 
       if (response.ok) {
         const data = await response.json();
-        setWalletBalance(data.balance || 0);
+        // Access the correct property: data.stats.currentBalance or data.wallet.currentBalance
+        setWalletBalance(data.stats?.currentBalance || data.wallet?.currentBalance || 0);
       }
     } catch (error) {
       console.log("Error fetching wallet balance:", error);
@@ -801,7 +802,30 @@ export default function ServiceDetailPage() {
       }
 
       // Create request with wallet payment
-      await createServiceRequest("wallet", finalAmount);
+      const result = await createServiceRequest("wallet", finalAmount);
+
+      // Deduct from wallet after successful service request
+      const token = localStorage.getItem("authToken");
+      const walletResponse = await fetch("/api/wallet", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          action: "add_outcome",
+          amount: finalAmount,
+          description: `پرداخت خدمت: ${service!.title}`,
+          tag: "service_payment",
+        }),
+      });
+
+      if (!walletResponse.ok) {
+        const errorData = await walletResponse.json();
+        throw new Error(errorData.error || "خطا در کسر از کیف پول");
+      }
+
+      const orderId = `SERVICE-WALLET-${Date.now()}`;
 
       showToast.success(
         `درخواست با پرداخت کیف پول ثبت شد. مبلغ ${finalAmount.toLocaleString()} تومان از کیف پول کسر گردید.`
@@ -810,6 +834,11 @@ export default function ServiceDetailPage() {
       // Update wallet balance
       setWalletBalance((prev) => prev - finalAmount);
       setFormData({});
+
+      // Redirect to wallet success page
+      setTimeout(() => {
+        window.location.href = `/payment/wallet-success?orderId=${orderId}&amount=${finalAmount}&type=service`;
+      }, 1500);
     } catch (error) {
       throw error;
     }

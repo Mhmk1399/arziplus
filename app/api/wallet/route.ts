@@ -85,7 +85,7 @@ interface GetWalletResponse {
 }
 
 interface PostWalletRequest {
-  action: "add_income" | "withdraw";
+  action: "add_income" | "withdraw" | "add_outcome";
   amount: number;
   description?: string;
   tag?: string;
@@ -281,7 +281,7 @@ export async function POST(
       return NextResponse.json(
         {
           success: false,
-          error: "Action is required (add_income or withdraw)",
+          error: "Action is required (add_income, withdraw, or add_outcome)",
         },
         { status: 400 }
       );
@@ -327,6 +327,60 @@ export async function POST(
       const response: PostWalletResponse = {
         success: true,
         message: "Income added successfully (pending verification)",
+        wallet: userWallet.toObject(),
+      };
+
+      return NextResponse.json(response);
+    } else if (action === "add_outcome") {
+      if (!amount || amount <= 0) {
+        return NextResponse.json(
+          { success: false, error: "Valid amount is required" },
+          { status: 400 }
+        );
+      }
+
+      // Calculate current balance
+      const totalIncomes = userWallet.inComes
+        .filter((income: income) => income.status === "verified")
+        .reduce((sum: number, income: income) => sum + income.amount, 0);
+
+      const totalOutcomes = userWallet.outComes
+        .filter((outcome: outcome) => outcome.status === "verified")
+        .reduce((sum: number, outcome: outcome) => sum + outcome.amount, 0);
+
+      const currentBalance = totalIncomes - totalOutcomes;
+
+      if (amount > currentBalance) {
+        return NextResponse.json(
+          { success: false, error: "Insufficient balance" },
+          { status: 400 }
+        );
+      }
+
+      // Add outcome (verified immediately for wallet payments)
+      const newOutcome: outcome = {
+        amount,
+        tag: tag || "wallet_payment",
+        description: description || "Wallet payment",
+        date: new Date(),
+        status: "verified",
+        verifiedAt: new Date(),
+      };
+      
+      userWallet.outComes.push(newOutcome);
+
+      // Update balance
+      const newBalance = currentBalance - amount;
+      userWallet.balance.push({
+        amount: newBalance,
+        updatedAt: new Date(),
+      });
+
+      await userWallet.save();
+
+      const response: PostWalletResponse = {
+        success: true,
+        message: "Payment deducted from wallet successfully",
         wallet: userWallet.toObject(),
       };
 
@@ -377,7 +431,7 @@ export async function POST(
       return NextResponse.json(
         {
           success: false,
-          error: "Invalid action. Use 'add_income' or 'withdraw'",
+          error: "Invalid action. Use 'add_income', 'withdraw', or 'add_outcome'",
         },
         { status: 400 }
       );

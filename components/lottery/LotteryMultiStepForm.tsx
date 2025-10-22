@@ -434,7 +434,8 @@ const LotteryMultiStepForm: React.FC = () => {
 
       if (response.ok) {
         const data = await response.json();
-        setWalletBalance(data.balance || 0);
+        // Access the correct property: data.stats.currentBalance or data.wallet.currentBalance
+        setWalletBalance(data.stats?.currentBalance || data.wallet?.currentBalance || 0);
       }
     } catch (error) {
       console.log("Error fetching wallet balance:", error);
@@ -533,6 +534,29 @@ const LotteryMultiStepForm: React.FC = () => {
       // Submit lottery registration with wallet payment
       await submitLotteryRegistration("wallet", lotteryFee);
 
+      // Deduct from wallet after successful registration
+      const token = localStorage.getItem("authToken");
+      const walletResponse = await fetch("/api/wallet", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          action: "add_outcome",
+          amount: lotteryFee,
+          description: `ثبت‌نام در قرعه‌کشی`,
+          tag: "lottery_payment",
+        }),
+      });
+
+      if (!walletResponse.ok) {
+        const errorData = await walletResponse.json();
+        throw new Error(errorData.error || "خطا در کسر از کیف پول");
+      }
+
+      const orderId = `LOTTERY-WALLET-${Date.now()}`;
+
       showToast.success(
         `ثبت‌نام در قرعه‌کشی با موفقیت انجام شد. مبلغ ${lotteryFee.toLocaleString()} تومان از کیف پول کسر گردید.`
       );
@@ -540,10 +564,12 @@ const LotteryMultiStepForm: React.FC = () => {
       // Update wallet balance
       setWalletBalance((prev) => prev - lotteryFee);
 
-      // Redirect to dashboard after successful submission
+      // Redirect to wallet success page
       setTimeout(() => {
-        router.push("/dashboard");
-      }, 2000); // Wait 2 seconds to show success message
+        router.push(
+          `/payment/wallet-success?orderId=${orderId}&amount=${lotteryFee}&type=lottery`
+        );
+      }, 1500);
     } catch (error) {
       console.log("Wallet payment error:", error);
       showToast.error("خطا در پرداخت از کیف پول");

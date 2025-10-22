@@ -7,6 +7,7 @@ import {
   FaCheck,
 } from "react-icons/fa";
 import { estedadBold } from "@/next-persian-fonts/estedad/index";
+import wallet from "@/models/wallet";
 
 interface PaymentMethodSelectorProps {
   amount: number;
@@ -18,7 +19,7 @@ interface PaymentMethodSelectorProps {
 
 const PaymentMethodSelector: React.FC<PaymentMethodSelectorProps> = ({
   amount,
-  walletBalance = 0,
+  walletBalance,
   onPaymentMethodSelect,
   isWalletEnabled = false,
   className = "",
@@ -26,7 +27,9 @@ const PaymentMethodSelector: React.FC<PaymentMethodSelectorProps> = ({
   const [selectedMethod, setSelectedMethod] = useState<
     "wallet" | "direct" | "card" | null
   >(null);
-
+  if (!walletBalance) {
+    walletBalance = 0;
+  }
   const hasEnoughWalletBalance = walletBalance >= amount;
 
   const paymentMethods = [
