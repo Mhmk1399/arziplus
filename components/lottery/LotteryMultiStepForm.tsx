@@ -99,7 +99,7 @@ const LotteryMultiStepForm: React.FC = () => {
   const [showFileUploader, setShowFileUploader] = useState(false);
   const [showPhotoInfoModal, setShowPhotoInfoModal] = useState(false);
   const [uploadContext, setUploadContext] = useState<
-    "registerer" | "partner" | null
+    { kind: "registerer" | "partner" } | { kind: "child"; index: number } | null
   >(null);
   const [walletBalance, setWalletBalance] = useState(0);
   const [validationErrors, setValidationErrors] = useState<{
@@ -876,6 +876,56 @@ const LotteryMultiStepForm: React.FC = () => {
     });
   };
 
+  const updateChildOtherInfo = (
+    childIndex: number,
+    field: string,
+    value: string
+  ) => {
+    setFormData((prev) => {
+      // Ensure child entry exists
+      const children = prev.registererChildformations.slice();
+      if (!children[childIndex]) {
+        children[childIndex] = {
+          initialInformations: {
+            firstName: "",
+            lastName: "",
+            gender: "",
+            birthDate: { year: "", month: "", day: "" },
+            country: "",
+            city: "",
+            citizenshipCountry: "",
+          },
+          otherInformations: [
+            {
+              persianName: "",
+              persianLastName: "",
+              lastDegree: "",
+              partnerCitizenShip: "",
+              imageUrl: "",
+            },
+          ],
+        } as any;
+      }
+
+      const updatedChild = {
+        ...children[childIndex],
+        otherInformations: [
+          {
+            ...children[childIndex].otherInformations?.[0],
+            [field]: value,
+          },
+        ],
+      };
+
+      children[childIndex] = updatedChild as any;
+
+      return {
+        ...prev,
+        registererChildformations: children,
+      };
+    });
+  };
+
   const updateChildInfo = (
     childIndex: number,
     field: string,
@@ -1049,7 +1099,8 @@ const LotteryMultiStepForm: React.FC = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              نام <span className="text-red-500">*</span>
+              نام :
+              <span className="text-red-500"> (حتما انگلیسی وارد کنید) *</span>
             </label>
             <input
               type="text"
@@ -1081,7 +1132,8 @@ const LotteryMultiStepForm: React.FC = () => {
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              نام خانوادگی <span className="text-red-500">*</span>
+              نام خانوادگی :
+              <span className="text-red-500"> (حتما انگلیسی وارد کنید) *</span>
             </label>
             <input
               type="text"
@@ -1193,11 +1245,12 @@ const LotteryMultiStepForm: React.FC = () => {
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              شهر تولد <span className="text-red-500">*</span>
+              شهر تولد :
+              <span className="text-red-500"> (حتما انگلیسی وارد کنید) *</span>
             </label>
             <input
               type="text"
-              placeholder="شهر تولد (حتما انگلیسی وارد نمایید)"
+              placeholder="شهر تولد مثلا Tehran "
               value={
                 formData.registererInformations[0]?.initialInformations.city ||
                 ""
@@ -1262,55 +1315,73 @@ const LotteryMultiStepForm: React.FC = () => {
           اطلاعات تماس
         </h3>
 
-        <div className="grid md:grid-cols-2 gap-4">
-          <input
-            type="text"
-            placeholder="شماره موبایل فعال "
-            value={
-              formData.registererInformations[0]?.contactInformations[0]
-                ?.activePhoneNumber || ""
-            }
-            onChange={(e) =>
-              updateRegistererInfo(
-                "contactInformations",
-                "activePhoneNumber",
-                e.target.value
-              )
-            }
-            className="p-3 border outline-none border-gray-300 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all"
-          />
-          <input
-            type="text"
-            placeholder="تکرار شماره موبایل فعال"
-            value={
-              formData.registererInformations[0]?.contactInformations[0]
-                ?.secondaryPhoneNumber || ""
-            }
-            onChange={(e) =>
-              updateRegistererInfo(
-                "contactInformations",
-                "secondaryPhoneNumber",
-                e.target.value
-              )
-            }
-            className="p-3 border outline-none border-gray-300 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all"
-          />
-          <input
-            type="email"
-            placeholder="ایمیل"
-            value={
-              formData.registererInformations[0]?.contactInformations[0]
-                ?.email || ""
-            }
-            onChange={(e) =>
-              updateRegistererInfo(
-                "contactInformations",
-                "email",
-                e.target.value
-              )
-            }
-            className="p-3 border outline-none border-gray-300 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all"
-          />
+        <div className="grid md:grid-cols-2 items-center gap-4">
+          <div className="w-full ">
+            <label className="block text-sm font-medium mb-1 text-gray-700">
+              شماره موبایل فعال <span className="text-red-500"> *</span>
+            </label>
+            <input
+              type="text"
+              placeholder="شماره موبایل فعال "
+              value={
+                formData.registererInformations[0]?.contactInformations[0]
+                  ?.activePhoneNumber || ""
+              }
+              onChange={(e) =>
+                updateRegistererInfo(
+                  "contactInformations",
+                  "activePhoneNumber",
+                  e.target.value
+                )
+              }
+              className="p-3 border w-full outline-none border-gray-300 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all"
+            />
+          </div>
+          <div>
+            {" "}
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              تکرار شماره موبایل فعال
+              <span className="text-red-500"> *</span>
+            </label>
+            <input
+              type="text"
+              placeholder="تکرار شماره موبایل فعال"
+              value={
+                formData.registererInformations[0]?.contactInformations[0]
+                  ?.secondaryPhoneNumber || ""
+              }
+              onChange={(e) =>
+                updateRegistererInfo(
+                  "contactInformations",
+                  "secondaryPhoneNumber",
+                  e.target.value
+                )
+              }
+              className="p-3 w-full border outline-none border-gray-300 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all"
+            />
+          </div>
+          <div className="col-span-2">
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              ایمیل
+              <span className="text-red-500"> *</span>
+            </label>{" "}
+            <input
+              type="email"
+              placeholder="ایمیل"
+              value={
+                formData.registererInformations[0]?.contactInformations[0]
+                  ?.email || ""
+              }
+              onChange={(e) =>
+                updateRegistererInfo(
+                  "contactInformations",
+                  "email",
+                  e.target.value
+                )
+              }
+              className="p-3 w-full border outline-none border-gray-300 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all"
+            />
+          </div>
         </div>
       </div>
 
@@ -1321,87 +1392,113 @@ const LotteryMultiStepForm: React.FC = () => {
           اطلاعات محل سکونت
         </h3>
 
-        <div className="grid md:grid-cols-2 gap-4">
-          <input
-            type="text"
-            placeholder="کشور سکونت"
-            value={
-              formData.registererInformations[0]?.residanceInformation[0]
-                ?.residanceCountry || ""
-            }
-            onChange={(e) =>
-              updateRegistererInfo(
-                "residanceInformation",
-                "residanceCountry",
-                e.target.value
-              )
-            }
-            className="p-3 border outline-none border-gray-300 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all"
-          />
-          <input
-            type="text"
-            placeholder="شهر سکونت"
-            value={
-              formData.registererInformations[0]?.residanceInformation[0]
-                ?.residanceCity || ""
-            }
-            onChange={(e) =>
-              updateRegistererInfo(
-                "residanceInformation",
-                "residanceCity",
-                e.target.value
-              )
-            }
-            className="p-3 border outline-none border-gray-300 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all"
-          />
-          <input
-            type="text"
-            placeholder="استان سکونت"
-            value={
-              formData.registererInformations[0]?.residanceInformation[0]
-                ?.residanseState || ""
-            }
-            onChange={(e) =>
-              updateRegistererInfo(
-                "residanceInformation",
-                "residanseState",
-                e.target.value
-              )
-            }
-            className="p-3 border outline-none border-gray-300 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all"
-          />
-          <input
-            type="text"
-            placeholder="کد پستی"
-            value={
-              formData.registererInformations[0]?.residanceInformation[0]
-                ?.postalCode || ""
-            }
-            onChange={(e) =>
-              updateRegistererInfo(
-                "residanceInformation",
-                "postalCode",
-                e.target.value
-              )
-            }
-            className="p-3 border outline-none border-gray-300 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all"
-          />
-          <input
-            type="text"
-            placeholder="آدرس سکونت"
-            value={
-              formData.registererInformations[0]?.residanceInformation[0]
-                ?.residanseAdress || ""
-            }
-            onChange={(e) =>
-              updateRegistererInfo(
-                "residanceInformation",
-                "residanseAdress",
-                e.target.value
-              )
-            }
-            className="p-3 border outline-none border-gray-300 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all md:col-span-2"
-          />
+        <div className="grid md:grid-cols-3 gap-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              کشور محل سکونت<span className="text-red-500"> *</span>
+            </label>
+            <input
+              type="text"
+              placeholder="کشور سکونت"
+              value={
+                formData.registererInformations[0]?.residanceInformation[0]
+                  ?.residanceCountry || ""
+              }
+              onChange={(e) =>
+                updateRegistererInfo(
+                  "residanceInformation",
+                  "residanceCountry",
+                  e.target.value
+                )
+              }
+              className="p-3 w-full border outline-none border-gray-300 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              شهر محل سکونت<span className="text-red-500"> *</span>
+            </label>
+            <input
+              type="text"
+              placeholder="شهر سکونت"
+              value={
+                formData.registererInformations[0]?.residanceInformation[0]
+                  ?.residanceCity || ""
+              }
+              onChange={(e) =>
+                updateRegistererInfo(
+                  "residanceInformation",
+                  "residanceCity",
+                  e.target.value
+                )
+              }
+              className="p-3 w-full border outline-none border-gray-300 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              استان سکونت<span className="text-red-500"> *</span>
+            </label>
+            <input
+              type="text"
+              placeholder="استان سکونت"
+              value={
+                formData.registererInformations[0]?.residanceInformation[0]
+                  ?.residanseState || ""
+              }
+              onChange={(e) =>
+                updateRegistererInfo(
+                  "residanceInformation",
+                  "residanseState",
+                  e.target.value
+                )
+              }
+              className="p-3 w-full border outline-none border-gray-300 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              کد پستی محل سکونت<span className="text-red-500"> *</span>
+            </label>
+            <input
+              type="text"
+              placeholder="کد پستی"
+              value={
+                formData.registererInformations[0]?.residanceInformation[0]
+                  ?.postalCode || ""
+              }
+              onChange={(e) =>
+                updateRegistererInfo(
+                  "residanceInformation",
+                  "postalCode",
+                  e.target.value
+                )
+              }
+              className="p-3 w-full border outline-none border-gray-300 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all"
+            />
+          </div>
+          <div className="col-span-2">
+            {" "}
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              آدرس محل سکونت<span className="text-red-500"> *</span>
+            </label>
+            <input
+              type="text"
+              placeholder="آدرس سکونت"
+              value={
+                formData.registererInformations[0]?.residanceInformation[0]
+                  ?.residanseAdress || ""
+              }
+              onChange={(e) =>
+                updateRegistererInfo(
+                  "residanceInformation",
+                  "residanseAdress",
+                  e.target.value
+                )
+              }
+              className="p-3 w-full border outline-none border-gray-300 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all md:col-span-2"
+            />
+          </div>
         </div>
       </div>
 
@@ -1413,89 +1510,110 @@ const LotteryMultiStepForm: React.FC = () => {
         </h3>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <input
-            type="text"
-            placeholder="نام فارسی"
-            value={
-              formData.registererInformations[0]?.otherInformations[0]
-                ?.persianName || ""
-            }
-            onChange={(e) =>
-              updateRegistererInfo(
-                "otherInformations",
-                "persianName",
-                e.target.value
-              )
-            }
-            className="p-3 border outline-none border-gray-300 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all"
-          />
-          <input
-            type="text"
-            placeholder="نام خانوادگی فارسی"
-            value={
-              formData.registererInformations[0]?.otherInformations[0]
-                ?.persianLastName || ""
-            }
-            onChange={(e) =>
-              updateRegistererInfo(
-                "otherInformations",
-                "persianLastName",
-                e.target.value
-              )
-            }
-            className="p-3 border outline-none border-gray-300 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all"
-          />
-          <select
-            value={
-              formData.registererInformations[0]?.otherInformations[0]
-                ?.lastDegree || ""
-            }
-            onChange={(e) =>
-              updateRegistererInfo(
-                "otherInformations",
-                "lastDegree",
-                e.target.value
-              )
-            }
-            className="p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all outline-none"
-          >
-            <option value="">آخرین مدرک تحصیلی را انتخاب کنید...</option>
-            <option value="1">پایین‌تر از دیپلم</option>
-            <option value="2">دیپلم فنی حرفه ای یا کاردانش</option>
-            <option value="3">دیپلم نظری</option>
-            <option value="4">پیش دانشگاهی</option>
-            <option value="5">دانشجوی کاردانی</option>
-            <option value="6">مدرک کاردانی</option>
-            <option value="7">دانشجوی کارشناسی</option>
-            <option value="8">مدرک کارشناسی</option>
-            <option value="9">دانشجوی کارشناسی ارشد</option>
-            <option value="10">مدرک کارشناسی ارشد</option>
-            <option value="11">دانشجوی دکتری</option>
-            <option value="12">مدرک دکتری</option>
-            <option value="13">بالاتر از دکترا</option>
-          </select>
-          <select
-            value={
-              formData.registererInformations[0]?.otherInformations[0]
-                ?.partnerCitizenShip || ""
-            }
-            onChange={(e) =>
-              updateRegistererInfo(
-                "otherInformations",
-                "partnerCitizenShip",
-                e.target.value
-              )
-            }
-            className="p-3 outline-none border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all"
-          >
-            <option value="">انتخاب کنید...</option>
-            <option value="my spouse is not a resident of america">
-              همسر متقاضی، مقیم یا شهروند ایالات متحده نمی‌باشد.
-            </option>
-            <option value="my spouse live in america">
-              همسر متقاضی، مقیم یا شهروند ایالات متحده می‌باشد.
-            </option>
-          </select>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              نام فارسی<span className="text-red-500"> *</span>
+            </label>{" "}
+            <input
+              type="text"
+              placeholder="نام فارسی"
+              value={
+                formData.registererInformations[0]?.otherInformations[0]
+                  ?.persianName || ""
+              }
+              onChange={(e) =>
+                updateRegistererInfo(
+                  "otherInformations",
+                  "persianName",
+                  e.target.value
+                )
+              }
+              className="p-3 w-full border outline-none border-gray-300 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              نام خانوادگی فارسی<span className="text-red-500"> *</span>
+            </label>
+            <input
+              type="text"
+              placeholder="نام خانوادگی فارسی"
+              value={
+                formData.registererInformations[0]?.otherInformations[0]
+                  ?.persianLastName || ""
+              }
+              onChange={(e) =>
+                updateRegistererInfo(
+                  "otherInformations",
+                  "persianLastName",
+                  e.target.value
+                )
+              }
+              className="p-3 w-full border outline-none border-gray-300 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              آخرین مدرک تحصیلی<span className="text-red-500"> *</span>
+            </label>{" "}
+            <select
+              value={
+                formData.registererInformations[0]?.otherInformations[0]
+                  ?.lastDegree || ""
+              }
+              onChange={(e) =>
+                updateRegistererInfo(
+                  "otherInformations",
+                  "lastDegree",
+                  e.target.value
+                )
+              }
+              className="p-3 w-full border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all outline-none"
+            >
+              <option value="">آخرین مدرک تحصیلی را انتخاب کنید...</option>
+              <option value="1">پایین‌تر از دیپلم</option>
+              <option value="2">دیپلم فنی حرفه ای یا کاردانش</option>
+              <option value="3">دیپلم نظری</option>
+              <option value="4">پیش دانشگاهی</option>
+              <option value="5">دانشجوی کاردانی</option>
+              <option value="6">مدرک کاردانی</option>
+              <option value="7">دانشجوی کارشناسی</option>
+              <option value="8">مدرک کارشناسی</option>
+              <option value="9">دانشجوی کارشناسی ارشد</option>
+              <option value="10">مدرک کارشناسی ارشد</option>
+              <option value="11">دانشجوی دکتری</option>
+              <option value="12">مدرک دکتری</option>
+              <option value="13">بالاتر از دکترا</option>
+            </select>
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              وضعیت تابغیت همسر<span className="text-red-500"> *</span>
+            </label>
+            <select
+              value={
+                formData.registererInformations[0]?.otherInformations[0]
+                  ?.partnerCitizenShip || ""
+              }
+              onChange={(e) =>
+                updateRegistererInfo(
+                  "otherInformations",
+                  "partnerCitizenShip",
+                  e.target.value
+                )
+              }
+              className="p-3 w-full outline-none border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all"
+            >
+              <option value="">انتخاب کنید...</option>
+              <option value="my spouse is not a resident of america">
+                همسر متقاضی، مقیم یا شهروند ایالات متحده نمی‌باشد.
+              </option>
+              <option value="my spouse live in america">
+                همسر متقاضی، مقیم یا شهروند ایالات متحده می‌باشد.
+              </option>
+            </select>
+          </div>
+
           <div className="sm:col-span-2">
             <div className="bg-gray-50 border border-gray-200 rounded-lg p-3 sm:p-4 mb-4">
               <h4 className="text-base sm:text-lg font-bold text-[#0A1D37] mb-3 flex items-center gap-2">
@@ -1530,9 +1648,9 @@ const LotteryMultiStepForm: React.FC = () => {
               </div>
               <button
                 onClick={() => setShowPhotoInfoModal(true)}
-                className="mt-3 px-3 sm:px-4 py-2 bg-[#4DBFF0] text-white rounded-lg hover:bg-[#4DBFF0]/80 transition-colors text-xs sm:text-sm font-medium"
+                className="mt-6 mx-auto px-6 sm:px-4  py-2 bg-[#0A1D37] text-white rounded-lg hover:bg-[#4DBFF0]/80 transition-colors text-xs sm:text-sm font-medium"
               >
-                اطلاعات بیشتر
+                مشاهده شرایط عکس ارسالی
               </button>
             </div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -1566,7 +1684,7 @@ const LotteryMultiStepForm: React.FC = () => {
               <button
                 type="button"
                 onClick={() => {
-                  setUploadContext("registerer");
+                  setUploadContext({ kind: "registerer" });
                   setShowFileUploader(true);
                 }}
                 className="w-full p-3 border-2 border-dashed border-[#4DBFF0] bg-[#4DBFF0]/5 rounded-xl hover:bg-[#4DBFF0]/10 transition-all duration-300 flex items-center justify-center gap-2 text-[#4DBFF0] font-medium text-sm"
@@ -1610,7 +1728,11 @@ const LotteryMultiStepForm: React.FC = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                نام همسر <span className="text-red-500">*</span>
+                نام همسر :
+                <span className="text-red-500">
+                  {" "}
+                  (حتما انگلیسی وارد کنید) *
+                </span>
               </label>
               <input
                 type="text"
@@ -1636,7 +1758,11 @@ const LotteryMultiStepForm: React.FC = () => {
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                نام خانوادگی همسر <span className="text-red-500">*</span>
+                نام خانوادگی همسر{" "}
+                <span className="text-red-500">
+                  {" "}
+                  (حتما انگلیسی وارد کنید) *
+                </span>
               </label>
               <input
                 type="text"
@@ -1740,11 +1866,15 @@ const LotteryMultiStepForm: React.FC = () => {
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                شهر تولد همسر <span className="text-red-500">*</span>
+                شهر تولد همسر :
+                <span className="text-red-500">
+                  {" "}
+                  (حتما انگلیسی وارد کنید) *
+                </span>
               </label>
               <input
                 type="text"
-                placeholder="شهر تولد همسر"
+                placeholder=" شهر تولد همسر مثلا Tehran"
                 value={
                   formData.registererPartnerInformations[0]?.initialInformations
                     .city || ""
@@ -1877,12 +2007,20 @@ const LotteryMultiStepForm: React.FC = () => {
                 }`}
                 required
               >
-                <option value="">انتخاب کنید</option>
-                <option value="high_school">دیپلم</option>
-                <option value="associate">کاردانی</option>
-                <option value="bachelor">کارشناسی</option>
-                <option value="master">کارشناسی ارشد</option>
-                <option value="phd">دکتری</option>
+                <option value="">آخرین مدرک تحصیلی را انتخاب کنید...</option>
+                <option value="1">پایین‌تر از دیپلم</option>
+                <option value="2">دیپلم فنی حرفه ای یا کاردانش</option>
+                <option value="3">دیپلم نظری</option>
+                <option value="4">پیش دانشگاهی</option>
+                <option value="5">دانشجوی کاردانی</option>
+                <option value="6">مدرک کاردانی</option>
+                <option value="7">دانشجوی کارشناسی</option>
+                <option value="8">مدرک کارشناسی</option>
+                <option value="9">دانشجوی کارشناسی ارشد</option>
+                <option value="10">مدرک کارشناسی ارشد</option>
+                <option value="11">دانشجوی دکتری</option>
+                <option value="12">مدرک دکتری</option>
+                <option value="13">بالاتر از دکترا</option>
               </select>
               {validationErrors.partnerLastDegree && (
                 <p className="text-red-500 text-xs mt-1">
@@ -1891,32 +2029,102 @@ const LotteryMultiStepForm: React.FC = () => {
               )}
             </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                تصویر همسر <span className="text-red-500">*</span>
+            <div className="sm:col-span-2">
+              <div className="bg-gray-50 border border-gray-200 rounded-lg p-3 sm:p-4 mb-4">
+                <h4 className="text-base sm:text-lg font-bold text-[#0A1D37] mb-3 flex items-center gap-2">
+                  📸 شرایط الزامی عکس لاتاری همسر
+                </h4>
+                <div className="space-y-2 text-xs sm:text-sm text-gray-700">
+                  <p>• باید زاویه مستقیم به دوربین داشته باشید.</p>
+                  <p>
+                    • عکس به شکل مربع و طول 600 پیکسل تا 1200 پیکسل مورد قبول
+                    است.
+                  </p>
+                  <p>• زمینه عکس باید سفید یا مایل به سفید باشد.</p>
+                  <p>• عکس باید رنگی باشد و عکس سیاه و سفید مردود است.</p>
+                  <p>• عکس لاتاری باید بدون عینک و سمعک باشد.</p>
+                  <p>• موی شما نباید روی صورت شما را بپوشاند.</p>
+                  <p>• نیازی به معلوم بودن گوش ها نیست.</p>
+                  <p>
+                    • عکس با حجاب هم برای مسلمانان و سایر ادیانی که حجاب در آنها
+                    تعریف شده است ممانعتی ندارد.
+                  </p>
+                  <p>
+                    • گردی صورت باید کاملا واضح باشد و با چیزی پوشانده نشود.
+                  </p>
+                  <p>
+                    • نیازی به چاپ عکس ندارید، عکس باید به صورت فایل دیجیتال به
+                    شما تحویل داده شود.
+                  </p>
+                  <p>
+                    • عکس باید مربوط به شش ماه گذشته باشد. نباید سن عکس بیش از 6
+                    ماه باشد.
+                  </p>
+                  <p>
+                    • از عکسی که سال گذشته استفاده کردید نباید مجدد استفاده
+                    کنید.
+                  </p>
+                </div>
+                <button
+                  onClick={() => setShowPhotoInfoModal(true)}
+                  className="mt-6 mx-auto px-6 sm:px-4  py-2 bg-[#0A1D37] text-white rounded-lg hover:bg-[#4DBFF0]/80 transition-colors text-xs sm:text-sm font-medium"
+                >
+                  همسر مشاهده شرایط عکس ارسالی
+                </button>
+              </div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                تصویر همسر
               </label>
-              <button
-                type="button"
-                onClick={() => {
-                  setUploadContext("partner");
-                  setShowFileUploader(true);
-                }}
-                className={`w-full p-2 md:p-3 border-2 border-dashed rounded-xl text-gray-500 hover:border-[#FF7A00] hover:text-[#FF7A00] transition-all ${
-                  validationErrors.partnerImageUrl
-                    ? "border-red-500"
-                    : "border-gray-300"
-                }`}
-              >
+              <div className="space-y-3">
+                {/* Image Preview (partner) */}
                 {formData.registererPartnerInformations[0]?.otherInformations[0]
-                  ?.imageUrl
-                  ? "تغییر تصویر همسر"
-                  : "آپلود تصویر همسر"}
-              </button>
-              {validationErrors.partnerImageUrl && (
-                <p className="text-red-500 text-xs mt-1">
-                  {validationErrors.partnerImageUrl}
-                </p>
-              )}
+                  ?.imageUrl && (
+                  <div className="relative w-24 h-24 sm:w-32 sm:h-32 mx-auto">
+                    <img
+                      src={
+                        formData.registererPartnerInformations[0]
+                          ?.otherInformations[0]?.imageUrl
+                      }
+                      alt="تصویر همسر"
+                      className="w-full h-full object-cover rounded-xl border-2 border-[#4DBFF0]/30"
+                    />
+                    <button
+                      onClick={() => updatePartnerOtherInfo("imageUrl", "")}
+                      className="absolute -top-2 -right-2 w-5 h-5 sm:w-6 sm:h-6 bg-red-500 text-white rounded-full text-xs hover:bg-red-600 transition-colors"
+                    >
+                      ×
+                    </button>
+                  </div>
+                )}
+
+                {/* Upload Button */}
+                <button
+                  type="button"
+                  onClick={() => {
+                    setUploadContext({ kind: "partner" });
+                    setShowFileUploader(true);
+                  }}
+                  className="w-full p-3 border-2 border-dashed border-[#4DBFF0] bg-[#4DBFF0]/5 rounded-xl hover:bg-[#4DBFF0]/10 transition-all duration-300 flex items-center justify-center gap-2 text-[#4DBFF0] font-medium text-sm"
+                >
+                  <svg
+                    className="w-4 h-4 sm:w-5 sm:h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
+                    />
+                  </svg>
+                  {formData.registererInformations[0]?.otherInformations[0]
+                    ?.imageUrl
+                    ? "تغییر تصویر"
+                    : "آپلود تصویر شخصی"}
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -1940,68 +2148,225 @@ const LotteryMultiStepForm: React.FC = () => {
             </h3>
 
             <div className="grid md:grid-cols-2 gap-4">
-              <input
-                type="text"
-                placeholder={`نام فرزند ${index + 1}`}
-                value={child.initialInformations.firstName || ""}
-                onChange={(e) =>
-                  updateChildInfo(index, "firstName", e.target.value)
-                }
-                className="p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all"
-              />
-              <input
-                type="text"
-                placeholder={`نام خانوادگی فرزند ${index + 1}`}
-                value={child.initialInformations.lastName || ""}
-                onChange={(e) =>
-                  updateChildInfo(index, "lastName", e.target.value)
-                }
-                className="p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all"
-              />
-              <select
-                value={child.initialInformations.gender || ""}
-                onChange={(e) =>
-                  updateChildInfo(index, "gender", e.target.value)
-                }
-                className="p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all"
-              >
-                <option value="">جنسیت</option>
-                <option value="male">پسر</option>
-                <option value="female">دختر</option>
-              </select>
-              <PersianDatePicker
-                value={child.initialInformations.birthDate}
-                onChange={(date: {
-                  year: string;
-                  month: string;
-                  day: string;
-                }) => updateChildInfo(index, "birthDate", date)}
-              />
-              <input
-                type="text"
-                placeholder="کشور"
-                value={child.initialInformations.country || ""}
-                onChange={(e) =>
-                  updateChildInfo(index, "country", e.target.value)
-                }
-                className="p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all"
-              />
-              <input
-                type="text"
-                placeholder="شهر"
-                value={child.initialInformations.city || ""}
-                onChange={(e) => updateChildInfo(index, "city", e.target.value)}
-                className="p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all"
-              />
-              <input
-                type="text"
-                placeholder="کشور شهروندی"
-                value={child.initialInformations.citizenshipCountry || ""}
-                onChange={(e) =>
-                  updateChildInfo(index, "citizenshipCountry", e.target.value)
-                }
-                className="p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all md:col-span-2"
-              />
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  نام فرزند {index + 1}{" "}
+                  <span className="text-red-500">
+                    {" "}
+                    (حتما انگلیسی وارد کنید) *
+                  </span>
+                </label>
+                <input
+                  type="text"
+                  placeholder={`نام فرزند ${index + 1}`}
+                  value={child.initialInformations.firstName || ""}
+                  onChange={(e) =>
+                    updateChildInfo(index, "firstName", e.target.value)
+                  }
+                  className="p-3 w-full border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all"
+                />
+              </div>
+              <div>
+                {" "}
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  نام خانوادگی فرزند {index + 1}{" "}
+                  <span className="text-red-500">
+                    {" "}
+                    (حتما انگلیسی وارد کنید) *
+                  </span>
+                </label>
+                <input
+                  type="text"
+                  placeholder={`نام خانوادگی فرزند ${index + 1}`}
+                  value={child.initialInformations.lastName || ""}
+                  onChange={(e) =>
+                    updateChildInfo(index, "lastName", e.target.value)
+                  }
+                  className="p-3 w-full border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  جنسیت فرزند {index + 1}{" "}
+                  <span className="text-red-500">*</span>
+                </label>{" "}
+                <select
+                  value={child.initialInformations.gender || ""}
+                  onChange={(e) =>
+                    updateChildInfo(index, "gender", e.target.value)
+                  }
+                  className="p-3 w-full border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all"
+                >
+                  <option value="">جنسیت</option>
+                  <option value="male">پسر</option>
+                  <option value="female">دختر</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  تاریخ تولد فرزند {index + 1}{" "}
+                  <span className="text-red-500">*</span>
+                </label>
+                <PersianDatePicker
+                  value={child.initialInformations.birthDate}
+                  onChange={(date: {
+                    year: string;
+                    month: string;
+                    day: string;
+                  }) => updateChildInfo(index, "birthDate", date)}
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  کشور محل تولد فرزند {index + 1}{" "}
+                  <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  placeholder="کشور"
+                  value={child.initialInformations.country || ""}
+                  onChange={(e) =>
+                    updateChildInfo(index, "country", e.target.value)
+                  }
+                  className="p-3 w-full border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  شهر محل تولد فرزند {index + 1}{" "}
+                  <span className="text-red-500">
+                    * (حتما انگلیسی وارد کنید)
+                  </span>
+                </label>
+                <input
+                  type="text"
+                  placeholder="شهر"
+                  value={child.initialInformations.city || ""}
+                  onChange={(e) =>
+                    updateChildInfo(index, "city", e.target.value)
+                  }
+                  className="p-3 w-full border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all"
+                />
+              </div>
+              <div className="col-span-2">
+                {" "}
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  تابعیت فرزند {index + 1}{" "}
+                  <span className="text-red-500">*</span>
+                </label>
+                <select
+                  value={child.initialInformations.citizenshipCountry || ""}
+                  onChange={(e) =>
+                    updateChildInfo(index, "citizenshipCountry", e.target.value)
+                  }
+                  className="p-3 w-full border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all md:col-span-2"
+                >
+                  <option value="">انتخاب کنید...</option>
+                  <option value="child_not_american">
+                    فرزند مقیم یا شهروند ایالات متحده نمی‌باشد.
+                  </option>
+                  <option value="child_american">
+                    فرزند مقیم یا شهروند ایالات متحده می‌باشد.
+                  </option>
+                </select>
+              </div>
+              <div className="space-y-2 col-span-2">
+                <div className="bg-gray-50 border border-gray-200 rounded-lg p-3 sm:p-4 mb-4">
+                  <h4 className="text-base sm:text-lg font-bold text-[#0A1D37] mb-3 flex items-center gap-2">
+                    📸 شرایط الزامی عکس لاتاری فرزند
+                  </h4>
+                  <div className="space-y-2 text-xs sm:text-sm text-gray-700">
+                    <p>• باید زاویه مستقیم به دوربین داشته باشید.</p>
+                    <p>
+                      • عکس به شکل مربع و طول 600 پیکسل تا 1200 پیکسل مورد قبول
+                      است.
+                    </p>
+                    <p>• زمینه عکس باید سفید یا مایل به سفید باشد.</p>
+                    <p>• عکس باید رنگی باشد و عکس سیاه و سفید مردود است.</p>
+                    <p>• عکس لاتاری باید بدون عینک و سمعک باشد.</p>
+                    <p>• موی شما نباید روی صورت شما را بپوشاند.</p>
+                    <p>• نیازی به معلوم بودن گوش ها نیست.</p>
+                    <p>
+                      • عکس با حجاب هم برای مسلمانان و سایر ادیانی که حجاب در
+                      آنها تعریف شده است ممانعتی ندارد.
+                    </p>
+                    <p>
+                      • گردی صورت باید کاملا واضح باشد و با چیزی پوشانده نشود.
+                    </p>
+                    <p>
+                      • نیازی به چاپ عکس ندارید، عکس باید به صورت فایل دیجیتال
+                      به شما تحویل داده شود.
+                    </p>
+                    <p>
+                      • عکس باید مربوط به شش ماه گذشته باشد. نباید سن عکس بیش از
+                      6 ماه باشد.
+                    </p>
+                    <p>
+                      • از عکسی که سال گذشته استفاده کردید نباید مجدد استفاده
+                      کنید.
+                    </p>
+                  </div>
+                  <button
+                    onClick={() => setShowPhotoInfoModal(true)}
+                    className="mt-6 mx-auto px-6 sm:px-4  py-2 bg-[#0A1D37] text-white rounded-lg hover:bg-[#4DBFF0]/80 transition-colors text-xs sm:text-sm font-medium"
+                  >
+                    مشاهده شرایط عکس ارسالی
+                  </button>
+                </div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  تصویر فرزند
+                </label>
+                {/* Child Image Preview */}
+                {formData.registererChildformations[index]?.otherInformations[0]
+                  ?.imageUrl && (
+                  <div className="relative w-24 h-24 sm:w-32 sm:h-32 mx-auto">
+                    <img
+                      src={
+                        formData.registererChildformations[index]
+                          ?.otherInformations[0]?.imageUrl
+                      }
+                      alt={`تصویر فرزند ${index + 1}`}
+                      className="w-full h-full object-cover rounded-xl border-2 border-[#4DBFF0]/30"
+                    />
+                    <button
+                      onClick={() =>
+                        updateChildOtherInfo(index, "imageUrl", "")
+                      }
+                      className="absolute -top-2 -right-2 w-5 h-5 sm:w-6 sm:h-6 bg-red-500 text-white rounded-full text-xs hover:bg-red-600 transition-colors"
+                    >
+                      ×
+                    </button>
+                  </div>
+                )}
+
+                {/* Child Upload Button */}
+                <button
+                  type="button"
+                  onClick={() => {
+                    setUploadContext({ kind: "child", index });
+                    setShowFileUploader(true);
+                  }}
+                  className="w-full p-3 border-2 border-dashed border-[#4DBFF0] bg-[#4DBFF0]/5 rounded-xl hover:bg-[#4DBFF0]/10 transition-all duration-300 flex items-center justify-center gap-2 text-[#4DBFF0] font-medium text-sm"
+                >
+                  <svg
+                    className="w-4 h-4 sm:w-5 sm:h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
+                    />
+                  </svg>
+                  {formData.registererChildformations[index]
+                    ?.otherInformations[0]?.imageUrl
+                    ? "تغییر تصویر فرزند"
+                    : "آپلود تصویر فرزند"}
+                </button>
+              </div>
             </div>
           </div>
         ))}
@@ -2363,8 +2728,10 @@ const LotteryMultiStepForm: React.FC = () => {
           setUploadContext(null);
         }}
         onFileUploaded={(fileUrl: string) => {
-          if (uploadContext === "partner") {
+          if (uploadContext?.kind === "partner") {
             updatePartnerOtherInfo("imageUrl", fileUrl);
+          } else if (uploadContext?.kind === "child") {
+            updateChildOtherInfo(uploadContext.index, "imageUrl", fileUrl);
           } else {
             updateRegistererInfo("otherInformations", "imageUrl", fileUrl);
           }
@@ -2372,7 +2739,11 @@ const LotteryMultiStepForm: React.FC = () => {
           setUploadContext(null);
         }}
         title={
-          uploadContext === "partner" ? "آپلود تصویر همسر" : "آپلود تصویر شخصی"
+          uploadContext?.kind === "partner"
+            ? "آپلود تصویر همسر"
+            : uploadContext?.kind === "child"
+            ? "آپلود تصویر فرزند"
+            : "آپلود تصویر شخصی"
         }
         acceptedTypes={[".jpg", ".jpeg", ".png", ".gif", ".webp"]}
         maxFileSize={5 * 1024 * 1024} // 5MB
