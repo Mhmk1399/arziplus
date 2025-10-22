@@ -51,9 +51,9 @@ interface hozoridata {
     maridgeStatus?: string;
     time?: string;
     phoneNumber?: number | string;
-    [key: string]: any;
+    [key: string]: unknown;
   };
-  [key: string]: any; // allow extra keys such as imageUrl
+  [key: string]: unknown; // allow extra keys such as imageUrl
 }
 
 // Types for lottery form data (avoid using `any`)

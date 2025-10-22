@@ -904,7 +904,7 @@ const LotteryMultiStepForm: React.FC = () => {
               imageUrl: "",
             },
           ],
-        } as any;
+        } as RegistererInformation;
       }
 
       const updatedChild = {
@@ -917,7 +917,7 @@ const LotteryMultiStepForm: React.FC = () => {
         ],
       };
 
-      children[childIndex] = updatedChild as any;
+      children[childIndex] = updatedChild as RegistererInformation;
 
       return {
         ...prev,
