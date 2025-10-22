@@ -778,9 +778,7 @@ export default function ServiceDetailPage() {
         await handleWalletPayment();
       } else if (paymentMethod === "direct") {
         await handleDirectPayment();
-      } else if (paymentMethod === "card") {
-        handleCardPayment();
-      }
+      } 
     } catch (error) {
       console.log("Payment error:", error);
       showToast.error("خطا در پردازش پرداخت");
@@ -889,10 +887,6 @@ export default function ServiceDetailPage() {
     }
   };
 
-  // Handle card payment
-  const handleCardPayment = () => {
-    setShowCardPaymentModal(true);
-  };
 
   // Handle card payment completion
 
@@ -1184,9 +1178,7 @@ export default function ServiceDetailPage() {
                   handleWalletPayment();
                 } else if (method === "direct") {
                   handleDirectPayment();
-                } else if (method === "card") {
-                  handleCardPayment();
-                }
+                } 
               }}
               isWalletEnabled={
                 walletBalance >= (calculatedFee || service?.fee || 0)

@@ -305,7 +305,7 @@ const LotteryMultiStepForm: React.FC = () => {
         if (formData.famillyInformations[0]?.numberOfChildren > 0) {
           formData.registererChildformations.forEach((child, index) => {
             const childInitial = child.initialInformations;
-            const childOther = child.otherInformations[0];
+            const childOther = child.otherInformations?.[0];
 
             if (!childInitial.firstName.trim())
               errors[`childFirstName${index}`] = `نام فرزند ${
@@ -344,15 +344,8 @@ const LotteryMultiStepForm: React.FC = () => {
                 index + 1
               } الزامی است`;
 
-            if (!childOther.persianName.trim())
-              errors[`childPersianName${index}`] = `نام فارسی فرزند ${
-                index + 1
-              } الزامی است`;
-            if (!childOther.persianLastName.trim())
-              errors[
-                `childPersianLastName${index}`
-              ] = `نام خانوادگی فارسی فرزند ${index + 1} الزامی است`;
-            if (!childOther.imageUrl.trim())
+            // Only validate image - Persian names and lastDegree not required for children
+            if (childOther && !childOther.imageUrl?.trim())
               errors[`childImageUrl${index}`] = `آپلود تصویر فرزند ${
                 index + 1
               } الزامی است`;
@@ -616,10 +609,7 @@ const LotteryMultiStepForm: React.FC = () => {
     }
   };
 
-  // Handle card payment
-  const handleCardPayment = () => {
-    setShowCardPaymentModal(true);
-  };
+
 
   // Submit lottery registration after successful payment
   const submitLotteryRegistration = async (
@@ -2686,9 +2676,7 @@ const LotteryMultiStepForm: React.FC = () => {
                   handleWalletPayment();
                 } else if (method === "direct") {
                   handleDirectPayment();
-                } else if (method === "card") {
-                  handleCardPayment();
-                }
+                } 
               }}
               isWalletEnabled={walletBalance >= lotteryFee}
             />

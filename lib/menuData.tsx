@@ -430,7 +430,7 @@ export const menuItems: MenuItems = [
           icon: FaTicketAlt,
           childrens: [
             {
-              name: "ثبت نام لاتاری آکریکا",
+              name: "ثبت نام لاتاری آمریکا",
               href: "/lottery",
               icon: FaTicketAlt,
             },

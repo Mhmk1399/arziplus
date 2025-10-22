@@ -432,12 +432,7 @@ const HozoriMultiStepForm: React.FC = () => {
     }
   };
 
-  // Handle card payment
-  const handleCardPayment = () => {
-    setShowCardPaymentModal(true);
-  };
-
-
+  
 
   const updateFormData = (
     field: keyof HozoriFormData,
@@ -967,8 +962,6 @@ const HozoriMultiStepForm: React.FC = () => {
                   handleWalletPayment();
                 } else if (method === "direct") {
                   handleDirectPayment();
-                } else if (method === "card") {
-                  handleCardPayment();
                 }
               }}
               isWalletEnabled={walletBalance >= hozoriFee}
