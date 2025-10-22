@@ -317,7 +317,12 @@ const WalletWrapper: React.FC<WalletWrapperProps> = ({
   const renderActiveContent = () => {
     switch (activeTab) {
       case "dashboard":
-        return <AddAmountComponent />;
+        return (
+          <AddAmountComponent
+            walletBalance={walletStats.currentBalance}
+            walletStats={walletStats}
+          />
+        );
       case "incomes":
         return <IncomesHistory />;
       case "withdraws":
@@ -393,12 +398,7 @@ const WalletWrapper: React.FC<WalletWrapperProps> = ({
                   </div>
                 </div>
 
-                {/* Badge */}
-                {tab.badge && (
-                  <div className="absolute -top-2 -left-2 sm:-top-2 sm:-right-2 px-2 py-1 sm:px-2.5 sm:py-1 bg-gradient-to-r from-red-500 to-red-600 text-white text-xs sm:text-sm rounded-full font-bold shadow-lg animate-pulse border-2 border-white whitespace-nowrap">
-                    {tab.badge}
-                  </div>
-                )}
+                
               </button>
             ))}
           </div>

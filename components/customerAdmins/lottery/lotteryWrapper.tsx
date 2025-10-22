@@ -14,7 +14,7 @@ const CustomerLotteryWrapper = () => {
       label: "ثبت‌نام‌های من",
       icon: <FaList className="text-lg" />,
       component: CustomerLotteryList,
-      description: "مشاهده تمام ثبت‌نام‌های لاتاری شما",
+      description: "مشاهده تمام ثبت‌نام‌های لاتاری  ",
     },
     {
       id: "hozori",
@@ -30,13 +30,10 @@ const CustomerLotteryWrapper = () => {
     tabs.find((tab) => tab.id === activeTab)?.component || CustomerLotteryList;
 
   return (
-    <div
-      className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50"
-      dir="rtl"
-    >
+    <div className="min-h-screen  " dir="rtl">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
         {/* Header Section - Enhanced spacing and responsive design */}
-        <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6 sm:p-8 mb-6 sm:mb-8">
+        <div className="bg-white rounded-2xl    p-6 sm:p-8 mb-6 sm:mb-8">
           {/* Top Header Row */}
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 mb-6 sm:mb-8">
             {/* Title Section */}
@@ -102,7 +99,7 @@ const CustomerLotteryWrapper = () => {
 
           {/* Tabs Navigation - Improved design */}
           <div className="relative">
-            <div className="grid grid-cols-2 justify-center items-center gap-1  ">
+            <div className="grid grid-cols-2 justify-center items-center gap-2  ">
               {tabs.map((tab) => (
                 <button
                   key={tab.id}
@@ -121,8 +118,7 @@ const CustomerLotteryWrapper = () => {
                           border-2 border-[#0A1D37]/40 
                           text-[#0A1D37] 
                            
-                          scale-[1.03]
-                        `
+                         `
                         : `
                           bg-gray-50 
                           hover:bg-gray-100 
@@ -182,7 +178,6 @@ const CustomerLotteryWrapper = () => {
         >
           <ActiveComponent />
         </div>
- 
       </div>
     </div>
   );

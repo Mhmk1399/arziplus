@@ -658,7 +658,7 @@ const CustomerLotteryList = () => {
             </div>
 
             {/* Modal Content - Scrollable */}
-            <div className="p-5 sm:p-6 lg:p-8 space-y-5 sm:space-y-6 overflow-y-auto max-h-[calc(95vh-180px)] custom-scrollbar">
+            <div className="p-5 sm:p-6 mb-12 lg:p-8 space-y-5 sm:space-y-6 overflow-y-auto max-h-[calc(95vh-180px)] custom-scrollbar">
               {/* Status Section */}
               <div className="bg-gradient-to-br from-gray-50 to-blue-50 rounded-xl sm:rounded-2xl p-5 sm:p-6 border-2 border-gray-200">
                 <h3 className="text-base sm:text-lg font-bold text-[#0A1D37] mb-4 flex items-center gap-2">
@@ -994,7 +994,7 @@ const CustomerLotteryList = () => {
               </div>
 
               {/* Registerer Information */}
-              <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl sm:rounded-2xl p-5 sm:p-6 border-2 border-blue-200">
+              <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl mb-12 sm:rounded-2xl p-5 sm:p-6 border-2 border-blue-200">
                 <h3 className="text-base sm:text-lg font-bold text-[#0A1D37] mb-4 flex items-center gap-2">
                   <FaUser className="text-blue-500 text-xl" />
                   اطلاعات ثبت‌کننده

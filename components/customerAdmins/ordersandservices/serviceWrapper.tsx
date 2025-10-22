@@ -324,12 +324,7 @@ const ServiceWrapper: React.FC<ServiceWrapperProps> = ({
                   </div>
                 </div>
 
-                {/* Notification Badge */}
-                {tab.badge && (
-                  <div className="absolute -top-2 -left-2 sm:-top-2 sm:-right-2 w-6 h-6 sm:w-7 sm:h-7 bg-gradient-to-r from-red-500 to-red-600 text-white text-xs sm:text-sm rounded-full flex items-center justify-center font-bold shadow-lg animate-pulse border-2 border-white">
-                    {tab.badge}
-                  </div>
-                )}
+            
               </button>
             ))}
           </div>
