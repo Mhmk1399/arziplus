@@ -119,6 +119,12 @@ export default function Footer() {
       label: "ایمیل",
       color: "#0A1D37",
     },
+    {
+      icon: FaPhone,
+      href: "tel:09991202049",
+      label: "تماس",
+      color: "#0A1D37",
+    },
   ];
 
   const quickLinks = [
@@ -259,13 +265,7 @@ export default function Footer() {
                 </p>
 
                 {/* CTA Phone Button */}
-                <a
-                  href="tel:09991202049"
-                  className="group inline-flex items-center gap-4 px-10 py-5 rounded-2xl bg-gradient-to-r from-[#0A1D37] to-[#4DBFF0] text-white font-bold text-lg  transition-all duration-75 hover:scale-105 hover:-translate-y-1"
-                >
-                  <FaPhone className="text-xl group-hover:rotate-12 transition-transform duration-300" />
-                  <span className="tracking-wider">09991202049</span>
-                </a>
+               
 
                 {/* Social Links */}
                 <div className="flex items-center justify-center gap-4">

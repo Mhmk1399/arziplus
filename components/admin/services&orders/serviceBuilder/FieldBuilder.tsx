@@ -534,7 +534,7 @@ const FieldBuilder: React.FC<FieldBuilderProps> = ({
                   }
                   className="w-full px-4 py-3 mt-3 bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-sm border border-[#4DBFF0] rounded-xl text-[#0A1D37] placeholder:text-[#0A1D37]/50 focus:border-[#4DBFF0]/50 focus:outline-none focus:ring-2 focus:ring-[#4DBFF0] transition-all duration-300 appearance-none"
                 >
-                  <option className="  text-[#0A1D37]" value="neverUSed">
+                  <option className="  text-[#0A1D37]" value="neverUsed">
                     در محاسبه حساب نشود
                   </option>
                   <option className="  text-[#0A1D37]" value="accountFee">

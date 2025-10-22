@@ -300,7 +300,7 @@ export default function CustomerRequestsTable({
               <h1
                 className={`text-xl lg:text-3xl   ${estedadBold.className} text-[#0A1D37]`}
               >
-                درخواست‌های من
+                سفارشات من
               </h1>
               <p className="text-xs sm:text-base text-gray-600">
                 مدیریت و پیگیری درخواست‌های شما
@@ -313,7 +313,7 @@ export default function CustomerRequestsTable({
               className="hidden sm:inline-flex items-center gap-2 px-4 lg:px-6 py-2.5 lg:py-3 bg-gradient-to-r from-[#4DBFF0] to-[#0A1D37] text-white rounded-xl lg:rounded-2xl hover:shadow-xl transition-all duration-300 hover:scale-105 font-bold text-sm lg:text-base whitespace-nowrap"
             >
               <FaPlus className="text-sm" />
-              <span>درخواست جدید</span>
+              <span>سفارش جدید</span>
             </Link>
           </div>
 

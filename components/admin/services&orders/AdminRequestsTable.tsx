@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { showToast } from "@/utilities/toast";
 import { estedadBold } from "@/next-persian-fonts/estedad";
+import Link from "next/link";
 
 interface Request {
   _id: string;
@@ -12,8 +13,20 @@ interface Request {
     title: string;
     icon?: string;
     fee: number;
+    fields?: Array<{
+      name: string;
+      label: string;
+      type: string;
+      required?: boolean;
+      description?: string;
+      options?: Array<{
+        key: string;
+        value: string;
+      }>;
+    }>;
   };
-  data: Record<string, string>; // User submitted form data
+  data?: Record<string, any>; // User submitted form data
+  paymentUrl?: string;
   customer: {
     nationalCredentials: {
       firstName?: string;
@@ -205,11 +218,21 @@ export default function AdminRequestsTable({
   };
 
   const renderFormData = (
-    data: Record<string, string>,
+    data: Record<string, any> | undefined,
     service: Request["service"]
   ) => {
-    console.log(service);
     if (!data || Object.keys(data).length === 0) {
+      if (service?.fields && service.fields.length > 0) {
+        return (
+          <div className="text-center py-8">
+            <div className="text-4xl mb-2">📝</div>
+            <p className="text-[#0A1D37]/60">
+              این درخواست دارای {service.fields.length} فیلد است اما اطلاعات
+              ارسالی ذخیره نشده است
+            </p>
+          </div>
+        );
+      }
       return (
         <div className="text-center py-8">
           <div className="text-4xl mb-2">📝</div>
@@ -219,9 +242,32 @@ export default function AdminRequestsTable({
     }
 
     return Object.entries(data).map(([fieldName, value]) => {
+      // Find the field definition from service.fields
+      const fieldDef = service?.fields?.find(
+        (field) => field.name === fieldName || field.label === fieldName
+      );
+
+      const displayLabel = fieldDef?.label || fieldName;
+      const fieldDescription = fieldDef?.description;
+      const fieldType = fieldDef?.type;
+
       const displayValue = () => {
         if (value === null || value === undefined || value === "") {
           return <span className="text-[#0A1D37]/40 italic">خالی</span>;
+        }
+
+        // For select fields, try to show the option key instead of value
+        if (fieldType === "select" && fieldDef?.options) {
+          const selectedOption = fieldDef.options.find(
+            (opt) => opt.value === value || opt.key === value
+          );
+          if (selectedOption) {
+            return (
+              <span className="px-3 py-1.5 bg-[#4DBFF0]/10 text-[#4DBFF0] rounded-md text-sm font-medium">
+                {selectedOption.key}
+              </span>
+            );
+          }
         }
 
         if (Array.isArray(value)) {
@@ -258,8 +304,12 @@ export default function AdminRequestsTable({
           typeof value === "string" &&
           (value.startsWith("http") ||
             value.includes("amazonaws.com") ||
-            value.includes("storage"))
+            value.includes("storage") ||
+            value.includes("liara.space"))
         ) {
+          const isImage =
+            value.match(/\.(jpg|jpeg|png|gif|webp)$/i) ||
+            value.includes("image");
           return (
             <div className="space-y-2">
               <div className="flex items-center gap-3">
@@ -269,17 +319,12 @@ export default function AdminRequestsTable({
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 px-3 py-2 bg-[#4DBFF0]/10 text-[#4DBFF0] rounded-lg hover:bg-[#4DBFF0]/20 transition-colors text-sm"
                 >
-                  <span>📁</span>
-                  مشاهده فایل
+                  <span>{isImage ? "🖼️" : "📁"}</span>
+                  {isImage ? "مشاهده تصویر" : "مشاهده فایل"}
                 </a>
-                <span className="text-[#0A1D37]/60 text-xs">
-                  فایل آپلود شده
-                </span>
               </div>
 
-              {/* Image preview if it's an image */}
-              {(value.includes("image") ||
-                value.match(/\.(jpg|jpeg|png|gif|webp)$/i)) && (
+              {isImage && (
                 <div className="mt-2">
                   <img
                     src={value}
@@ -299,18 +344,26 @@ export default function AdminRequestsTable({
         return <span className="text-[#0A1D37]">{String(value)}</span>;
       };
 
-      const fieldLabel = fieldName
-        .replace(/([A-Z])/g, " $1")
-        .replace(/^./, (str) => str.toUpperCase())
-        .replace(/([a-z])([A-Z])/g, "$1 $2");
-
       return (
         <div key={fieldName} className="space-y-2">
           <div className="p-4 bg-gradient-to-br from-white/50 to-white/20 backdrop-blur-sm border border-[#4DBFF0]/30 rounded-xl">
-            <label className="flex items-center gap-2 text-[#0A1D37] font-medium mb-3">
+            <div className="flex items-center gap-2 mb-3">
               <span className="w-2 h-2 bg-[#4DBFF0] rounded-full"></span>
-              {fieldLabel}
-            </label>
+              <label className="text-[#0A1D37] font-medium">
+                {displayLabel}
+                {fieldDef?.required && (
+                  <span className="text-red-500 text-xs mr-1">*</span>
+                )}
+              </label>
+            </div>
+
+            {fieldDescription && (
+              <div className="mr-4 mb-3 p-2 bg-blue-50/50 border border-blue-200/30 rounded-lg">
+                <p className="text-xs text-[#0A1D37]/70 whitespace-pre-line">
+                  {fieldDescription}
+                </p>
+              </div>
+            )}
 
             <div className="min-h-[44px] px-4 py-3 bg-gradient-to-br from-white/80 to-white/40 backdrop-blur-sm border border-[#4DBFF0]/20 rounded-lg flex items-center">
               {displayValue()}
@@ -369,7 +422,6 @@ export default function AdminRequestsTable({
               </option>
             ))}
           </select>
- 
         </div>
       </div>
 
@@ -387,7 +439,7 @@ export default function AdminRequestsTable({
                 <thead className="bg-gradient-to-r from-[#4DBFF0]/10 to-[#0A1D37]/10">
                   <tr>
                     <th className="px-6 py-4 text-right text-sm font-semibold text-[#0A1D37]">
-                      شماره  
+                      شماره
                     </th>
                     <th className="px-6 py-4 text-right text-sm font-semibold text-[#0A1D37]">
                       سرویس
@@ -413,7 +465,7 @@ export default function AdminRequestsTable({
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-100">
-                  {requests.map((request,idx) => (
+                  {requests.map((request, idx) => (
                     <tr
                       key={request._id}
                       className="hover:bg-gray-50 text-xs transition-colors"
@@ -425,14 +477,14 @@ export default function AdminRequestsTable({
                       </td>
                       <td className="px-6 py-4">
                         <div className="flex items-center gap-3">
-                          {request.service.icon && (
+                          {request.service?.icon && (
                             <span className="text-xl">
                               {request.service.icon}
                             </span>
                           )}
                           <div>
                             <div className="font-medium text-[#0A1D37]">
-                              {request.service.title}
+                              {request.service?.title || "نامشخص"}
                             </div>
                           </div>
                         </div>
@@ -494,9 +546,24 @@ export default function AdminRequestsTable({
                             className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
                             title="مشاهده جزئیات"
                           >
-                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                            <svg
+                              className="w-5 h-5"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                              />
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                              />
                             </svg>
                           </button>
                           <button
@@ -504,8 +571,18 @@ export default function AdminRequestsTable({
                             className="p-2 text-[#4DBFF0] hover:bg-[#4DBFF0]/10 rounded-lg transition-colors"
                             title="ویرایش"
                           >
-                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                            <svg
+                              className="w-5 h-5"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                              />
                             </svg>
                           </button>
                         </div>
@@ -553,7 +630,10 @@ export default function AdminRequestsTable({
         selectedRequest &&
         typeof document !== "undefined" &&
         createPortal(
-          <div dir="rtl" className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div
+            dir="rtl"
+            className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4"
+          >
             <div className="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
               <div className="p-6 border-b">
                 <h2
@@ -718,7 +798,10 @@ export default function AdminRequestsTable({
         selectedRequest &&
         typeof document !== "undefined" &&
         createPortal(
-          <div dir="rtl" className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div
+            dir="rtl"
+            className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4"
+          >
             <div className="bg-white rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
               <div className="p-6 border-b bg-gradient-to-r from-[#4DBFF0]/10 to-[#0A1D37]/10">
                 <div className="flex items-center justify-between">
@@ -752,7 +835,7 @@ export default function AdminRequestsTable({
                   <div className="grid md:grid-cols-2 gap-4 p-4 bg-gray-50 rounded-lg">
                     <div>
                       <span className="font-medium text-[#0A1D37]">نام:</span>
-                      <span className="mr-2 text-[#0A1D37]/80">
+                      <span className="mr-2 text-xs text-[#0A1D37]/80">
                         {getCustomerName(selectedRequest.customer)}
                       </span>
                     </div>
@@ -760,13 +843,13 @@ export default function AdminRequestsTable({
                       <span className="font-medium text-[#0A1D37]">
                         موبایل:
                       </span>
-                      <span className="mr-2 text-[#0A1D37]/80">
+                      <span className="mr-2 text-xs text-[#0A1D37]/80">
                         {selectedRequest.customer.contactInfo.mobilePhone}
                       </span>
                     </div>
                     <div>
-                      <span className="font-medium text-[#0A1D37]">ایمیل:</span>
-                      <span className="mr-2 text-[#0A1D37]/80">
+                      <span className="font-medium  text-[#0A1D37]">ایمیل:</span>
+                      <span className="mr-2 text-xs text-[#0A1D37]/80">
                         {selectedRequest.customer.contactInfo.email}
                       </span>
                     </div>
@@ -774,7 +857,7 @@ export default function AdminRequestsTable({
                       <span className="font-medium text-[#0A1D37]">
                         تاریخ درخواست:
                       </span>
-                      <span className="mr-2 text-[#0A1D37]/80">
+                      <span className="mr-2 text-xs text-[#0A1D37]/80">
                         {formatDate(selectedRequest.createdAt)}
                       </span>
                     </div>
@@ -840,6 +923,39 @@ export default function AdminRequestsTable({
                     )}
                   </div>
                 </div>
+
+                {/* Payment Receipt Image */}
+                {selectedRequest.paymentUrl && (
+                  <div className="mb-6">
+                    <h3
+                      className={`text-lg ${estedadBold.className} text-[#0A1D37] mb-4`}
+                    >
+                      رسید پرداخت
+                    </h3>
+                    <div className="p-4 bg-gradient-to-br from-white/50 to-white/20 backdrop-blur-sm border border-[#4DBFF0]/30 rounded-xl">
+                      <div className="flex items-center gap-3 mb-3">
+                        <Link
+                          href={selectedRequest.paymentUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-2 px-3 py-2 bg-[#4DBFF0]/10 text-[#4DBFF0] rounded-lg hover:bg-[#4DBFF0]/20 transition-colors text-sm"
+                        >
+                          <span>🖼️</span>
+                          مشاهده رسید پرداخت
+                        </Link>
+                      </div>
+                      <img
+                        src={selectedRequest.paymentUrl}
+                        alt="رسید پرداخت"
+                        className="max-w-md h-auto rounded-lg border border-[#4DBFF0]/30 shadow-sm"
+                        onError={(e) => {
+                          const img = e.target as HTMLImageElement;
+                          img.style.display = "none";
+                        }}
+                      />
+                    </div>
+                  </div>
+                )}
 
                 {/* Admin Notes */}
                 {selectedRequest.adminNotes.length > 0 && (

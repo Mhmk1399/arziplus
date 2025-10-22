@@ -80,7 +80,7 @@ export async function GET(request: NextRequest) {
 
     // Get paginated results with populated user data
     const withdrawRequests = await WithdrawRequest.find(query)
-      .populate("user", "username firstName lastName phone")
+      .populate("user")
       .sort(sortObj)
       .skip((page - 1) * limit)
       .limit(limit);

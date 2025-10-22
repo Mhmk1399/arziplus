@@ -466,10 +466,10 @@ const NationalCredentialAdmin = () => {
         typeof document !== "undefined" &&
         createPortal(
           <div
-            className="fixed inset-0 bg-white/10 backdrop-blur-sm flex items-center justify-center z-50 p-4"
+            className="fixed inset-0 bg-black/10 backdrop-blur-sm flex items-center justify-center z-50 p-4"
             dir="rtl"
           >
-            <div className="bg-white rounded-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="bg-white rounded-2xl max-w-3xl w-full max-h-[95vh] overflow-y-auto">
               <div className="p-6 border-b">
                 <h2 className="text-xl font-bold text-gray-900">
                   جزئیات اطلاعات هویتی
