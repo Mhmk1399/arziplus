@@ -483,7 +483,7 @@ const UsersList = () => {
         <div className="mb-8">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-3">
-               <div>
+              <div>
                 <h1 className="text-xl md:text-3xl font-bold text-gray-900">
                   مدیریت کاربران
                 </h1>
@@ -513,57 +513,40 @@ const UsersList = () => {
                 />
               </div>
             </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                وضعیت
-              </label>
-              <select
-                value={statusFilter}
-                onChange={(e) => setStatusFilter(e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              >
-                <option value="">همه وضعیت‌ها</option>
-                <option value="active">فعال</option>
-                <option value="suspended">معلق</option>
-                <option value="banned">مسدود</option>
-                <option value="pending_verification">در انتظار تایید</option>
-              </select>
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                نقش
-              </label>
-              <select
-                value={roleFilter}
-                onChange={(e) => setRoleFilter(e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              >
-                <option value="">همه نقش‌ها</option>
-                <option value="user">کاربر</option>
-                <option value="admin">مدیر</option>
-                <option value="super_admin">مدیر کل</option>
-                <option value="moderator">ناظر</option>
-              </select>
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                تعداد نمایش
-              </label>
-              <select
-                value={pageSize}
-                onChange={(e) => setPageSize(Number(e.target.value))}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              >
-                <option value={10}>10</option>
-                <option value={25}>25</option>
-                <option value={50}>50</option>
-                <option value={100}>100</option>
-              </select>
-            </div>
-          </div>
+               {" "}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  وضعیت
+                </label>
+                <select
+                  value={statusFilter}
+                  onChange={(e) => setStatusFilter(e.target.value)}
+                  className="w-full px-4 text-sm py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                >
+                  <option value="">همه وضعیت‌ها</option>
+                  <option value="active">فعال</option>
+                  <option value="suspended">معلق</option>
+                  <option value="banned">مسدود</option>
+                  <option value="pending_verification">در انتظار تایید</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  نقش
+                </label>
+                <select
+                  value={roleFilter}
+                  onChange={(e) => setRoleFilter(e.target.value)}
+                  className="w-full px-4 text-sm  py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                >
+                  <option value="">همه نقش‌ها</option>
+                  <option value="user">کاربر</option>
+                  <option value="admin">مدیر</option>
+                  <option value="super_admin">مدیر کل</option>
+                  <option value="moderator">ناظر</option>
+                </select>
+              </div>
+           </div>
         </div>
 
         {/* Users Table */}

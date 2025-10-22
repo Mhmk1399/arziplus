@@ -248,7 +248,7 @@ const BankingInfoAdmin = () => {
   }
 
   return (
-    <div className="min-h-screen p-6" dir="rtl">
+    <div className="min-h-screen p-2" dir="rtl">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="  mb-8">
@@ -259,8 +259,8 @@ const BankingInfoAdmin = () => {
         </div>
 
         {/* Filters */}
-        <div className="bg-white/80 backdrop-blur-sm border border-gray-200/50 rounded-2xl p-6 mb-6">
-          <div className="flex flex-wrap gap-4 items-center">
+        <div className="bg-white/80 backdrop-blur-sm border border-gray-200/50 rounded-2xl p-2 mb-6">
+          <div className="flex  flex-col md:flex-row gap-4 items-center">
             <div className="flex-1 min-w-64">
               <div className="relative">
                 <FaSearch className="absolute right-4 top-1/2 transform -translate-y-1/2 text-[#0A1D37]" />
@@ -273,25 +273,26 @@ const BankingInfoAdmin = () => {
                 />
               </div>
             </div>
-
-            <select
-              value={statusFilter}
-              onChange={(e) => setStatusFilter(e.target.value)}
-              className="px-4 py-4 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] transition-all"
-            >
-              <option value="">همه وضعیت‌ها</option>
-              <option value="pending_verification">در انتظار بررسی</option>
-              <option value="accepted">تایید شده</option>
-              <option value="rejected">رد شده</option>
-            </select>
-
-            <button
-              onClick={() => fetchBankingData()}
-              className="flex items-center gap-2 px-6 py-4 bg-gradient-to-r from-[#0A1D37] to-[#4DBFF0] text-white rounded-xl hover:shadow-lg transition-all"
-            >
-              <FaFilter />
-              اعمال فیلتر
-            </button>
+            <div className="flex gap-2">
+              {" "}
+              <select
+                value={statusFilter}
+                onChange={(e) => setStatusFilter(e.target.value)}
+                className="px-4 py-4 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] transition-all"
+              >
+                <option value="">همه وضعیت‌ها</option>
+                <option value="pending_verification">در انتظار بررسی</option>
+                <option value="accepted">تایید شده</option>
+                <option value="rejected">رد شده</option>
+              </select>
+              <button
+                onClick={() => fetchBankingData()}
+                className="flex items-center gap-2 px-6 py-4 bg-gradient-to-r from-[#0A1D37] to-[#4DBFF0] text-white rounded-xl hover:shadow-lg transition-all"
+              >
+                <FaFilter />
+                اعمال فیلتر
+              </button>
+            </div>
           </div>
         </div>
 
@@ -461,7 +462,10 @@ const BankingInfoAdmin = () => {
         selectedBankingInfo &&
         typeof document !== "undefined" &&
         createPortal(
-          <div dir="rtl" className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div
+            dir="rtl"
+            className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4"
+          >
             <div className="bg-white/90 backdrop-blur-sm border border-gray-200/50 rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl">
               <div className="p-6 border-b border-gray-200/50">
                 <div className="flex items-center gap-3">
@@ -607,7 +611,10 @@ const BankingInfoAdmin = () => {
         selectedBankingInfo &&
         typeof document !== "undefined" &&
         createPortal(
-          <div dir="rtl" className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div
+            dir="rtl"
+            className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4"
+          >
             <div className="bg-white/90 backdrop-blur-sm border border-gray-200/50 rounded-2xl max-w-xl w-full shadow-2xl">
               <div className="p-6 border-b border-gray-200/50">
                 <div className="flex items-center gap-3">

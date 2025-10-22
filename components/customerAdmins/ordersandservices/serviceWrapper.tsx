@@ -158,15 +158,6 @@ const ServiceWrapper: React.FC<ServiceWrapperProps> = ({
     if (isLoggedIn) {
       fetchUserStats();
     }
-
-    // Show appropriate message
-    const tabLabels = {
-      services: "خدمات",
-      orders: "سفارشات من",
-      terms: "قوانین و شرایط",
-    };
-
-    showToast.info(`بخش ${tabLabels[tabId]} باز شد`);
   };
 
   // User welcome section

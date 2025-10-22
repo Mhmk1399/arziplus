@@ -138,14 +138,14 @@ const UserWrapper: React.FC<AdminWrapperProps> = ({
       bgColor: "bg-gray-50",
     },
     {
-      title: "در انتظار احراز هویت",
+      title: "در انتظار احراز  ",
       value: adminStats.pendingCredentials,
       icon: <FaIdCard className="text-2xl text-[#0A1D37]" />,
       color: "",
       bgColor: "bg-gray-50",
     },
     {
-      title: "در انتظار تایید بانکی",
+      title: "در انتظار تایید  ",
       value: adminStats.pendingBanking,
       icon: <FaUniversity className="text-2xl text-[#0A1D37]" />,
       color: "",
@@ -161,15 +161,9 @@ const UserWrapper: React.FC<AdminWrapperProps> = ({
       fetchAdminStats();
     }
 
-    // Show appropriate message
-    const tabLabels = {
-      users: "مدیریت کاربران",
-      credentials: "بررسی احراز هویت",
-      banking: "بررسی اطلاعات بانکی",
-    };
+ 
 
-    showToast.info(`بخش ${tabLabels[tabId]} باز شد`);
-  };
+   };
 
   // Admin welcome section
   const renderAdminWelcome = () => {
@@ -184,9 +178,7 @@ const UserWrapper: React.FC<AdminWrapperProps> = ({
       <div className=" backdrop-blur-sm  rounded-2xl  sm:p-6 mb-8">
         <div className="flex items-center justify-between flex-wrap gap-4">
           <div className="flex items-center gap-4">
-            <div className="w-12 h-12  rounded-full flex items-center justify-center">
-              <FaCog className="text-[#0A1D37] text-xl" />
-            </div>
+         
             <div>
               <h2 className="sm:text-2xl text-base font-bold mb-2 text-[#0A1D37]">
                 سلام {adminName} عزیز
@@ -210,21 +202,21 @@ const UserWrapper: React.FC<AdminWrapperProps> = ({
     if (!isLoggedIn || statsLoading) return null;
 
     return (
-      <div className="grid grid-cols-2 md:grid-cols-4 w-full max-w-3xl  mx-auto gap-4 mb-8">
+      <div className="grid grid-cols-4  w-full max-w-3xl  mx-auto gap-1 md:gap-4 mb-8">
         {statsCards.map((stat, index) => (
           <div
             key={index}
-            className={`${stat.bgColor} backdrop-blur-sm border border-[#0A1D37]/10 rounded-xl p-4 hover:shadow-lg transition-all  duration-300`}
+            className={`${stat.bgColor} backdrop-blur-sm border border-[#0A1D37]/10 rounded-xl p-2 md:p-4 hover:shadow-lg transition-all  duration-300`}
           >
             <div className="flex items-center justify-between mb-2">
-              <div className={`p-2 bg-gradient-to-r ${stat.color} rounded-lg `}>
+              <div className={`p-2 bg-gradient-to-r ${stat.color} rounded-lg hidden md:block `}>
                 {stat.icon}
               </div>
               <div className="text-right">
-                <p className="text-2xl font-bold text-gray-900">{stat.value}</p>
+                <p className="md:text-2xl font-bold text-gray-900">{stat.value}</p>
               </div>
             </div>
-            <p className="text-sm text-gray-600 font-medium">{stat.title}</p>
+            <p className="text-xs md:text-sm text-gray-600 font-medium">{stat.title}</p>
           </div>
         ))}
       </div>
@@ -315,7 +307,7 @@ const UserWrapper: React.FC<AdminWrapperProps> = ({
               <button
                 key={tab.id}
                 onClick={() => handleTabChange(tab.id)}
-                className={`relative flex flex-col-reverse items-center justify-center gap-3 md:px-6 md:py-4 rounded-md font-medium transition-all duration-300 ${
+                className={`relative flex flex-col-reverse items-center justify-center gap-3 p-2 md:px-6 md:py-4 rounded-md font-medium transition-all duration-300 ${
                   activeTab === tab.id
                     ? "border-[#0A1D37] border bg-gray-50 text-[#0A1D37] shadow-lg scale-105"
                     : "text-gray-700  hover:scale-105"
@@ -334,11 +326,11 @@ const UserWrapper: React.FC<AdminWrapperProps> = ({
                 </div>
 
                 {/* Notification Badge */}
-                {tab.badge && (
+                {/* {tab.badge && (
                   <div className="absolute -top-4 -right-4 w-6 h-6 bg-red-500 text-white text-xs rounded-full flex items-center justify-center font-bold">
                     {tab.badge}
                   </div>
-                )}
+                )} */}
               </button>
             ))}
           </div>

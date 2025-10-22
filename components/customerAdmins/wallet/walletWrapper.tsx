@@ -6,8 +6,7 @@ import {
   FaArrowUp,
   FaArrowDown,
   FaUser,
-   FaRedo,
- 
+  FaRedo,
   FaHourglassHalf,
 } from "react-icons/fa";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
@@ -198,14 +197,7 @@ const WalletWrapper: React.FC<WalletWrapperProps> = ({
     setActiveTab(tabId);
     fetchWalletData(); // Refresh data when switching tabs
 
-    const tabLabels = {
-      dashboard: "داشبورد کیف پول",
-      incomes: "تاریخچه واریزی‌ها",
-      withdraws: "درخواست‌های برداشت",
-      "add-funds": "مدیریت موجودی",
-    };
-
-    showToast.info(`بخش ${tabLabels[tabId]} باز شد`);
+    
   };
 
   // Stats cards section
@@ -358,8 +350,6 @@ const WalletWrapper: React.FC<WalletWrapperProps> = ({
   return (
     <div className={`min-h-screen ${className}`} dir="rtl">
       <div className="container mx-auto px-3 sm:px-4 lg:px-6 py-4 sm:py-6 lg:py-8">
-      
-
         {/* Stats Cards */}
         {renderStatsCards()}
 
@@ -409,8 +399,6 @@ const WalletWrapper: React.FC<WalletWrapperProps> = ({
                     {tab.badge}
                   </div>
                 )}
-
-           
               </button>
             ))}
           </div>
@@ -421,45 +409,6 @@ const WalletWrapper: React.FC<WalletWrapperProps> = ({
           <div className="min-h-[400px] sm:min-h-[500px] lg:min-h-[600px]">
             {renderActiveContent()}
           </div>
-        </div>
-
-        {/* Quick Actions - Floating Buttons for Mobile */}
-        <div className="fixed bottom-6 left-1/2 transform -translate-x-1/2 sm:hidden z-40 flex gap-3">
-          <button
-            onClick={() => handleTabChange("dashboard")}
-            className={`p-4 rounded-full shadow-2xl transition-all duration-300 ${
-              activeTab === "dashboard"
-                ? "bg-gradient-to-r from-[#0A1D37] to-[#0A1D37]/80 text-white scale-110"
-                : "bg-white text-gray-700 hover:scale-105"
-            }`}
-          >
-            <FaWallet className="text-xl" />
-          </button>
-          <button
-            onClick={() => handleTabChange("incomes")}
-            className={`p-4 rounded-full shadow-2xl transition-all duration-300 relative ${
-              activeTab === "incomes"
-                ? "bg-gradient-to-r from-[#0A1D37] to-[#0A1D37]/80 text-white scale-110"
-                : "bg-white text-gray-700 hover:scale-105"
-            }`}
-          >
-            <FaArrowUp className="text-xl" />
-            {walletStats.pendingIncomes > 0 && (
-              <div className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 rounded-full flex items-center justify-center text-white text-xs font-bold">
-                {walletStats.pendingIncomes}
-              </div>
-            )}
-          </button>
-          <button
-            onClick={() => handleTabChange("withdraws")}
-            className={`p-4 rounded-full shadow-2xl transition-all duration-300 ${
-              activeTab === "withdraws"
-                ? "bg-gradient-to-r from-[#0A1D37] to-[#0A1D37]/80 text-white scale-110"
-                : "bg-white text-gray-700 hover:scale-105"
-            }`}
-          >
-            <FaArrowDown className="text-xl" />
-          </button>
         </div>
       </div>
     </div>

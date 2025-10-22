@@ -45,10 +45,10 @@ const CustomerLotteryWrapper = () => {
                 <FaTicketAlt className="text-white text-2xl sm:text-3xl" />
               </div>
               <div className="space-y-1.5">
-                <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#0A1D37] leading-tight">
+                <h1 className="text-xl  lg:text-3xl font-bold text-[#0A1D37] leading-tight">
                   خدمات من
                 </h1>
-                <p className="text-sm sm:text-base text-gray-600 leading-relaxed">
+                <p className="text-xs sm:text-base text-gray-600 leading-relaxed">
                   مدیریت ثبت‌نام‌های لاتاری و رزروهای حضوری
                 </p>
               </div>
@@ -78,11 +78,11 @@ const CustomerLotteryWrapper = () => {
               </Link>
 
               <Link
-                href="/lottery/form/hozori"
+                href="/lottery/form/present"
                 className="
                   flex items-center justify-center gap-3
                   px-6 sm:px-8 py-3.5 sm:py-4
-                  bg-gradient-to-r from-green-600 to-blue-600 
+                  bg-gradient-to-l from-[#0A1D37] to-[#4DBFF0] 
                   text-white font-bold
                   rounded-xl sm:rounded-2xl
                   hover:shadow-2xl hover:scale-105 
@@ -102,19 +102,18 @@ const CustomerLotteryWrapper = () => {
 
           {/* Tabs Navigation - Improved design */}
           <div className="relative">
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-1 px-2 py-2">
+            <div className="grid grid-cols-2 justify-center items-center gap-1  ">
               {tabs.map((tab) => (
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
                   className={`
                     group
-                    flex mx-2 items-center gap-3 sm:gap-4
-                    px-5 sm:px-6 py-3.5 sm:py-4
+                    flex   items-center gap-3 sm:gap-4
+                    px-2  py-3.5 sm:py-4
                     rounded-xl sm:rounded-2xl
                     transition-all duration-300
-                    whitespace-nowrap
-                    min-w-fit
+                     min-w-fit
                     ${
                       activeTab === tab.id
                         ? `
@@ -141,13 +140,13 @@ const CustomerLotteryWrapper = () => {
                   <div
                     className={`
                       flex-shrink-0 
-                      p-2 sm:p-2.5
+                      md:p-2 sm:p-2.5
                       rounded-lg sm:rounded-xl
                       transition-all duration-300
                       ${
                         activeTab === tab.id
-                          ? "text-[#0A1D37] bg-white shadow-md scale-110"
-                          : "text-gray-500 bg-white/70 group-hover:text-[#0A1D37] group-hover:bg-[#0A1D37]/10 group-hover:scale-105"
+                          ? "text-[#0A1D37]  shadow-md scale-110"
+                          : "text-gray-500   group-hover:text-[#0A1D37] group-hover:bg-[#0A1D37]/10 group-hover:scale-105"
                       }
                     `}
                   >
@@ -156,10 +155,10 @@ const CustomerLotteryWrapper = () => {
 
                   {/* Text Content */}
                   <div className="text-right space-y-0.5">
-                    <p className="font-bold text-sm sm:text-base">
+                    <p className="font-bold text-xs sm:text-base">
                       {tab.label}
                     </p>
-                    <p className="text-xs sm:text-sm opacity-75 leading-tight max-w-[200px]">
+                    <p className="text-xs sm:text-sm hidden md:block opacity-75 leading-tight max-w-[200px]">
                       {tab.description}
                     </p>
                   </div>
@@ -183,14 +182,7 @@ const CustomerLotteryWrapper = () => {
         >
           <ActiveComponent />
         </div>
-
-        {/* Optional: Info Footer */}
-        <div className="mt-6 sm:mt-8 text-center">
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-50 border border-blue-100 rounded-xl text-sm text-blue-700">
-            <span className="text-lg">ℹ️</span>
-            <span>برای مشاهده جزئیات هر ثبت‌نام یا رزرو، روی آن کلیک کنید</span>
-          </div>
-        </div>
+ 
       </div>
     </div>
   );

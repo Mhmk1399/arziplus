@@ -77,7 +77,7 @@ const ServiceCard = ({ service }: { service: Service }) => {
   console.log("Service image URL:", service.image);
 
   return (
-    <div className="group relative overflow-hidden  w-60 md:w-full rounded-2xl sm:rounded-3xl  hover:shadow-2xl transition-all duration-500  border border-[#0A1D37]/40 ">
+    <div className="group relative overflow-hidden  w-60 md:w-full rounded-2xl sm:rounded-3xl  hover:shadow-lg transition-all duration-500  border border-[#0A1D37]/40 ">
       {/* Service Image */}
       <div className="relative h-48 sm:h-56 lg:h-64 w-full overflow-hidden">
         {!imageError && service.image ? (
@@ -157,7 +157,7 @@ const ServiceCard = ({ service }: { service: Service }) => {
       </div>
 
       {/* CTA Button */}
-      <div className="p-1 lg:p-4  ">
+      <div className="p-2 lg:p-4  ">
         <Link href={`/services/${service.slug}`}>
           <button className="w-full flex items-center cursor-pointer shadow-[10px_8px_30px_rgb(0,0,0,0.4)] hover:shadow-[0_20px_60px_rgb(0,0,0,0.3)]  justify-center gap-2 bg-gradient-to-r from-[#0A1D37] to-[#0A1D37]/90 hover:from-[#0A1D37]/90 hover:to-[#0A1D37] text-white font-bold py-3 sm:py-3.5 lg:py-4 px-4 sm:px-5 lg:px-6 rounded-xl sm:rounded-2xl transition-all duration-300   active:scale-95">
             <span className="text-sm sm:text-base">ثبت درخواست</span>
