@@ -25,7 +25,7 @@ interface Request {
       }>;
     }>;
   };
-  data?: Record<string, any>; // User submitted form data
+  data?: Record<string, string>; // User submitted form data
   paymentUrl?: string;
   customer: {
     nationalCredentials: {
@@ -218,7 +218,7 @@ export default function AdminRequestsTable({
   };
 
   const renderFormData = (
-    data: Record<string, any> | undefined,
+    data: Record<string, string> | undefined,
     service: Request["service"]
   ) => {
     if (!data || Object.keys(data).length === 0) {

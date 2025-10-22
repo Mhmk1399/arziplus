@@ -35,21 +35,91 @@ interface payment {
 }
 
 interface hozoridata {
-  Date: Date;
-  name: string;
-  lastname: string;
-  childrensCount: number;
-  phoneNumber: number | string;
-  maridgeStatus: string;
-  time: string;
+  Date?: string | Date;
+  name?: string;
+  lastname?: string;
+  childrensCount?: number;
+  phoneNumber?: number | string;
+  maridgeStatus?: string;
+  time?: string;
+  // nested reservation data (optional)
   reservationData?: {
-    Date: Date;
-    name: string;
-    lastname: string;
-    childrensCount: number;
-    maridgeStatus: string;
-    time: string;
+    Date?: string | Date;
+    name?: string;
+    lastname?: string;
+    childrensCount?: number;
+    maridgeStatus?: string;
+    time?: string;
+    phoneNumber?: number | string;
+    [key: string]: unknown;
   };
+  [key: string]: unknown; // allow extra keys such as imageUrl
+}
+
+// Types for lottery form data (avoid using `any`)
+interface BirthDate {
+  year?: string;
+  month?: string;
+  day?: string;
+}
+
+interface InitialInformations {
+  firstName?: string;
+  lastName?: string;
+  gender?: string;
+  birthDate?: BirthDate;
+  country?: string;
+  city?: string;
+  citizenshipCountry?: string;
+  [key: string]: unknown;
+}
+
+interface Residence {
+  residanceCountry?: string;
+  residanceCity?: string;
+  residanseState?: string;
+  postalCode?: string;
+  residanseAdress?: string;
+  [key: string]: unknown;
+}
+
+interface Contact {
+  activePhoneNumber?: string;
+  secondaryPhoneNumber?: string;
+  email?: string;
+  [key: string]: unknown;
+}
+
+interface OtherInfo {
+  persianName?: string;
+  persianLastName?: string;
+  lastDegree?: string;
+  partnerCitizenShip?: string;
+  imageUrl?: string;
+  [key: string]: unknown;
+}
+
+interface Person {
+  initialInformations?: InitialInformations;
+  residanceInformation?: Residence[];
+  contactInformations?: Contact[];
+  otherInformations?: OtherInfo[];
+  [key: string]: unknown;
+}
+
+interface FamilyInfo {
+  maridgeState?: boolean;
+  numberOfChildren?: number;
+  towPeopleRegistration?: boolean;
+  [key: string]: unknown;
+}
+
+interface LotteryFormData {
+  famillyInformations?: FamilyInfo[];
+  registererInformations?: Person[];
+  registererPartnerInformations?: Person[];
+  registererChildformations?: Person[];
+  [key: string]: unknown;
 }
 
 // Helper function to generate unique request number
@@ -223,15 +293,24 @@ async function createServiceRequest(payment: payment, userId: string) {
 async function createLotteryRegistration(
   payment: payment,
   userId: string,
-  lotteryData?: object
+  lotteryData?: LotteryFormData
 ) {
   try {
     // Use provided lotteryData or try to get from metadata
-    let registrationData = lotteryData;
+    let registrationData: LotteryFormData | undefined;
 
+    // If lotteryData was passed in and looks like an object, use it
+    if (lotteryData && typeof lotteryData === "object") {
+      registrationData = lotteryData;
+    }
+
+    // Otherwise try to parse from payment metadata safely
     if (!registrationData && payment.metadata?.lotteryData) {
       try {
-        registrationData = JSON.parse(payment.metadata.lotteryData);
+        const parsed: unknown = JSON.parse(payment.metadata.lotteryData);
+        if (parsed && typeof parsed === "object") {
+          registrationData = parsed as LotteryFormData;
+        }
       } catch (e) {
         console.log("Failed to parse lotteryData from metadata");
       }
@@ -241,6 +320,71 @@ async function createLotteryRegistration(
       throw new Error("اطلاعات قرعهکشی یافت نشد");
     }
 
+    // Normalize registrationData to ensure required sections exist so Mongoose save won't fail
+    const defaultPerson = () => ({
+      initialInformations: {
+        firstName: "",
+        lastName: "",
+        gender: "",
+        birthDate: { year: "", month: "", day: "" },
+        country: "",
+        city: "",
+        citizenshipCountry: "",
+      },
+      residanceInformation: [
+        {
+          residanceCountry: "",
+          residanceCity: "",
+          residanseState: "",
+          postalCode: "",
+          residanseAdress: "",
+        },
+      ],
+      contactInformations: [
+        { activePhoneNumber: "", secondaryPhoneNumber: "", email: "" },
+      ],
+      otherInformations: [
+        {
+          persianName: "",
+          persianLastName: "",
+          lastDegree: "",
+          partnerCitizenShip: "",
+          imageUrl: "",
+        },
+      ],
+    });
+
+    const reg = {
+      famillyInformations:
+        registrationData.famillyInformations &&
+        registrationData.famillyInformations.length
+          ? registrationData.famillyInformations
+          : [
+              {
+                maridgeState: false,
+                numberOfChildren: 0,
+                towPeopleRegistration: false,
+              },
+            ],
+      registererInformations:
+        registrationData.registererInformations &&
+        registrationData.registererInformations.length
+          ? registrationData.registererInformations
+          : [defaultPerson()],
+      registererPartnerInformations:
+        registrationData.registererPartnerInformations &&
+        registrationData.registererPartnerInformations.length
+          ? registrationData.registererPartnerInformations
+          : [],
+      registererChildformations:
+        registrationData.registererChildformations &&
+        registrationData.registererChildformations.length
+          ? registrationData.registererChildformations
+          : [],
+      // include any other top-level fields from incoming data (like payment info overrides)
+      ...registrationData,
+    };
+
     // Create lottery registration
     const lotteryRegistration = new Lottery({
       userId: userId,
@@ -249,8 +393,8 @@ async function createLotteryRegistration(
       paymentAmount: payment.amount,
       isPaid: true,
       paymentDate: payment.verifiedAt || new Date(),
-      // Copy all lottery form data
-      ...registrationData,
+      // Copy normalized lottery form data
+      ...reg,
       submittedAt: new Date(),
     });
 
@@ -322,11 +466,11 @@ async function createWalletCharge(payment: payment, userId: string) {
 async function createHozoriReservation(
   payment: payment,
   userId: string,
-  hozoriData: hozoridata
+  hozoriData?: hozoridata
 ) {
   try {
     // Use provided hozoriData or try to get from metadata
-    let reservationData = hozoriData;
+    let reservationData: hozoridata | undefined = hozoriData;
 
     if (!reservationData && payment.metadata?.hozoriData) {
       try {
@@ -336,39 +480,40 @@ async function createHozoriReservation(
       }
     }
 
-    if (!reservationData) {
-      // Create a basic reservation with available data
-      const customerName = payment.metadata?.customerName || "کاربر";
-      const [name, lastname] = customerName.split(" ");
+    // Build a normalized local 'res' object with defaults to avoid TS 'possibly undefined' errors
+    const customerName = payment.metadata?.customerName || "کاربر";
+    const [defaultName, defaultLastname] = customerName.split(" ");
 
-      reservationData = {
-        name: name || "کاربر",
-        lastname: lastname || "",
-        phoneNumber: payment.metadata?.customerPhone || "",
-        childrensCount: 0,
-        maridgeStatus: "single",
-        Date: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days from now
-        time: "09:00",
-      };
-    }
+    const res: hozoridata = {
+      name: reservationData?.name || defaultName || "کاربر",
+      lastname: reservationData?.lastname || defaultLastname || "",
+      phoneNumber:
+        reservationData?.phoneNumber || payment.metadata?.customerPhone || "",
+      childrensCount: reservationData?.childrensCount || 0,
+      maridgeStatus: reservationData?.maridgeStatus || "single",
+      Date:
+        reservationData?.Date || new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+      time: reservationData?.time || "09:00",
+      ...(reservationData || {}),
+    };
 
-    // Parse the date from hozoriData
+    // Parse the date from res.Date
     let appointmentDate: Date;
-    if (reservationData.Date) {
-      appointmentDate = new Date(reservationData.Date);
+    if (res.Date) {
+      appointmentDate = new Date(res.Date as string | Date);
     } else {
       appointmentDate = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
     }
 
     // Create hozori reservation
     const hozoriReservation = new Hozori({
-      name: reservationData.name,
-      lastname: reservationData.lastname,
-      phoneNumber: reservationData.phoneNumber,
-      childrensCount: reservationData.childrensCount || 0,
-      maridgeStatus: reservationData.maridgeStatus,
+      name: res.name,
+      lastname: res.lastname,
+      phoneNumber: res.phoneNumber,
+      childrensCount: res.childrensCount || 0,
+      maridgeStatus: res.maridgeStatus,
       Date: appointmentDate,
-      time: reservationData.time,
+      time: res.time,
       paymentType: "direct",
       paymentDate: payment.verifiedAt || new Date(),
       paymentImage: "",
@@ -383,7 +528,7 @@ async function createHozoriReservation(
       id: hozoriReservation._id,
       status: hozoriReservation.status,
       appointmentDate: appointmentDate,
-      time: reservationData.time,
+      time: res.time,
     };
   } catch (error) {
     console.log("Error creating hozori reservation:", error);
