@@ -432,7 +432,7 @@ export default function NewNavbar() {
                   </button>
 
                   {showUserDropdown && (
-                    <div className="absolute left-0 mt-2 w-48 bg-white/80 backdrop-blur-xl border border-[#0A1D37]/20 rounded-xl shadow-2xl shadow-[#0A1D37]/10 overflow-hidden z-50">
+                    <div className="absolute left-0 mt-2 w-48 bg-white/95 backdrop-blur-xl border border-[#0A1D37]/20 rounded-xl shadow-2xl shadow-[#0A1D37]/10 overflow-hidden z-50">
                       <Link
                         href="/dashboard"
                         onClick={() => setShowUserDropdown(false)}

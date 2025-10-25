@@ -13,7 +13,6 @@ import {
   FaUser,
   FaChild,
   FaIdCard,
- 
   FaCreditCard,
   FaMoneyBillWave,
   FaReceipt,
@@ -503,7 +502,7 @@ const LotteryAdminList = () => {
             <p className="text-gray-600">هیچ ثبت‌نامی یافت نشد</p>
           </div>
         ) : (
-          <div className="bg-white rounded-xl shadow-sm border overflow-hidden">
+          <div className="bg-white rounded-xl shadow-sm   overflow-hidden">
             <div className="overflow-x-auto">
               <table className="min-w-full divide-y divide-gray-200">
                 <thead className="bg-gray-50">
