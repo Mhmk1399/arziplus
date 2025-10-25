@@ -80,7 +80,7 @@ export async function POST(request: NextRequest) {
 
     for (const field of requiredFields) {
       if (!body[field]) {
-        console.error(`Missing required field: ${field}`, body[field]);
+        console.log(`Missing required field: ${field}`, body[field]);
         return NextResponse.json(
           {
             success: false,
@@ -94,7 +94,7 @@ export async function POST(request: NextRequest) {
 
     // Validate phone number format
     if (!/^09\d{9}$/.test(body.phoneNumber)) {
-      console.error("Invalid phone number format:", body.phoneNumber);
+      console.log("Invalid phone number format:", body.phoneNumber);
       return NextResponse.json(
         {
           success: false,
@@ -107,7 +107,7 @@ export async function POST(request: NextRequest) {
 
     // Validate children count
     if (body.childrensCount < 0 || body.childrensCount > 10) {
-      console.error("Invalid children count:", body.childrensCount);
+      console.log("Invalid children count:", body.childrensCount);
       return NextResponse.json(
         {
           success: false,
@@ -121,7 +121,7 @@ export async function POST(request: NextRequest) {
     // Validate marital status
     const validMaritalStatus = ["single", "married"];
     if (!validMaritalStatus.includes(body.maridgeStatus)) {
-      console.error("Invalid marital status:", body.maridgeStatus);
+      console.log("Invalid marital status:", body.maridgeStatus);
       return NextResponse.json(
         {
           success: false,
@@ -135,7 +135,7 @@ export async function POST(request: NextRequest) {
     // Validate time slot
     const validTimeSlots = ["09:00", "10:00", "14:00", "15:00"];
     if (!validTimeSlots.includes(body.time)) {
-      console.error("Invalid time slot:", body.time);
+      console.log("Invalid time slot:", body.time);
       return NextResponse.json(
         {
           success: false,
@@ -167,7 +167,7 @@ export async function POST(request: NextRequest) {
         throw new Error("Invalid date");
       }
     } catch (error) {
-      console.error("Date parsing error:", error, "Original date:", body.Date);
+      console.log("Date parsing error:", error, "Original date:", body.Date);
       return NextResponse.json(
         {
           success: false,
@@ -189,7 +189,7 @@ export async function POST(request: NextRequest) {
     console.log("Date validation - Is past?", appointmentDate < todayUTC);
 
     if (appointmentDate < todayUTC) {
-      console.error(
+      console.log(
         "Past date error - Today UTC:",
         todayUTC,
         "Appointment:",
@@ -216,7 +216,7 @@ export async function POST(request: NextRequest) {
       console.log("Existing reservation check result:", existingReservation);
 
       if (existingReservation) {
-        console.error(
+        console.log(
           "Conflict - existing reservation found:",
           existingReservation
         );
@@ -230,7 +230,7 @@ export async function POST(request: NextRequest) {
         );
       }
     } catch (dbError) {
-      console.error(
+      console.log(
         "Database error during existing reservation check:",
         dbError
       );
@@ -288,7 +288,7 @@ export async function POST(request: NextRequest) {
       savedHozori = await newHozori.save();
       console.log("Successfully saved hozori reservation:", savedHozori._id);
     } catch (saveError) {
-      console.error("Database save error:", saveError);
+      console.log("Database save error:", saveError);
       return NextResponse.json(
         { success: false, error: "خطا در ذخیره رزرو" },
         { status: 400 }
@@ -317,7 +317,7 @@ export async function POST(request: NextRequest) {
       { status: 201 }
     );
   } catch (error) {
-    console.error("Error creating hozori reservation:", error);
+    console.log("Error creating hozori reservation:", error);
 
     // Handle specific MongoDB errors
     if (error instanceof mongoose.Error.ValidationError) {
@@ -427,7 +427,7 @@ export async function GET(request: NextRequest) {
       },
     });
   } catch (error) {
-    console.error("Error fetching hozori reservations:", error);
+    console.log("Error fetching hozori reservations:", error);
     return NextResponse.json(
       { success: false, error: "خطای داخلی سرور" },
       { status: 500 }
@@ -491,7 +491,7 @@ export async function PUT(request: NextRequest) {
       data: updatedHozori,
     });
   } catch (error) {
-    console.error("Error updating hozori reservation:", error);
+    console.log("Error updating hozori reservation:", error);
     return NextResponse.json(
       { success: false, error: "خطای داخلی سرور" },
       { status: 500 }
@@ -552,7 +552,7 @@ export async function DELETE(request: NextRequest) {
       message: "رزرو با موفقیت حذف شد",
     });
   } catch (error) {
-    console.error("Error deleting hozori reservation:", error);
+    console.log("Error deleting hozori reservation:", error);
     return NextResponse.json(
       { success: false, error: "خطای داخلی سرور" },
       { status: 500 }

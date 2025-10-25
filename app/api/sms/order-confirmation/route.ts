@@ -57,7 +57,7 @@ export async function POST(request: NextRequest) {
       );
     }
   } catch (error) {
-    console.error("SMS API error:", error);
+    console.log("SMS API error:", error);
     return NextResponse.json(
       { 
         success: false, 

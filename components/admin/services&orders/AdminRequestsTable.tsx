@@ -848,7 +848,9 @@ export default function AdminRequestsTable({
                       </span>
                     </div>
                     <div>
-                      <span className="font-medium  text-[#0A1D37]">ایمیل:</span>
+                      <span className="font-medium  text-[#0A1D37]">
+                        ایمیل:
+                      </span>
                       <span className="mr-2 text-xs text-[#0A1D37]/80">
                         {selectedRequest.customer.contactInfo.email}
                       </span>

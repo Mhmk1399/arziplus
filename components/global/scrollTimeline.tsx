@@ -2,6 +2,7 @@
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { estedadBold } from "@/next-persian-fonts/estedad";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -285,7 +286,7 @@ export default function SmoothTimeline({
           <h2
             className={`${
               compact ? "text-lg md:text-2xl" : "text-xl md:text-3xl"
-            } font-extrabold mb-6 text-[#0A1D37]`}
+            } ${estedadBold.className} mb-6 text-[#0A1D37]`}
           >
             {title}
           </h2>
@@ -389,7 +390,7 @@ export default function SmoothTimeline({
                   <h3
                     className={`${
                       compact ? "text-sm md:text-lg" : "text-lg md:text-lg"
-                    } font-bold ${
+                    } ${estedadBold.className} ${
                       compact ? "mb-2" : "mb-3"
                     } text-[#0A1D37] relative z-10`}
                   >

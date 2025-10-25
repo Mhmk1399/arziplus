@@ -19,8 +19,7 @@ import {
   FaMoneyBillWave,
   FaReceipt,
   FaCalendarAlt,
-  FaEdit,
-  FaEye,
+   FaEye,
 } from "react-icons/fa";
 
 interface HozoriReservation {

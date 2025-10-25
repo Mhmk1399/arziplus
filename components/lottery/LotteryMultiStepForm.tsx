@@ -187,6 +187,12 @@ const LotteryMultiStepForm: React.FC = () => {
       description: "اطلاعات فرزندان ",
       conditional: () => formData.famillyInformations[0]?.numberOfChildren > 0,
     },
+    {
+      id: 4,
+      title: "تایید اطلاعات",
+      icon: <FaCheck className="text-xl" />,
+      description: "بررسی و تایید اطلاعات",
+    },
   ];
 
   const getVisibleSteps = () => {
@@ -301,6 +307,9 @@ const LotteryMultiStepForm: React.FC = () => {
         }
         break;
 
+      case 4: // Confirmation step - no additional validation needed
+        break;
+
       case 3: // Children Information
         if (formData.famillyInformations[0]?.numberOfChildren > 0) {
           formData.registererChildformations.forEach((child, index) => {
@@ -369,56 +378,56 @@ const LotteryMultiStepForm: React.FC = () => {
   };
 
   // Helper function to render form fields with validation
-  const renderFormField = (
-    type: "text" | "select" | "email",
-    label: string,
-    value: string,
-    onChange: (value: string) => void,
-    errorKey: string,
-    placeholder?: string,
-    options?: { value: string; label: string }[],
-    required: boolean = true,
-    className?: string
-  ) => (
-    <div className={className}>
-      <label className="block text-sm font-medium text-gray-700 mb-1">
-        {label} {required && <span className="text-red-500">*</span>}
-      </label>
-      {type === "select" ? (
-        <select
-          value={value}
-          onChange={(e) => onChange(e.target.value)}
-          className={`w-full p-2 md:p-3 border rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] outline-none transition-all ${
-            validationErrors[errorKey] ? "border-red-500" : "border-gray-300"
-          }`}
-          required={required}
-        >
-          <option value="">{placeholder || "انتخاب کنید"}</option>
-          {options?.map((opt) => (
-            <option key={opt.value} value={opt.value}>
-              {opt.label}
-            </option>
-          ))}
-        </select>
-      ) : (
-        <input
-          type={type}
-          placeholder={placeholder}
-          value={value}
-          onChange={(e) => onChange(e.target.value)}
-          className={`w-full p-2 md:p-3 border outline-none rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all ${
-            validationErrors[errorKey] ? "border-red-500" : "border-gray-300"
-          }`}
-          required={required}
-        />
-      )}
-      {validationErrors[errorKey] && (
-        <p className="text-red-500 text-xs mt-1">
-          {validationErrors[errorKey]}
-        </p>
-      )}
-    </div>
-  );
+  // const renderFormField = (
+  //   type: "text" | "select" | "email",
+  //   label: string,
+  //   value: string,
+  //   onChange: (value: string) => void,
+  //   errorKey: string,
+  //   placeholder?: string,
+  //   options?: { value: string; label: string }[],
+  //   required: boolean = true,
+  //   className?: string
+  // ) => (
+  //   <div className={className}>
+  //     <label className="block text-sm font-medium text-gray-700 mb-1">
+  //       {label} {required && <span className="text-red-500">*</span>}
+  //     </label>
+  //     {type === "select" ? (
+  //       <select
+  //         value={value}
+  //         onChange={(e) => onChange(e.target.value)}
+  //         className={`w-full p-2 md:p-3 border rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] outline-none transition-all ${
+  //           validationErrors[errorKey] ? "border-red-500" : "border-gray-300"
+  //         }`}
+  //         required={required}
+  //       >
+  //         <option value="">{placeholder || "انتخاب کنید"}</option>
+  //         {options?.map((opt) => (
+  //           <option key={opt.value} value={opt.value}>
+  //             {opt.label}
+  //           </option>
+  //         ))}
+  //       </select>
+  //     ) : (
+  //       <input
+  //         type={type}
+  //         placeholder={placeholder}
+  //         value={value}
+  //         onChange={(e) => onChange(e.target.value)}
+  //         className={`w-full p-2 md:p-3 border outline-none rounded-xl focus:ring-2 focus:ring-[#FF7A00] focus:border-[#FF7A00] transition-all ${
+  //           validationErrors[errorKey] ? "border-red-500" : "border-gray-300"
+  //         }`}
+  //         required={required}
+  //       />
+  //     )}
+  //     {validationErrors[errorKey] && (
+  //       <p className="text-red-500 text-xs mt-1">
+  //         {validationErrors[errorKey]}
+  //       </p>
+  //     )}
+  //   </div>
+  // );
 
   // Fetch wallet balance
   const fetchWalletBalance = async () => {
@@ -435,7 +444,9 @@ const LotteryMultiStepForm: React.FC = () => {
       if (response.ok) {
         const data = await response.json();
         // Access the correct property: data.stats.currentBalance or data.wallet.currentBalance
-        setWalletBalance(data.stats?.currentBalance || data.wallet?.currentBalance || 0);
+        setWalletBalance(
+          data.stats?.currentBalance || data.wallet?.currentBalance || 0
+        );
       }
     } catch (error) {
       console.log("Error fetching wallet balance:", error);
@@ -634,8 +645,6 @@ const LotteryMultiStepForm: React.FC = () => {
       setIsSubmitting(false);
     }
   };
-
-
 
   // Submit lottery registration after successful payment
   const submitLotteryRegistration = async (
@@ -979,9 +988,274 @@ const LotteryMultiStepForm: React.FC = () => {
         return renderPartnerInfoStep();
       case 3:
         return renderChildrenInfoStep();
+      case 4:
+        return renderConfirmationStep();
       default:
         return null;
     }
+  };
+
+  const renderConfirmationStep = () => {
+    const family = formData.famillyInformations[0];
+    const registerer = formData.registererInformations[0];
+    const partner = formData.registererPartnerInformations[0];
+
+    return (
+      <div className="space-y-6">
+        <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-6 rounded-2xl border border-gray-200">
+          <h3 className="text-lg font-bold text-[#0A1D37] mb-6 flex items-center gap-3">
+            <FaCheck className="text-[#0A1D37]" />
+            تایید اطلاعات ثبت نام
+          </h3>
+
+          {/* Family Information */}
+          <div className="mb-6">
+            <h4 className="font-semibold text-[#0A1D37] mb-3 flex items-center gap-2">
+              <FaUsers className="text-[#FF7A00]" />
+              اطلاعات خانوادگی
+            </h4>
+            <div className="bg-white p-4 rounded-xl border border-gray-200">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
+                <div>
+                  <span className="text-gray-600">وضعیت تأهل:</span>
+                  <span className="font-medium mr-2">
+                    {family?.maridgeState ? "متأهل" : "مجرد"}
+                  </span>
+                </div>
+                {family?.maridgeState && (
+                  <div>
+                    <span className="text-gray-600">نوع ثبت نام:</span>
+                    <span className="font-medium mr-2">
+                      {family?.towPeopleRegistration
+                        ? "ثبت نام  دو نفره"
+                        : "ثبت نام  تک نفره"}
+                    </span>
+                  </div>
+                )}
+                <div>
+                  <span className="text-gray-600">تعداد فرزندان:</span>
+                  <span className="font-medium mr-2">
+                    {family?.numberOfChildren} نفر
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Registerer Information */}
+          <div className="mb-6">
+            <h4 className="font-semibold text-[#0A1D37] mb-3 flex items-center gap-2">
+              <FaUser className="text-[#FF7A00]" />
+              اطلاعات ثبت کننده
+            </h4>
+            <div className="bg-white p-4 rounded-xl border border-gray-200">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
+                <div>
+                  <span className="text-gray-600">نام:</span>
+                  <span className="font-medium mr-2">
+                    {registerer?.initialInformations.firstName}
+                  </span>
+                </div>
+                <div>
+                  <span className="text-gray-600">نام خانوادگی:</span>
+                  <span className="font-medium mr-2">
+                    {registerer?.initialInformations.lastName}
+                  </span>
+                </div>
+                <div>
+                  <span className="text-gray-600">نام فارسی:</span>
+                  <span className="font-medium mr-2">
+                    {registerer?.otherInformations[0]?.persianName}
+                  </span>
+                </div>
+                <div>
+                  <span className="text-gray-600">نام خانوادگی فارسی:</span>
+                  <span className="font-medium mr-2">
+                    {registerer?.otherInformations[0]?.persianLastName}
+                  </span>
+                </div>
+                <div>
+                  <span className="text-gray-600">جنسیت:</span>
+                  <span className="font-medium mr-2">
+                    {registerer?.initialInformations.gender === "male"
+                      ? "مرد"
+                      : "زن"}
+                  </span>
+                </div>
+                <div>
+                  <span className="text-gray-600">تاریخ تولد:</span>
+                  <span className="font-medium mr-2">
+                    {registerer?.initialInformations.birthDate.year}/
+                    {registerer?.initialInformations.birthDate.month}/
+                    {registerer?.initialInformations.birthDate.day}
+                  </span>
+                </div>
+                <div>
+                  <span className="text-gray-600">کشور تولد:</span>
+                  <span className="font-medium mr-2">
+                    {registerer?.initialInformations.country}
+                  </span>
+                </div>
+                <div>
+                  <span className="text-gray-600">شهر تولد:</span>
+                  <span className="font-medium mr-2">
+                    {registerer?.initialInformations.city}
+                  </span>
+                </div>
+                <div>
+                  <span className="text-gray-600">ایمیل:</span>
+                  <span className="font-medium mr-2">
+                    {registerer?.contactInformations[0]?.email}
+                  </span>
+                </div>
+                <div>
+                  <span className="text-gray-600">شماره تلفن:</span>
+                  <span className="font-medium mr-2">
+                    {registerer?.contactInformations[0]?.activePhoneNumber}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Partner Information */}
+          {family?.maridgeState && partner && (
+            <div className="mb-6">
+              <h4 className="font-semibold text-[#0A1D37] mb-3 flex items-center gap-2">
+                <FaIdCard className="text-pink-500" />
+                اطلاعات همسر
+              </h4>
+              <div className="bg-white p-4 rounded-xl border border-gray-200">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
+                  <div>
+                    <span className="text-gray-600">نام:</span>
+                    <span className="font-medium mr-2">
+                      {partner?.initialInformations.firstName}
+                    </span>
+                  </div>
+                  <div>
+                    <span className="text-gray-600">نام خانوادگی:</span>
+                    <span className="font-medium mr-2">
+                      {partner?.initialInformations.lastName}
+                    </span>
+                  </div>
+                  <div>
+                    <span className="text-gray-600">نام فارسی:</span>
+                    <span className="font-medium mr-2">
+                      {partner?.otherInformations[0]?.persianName}
+                    </span>
+                  </div>
+                  <div>
+                    <span className="text-gray-600">نام خانوادگی فارسی:</span>
+                    <span className="font-medium mr-2">
+                      {partner?.otherInformations[0]?.persianLastName}
+                    </span>
+                  </div>
+                  <div>
+                    <span className="text-gray-600">جنسیت:</span>
+                    <span className="font-medium mr-2">
+                      {partner?.initialInformations.gender === "male"
+                        ? "مرد"
+                        : "زن"}
+                    </span>
+                  </div>
+                  <div>
+                    <span className="text-gray-600">تاریخ تولد:</span>
+                    <span className="font-medium mr-2">
+                      {partner?.initialInformations.birthDate.year}/
+                      {partner?.initialInformations.birthDate.month}/
+                      {partner?.initialInformations.birthDate.day}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Children Information */}
+          {family?.numberOfChildren > 0 &&
+            formData.registererChildformations.length > 0 && (
+              <div className="mb-6">
+                <h4 className="font-semibold text-[#0A1D37] mb-3 flex items-center gap-2">
+                  <FaChild className="text-yellow-500" />
+                  اطلاعات فرزندان
+                </h4>
+                {formData.registererChildformations.map((child, index) => (
+                  <div
+                    key={index}
+                    className="bg-white p-4 rounded-xl border border-gray-200 mb-3"
+                  >
+                    <h5 className="font-medium text-gray-700 mb-2">
+                      فرزند {index + 1}
+                    </h5>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
+                      <div>
+                        <span className="text-gray-600">نام:</span>
+                        <span className="font-medium mr-2">
+                          {child.initialInformations.firstName}
+                        </span>
+                      </div>
+                      <div>
+                        <span className="text-gray-600">نام خانوادگی:</span>
+                        <span className="font-medium mr-2">
+                          {child.initialInformations.lastName}
+                        </span>
+                      </div>
+                      <div>
+                        <span className="text-gray-600">جنسیت:</span>
+                        <span className="font-medium mr-2">
+                          {child.initialInformations.gender === "male"
+                            ? "پسر"
+                            : "دختر"}
+                        </span>
+                      </div>
+                      <div>
+                        <span className="text-gray-600">تاریخ تولد:</span>
+                        <span className="font-medium mr-2">
+                          {child.initialInformations.birthDate.year}/
+                          {child.initialInformations.birthDate.month}/
+                          {child.initialInformations.birthDate.day}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+
+          {/* Fee Calculation */}
+          <div className="bg-gradient-to-r from-green-50 to-emerald-50 p-4 rounded-xl border border-green-200">
+            <h4 className="font-semibold text-[#0A1D37] mb-3 flex items-center gap-2">
+              <svg
+                className="w-5 h-5 text-[#0A1D37]"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+              >
+                <path d="M4 4a2 2 0 00-2 2v4a2 2 0 002 2V6h10a2 2 0 00-2-2H4zm2 6a2 2 0 012-2h8a2 2 0 012 2v4a2 2 0 01-2 2H8a2 2 0 01-2-2v-4zm6 4a2 2 0 100-4 2 2 0 000 4z" />
+              </svg>
+              محاسبه هزینه
+            </h4>
+            <div className="bg-white p-4 rounded-lg border border-gray-200">
+              <div className="flex justify-between items-center">
+                <span className="text-gray-700 font-medium">
+                  مبلغ قابل پرداخت:
+                </span>
+                <span className="font-bold text-lg text-[#0A1D37]">
+                  {lotteryFee.toLocaleString()} تومان
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-yellow-50 p-4 rounded-xl border border-yellow-200 mt-4">
+            <p className="text-sm text-yellow-800 text-center">
+              لطفا اطلاعات وارد شده را بررسی کنید. پس از تایید، فرآیند پرداخت
+              آغاز خواهد شد.
+            </p>
+          </div>
+        </div>
+      </div>
+    );
   };
 
   const renderFamilyInfoStep = () => (
@@ -2702,7 +2976,7 @@ const LotteryMultiStepForm: React.FC = () => {
                   handleWalletPayment();
                 } else if (method === "direct") {
                   handleDirectPayment();
-                } 
+                }
               }}
               isWalletEnabled={walletBalance >= lotteryFee}
             />

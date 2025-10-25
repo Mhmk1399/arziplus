@@ -2,6 +2,7 @@
 import React, { useRef, useEffect, useState, useMemo } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { estedadBold } from "@/next-persian-fonts/estedad";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
@@ -256,7 +257,7 @@ console.log(hoveredService,currentRotation)
       <div className="relative z-10 max-w-6xl mx-auto">
         {/* Header */}
         <div className="services-header text-center mb-16 md:mb-2">
-          <h2 className="text-3xl md:text-5xl text-gray-100 font-extrabold mb-6">
+          <h2 className={`text-3xl md:text-5xl text-gray-100 ${estedadBold.className} mb-6`}>
             {title}
           </h2>
         </div>
@@ -315,7 +316,7 @@ console.log(hoveredService,currentRotation)
                       )}
 
                       {/* Service Name */}
-                      <h3 className="text-[7px]  md:text-sm font-bold text-gray-50 mb-1 relative z-10 line-clamp-3">
+                      <h3 className={`text-[7px]  md:text-sm ${estedadBold.className} text-gray-50 mb-1 relative z-10 line-clamp-3`}>
                         {service.name}
                       </h3>
 

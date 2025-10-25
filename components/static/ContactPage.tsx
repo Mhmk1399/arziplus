@@ -1,12 +1,6 @@
 import HeroSection from "../global/heroSection";
 import { FaExplosion } from "react-icons/fa6";
-import {
-  ctaThemes,
-  faqThemes,
-  textBoxThemes,
-  textBoxTypography,
-  themesWhyus,
-} from "@/lib/theme";
+import { ctaThemes, faqThemes, themesWhyus } from "@/lib/theme";
 import {
   FaEnvelope,
   FaRocket,
@@ -19,33 +13,34 @@ import {
 } from "react-icons/fa";
 import FAQSection from "../global/faqSection";
 import CTABanner from "../global/ctaBanner";
-import TextBox from "../global/textBox";
-import WhyUsSection from "../global/whyUs";
+ import WhyUsSection from "../global/whyUs";
 
 const ContactPage = () => {
   const whyChooseUs = [
     {
       id: 1,
       icon: <FaClock size={32} />,
-       title: "پاسخگویی سریع و دقیق",
-      description: "پاسخگویی سریع و دقیق در تمام روزهای هفته توسط کارشناسان ارزی پلاس",
+      title: "پاسخگویی سریع و دقیق",
+      description:
+        "پاسخگویی سریع و دقیق در تمام روزهای هفته توسط کارشناسان ارزی پلاس",
     },
     {
       id: 2,
       icon: <FaUserTie size={32} />,
-       title: "مشاوره تخصصی",
+      title: "مشاوره تخصصی",
       description: "مشاوره تخصصی قبل از ثبت سفارش توسط کارشناسان بخش فروش",
     },
     {
       id: 3,
       icon: <FaGlobe size={32} />,
-       title: "راهنمایی کامل",
-      description: "راهنمایی در افتتاح حسابها و پرداخت های بین المللی در ارزی پلاس",
+      title: "راهنمایی کامل",
+      description:
+        "راهنمایی در افتتاح حسابها و پرداخت های بین المللی در ارزی پلاس",
     },
     {
       id: 4,
       icon: <FaHeadset size={32} />,
-       title: "پشتیبانی چندکاناله",
+      title: "پشتیبانی چندکاناله",
       description: "پشتیبانی از طریق ایمیل، تلفن و شبکه های احتماعی ارزی پلاس",
     },
   ];
@@ -134,27 +129,36 @@ const ContactPage = () => {
         <div className="text-center">
           <FaPhone className="mx-auto mb-4 text-4xl text-[#0A1D37]" />
           <h3 className="text-lg font-semibold">تماس تلفنی</h3>
-          <a href="tel:+989991202049" className="text-[#A0A0A0] hover:text-[#FF7A00] transition-colors">
+          <a
+            href="tel:+989991202049"
+            className="text-[#A0A0A0] hover:text-[#FF7A00] transition-colors"
+          >
             09991202049
           </a>
         </div>
         <div className="text-center">
           <FaEnvelope className="mx-auto mb-4 text-4xl text-[#0A1D37]" />
           <h3 className="text-lg font-semibold">ایمیل</h3>
-          <a href="mailto:support@arzplus.com" className="text-[#A0A0A0] hover:text-[#FF7A00] transition-colors">
+          <a
+            href="mailto:support@arzplus.com"
+            className="text-[#A0A0A0] hover:text-[#FF7A00] transition-colors"
+          >
             support@arzplus.com
           </a>
         </div>
         <div className="text-center">
           <FaMapMarkerAlt className="mx-auto mb-4 text-4xl text-[#0A1D37]" />
           <h3 className="text-lg font-semibold">آدرس</h3>
-          <a href="https://maps.app.goo.gl/NQtGhVhuDr8aGpGJ8" target="_blank" rel="noopener noreferrer" className="text-[#A0A0A0] hover:text-[#FF7A00] transition-colors">
+          <a
+            href="https://maps.app.goo.gl/NQtGhVhuDr8aGpGJ8"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-[#A0A0A0] hover:text-[#FF7A00] transition-colors"
+          >
             تهران، خیابان ولیعصر، پلاک 123
           </a>
         </div>
       </div>
-
-    
 
       <FAQSection
         heading="سوالات متداول تماس با ارزی پلاس"

@@ -3,12 +3,10 @@ import React, { useState } from "react";
 import {
   FaWallet,
   FaCreditCard,
-  FaMoneyBillWave,
-  FaCheck,
+   FaCheck,
 } from "react-icons/fa";
 import { estedadBold } from "@/next-persian-fonts/estedad/index";
-import wallet from "@/models/wallet";
-
+ 
 interface PaymentMethodSelectorProps {
   amount: number;
   walletBalance?: number;

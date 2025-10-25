@@ -2,6 +2,7 @@
 import { useState, useRef, useEffect } from "react";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
 import { gsap } from "gsap";
+import { estedadBold } from "@/next-persian-fonts/estedad";
 
 interface Step {
   id: string;
@@ -229,8 +230,6 @@ export default function StepsSection({
     return () => observer.disconnect();
   }, [animated, isMounted]);
 
-
-
   // Navigation handlers - Fixed for RTL
   const handlePrevious = () => {
     const newIndex = Math.max(0, currentIndex - 1);
@@ -401,7 +400,7 @@ export default function StepsSection({
           {/* Header */}
           <div className="text-center mb-12">
             <h2
-              className={`text-xl md:text-3xl font-bold ${headingColor} mb-4 leading-tight`}
+              className={`text-xl md:text-3xl ${estedadBold.className}  ${headingColor} mb-4 leading-tight`}
             >
               {heading}
             </h2>
@@ -434,7 +433,7 @@ export default function StepsSection({
                         </div>
                       )}
                       <h3
-                        className={`text-sm font-bold ${stepTextColor} flex-1 line-clamp-2`}
+                        className={`text-sm ${estedadBold.className} ${stepTextColor} flex-1 line-clamp-2`}
                       >
                         {step.title}
                       </h3>
@@ -471,7 +470,7 @@ export default function StepsSection({
         {/* Header */}
         <div className="text-center mb-12">
           <h2
-            className={`text-2xl md:text-3xl font-bold ${headingColor} mb-4 leading-tight`}
+            className={`text-2xl md:text-3xl ${estedadBold.className} ${headingColor} mb-4 leading-tight`}
           >
             {heading}
           </h2>
@@ -573,7 +572,9 @@ export default function StepsSection({
                       {/* Content */}
                       <div className="text-center space-y-9">
                         <h3
-                          className={`text-md font-bold transition-colors duration-300 ${
+                          className={`text-md ${
+                            estedadBold.className
+                          } transition-colors duration-300 ${
                             isActive ? stepTextColor : "text-gray-500"
                           }`}
                         >

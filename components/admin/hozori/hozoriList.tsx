@@ -51,7 +51,7 @@ interface PaginationData {
 }
 
 const HozoriAdminList = () => {
-  const { user: currentUser, isLoggedIn } = useCurrentUser();
+  const {   isLoggedIn } = useCurrentUser();
   const [reservations, setReservations] = useState<HozoriReservation[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -68,7 +68,7 @@ const HozoriAdminList = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(10);
+  const [pageSize] = useState(10);
 
   // Modal states
   const [selectedReservation, setSelectedReservation] =
@@ -323,7 +323,7 @@ const HozoriAdminList = () => {
             <FaSearch className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
             <input
               type="text"
-              placeholder="جستجو بر اساس نام، نام خانوادگی یا شماره تلفن"
+              placeholder="جستجو بر اساس نام،شماره تلفن"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               onKeyPress={(e) => e.key === "Enter" && handleSearch()}
@@ -345,18 +345,7 @@ const HozoriAdminList = () => {
               <option value="cancelled">لغو شده</option>
             </select>
             {/* Page Size */}
-            <select
-              value={pageSize}
-              onChange={(e) => {
-                setPageSize(Number(e.target.value));
-                setCurrentPage(1);
-              }}
-              className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#4DBFF0] focus:border-transparent"
-            >
-              <option value={10}>10 رزرو در صفحه</option>
-              <option value={25}>25 رزرو در صفحه</option>
-              <option value={50}>50 رزرو در صفحه</option>
-            </select>
+        
           </div>
         </div>
 

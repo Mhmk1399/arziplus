@@ -30,7 +30,7 @@ export async function POST(request: NextRequest) {
       { status: 200 }
     );
   } catch (error) {
-    console.error("Currency sync API error:", error);
+    console.log("Currency sync API error:", error);
     return NextResponse.json(
       {
         success: false,
@@ -57,7 +57,7 @@ export async function GET() {
       { status: 200 }
     );
   } catch (error) {
-    console.error("Currency sync API error:", error);
+    console.log("Currency sync API error:", error);
     return NextResponse.json(
       {
         success: false,

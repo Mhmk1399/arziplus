@@ -3,6 +3,7 @@ import Link from "next/link";
 import React, { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { estedadBold } from "@/next-persian-fonts/estedad";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -141,7 +142,7 @@ export default function WhyUsSection({
           className={`p-6 lg:p-8 rounded-3xl shadow-xl border border-white/20 backdrop-blur-sm ${theme.textBoxBg} self-start md:sticky top-24 transition-all duration-300 hover:shadow-2xl hover:border-white/30`}
         >
           <h2
-            className={`text-center md:text-right text-2xl md:text-3xl font-extrabold leading-tight mb-4 ${theme.heading} transition-colors duration-300`}
+            className={`text-center md:text-right text-2xl md:text-3xl ${estedadBold.className} leading-tight mb-4 ${theme.heading} transition-colors duration-300`}
           >
             {heading}
           </h2>
@@ -188,7 +189,7 @@ export default function WhyUsSection({
                 </div>
                 <div className="flex border-r border-white px-4 flex-col  leading-relaxed tracking-wider gap-1">
                   <h3
-                    className={`text-right text-sm line-clamp-1  md:text-base font-bold  leading-relaxed transition-all duration-300 ${theme.heading}`}
+                    className={`text-right text-sm line-clamp-1  md:text-base ${estedadBold.className}    transition-all duration-300 ${theme.heading}`}
                   >
                     {item.title}
                   </h3>{" "}

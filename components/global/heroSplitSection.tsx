@@ -369,7 +369,9 @@ export default function HeroSplitSection({
                         {button.icon}
                       </span>
                     )}
-                    <span>{button.text}</span>
+                    <span className={`${estedadBold.className}`}>
+                      {button.text}
+                    </span>
                   </span>
                 </Link>
               ))}

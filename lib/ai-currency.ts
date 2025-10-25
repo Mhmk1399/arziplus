@@ -26,7 +26,7 @@ async function fetchWebsiteHTML(): Promise<string> {
     console.log("📄 Fetched HTML length:", html.length);
     return html;
   } catch (error) {
-    console.error("❌ Error fetching website:", error);
+    console.log("❌ Error fetching website:", error);
     throw error;
   }
 }
@@ -117,8 +117,8 @@ export async function fetchCurrencyPrices(): Promise<CurrencyData> {
     try {
       currencyData = JSON.parse(cleanedResponse);
     } catch (parseError) {
-      console.error("❌ JSON Parse Error:", parseError);
-      console.error("Raw response was:", responseText);
+      console.log("❌ JSON Parse Error:", parseError);
+      console.log("Raw response was:", responseText);
       throw new Error("Failed to parse AI response as JSON");
     }
 
@@ -136,7 +136,7 @@ export async function fetchCurrencyPrices(): Promise<CurrencyData> {
       typeof currencyData.GBP.buy !== "number" ||
       typeof currencyData.GBP.sell !== "number"
     ) {
-      console.error("❌ Invalid structure. Received:", currencyData);
+      console.log("❌ Invalid structure. Received:", currencyData);
       throw new Error(
         `Invalid currency data structure. USD: ${JSON.stringify(currencyData.USD)}, EUR: ${JSON.stringify(currencyData.EUR)}, GBP: ${JSON.stringify(currencyData.GBP)}`
       );
@@ -144,7 +144,7 @@ export async function fetchCurrencyPrices(): Promise<CurrencyData> {
 
     return currencyData;
   } catch (error) {
-    console.error("Error fetching currency prices:", error);
+    console.log("Error fetching currency prices:", error);
     throw error;
   }
 }
@@ -185,7 +185,7 @@ export async function updateCurrencyDatabase(
 
     console.log("✅ Currency prices updated successfully");
   } catch (error) {
-    console.error("❌ Error updating currency database:", error);
+    console.log("❌ Error updating currency database:", error);
     throw error;
   }
 }
@@ -203,7 +203,7 @@ export async function syncCurrencyPrices(): Promise<void> {
     
     console.log("✅ Currency sync completed successfully");
   } catch (error) {
-    console.error("❌ Currency sync failed:", error);
+    console.log("❌ Currency sync failed:", error);
     throw error;
   }
 }

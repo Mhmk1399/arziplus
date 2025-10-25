@@ -170,35 +170,14 @@ export default function HeroSection({
           "-=0.4"
         );
 
-      // Media entrance with morphing effect
+      // Media entrance
       if (mediaRef.current) {
         tl.fromTo(
           mediaRef.current,
-          {
-            scale: 0.3,
-            opacity: 0,
-            rotation: 10,
-            filter: "blur(20px)",
-          },
-          {
-            scale: 1,
-            opacity: 1,
-            rotation: 0,
-            filter: "blur(0px)",
-            duration: 1.5,
-            ease: "elastic.out(1, 0.5)",
-          },
-          "-=1"
+          { opacity: 0, y: 30 },
+          { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" },
+          "-=0.6"
         );
-
-        // Floating animation for media
-        gsap.to(mediaRef.current, {
-          y: -20,
-          duration: 3,
-          repeat: -1,
-          yoyo: true,
-          ease: "sine.inOut",
-        });
       }
 
       // Interactive button hover animations
@@ -536,7 +515,7 @@ export default function HeroSection({
             {/* Luxury Main Heading */}
             <h1
               ref={headingRef}
-              className={`mb-8 text-xl md:text-4xl  md:leading-12 font-black -tracking-wide ${
+              className={`mb-8 text-xl md:text-4xl  md:leading-12   -tracking-wide ${
                 estedadBold.className
               } ${headingColor} ${
                 layout === "centered"

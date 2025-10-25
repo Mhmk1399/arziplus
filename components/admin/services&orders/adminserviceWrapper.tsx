@@ -4,17 +4,14 @@ import React, { useState, useEffect } from "react";
 import {
   FaServicestack,
   FaClipboardList,
-  FaCog,
-  FaChartBar,
+   FaChartBar,
 } from "react-icons/fa";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
-import { showToast } from "@/utilities/toast";
-
+ 
 // Import admin components
 import AdminRequestsTable from "./AdminRequestsTable";
 import { ServiceManager } from "./serviceBuilder";
-import Link from "next/link";
-
+ 
 interface AdminWrapperProps {
   initialTab?: "requests" | "services" | "analytics";
   className?: string;
@@ -29,8 +26,7 @@ interface AdminStats {
 
 const ServiceWrapper: React.FC<AdminWrapperProps> = ({
   initialTab = "requests",
-  className = "mx-10 my-4",
-}) => {
+ }) => {
   const [activeTab, setActiveTab] = useState<
     "requests" | "services" | "analytics"
   >(initialTab);
@@ -241,36 +237,36 @@ const ServiceWrapper: React.FC<AdminWrapperProps> = ({
 
   
 
-  if (
-    !currentUser?.roles.includes("admin") &&
-    !currentUser?.roles.includes("super_admin")
-  ) {
-    return (
-      <div className={`min-h-screen    ${className}`} dir="rtl">
-        <div className="container mx-auto px-4 py-32">
-          <div className="max-w-md mx-auto text-center">
-            <div className="w-20 h-20 bg-gradient-to-r from-red-500 to-orange-500 rounded-full flex items-center justify-center mx-auto mb-6">
-              <FaCog className="text-white text-3xl" />
-            </div>
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">
-              دسترسی غیر مجاز
-            </h2>
-            <p className="text-gray-600 mb-8 leading-relaxed">
-              شما به این بخش دسترسی ندارید. لطفاً با مدیر سیستم تماس بگیرید.
-            </p>
-            <div className="space-y-4">
-              <Link
-                href="/"
-                className="block w-full px-6 py-4 bg-gradient-to-r from-gray-600 to-gray-700 text-white rounded-xl font-bold hover:shadow-lg transition-all duration-300 hover:scale-105"
-              >
-                بازگشت به خانه
-              </Link>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
+  // if (
+  //   !currentUser?.roles.includes("admin") &&
+  //   !currentUser?.roles.includes("super_admin")
+  // ) {
+  //   return (
+  //     <div className={`min-h-screen    ${className}`} dir="rtl">
+  //       <div className="container mx-auto px-4 py-32">
+  //         <div className="max-w-md mx-auto text-center">
+  //           <div className="w-20 h-20 bg-gradient-to-r from-red-500 to-orange-500 rounded-full flex items-center justify-center mx-auto mb-6">
+  //             <FaCog className="text-white text-3xl" />
+  //           </div>
+  //           <h2 className="text-3xl font-bold text-gray-900 mb-4">
+  //             دسترسی غیر مجاز
+  //           </h2>
+  //           <p className="text-gray-600 mb-8 leading-relaxed">
+  //             شما به این بخش دسترسی ندارید. لطفاً با مدیر سیستم تماس بگیرید.
+  //           </p>
+  //           <div className="space-y-4">
+  //             <Link
+  //               href="/"
+  //               className="block w-full px-6 py-4 bg-gradient-to-r from-gray-600 to-gray-700 text-white rounded-xl font-bold hover:shadow-lg transition-all duration-300 hover:scale-105"
+  //             >
+  //               بازگشت به خانه
+  //             </Link>
+  //           </div>
+  //         </div>
+  //       </div>
+  //     </div>
+  //   );
+  // }
 
   const ActiveComponent =
     tabs.find((tab) => tab.id === activeTab)?.component || AdminRequestsTable;

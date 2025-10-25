@@ -97,11 +97,11 @@ import { syncCurrencyPrices } from "@/lib/ai-currency";
 // Run on server startup
 if (typeof window === "undefined") {
   // Initial sync
-  syncCurrencyPrices().catch(console.error);
+  syncCurrencyPrices().catch(console.log);
   
   // Repeat every 10 minutes
   setInterval(() => {
-    syncCurrencyPrices().catch(console.error);
+    syncCurrencyPrices().catch(console.log);
   }, 10 * 60 * 1000); // 10 minutes
 }
 ```

@@ -67,12 +67,35 @@ export async function POST(req: NextRequest) {
     // Generate unique filename
     const timestamp = Date.now();
     const randomId = Math.random().toString(36).substring(2);
-    const cleanFileName = file.name.replace(/[^a-zA-Z0-9.-]/g, "_");
-    const uniqueFileName = `${timestamp}_${randomId}_${cleanFileName}`;
-    const key = `uploads/${uniqueFileName}`;
+
+    // Extract file extension
+    const extension = file.name.includes(".")
+      ? `.${file.name.split(".").pop() || ""}`
+      : "";
+
+    // Check if filename contains non-ASCII characters (e.g., Persian)
+    const hasNonAscii = /[^\x00-\x7F]/.test(file.name);
+
+    let cleanFileName: string;
+    if (hasNonAscii) {
+      // If non-ASCII (e.g., Persian), generate a fully English name without original filename
+      cleanFileName = `${timestamp}_${randomId}${extension}`;
+      console.log(
+        `Non-ASCII filename detected: ${file.name}. Using generated name: ${cleanFileName}`
+      );
+    } else {
+      // Otherwise, use the existing cleaning logic
+      cleanFileName = file.name.replace(/[^a-zA-Z0-9.-]/g, "_");
+      cleanFileName = `${timestamp}_${randomId}_${cleanFileName}`;
+    }
+
+    const key = `uploads/${cleanFileName}`;
 
     // Convert file to buffer
     const buffer = Buffer.from(await file.arrayBuffer());
+
+    // URL-encode metadata values to handle special characters (e.g., Persian in originalName)
+    const encodedOriginalName = encodeURIComponent(file.name);
 
     // Upload to Liara Object Storage
     const uploadCommand = new PutObjectCommand({
@@ -81,7 +104,7 @@ export async function POST(req: NextRequest) {
       Body: buffer,
       ContentType: file.type,
       Metadata: {
-        originalName: file.name,
+        originalName: encodedOriginalName,
         uploadedAt: new Date().toISOString(),
         fileSize: file.size.toString(),
       },
@@ -100,7 +123,7 @@ export async function POST(req: NextRequest) {
       data: {
         key,
         url: publicUrl,
-        originalName: file.name,
+        originalName: file.name, // Return unencoded for user convenience
         size: file.size,
         type: file.type,
         uploadedAt: new Date().toISOString(),

@@ -16,9 +16,7 @@ import {
 } from "react-icons/fa";
 import { showToast } from "@/utilities/toast";
 
-interface loteryData {
-  lotteryData: string;
-}
+ 
 
 interface ordercreation {
   type: string;
@@ -251,7 +249,7 @@ const PaymentSuccessPage: React.FC = () => {
           );
           requestBody.hozoriData = hozoriData;
           localStorage.removeItem(hozoriKey);
-        } catch (e) {
+        } catch   {
           console.log("Failed to parse hozori data from localStorage");
         }
       }
@@ -266,7 +264,7 @@ const PaymentSuccessPage: React.FC = () => {
           );
           requestBody.lotteryData = lotteryData;
           localStorage.removeItem(lotteryKey);
-        } catch (e) {
+        } catch   {
           console.log("Failed to parse lottery data from localStorage");
         }
       }

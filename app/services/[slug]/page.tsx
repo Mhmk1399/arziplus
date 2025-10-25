@@ -225,10 +225,10 @@ const ServiceSummary = ({
 
         {service.description && (
           <div className="mb-6">
-            <h3 className="text-lg font-medium text-[#0A1D37] mb-2">
+            <h3 className="text-lg font-medium  text-[#0A1D37] mb-2">
               توضیحات خدمت:
             </h3>
-            <p className="text-[#0A1D37]/80 leading-relaxed">
+            <p className="text-[#0A1D37]/80 whitespace-break-spaces leading-relaxed">
               {service.description}
             </p>
           </div>
@@ -451,8 +451,22 @@ export default function ServiceDetailPage() {
 
     const baseFee = service.fee;
     let currencySum = 0;
-    let tempNumber = 0;
     let accountSum = 0;
+
+    // Find number field value
+    const numberField = service.fields.find(
+      (f) => f.pricecondition === "number"
+    );
+    const numberValue =
+      numberField && formData[numberField.name]
+        ? parseFloat(
+            String(
+              numberField.options?.find(
+                (opt) => opt.key === formData[numberField.name]
+              )?.value || formData[numberField.name]
+            )
+          ) || 1
+        : 1;
 
     service.fields.forEach((field) => {
       const fieldValue = formData[field.name];
@@ -465,9 +479,12 @@ export default function ServiceDetailPage() {
               ...(field.items || []),
             ].find((opt) => opt.key === key);
             if (option) {
-              // Get actual currency price from database
               const currencyPrice = getCurrencyPrice(option.value);
-              currencySum += currencyPrice;
+              const optionWithRead = option as { key: string; value: string; read?: string };
+              const multiplier = optionWithRead.read
+                ? parseFloat(String(formData[optionWithRead.read])) || 1
+                : numberValue;
+              currencySum += currencyPrice * multiplier;
             }
           });
         } else if (field.type === "select") {
@@ -476,20 +493,14 @@ export default function ServiceDetailPage() {
             ...(field.items || []),
           ].find((opt) => opt.key === fieldValue);
           if (option) {
-            // Get actual currency price from database
             const currencyPrice = getCurrencyPrice(option.value);
-            currencySum += currencyPrice;
+            const optionWithRead = option as { key: string; value: string; read?: string };
+            const multiplier = optionWithRead.read
+              ? parseFloat(String(formData[optionWithRead.read])) || 1
+              : numberValue;
+            currencySum += currencyPrice * multiplier;
           }
         }
-      }
-
-      if (
-        field.pricecondition === "number" &&
-        fieldValue !== "" &&
-        fieldValue !== null &&
-        fieldValue !== undefined
-      ) {
-        tempNumber = parseFloat(String(fieldValue)) || 0;
       }
 
       if (field.pricecondition === "accountFee" && fieldValue) {
@@ -500,7 +511,12 @@ export default function ServiceDetailPage() {
               ...(field.items || []),
             ].find((opt) => opt.key === key);
             if (option) {
-              accountSum += parseFloat(option.value) || 0;
+              const accountValue = parseFloat(option.value) || 0;
+              const optionWithRead = option as { key: string; value: string; read?: string };
+              const multiplier = optionWithRead.read
+                ? parseFloat(String(formData[optionWithRead.read])) || 1
+                : numberValue;
+              accountSum += accountValue * multiplier;
             }
           });
         } else if (field.type === "select") {
@@ -509,24 +525,25 @@ export default function ServiceDetailPage() {
             ...(field.items || []),
           ].find((opt) => opt.key === fieldValue);
           if (option) {
-            accountSum += parseFloat(option.value) || 0;
+            const accountValue = parseFloat(option.value) || 0;
+            const optionWithRead = option as { key: string; value: string; read?: string };
+            const multiplier = optionWithRead.read
+              ? parseFloat(String(formData[optionWithRead.read])) || 1
+              : numberValue;
+            accountSum += accountValue * multiplier;
           }
         }
       }
     });
 
+    const totalFee = baseFee + currencySum + accountSum;
     console.log("Calculation:", {
       baseFee,
       currencySum,
-      tempNumber,
       accountSum,
-      currencies,
+      numberValue,
+      totalFee,
     });
-
-    // Final calculation: fee = baseFee + (currencySum * number) + (accountSum * number)
-    const totalFee =
-      baseFee + currencySum * tempNumber + accountSum * tempNumber;
-    console.log("Total Fee:", totalFee);
     return totalFee;
   };
 
@@ -733,17 +750,23 @@ export default function ServiceDetailPage() {
 
         case "boolean":
           return (
-            <label className="flex items-center space-x-reverse space-x-2 text-[#0A1D37]/90">
-              <input
-                type="checkbox"
-                checked={!!value}
-                onChange={(e) =>
-                  handleInputChange(field.name, e.target.checked)
-                }
-                className="rounded text-[#4DBFF0] focus:ring-[#4DBFF0]"
-                required={field.required}
-              />
-              <span>{field.placeholder || field.label}</span>
+            <label className="flex items-center gap-3 cursor-pointer">
+              <span className="text-[#0A1D37]/90">
+                {field.placeholder || field.label}
+              </span>
+              <div className="relative">
+                <input
+                  type="checkbox"
+                  checked={!!value}
+                  onChange={(e) =>
+                    handleInputChange(field.name, e.target.checked)
+                  }
+                  className="sr-only peer"
+                  required={field.required}
+                />
+                <div className="w-11 h-6 bg-gray-300 rounded-full peer peer-checked:bg-[#4DBFF0] transition-colors duration-300"></div>
+                <div className="absolute top-0.5 right-0.5 w-5 h-5 bg-white rounded-full shadow-md peer-checked:translate-x-[-20px] transition-transform duration-300"></div>
+              </div>
             </label>
           );
 
@@ -892,25 +915,25 @@ export default function ServiceDetailPage() {
   };
 
   // Handle payment method selection
-  const handlePaymentMethodSelect = async (
-    paymentMethod: "wallet" | "direct" | "card"
-  ) => {
-    setShowPaymentSelector(false);
-    setSubmitting(true);
+  // const handlePaymentMethodSelect = async (
+  //   paymentMethod: "wallet" | "direct" | "card"
+  // ) => {
+  //   setShowPaymentSelector(false);
+  //   setSubmitting(true);
 
-    try {
-      if (paymentMethod === "wallet") {
-        await handleWalletPayment();
-      } else if (paymentMethod === "direct") {
-        await handleDirectPayment();
-      }
-    } catch (error) {
-      console.log("Payment error:", error);
-      showToast.error("خطا در پردازش پرداخت");
-    } finally {
-      setSubmitting(false);
-    }
-  };
+  //   try {
+  //     if (paymentMethod === "wallet") {
+  //       await handleWalletPayment();
+  //     } else if (paymentMethod === "direct") {
+  //       await handleDirectPayment();
+  //     }
+  //   } catch (error) {
+  //     console.log("Payment error:", error);
+  //     showToast.error("خطا در پردازش پرداخت");
+  //   } finally {
+  //     setSubmitting(false);
+  //   }
+  // };
 
   // Handle wallet payment
   const handleWalletPayment = async () => {
@@ -1283,7 +1306,7 @@ export default function ServiceDetailPage() {
                                   {!hasBankingAccepted && "اطلاعات بانکی"} خود
                                   را تکمیل کنید
                                 </p>
-                                <Link href="/dashboard">
+                                <Link href="/dashboard#credentials">
                                   <div className="text-blue-600 mt-2 text-center mx-auto hover:underline">
                                     تکمیل پروفایل{" "}
                                   </div>

@@ -113,7 +113,7 @@ export class ZarinPal {
 
       return result;
     } catch (error) {
-      console.error("ZarinPal request error:", error);
+      console.log("ZarinPal request error:", error);
       throw error;
     }
   }
@@ -152,7 +152,7 @@ export class ZarinPal {
 
       return result;
     } catch (error) {
-      console.error("ZarinPal verify error:", error);
+      console.log("ZarinPal verify error:", error);
       throw error;
     }
   }

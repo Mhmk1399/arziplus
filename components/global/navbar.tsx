@@ -11,6 +11,7 @@ import { FaUser, FaSignOutAlt, FaTachometerAlt } from "react-icons/fa";
 import Image from "next/image";
 import { getCurrentUser, AuthUser } from "@/lib/auth";
 import { usePathname } from "next/navigation";
+import { estedadBold } from "@/next-persian-fonts/estedad";
 
 export default function NewNavbar() {
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
@@ -79,8 +80,6 @@ export default function NewNavbar() {
       window.removeEventListener("userLoggedIn", handleUserLogin);
     };
   }, []);
-
-  console.log(user, "]]]]]]]]]]]]]]]]]]]");
 
   // Scroll handler
   useEffect(() => {
@@ -162,9 +161,6 @@ export default function NewNavbar() {
         {
           x: 0,
           opacity: 1,
-          duration: 0.4,
-          stagger: 0.08,
-          delay: 0.2,
           ease: "power2.out",
         }
       );
@@ -172,7 +168,6 @@ export default function NewNavbar() {
       gsap.to(mobileMenuRef.current, {
         x: "100%",
         opacity: 0,
-        duration: 0.4,
         ease: "power3.in",
       });
     }
@@ -308,44 +303,11 @@ export default function NewNavbar() {
     return "کاربر";
   };
 
-  console.log(getCurrentUser, "........................");
   if (pathname === "/dashboard" || pathname.startsWith("/dashboard")) {
     return null;
   }
 
   // Prevent hydration mismatch
-  if (!isMounted) {
-    return (
-      <nav
-        className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md shadow-sm"
-        dir="rtl"
-      >
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="flex items-center justify-between h-20">
-            <div className="flex items-center">
-              <Image
-                src="/assets/images/logoArzi.webp"
-                width={90}
-                height={90}
-                alt="logo"
-                priority
-              />
-            </div>
-            <div className="hidden lg:flex items-center space-x-6 space-x-reverse">
-              {menuItems.map((item) => (
-                <button
-                  key={item.title}
-                  className="px-4 py-2 font-medium text-sm text-[#0A1D37]"
-                >
-                  {item.title}
-                </button>
-              ))}
-            </div>
-          </div>
-        </div>
-      </nav>
-    );
-  }
 
   return (
     <>
@@ -389,7 +351,7 @@ export default function NewNavbar() {
                   onMouseLeave={handleMenuLeave}
                 >
                   <button
-                    className={`relative px-5 py-3 font-semibold cursor-pointer text-sm transition-all duration-300 rounded-xl ${
+                    className={`relative px-5 py-3 ${estedadBold.className} cursor-pointer text-sm transition-all duration-300 rounded-xl ${
                       activeDropdown === item.title
                         ? "text-[#0A1D37]  "
                         : "text-[#0A1D37] hover:text-[#0A1D37]"
@@ -429,7 +391,7 @@ export default function NewNavbar() {
                 <div className="relative user-dropdown">
                   <button
                     onClick={() => setShowUserDropdown(!showUserDropdown)}
-                    className="group relative cursor-pointer px-4 py-3 font-bold text-sm text-[#0A1D37] overflow-hidden rounded-xl transition-all duration-300 hover:scale-105 bg-gradient-to-r from-[#0A1D37]/10 to-[#4DBFF0]/10 hover:from-[#0A1D37]/20 hover:to-[#4DBFF0]/20 border border-[#0A1D37]/20 hover:border-[#0A1D37]/40 flex items-center gap-2"
+                    className={`group relative cursor-pointer px-4 py-3 ${estedadBold.className} text-sm text-[#0A1D37] overflow-hidden rounded-xl transition-all duration-300 hover:scale-105 bg-gradient-to-r from-[#0A1D37]/10 to-[#4DBFF0]/10 hover:from-[#0A1D37]/20 hover:to-[#4DBFF0]/20 border border-[#0A1D37]/20 hover:border-[#0A1D37]/40 flex items-center gap-2`}
                     suppressHydrationWarning
                   >
                     {user?.profile?.avatar ? (
@@ -492,7 +454,7 @@ export default function NewNavbar() {
               ) : (
                 <Link
                   href="/auth/sms"
-                  className="group relative px-6 py-3 font-bold text-sm text-white overflow-hidden rounded-xl transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-[#0A1D37]/20"
+                  className={`group relative px-6 py-3 ${estedadBold.className} text-sm text-white overflow-hidden rounded-xl transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-[#0A1D37]/20`}
                   suppressHydrationWarning
                 >
                   <span className="absolute inset-0 bg-gradient-to-r from-[#0A1D37] to-[#4DBFF0]" />
@@ -598,7 +560,7 @@ export default function NewNavbar() {
                                 />
                               </div>
                             )}
-                            <h3 className="text-[#0A1D37] font-bold text-base">
+                            <h3 className={`text-[#0A1D37] ${estedadBold.className} text-base`}>
                               {dropdown.name}
                             </h3>
                           </div>
@@ -609,7 +571,7 @@ export default function NewNavbar() {
                               <Link
                                 key={subItem.name}
                                 href={subItem.href}
-                                className="dropdown-item group flex items-center space-x-3 space-x-reverse p-3 text-gray-700 hover:text-[#0A1D37] text-sm rounded-xl hover:bg-gradient-to-r hover:from-[#0A1D37]/5 hover:to-[#4DBFF0]/5 transition-all duration-300 border border-transparent hover:border-[#0A1D37]/20 hover:shadow-md"
+                                className="  group flex items-center space-x-3 space-x-reverse p-3 text-gray-700 hover:text-[#0A1D37] text-sm rounded-xl hover:bg-gradient-to-r hover:from-[#0A1D37]/5 hover:to-[#4DBFF0]/5 transition-all duration-300 border border-transparent hover:border-[#0A1D37]/20 hover:shadow-md"
                                 onClick={() => {
                                   setActiveDropdown(null);
                                   isMouseOverMenu.current = false;
@@ -701,11 +663,7 @@ export default function NewNavbar() {
                 <div key={item.title} className="mobile-menu-item space-y-2">
                   <button
                     onClick={() => handleMobileItemClick(item.title)}
-                    className={`w-full flex items-center justify-between p-4 text-sm font-bold rounded-xl transition-all duration-300 ${
-                      mobileActiveItem === item.title
-                        ? "bg-gradient-to-r from-[#0A1D37] to-[#4DBFF0] text-white shadow-lg"
-                        : "bg-gray-50 text-[#0A1D37] hover:bg-gray-100"
-                    }`}
+                    className={`w-full flex items-center justify-between p-4 text-sm ${estedadBold.className} rounded-xl transition-all duration-300`}
                   >
                     <span>{item.title}</span>
                     <svg
@@ -744,7 +702,7 @@ export default function NewNavbar() {
                                 {dropdown.icon && (
                                   <IconComponent
                                     icon={dropdown.icon as IconType}
-                                    className="text-base mr-1 text-[#0A1D37]"
+                                    className="text-base mr-1 text-[#FF7A00]"
                                   />
                                 )}
                                 <span className="text-xs font-semibold text-[#0A1D37]">
@@ -824,14 +782,14 @@ export default function NewNavbar() {
                     {!user?.profile?.avatar && (
                       <FaUser className="text-[#0A1D37]" />
                     )}
-                    <span className="font-bold text-[#0A1D37]">
+                    <span className={` ${estedadBold.className} text-[#0A1D37]`}>
                       {getUserDisplayName()}
                     </span>
                   </div>
                   <Link
                     href="/dashboard"
                     onClick={toggleMobileMenu}
-                    className="group relative w-full flex items-center justify-center gap-2 p-4 font-bold text-white overflow-hidden rounded-xl transition-all duration-300 hover:scale-105 shadow-lg"
+                    className={`group relative w-full flex items-center justify-center gap-2 p-4 ${estedadBold.className} text-white overflow-hidden rounded-xl transition-all duration-300 hover:scale-105 shadow-lg`}
                   >
                     <span className="absolute inset-0 bg-gradient-to-r from-[#4DBFF0] to-[#0A1D37]" />
                     <span className="relative z-10 flex items-center gap-2">
@@ -844,7 +802,7 @@ export default function NewNavbar() {
                       handleLogout();
                       toggleMobileMenu();
                     }}
-                    className="w-full flex items-center justify-center gap-2 p-4 font-bold text-red-600 bg-red-50 hover:bg-red-100 rounded-xl transition-all duration-300"
+                    className={`w-full flex items-center justify-center gap-2 p-4 ${estedadBold.className} text-red-600 bg-red-50 hover:bg-red-100 rounded-xl transition-all duration-300`}
                   >
                     <FaSignOutAlt />
                     خروج
@@ -854,7 +812,7 @@ export default function NewNavbar() {
                 <Link
                   href="/auth/sms"
                   onClick={toggleMobileMenu}
-                  className="group relative w-full flex items-center justify-center p-4 font-bold text-white overflow-hidden rounded-xl transition-all duration-300 hover:scale-105 shadow-lg"
+                  className={`group relative w-full flex items-center justify-center p-4 ${estedadBold.className}  text-white overflow-hidden rounded-xl transition-all duration-300 hover:scale-105 shadow-lg`}
                 >
                   <span className="absolute inset-0 bg-gradient-to-r from-[#0A1D37] to-[#4DBFF0]" />
                   <span className="absolute inset-0 bg-gradient-to-r from-[#4DBFF0] to-[#0A1D37] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />

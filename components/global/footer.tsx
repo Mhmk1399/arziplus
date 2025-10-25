@@ -13,50 +13,13 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
+import { estedadBold } from "@/next-persian-fonts/estedad";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
 
-const TrustBadge = ({
-  src,
-  alt,
-  href,
-}: {
-  src: string;
-  alt: string;
-  href: string;
-}) => {
-  const [imageError, setImageError] = useState(false);
-
-  return (
-    <a
-      href={href}
-      className="block hover:scale-105 transition-transform duration-300"
-    >
-      {!imageError ? (
-        <Image
-          src={src}
-          alt={alt}
-          width={80}
-          height={80}
-          className="rounded-lg"
-          onError={() => setImageError(true)}
-        />
-      ) : (
-        <img
-          src={src}
-          alt={alt}
-          className="w-20 h-20 rounded-lg"
-          onError={(e) => {
-            const img = e.target as HTMLImageElement;
-            img.style.display = "none";
-          }}
-        />
-      )}
-    </a>
-  );
-};
+ 
 
 export default function Footer() {
   const pathname = usePathname();
@@ -265,7 +228,6 @@ export default function Footer() {
                 </p>
 
                 {/* CTA Phone Button */}
-               
 
                 {/* Social Links */}
                 <div className="flex items-center justify-center gap-4">
@@ -301,7 +263,9 @@ export default function Footer() {
                 <div ref={quickLinksRef} className="footer-section space-y-8">
                   <div className="space-y-2">
                     <div className="w-12 h-1 bg-gradient-to-r from-[#0A1D37] to-[#4DBFF0] rounded-full mb-4" />
-                    <h4 className="text-white text-2xl font-bold">
+                    <h4
+                      className={`text-white text-2xl ${estedadBold.className} `}
+                    >
                       دسترسی سریع
                     </h4>
                   </div>
@@ -324,7 +288,9 @@ export default function Footer() {
                 <div className="footer-section space-y-8">
                   <div className="space-y-2">
                     <div className="w-12 h-1 bg-gradient-to-r from-[#4DBFF0] to-[#0A1D37] rounded-full mb-4" />
-                    <h4 className="text-white text-2xl font-bold">
+                    <h4
+                      className={`text-white text-2xl ${estedadBold.className} `}
+                    >
                       خدمات ویژه
                     </h4>
                   </div>
@@ -346,7 +312,11 @@ export default function Footer() {
                 <div ref={newsletterRef} className="footer-section space-y-8">
                   <div className="space-y-2">
                     <div className="w-12 h-1 bg-gradient-to-r from-[#0A1D37] to-[#4DBFF0] rounded-full mb-4" />
-                    <h4 className="text-white text-2xl font-bold">خبرنامه</h4>
+                    <h4
+                      className={`text-white text-2xl ${estedadBold.className} `}
+                    >
+                      خبرنامه
+                    </h4>
                   </div>
 
                   <p className="text-[#A0A0A0] text-lg leading-relaxed">
@@ -398,7 +368,6 @@ export default function Footer() {
                 >
                   <img
                     referrerPolicy="origin"
-                    
                     src="/assets/images/enamad.png"
                     alt="نماد اعتماد الکترونیکی"
                     className="cursor-pointer w-28 h-28 rounded-lg"

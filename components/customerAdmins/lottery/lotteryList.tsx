@@ -13,9 +13,7 @@ import {
   FaUser,
   FaChild,
   FaHeart,
-  FaCalendarAlt,
-  FaMapMarkerAlt,
-  FaPhone,
+  
   FaIdCard,
   FaExclamationTriangle,
   FaCheckCircle,
@@ -311,7 +309,7 @@ const CustomerLotteryList = () => {
       setIsEditMode(false);
       await fetchLotteries(); // Refresh the list
     } catch (error) {
-      console.error("Update error:", error);
+      console.log("Update error:", error);
       showToast.error(
         error instanceof Error ? error.message : "خطا در به‌روزرسانی"
       );
@@ -443,7 +441,6 @@ const CustomerLotteryList = () => {
               <div className="bg-gradient-to-r from-[#0A1D37]/5 to-[#4DBFF0]/5 px-5 sm:px-6 py-4 border-b border-gray-100">
                 <div className="flex items-center justify-between gap-4">
                   <div className="flex items-center gap-3">
-                  
                     <div>
                       <h3 className="text-xs sm:text-lg font-bold text-[#0A1D37] group-hover:text-[#4DBFF0] transition-colors">
                         ثبت نام لاتاری گرین کارت
@@ -821,7 +818,7 @@ const CustomerLotteryList = () => {
                           window.open(selectedLottery.receiptUrl, "_blank")
                         }
                         onError={(e) => {
-                          console.error(
+                          console.log(
                             "Error loading receipt image:",
                             selectedLottery.receiptUrl
                           );
@@ -945,363 +942,199 @@ const CustomerLotteryList = () => {
                   </div>
                   <div className="bg-white p-4 rounded-xl border border-pink-200">
                     <p className="text-xs sm:text-sm text-gray-600 mb-2">
-                      ثبت‌نام دو نفره
+                      ثبت نام دو نفره
                     </p>
-                    {isEditMode && editData ? (
-                      <label className="flex items-center gap-2 cursor-pointer">
-                        <input
-                          type="checkbox"
-                          checked={
-                            editData.famillyInformations[0]
-                              ?.towPeopleRegistration || false
-                          }
-                          onChange={(e) => {
-                            const newEditData = { ...editData };
-                            newEditData.famillyInformations[0].towPeopleRegistration =
-                              e.target.checked;
-                            setEditData(newEditData);
-                          }}
-                          className="text-[#0A1D37] focus:ring-[#0A1D37] rounded"
-                        />
-                        <span className="text-sm">ثبت‌نام دو نفره</span>
-                      </label>
-                    ) : (
-                      <p className="text-sm sm:text-base font-bold text-[#0A1D37]">
-                        {selectedLottery.famillyInformations[0]
-                          ?.towPeopleRegistration
-                          ? "بله"
-                          : "خیر"}
-                      </p>
-                    )}
+                    <p className="text-sm sm:text-base font-bold text-[#0A1D37]">
+                      {selectedLottery.famillyInformations[0]
+                        ?.towPeopleRegistration
+                        ? "بله"
+                        : "خیر"}
+                    </p>
                   </div>
                 </div>
               </div>
 
               {/* Registerer Information */}
-              <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl mb-12 sm:rounded-2xl p-5 sm:p-6 border-2 border-blue-200">
+              <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl sm:rounded-2xl p-5 sm:p-6 border-2 border-blue-200">
                 <h3 className="text-base sm:text-lg font-bold text-[#0A1D37] mb-4 flex items-center gap-2">
                   <FaUser className="text-blue-500 text-xl" />
-                  اطلاعات ثبت‌کننده
+                  اطلاعات ثبت کننده
                 </h3>
                 {selectedLottery.registererInformations[0] && (
-                  <div className="space-y-5">
-                    {/* Basic Info */}
-                    <div className="bg-white p-5 rounded-xl border border-blue-200">
-                      <h4 className="text-sm sm:text-base font-bold text-gray-700 mb-3 flex items-center gap-2">
-                        <div className="w-1.5 h-1.5 bg-blue-500 rounded-full"></div>
-                        اطلاعات اولیه
-                      </h4>
-                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                        <div>
-                          <p className="text-xs text-gray-600 mb-1">نام</p>
-                          {isEditMode && editData ? (
-                            <input
-                              type="text"
-                              value={
-                                editData.registererInformations[0]
-                                  ?.initialInformations.firstName || ""
-                              }
-                              onChange={(e) => {
-                                const newEditData = { ...editData };
-                                newEditData.registererInformations[0].initialInformations.firstName =
-                                  e.target.value;
-                                setEditData(newEditData);
-                              }}
-                              className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] text-sm"
-                              placeholder="نام (انگلیسی)"
-                            />
-                          ) : (
-                            <p className="text-sm sm:text-base font-semibold text-[#0A1D37]">
-                              {
-                                selectedLottery.registererInformations[0]
-                                  .initialInformations.firstName
-                              }
-                            </p>
-                          )}
-                        </div>
-                        <div>
-                          <p className="text-xs text-gray-600 mb-1">
-                            نام خانوادگی
-                          </p>
-                          {isEditMode && editData ? (
-                            <input
-                              type="text"
-                              value={
-                                editData.registererInformations[0]
-                                  ?.initialInformations.lastName || ""
-                              }
-                              onChange={(e) => {
-                                const newEditData = { ...editData };
-                                newEditData.registererInformations[0].initialInformations.lastName =
-                                  e.target.value;
-                                setEditData(newEditData);
-                              }}
-                              className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] text-sm"
-                              placeholder="نام خانوادگی (انگلیسی)"
-                            />
-                          ) : (
-                            <p className="text-sm sm:text-base font-semibold text-[#0A1D37]">
-                              {
-                                selectedLottery.registererInformations[0]
-                                  .initialInformations.lastName
-                              }
-                            </p>
-                          )}
-                        </div>
-                        <div>
-                          <p className="text-xs text-gray-600 mb-1">جنسیت</p>
-                          {isEditMode && editData ? (
-                            <select
-                              value={
-                                editData.registererInformations[0]
-                                  ?.initialInformations.gender || ""
-                              }
-                              onChange={(e) => {
-                                const newEditData = { ...editData };
-                                newEditData.registererInformations[0].initialInformations.gender =
-                                  e.target.value;
-                                setEditData(newEditData);
-                              }}
-                              className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] text-sm"
-                            >
-                              <option value="">انتخاب کنید</option>
-                              <option value="male">مرد</option>
-                              <option value="female">زن</option>
-                            </select>
-                          ) : (
-                            <p className="text-sm sm:text-base font-semibold text-[#0A1D37]">
-                              {selectedLottery.registererInformations[0]
-                                .initialInformations.gender === "male"
-                                ? "مرد"
-                                : "زن"}
-                            </p>
-                          )}
-                        </div>
-                        <div>
-                          <p className="text-xs text-gray-600 mb-1">
-                            تاریخ تولد
-                          </p>
-                          <p className="text-sm sm:text-base font-semibold text-[#0A1D37]">
-                            {
-                              selectedLottery.registererInformations[0]
-                                .initialInformations.birthDate.day
-                            }
-                            /
-                            {
-                              selectedLottery.registererInformations[0]
-                                .initialInformations.birthDate.month
-                            }
-                            /
-                            {
-                              selectedLottery.registererInformations[0]
-                                .initialInformations.birthDate.year
-                            }
-                          </p>
-                        </div>
-                        <div>
-                          <p className="text-xs text-gray-600 mb-1">کشور</p>
-                          <p className="text-sm sm:text-base font-semibold text-[#0A1D37]">
-                            {
-                              selectedLottery.registererInformations[0]
-                                .initialInformations.country
-                            }
-                          </p>
-                        </div>
-                        <div>
-                          <p className="text-xs text-gray-600 mb-1">شهر</p>
-                          <p className="text-sm sm:text-base font-semibold text-[#0A1D37]">
-                            {
-                              selectedLottery.registererInformations[0]
-                                .initialInformations.city
-                            }
-                          </p>
-                        </div>
-                      </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div className="bg-white p-4 rounded-xl border border-blue-200">
+                      <p className="text-xs sm:text-sm text-gray-600 mb-2">
+                        نام
+                      </p>
+                      <p className="text-sm sm:text-base font-bold text-[#0A1D37]">
+                        {
+                          selectedLottery.registererInformations[0]
+                            .initialInformations.firstName
+                        }
+                      </p>
                     </div>
-
-                    {/* Contact Info */}
-                    <div className="bg-white p-5 rounded-xl border border-blue-200">
-                      <h4 className="text-sm sm:text-base font-bold text-gray-700 mb-3 flex items-center gap-2">
-                        <FaPhone className="text-green-500 text-sm" />
-                        اطلاعات تماس
-                      </h4>
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div>
-                          <p className="text-xs text-gray-600 mb-1">
-                            تلفن اصلی
-                          </p>
-                          <p className="text-sm sm:text-base font-semibold text-[#0A1D37] dir-ltr text-right">
-                            {
-                              selectedLottery.registererInformations[0]
-                                .contactInformations[0]?.activePhoneNumber
-                            }
-                          </p>
-                        </div>
-                        <div>
-                          <p className="text-xs text-gray-600 mb-1">ایمیل</p>
-                          <p className="text-sm sm:text-base font-semibold text-[#0A1D37] dir-ltr text-right">
-                            {
-                              selectedLottery.registererInformations[0]
-                                .contactInformations[0]?.email
-                            }
-                          </p>
-                        </div>
-                      </div>
+                    <div className="bg-white p-4 rounded-xl border border-blue-200">
+                      <p className="text-xs sm:text-sm text-gray-600 mb-2">
+                        نام خانوادگی
+                      </p>
+                      <p className="text-sm sm:text-base font-bold text-[#0A1D37]">
+                        {
+                          selectedLottery.registererInformations[0]
+                            .initialInformations.lastName
+                        }
+                      </p>
                     </div>
-
-                    {/* Residence Info */}
-                    <div className="bg-white p-5 rounded-xl border border-blue-200">
-                      <h4 className="text-sm sm:text-base font-bold text-gray-700 mb-3 flex items-center gap-2">
-                        <FaMapMarkerAlt className="text-red-500 text-sm" />
-                        محل سکونت
-                      </h4>
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div>
-                          <p className="text-xs text-gray-600 mb-1">
-                            کشور سکونت
-                          </p>
-                          <p className="text-sm sm:text-base font-semibold text-[#0A1D37]">
-                            {
+                    <div className="bg-white p-4 rounded-xl border border-blue-200">
+                      <p className="text-xs sm:text-sm text-gray-600 mb-2">
+                        تصویر
+                      </p>
+                      {selectedLottery.registererInformations[0]
+                        .otherInformations[0]?.imageUrl ? (
+                        <img
+                          src={
+                            selectedLottery.registererInformations[0]
+                              .otherInformations[0].imageUrl
+                          }
+                          alt="تصویر ثبت کننده"
+                          className="w-16 h-16 object-cover rounded-lg border cursor-pointer"
+                          onClick={() =>
+                            window.open(
                               selectedLottery.registererInformations[0]
-                                .residanceInformation[0]?.residanceCountry
-                            }
-                          </p>
-                        </div>
-                        <div>
-                          <p className="text-xs text-gray-600 mb-1">
-                            شهر سکونت
-                          </p>
-                          <p className="text-sm sm:text-base font-semibold text-[#0A1D37]">
-                            {
-                              selectedLottery.registererInformations[0]
-                                .residanceInformation[0]?.residanceCity
-                            }
-                          </p>
-                        </div>
-                        <div className="sm:col-span-2">
-                          <p className="text-xs text-gray-600 mb-1">آدرس</p>
-                          <p className="text-sm sm:text-base font-semibold text-[#0A1D37] leading-relaxed">
-                            {
-                              selectedLottery.registererInformations[0]
-                                .residanceInformation[0]?.residanseAdress
-                            }
-                          </p>
-                        </div>
-                      </div>
+                                .otherInformations[0].imageUrl,
+                              "_blank"
+                            )
+                          }
+                        />
+                      ) : (
+                        <p className="text-sm text-gray-400">بدون تصویر</p>
+                      )}
                     </div>
                   </div>
                 )}
               </div>
 
               {/* Partner Information */}
-              {selectedLottery.registererPartnerInformations.length > 0 && (
-                <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl sm:rounded-2xl p-5 sm:p-6 border-2 border-purple-200">
-                  <h3 className="text-base sm:text-lg font-bold text-[#0A1D37] mb-4 flex items-center gap-2">
-                    <FaIdCard className="text-purple-500 text-xl" />
-                    اطلاعات همسر
-                  </h3>
-                  <div className="bg-white p-5 rounded-xl border border-purple-200">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                      <div>
-                        <p className="text-xs text-gray-600 mb-1">نام</p>
-                        <p className="text-sm sm:text-base font-semibold text-[#0A1D37]">
+              {selectedLottery.famillyInformations[0]?.maridgeState &&
+                selectedLottery.registererPartnerInformations[0] && (
+                  <div className="bg-gradient-to-br from-pink-50 to-purple-50 rounded-xl sm:rounded-2xl p-5 sm:p-6 border-2 border-pink-200">
+                    <h3 className="text-base sm:text-lg font-bold text-[#0A1D37] mb-4 flex items-center gap-2">
+                      <FaIdCard className="text-pink-500 text-xl" />
+                      اطلاعات همسر
+                    </h3>
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                      <div className="bg-white p-4 rounded-xl border border-pink-200">
+                        <p className="text-xs sm:text-sm text-gray-600 mb-2">
+                          نام
+                        </p>
+                        <p className="text-sm sm:text-base font-bold text-[#0A1D37]">
                           {
                             selectedLottery.registererPartnerInformations[0]
                               .initialInformations.firstName
                           }
                         </p>
                       </div>
-                      <div>
-                        <p className="text-xs text-gray-600 mb-1">
+                      <div className="bg-white p-4 rounded-xl border border-pink-200">
+                        <p className="text-xs sm:text-sm text-gray-600 mb-2">
                           نام خانوادگی
                         </p>
-                        <p className="text-sm sm:text-base font-semibold text-[#0A1D37]">
+                        <p className="text-sm sm:text-base font-bold text-[#0A1D37]">
                           {
                             selectedLottery.registererPartnerInformations[0]
                               .initialInformations.lastName
                           }
                         </p>
                       </div>
-                      <div>
-                        <p className="text-xs text-gray-600 mb-1">جنسیت</p>
-                        <p className="text-sm sm:text-base font-semibold text-[#0A1D37]">
-                          {selectedLottery.registererPartnerInformations[0]
-                            .initialInformations.gender === "male"
-                            ? "مرد"
-                            : "زن"}
+                      <div className="bg-white p-4 rounded-xl border border-pink-200">
+                        <p className="text-xs sm:text-sm text-gray-600 mb-2">
+                          تصویر
                         </p>
+                        {selectedLottery.registererPartnerInformations[0]
+                          .otherInformations[0]?.imageUrl ? (
+                          <img
+                            src={
+                              selectedLottery.registererPartnerInformations[0]
+                                .otherInformations[0].imageUrl
+                            }
+                            alt="تصویر همسر"
+                            className="w-16 h-16 object-cover rounded-lg border cursor-pointer"
+                            onClick={() =>
+                              window.open(
+                                selectedLottery.registererPartnerInformations[0]
+                                  .otherInformations[0].imageUrl,
+                                "_blank"
+                              )
+                            }
+                          />
+                        ) : (
+                          <p className="text-sm text-gray-400">بدون تصویر</p>
+                        )}
                       </div>
                     </div>
                   </div>
-                </div>
-              )}
+                )}
 
               {/* Children Information */}
-              {selectedLottery.registererChildformations.length > 0 && (
-                <div className="bg-gradient-to-br from-yellow-50 to-orange-50 rounded-xl sm:rounded-2xl p-5 sm:p-6 border-2 border-yellow-200">
-                  <h3 className="text-base sm:text-lg font-bold text-[#0A1D37] mb-4 flex items-center gap-2">
-                    <FaChild className="text-yellow-600 text-xl" />
-                    اطلاعات فرزندان (
-                    {selectedLottery.registererChildformations.length})
-                  </h3>
-                  <div className="space-y-4">
+              {selectedLottery.famillyInformations[0]?.numberOfChildren > 0 &&
+                selectedLottery.registererChildformations.length > 0 && (
+                  <div className="bg-gradient-to-br from-yellow-50 to-orange-50 rounded-xl sm:rounded-2xl p-5 sm:p-6 border-2 border-yellow-200">
+                    <h3 className="text-base sm:text-lg font-bold text-[#0A1D37] mb-4 flex items-center gap-2">
+                      <FaChild className="text-yellow-500 text-xl" />
+                      اطلاعات فرزندان
+                    </h3>
                     {selectedLottery.registererChildformations.map(
                       (child, index) => (
                         <div
                           key={index}
-                          className="bg-white p-5 rounded-xl border-2 border-yellow-200"
+                          className="mb-4 last:mb-0 pb-4 last:pb-0 border-b last:border-b-0"
                         >
-                          <h4 className="text-sm sm:text-base font-bold text-gray-700 mb-3 flex items-center gap-2">
-                            <div className="w-6 h-6 bg-yellow-500 text-white rounded-full flex items-center justify-center text-xs font-bold">
-                              {index + 1}
-                            </div>
+                          <h4 className="text-sm font-semibold text-gray-700 mb-3">
                             فرزند {index + 1}
                           </h4>
-                          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                            <div>
-                              <p className="text-xs text-gray-600 mb-1">نام</p>
-                              <p className="text-sm sm:text-base font-semibold text-[#0A1D37]">
+                          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                            <div className="bg-white p-4 rounded-xl border border-yellow-200">
+                              <p className="text-xs sm:text-sm text-gray-600 mb-2">
+                                نام
+                              </p>
+                              <p className="text-sm sm:text-base font-bold text-[#0A1D37]">
                                 {child.initialInformations.firstName}
                               </p>
                             </div>
-                            <div>
-                              <p className="text-xs text-gray-600 mb-1">
+                            <div className="bg-white p-4 rounded-xl border border-yellow-200">
+                              <p className="text-xs sm:text-sm text-gray-600 mb-2">
                                 نام خانوادگی
                               </p>
-                              <p className="text-sm sm:text-base font-semibold text-[#0A1D37]">
+                              <p className="text-sm sm:text-base font-bold text-[#0A1D37]">
                                 {child.initialInformations.lastName}
                               </p>
                             </div>
-                            <div>
-                              <p className="text-xs text-gray-600 mb-1">
-                                جنسیت
+                            <div className="bg-white p-4 rounded-xl border border-yellow-200">
+                              <p className="text-xs sm:text-sm text-gray-600 mb-2">
+                                تصویر
                               </p>
-                              <p className="text-sm sm:text-base font-semibold text-[#0A1D37]">
-                                {child.initialInformations.gender === "male"
-                                  ? "پسر"
-                                  : "دختر"}
-                              </p>
+                              {child.otherInformations[0]?.imageUrl ? (
+                                <img
+                                  src={child.otherInformations[0].imageUrl}
+                                  alt={`تصویر فرزند ${index + 1}`}
+                                  className="w-16 h-16 object-cover rounded-lg border cursor-pointer"
+                                  onClick={() =>
+                                    window.open(
+                                      child.otherInformations[0].imageUrl,
+                                      "_blank"
+                                    )
+                                  }
+                                />
+                              ) : (
+                                <p className="text-sm text-gray-400">
+                                  بدون تصویر
+                                </p>
+                              )}
                             </div>
                           </div>
                         </div>
                       )
                     )}
                   </div>
-                </div>
-              )}
-            </div>
-
-            {/* Modal Footer - Fixed */}
-            <div className="sticky bottom-0 p-5 sm:p-6 border-t bg-gradient-to-r from-gray-50 to-blue-50 border-gray-200 flex justify-between items-center gap-4">
-              <div className="text-xs sm:text-sm text-gray-600">
-                ℹ️ تمام اطلاعات محرمانه و ایمن نگهداری می‌شود
-              </div>
-              <button
-                onClick={() => setShowLotteryDetails(false)}
-                className="px-6 py-2.5 sm:px-8 sm:py-3 bg-gradient-to-r from-[#0A1D37] to-[#4DBFF0] text-white font-bold rounded-xl hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-300 text-sm sm:text-base"
-              >
-                بستن
-              </button>
+                )}
             </div>
           </div>
         </div>

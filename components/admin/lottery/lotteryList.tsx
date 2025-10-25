@@ -1,7 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { createPortal } from "react-dom";
-import { useCurrentUser } from "@/hooks/useCurrentUser";
+ import { useCurrentUser } from "@/hooks/useCurrentUser";
 import { showToast } from "@/utilities/toast";
 import {
   FaUsers,
@@ -14,8 +13,7 @@ import {
   FaUser,
   FaChild,
   FaIdCard,
-  FaMapMarkerAlt,
-  FaPhone,
+ 
   FaCreditCard,
   FaMoneyBillWave,
   FaReceipt,
@@ -132,7 +130,7 @@ interface PaginationData {
 }
 
 const LotteryAdminList = () => {
-  const { user: currentUser, isLoggedIn } = useCurrentUser();
+  const {   isLoggedIn } = useCurrentUser();
   const [lotteries, setLotteries] = useState<LotteryRegistration[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -147,7 +145,7 @@ const LotteryAdminList = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(10);
+  const [pageSize] = useState(10);
 
   // Modal states
   const [selectedLottery, setSelectedLottery] =
@@ -155,7 +153,8 @@ const LotteryAdminList = () => {
   const [showLotteryDetails, setShowLotteryDetails] = useState(false);
   const [showEditLottery, setShowEditLottery] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [lotteryToDelete, setLotteryToDelete] = useState<LotteryRegistration | null>(null);
+  const [lotteryToDelete, setLotteryToDelete] =
+    useState<LotteryRegistration | null>(null);
 
   // Edit form state
   const [editForm, setEditForm] = useState({
@@ -222,47 +221,47 @@ const LotteryAdminList = () => {
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.message || "خطا در حذف ثبتنام");
+        throw new Error(errorData.message || "خطا در حذف ثبت نام ");
       }
 
-      showToast.success("ثبتنام با موفقیت حذف شد");
+      showToast.success("ثبت نام  با موفقیت حذف شد");
       setShowDeleteModal(false);
       setLotteryToDelete(null);
       await fetchLotteries();
     } catch (err) {
       showToast.error(
-        err instanceof Error ? err.message : "خطا در حذف ثبتنام"
+        err instanceof Error ? err.message : "خطا در حذف ثبت نام "
       );
     }
   };
 
-  const oldHandleDeleteLottery = async (lotteryId: string) => {
-    if (!confirm("آیا مطمئن هستید که می‌خواهید این ثبت‌نام را حذف کنید؟")) {
-      return;
-    }
+  // const oldHandleDeleteLottery = async (lotteryId: string) => {
+  //   if (!confirm("آیا مطمئن هستید که می‌خواهید این ثبت‌نام را حذف کنید؟")) {
+  //     return;
+  //   }
 
-    try {
-      const token = localStorage.getItem("authToken");
-      const response = await fetch(`/api/lottery?id=${lotteryId}`, {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+  //   try {
+  //     const token = localStorage.getItem("authToken");
+  //     const response = await fetch(`/api/lottery?id=${lotteryId}`, {
+  //       method: "DELETE",
+  //       headers: {
+  //         Authorization: `Bearer ${token}`,
+  //       },
+  //     });
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || "خطا در حذف ثبت‌نام");
-      }
+  //     if (!response.ok) {
+  //       const errorData = await response.json();
+  //       throw new Error(errorData.message || "خطا در حذف ثبت‌نام");
+  //     }
 
-      showToast.success("ثبت‌نام با موفقیت حذف شد");
-      await fetchLotteries();
-    } catch (err) {
-      showToast.error(
-        err instanceof Error ? err.message : "خطا در حذف ثبت‌نام"
-      );
-    }
-  };
+  //     showToast.success("ثبت‌نام با موفقیت حذف شد");
+  //     await fetchLotteries();
+  //   } catch (err) {
+  //     showToast.error(
+  //       err instanceof Error ? err.message : "خطا در حذف ثبت‌نام"
+  //     );
+  //   }
+  // };
 
   // Update lottery status
   const handleUpdateLottery = async () => {
@@ -408,23 +407,21 @@ const LotteryAdminList = () => {
     setShowEditLottery(true);
   };
 
-  
-
-  if (
-    !currentUser?.roles.includes("admin") &&
-    !currentUser?.roles.includes("super_admin")
-  ) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">
-            دسترسی غیر مجاز
-          </h2>
-          <p className="text-gray-600">شما به این بخش دسترسی ندارید</p>
-        </div>
-      </div>
-    );
-  }
+  // if (
+  //   !currentUser?.roles.includes("admin") &&
+  //   !currentUser?.roles.includes("super_admin")
+  // ) {
+  //   return (
+  //     <div className="min-h-screen flex items-center justify-center">
+  //       <div className="text-center">
+  //         <h2 className="text-2xl font-bold text-gray-900 mb-2">
+  //           دسترسی غیر مجاز
+  //         </h2>
+  //         <p className="text-gray-600">شما به این بخش دسترسی ندارید</p>
+  //       </div>
+  //     </div>
+  //   );
+  // }
 
   return (
     <div className=" " dir="rtl">
@@ -479,22 +476,6 @@ const LotteryAdminList = () => {
                 <option value="approved">تایید شده</option>
                 <option value="rejected">رد شده</option>
                 <option value="completed">تکمیل شده</option>
-              </select>
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                تعداد نمایش
-              </label>
-              <select
-                value={pageSize}
-                onChange={(e) => setPageSize(Number(e.target.value))}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37]"
-              >
-                <option value={10}>10</option>
-                <option value={25}>25</option>
-                <option value={50}>50</option>
-                <option value={100}>100</option>
               </select>
             </div>
           </div>
@@ -928,7 +909,7 @@ const LotteryAdminList = () => {
                           window.open(selectedLottery.receiptUrl, "_blank")
                         }
                         onError={(e) => {
-                          console.error(
+                          console.log(
                             "Error loading receipt image:",
                             selectedLottery.receiptUrl
                           );
@@ -1033,123 +1014,27 @@ const LotteryAdminList = () => {
                           </p>
                         </div>
                         <div>
-                          <p className="text-xs text-gray-600 mb-1">جنسیت</p>
-                          <p className="text-sm font-medium">
-                            {selectedLottery.registererInformations[0]
-                              .initialInformations.gender === "male"
-                              ? "مرد"
-                              : "زن"}
-                          </p>
-                        </div>
-                        <div>
-                          <p className="text-xs text-gray-600 mb-1">
-                            تاریخ تولد
-                          </p>
-                          <p className="text-sm font-medium">
-                            {
-                              selectedLottery.registererInformations[0]
-                                .initialInformations.dayOfBirth
-                            }
-                            /
-                            {
-                              selectedLottery.registererInformations[0]
-                                .initialInformations.monthOfBirth
-                            }
-                            /
-                            {
-                              selectedLottery.registererInformations[0]
-                                .initialInformations.yearOfBirth
-                            }
-                          </p>
-                        </div>
-                        <div>
-                          <p className="text-xs text-gray-600 mb-1">کشور</p>
-                          <p className="text-sm font-medium">
-                            {
-                              selectedLottery.registererInformations[0]
-                                .initialInformations.country
-                            }
-                          </p>
-                        </div>
-                        <div>
-                          <p className="text-xs text-gray-600 mb-1">شهر</p>
-                          <p className="text-sm font-medium">
-                            {
-                              selectedLottery.registererInformations[0]
-                                .initialInformations.city
-                            }
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Contact Info */}
-                    <div>
-                      <h4 className="text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2">
-                        <FaPhone className="text-green-500 text-xs" />
-                        اطلاعات تماس
-                      </h4>
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                        <div>
-                          <p className="text-xs text-gray-600 mb-1">
-                            تلفن اصلی
-                          </p>
-                          <p className="text-sm font-medium">
-                            {
-                              selectedLottery.registererInformations[0]
-                                .contactInformations[0]?.activePhoneNumber
-                            }
-                          </p>
-                        </div>
-                        <div>
-                          <p className="text-xs text-gray-600 mb-1">ایمیل</p>
-                          <p className="text-sm font-medium">
-                            {
-                              selectedLottery.registererInformations[0]
-                                .contactInformations[0]?.email
-                            }
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Residence Info */}
-                    <div>
-                      <h4 className="text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2">
-                        <FaMapMarkerAlt className="text-red-500 text-xs" />
-                        محل سکونت
-                      </h4>
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                        <div>
-                          <p className="text-xs text-gray-600 mb-1">
-                            کشور سکونت
-                          </p>
-                          <p className="text-sm font-medium">
-                            {
-                              selectedLottery.registererInformations[0]
-                                .residanceInformation[0]?.residanceCountry
-                            }
-                          </p>
-                        </div>
-                        <div>
-                          <p className="text-xs text-gray-600 mb-1">
-                            شهر سکونت
-                          </p>
-                          <p className="text-sm font-medium">
-                            {
-                              selectedLottery.registererInformations[0]
-                                .residanceInformation[0]?.residanceCity
-                            }
-                          </p>
-                        </div>
-                        <div className="sm:col-span-2">
-                          <p className="text-xs text-gray-600 mb-1">آدرس</p>
-                          <p className="text-sm font-medium">
-                            {
-                              selectedLottery.registererInformations[0]
-                                .residanceInformation[0]?.residanseAdress
-                            }
-                          </p>
+                          <p className="text-xs text-gray-600 mb-1">تصویر</p>
+                          {selectedLottery.registererInformations[0]
+                            .otherInformations[0]?.imageUrl ? (
+                            <img
+                              src={
+                                selectedLottery.registererInformations[0]
+                                  .otherInformations[0].imageUrl
+                              }
+                              alt="تصویر ثبت کننده"
+                              className="w-16 h-16 object-cover rounded-lg border cursor-pointer"
+                              onClick={() =>
+                                window.open(
+                                  selectedLottery.registererInformations[0]
+                                    .otherInformations[0].imageUrl,
+                                  "_blank"
+                                )
+                              }
+                            />
+                          ) : (
+                            <p className="text-sm text-gray-400">بدون تصویر</p>
+                          )}
                         </div>
                       </div>
                     </div>
@@ -1158,57 +1043,74 @@ const LotteryAdminList = () => {
               </div>
 
               {/* Partner Information */}
-              {selectedLottery.registererPartnerInformations.length > 0 && (
-                <div className="bg-gray-50 rounded-xl p-4 border border-[#0A1D37]/10">
-                  <h3 className="text-base sm:text-lg font-semibold text-[#0A1D37] mb-3 flex items-center gap-2">
-                    <FaIdCard className="text-purple-500" />
-                    اطلاعات همسر
-                  </h3>
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                    <div>
-                      <p className="text-xs text-gray-600 mb-1">نام</p>
-                      <p className="text-sm font-medium">
-                        {
-                          selectedLottery.registererPartnerInformations[0]
-                            .initialInformations.firstName
-                        }
-                      </p>
-                    </div>
-                    <div>
-                      <p className="text-xs text-gray-600 mb-1">نام خانوادگی</p>
-                      <p className="text-sm font-medium">
-                        {
-                          selectedLottery.registererPartnerInformations[0]
-                            .initialInformations.lastName
-                        }
-                      </p>
-                    </div>
-                    <div>
-                      <p className="text-xs text-gray-600 mb-1">جنسیت</p>
-                      <p className="text-sm font-medium">
+              {selectedLottery.famillyInformations[0]?.maridgeState &&
+                selectedLottery.registererPartnerInformations[0] && (
+                  <div className="bg-gray-50 rounded-xl p-4 border border-[#0A1D37]/10">
+                    <h3 className="text-base sm:text-lg font-semibold text-[#0A1D37] mb-3 flex items-center gap-2">
+                      <FaIdCard className="text-pink-500" />
+                      اطلاعات همسر
+                    </h3>
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                      <div>
+                        <p className="text-xs text-gray-600 mb-1">نام</p>
+                        <p className="text-sm font-medium">
+                          {
+                            selectedLottery.registererPartnerInformations[0]
+                              .initialInformations.firstName
+                          }
+                        </p>
+                      </div>
+                      <div>
+                        <p className="text-xs text-gray-600 mb-1">
+                          نام خانوادگی
+                        </p>
+                        <p className="text-sm font-medium">
+                          {
+                            selectedLottery.registererPartnerInformations[0]
+                              .initialInformations.lastName
+                          }
+                        </p>
+                      </div>
+                      <div>
+                        <p className="text-xs text-gray-600 mb-1">تصویر</p>
                         {selectedLottery.registererPartnerInformations[0]
-                          .initialInformations.gender === "male"
-                          ? "مرد"
-                          : "زن"}
-                      </p>
+                          .otherInformations[0]?.imageUrl ? (
+                          <img
+                            src={
+                              selectedLottery.registererPartnerInformations[0]
+                                .otherInformations[0].imageUrl
+                            }
+                            alt="تصویر همسر"
+                            className="w-16 h-16 object-cover rounded-lg border cursor-pointer"
+                            onClick={() =>
+                              window.open(
+                                selectedLottery.registererPartnerInformations[0]
+                                  .otherInformations[0].imageUrl,
+                                "_blank"
+                              )
+                            }
+                          />
+                        ) : (
+                          <p className="text-sm text-gray-400">بدون تصویر</p>
+                        )}
+                      </div>
                     </div>
                   </div>
-                </div>
-              )}
+                )}
 
               {/* Children Information */}
-              {selectedLottery.registererChildformations.length > 0 && (
-                <div className="bg-gray-50 rounded-xl p-4 border border-[#0A1D37]/10">
-                  <h3 className="text-base sm:text-lg font-semibold text-[#0A1D37] mb-3 flex items-center gap-2">
-                    <FaChild className="text-yellow-500" />
-                    اطلاعات فرزندان
-                  </h3>
-                  <div className="space-y-4">
+              {selectedLottery.famillyInformations[0]?.numberOfChildren > 0 &&
+                selectedLottery.registererChildformations.length > 0 && (
+                  <div className="bg-gray-50 rounded-xl p-4 border border-[#0A1D37]/10">
+                    <h3 className="text-base sm:text-lg font-semibold text-[#0A1D37] mb-3 flex items-center gap-2">
+                      <FaChild className="text-yellow-500" />
+                      اطلاعات فرزندان
+                    </h3>
                     {selectedLottery.registererChildformations.map(
                       (child, index) => (
                         <div
                           key={index}
-                          className="border border-gray-200 rounded-lg p-3"
+                          className="mb-4 last:mb-0 pb-4 last:pb-0 border-b last:border-b-0"
                         >
                           <h4 className="text-sm font-semibold text-gray-700 mb-2">
                             فرزند {index + 1}
@@ -1221,48 +1123,47 @@ const LotteryAdminList = () => {
                               </p>
                             </div>
                             <div>
-                              <p className="text-xs text-gray-600 mb-1">
-                                نام خانوادگی
-                              </p>
                               <p className="text-sm font-medium">
                                 {child.initialInformations.lastName}
                               </p>
                             </div>
                             <div>
                               <p className="text-xs text-gray-600 mb-1">
-                                جنسیت
+                                تصویر
                               </p>
-                              <p className="text-sm font-medium">
-                                {child.initialInformations.gender === "male"
-                                  ? "پسر"
-                                  : "دختر"}
-                              </p>
+                              {child.otherInformations[0]?.imageUrl ? (
+                                <img
+                                  src={child.otherInformations[0].imageUrl}
+                                  alt={`تصویر فرزند ${index + 1}`}
+                                  className="w-16 h-16 object-cover rounded-lg border cursor-pointer"
+                                  onClick={() =>
+                                    window.open(
+                                      child.otherInformations[0].imageUrl,
+                                      "_blank"
+                                    )
+                                  }
+                                />
+                              ) : (
+                                <p className="text-sm text-gray-400">
+                                  بدون تصویر
+                                </p>
+                              )}
                             </div>
                           </div>
                         </div>
                       )
                     )}
                   </div>
-                </div>
-              )}
+                )}
             </div>
 
             {/* Footer */}
-            <div className="p-4 sm:p-6 border-t border-[#0A1D37]/10 bg-gray-50 flex flex-col sm:flex-row justify-end gap-3">
+            <div className="flex items-center justify-end gap-3 p-4 sm:p-6 border-t bg-gray-50">
               <button
                 onClick={() => setShowLotteryDetails(false)}
-                className="w-full sm:w-auto px-4 py-2 text-[#0A1D37] border border-[#0A1D37]/20 rounded-lg hover:bg-gray-100 transition-colors"
+                className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50"
               >
                 بستن
-              </button>
-              <button
-                onClick={() => {
-                  setShowLotteryDetails(false);
-                  openEditLottery(selectedLottery);
-                }}
-                className="w-full sm:w-auto px-4 py-2 bg-[#0A1D37] text-white rounded-lg hover:bg-[#0A1D37]/90 transition-colors"
-              >
-                ویرایش وضعیت
               </button>
             </div>
           </div>
@@ -1272,14 +1173,20 @@ const LotteryAdminList = () => {
       {/* Edit Lottery Modal */}
       {showEditLottery && selectedLottery && (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-2xl max-w-2xl w-full shadow-2xl border border-[#0A1D37]/10">
-            <div className="p-4 sm:p-6 border-b border-[#0A1D37]/10">
-              <h2 className="text-xl font-bold text-[#0A1D37] flex items-center gap-3">
-                 ویرایش وضعیت ثبت‌نام
+          <div className="bg-white rounded-2xl w-full max-w-2xl shadow-2xl">
+            <div className="flex items-center justify-between p-6 border-b">
+              <h2 className="text-xl font-bold text-[#0A1D37]">
+                ویرایش وضعیت ثبت نام
               </h2>
+              <button
+                onClick={() => setShowEditLottery(false)}
+                className="text-gray-500 hover:text-gray-700"
+              >
+                ✕
+              </button>
             </div>
 
-            <div className="p-4 sm:p-6 space-y-6">
+            <div className="p-6 space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   وضعیت
@@ -1287,9 +1194,9 @@ const LotteryAdminList = () => {
                 <select
                   value={editForm.status}
                   onChange={(e) =>
-                    setEditForm((prev) => ({ ...prev, status: e.target.value }))
+                    setEditForm({ ...editForm, status: e.target.value })
                   }
-                  className="w-full px-3 py-2 border border-[#0A1D37]/20 rounded-lg focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] transition-colors"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37]"
                 >
                   <option value="pending">در انتظار بررسی</option>
                   <option value="in_review">در حال بررسی</option>
@@ -1307,13 +1214,13 @@ const LotteryAdminList = () => {
                   <textarea
                     value={editForm.rejectionReason}
                     onChange={(e) =>
-                      setEditForm((prev) => ({
-                        ...prev,
+                      setEditForm({
+                        ...editForm,
                         rejectionReason: e.target.value,
-                      }))
+                      })
                     }
-                    className="w-full px-3 py-2 border border-[#0A1D37]/20 rounded-lg focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] transition-colors resize-none"
                     rows={3}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37]"
                     placeholder="دلیل رد درخواست را وارد کنید..."
                   />
                 </div>
@@ -1326,31 +1233,28 @@ const LotteryAdminList = () => {
                 <textarea
                   value={editForm.adminNotes}
                   onChange={(e) =>
-                    setEditForm((prev) => ({
-                      ...prev,
-                      adminNotes: e.target.value,
-                    }))
+                    setEditForm({ ...editForm, adminNotes: e.target.value })
                   }
-                  className="w-full px-3 py-2 border border-[#0A1D37]/20 rounded-lg focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] transition-colors resize-none"
                   rows={3}
-                  placeholder="یادداشت‌های مدیر..."
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37]"
+                  placeholder="یادداشت خود را وارد کنید..."
                 />
               </div>
             </div>
 
-            <div className="p-4 sm:p-6 border-t border-[#0A1D37]/10 flex justify-end gap-3">
+            <div className="flex items-center justify-end gap-3 p-6 border-t bg-gray-50">
               <button
                 onClick={() => setShowEditLottery(false)}
-                className="px-4 py-2 text-[#0A1D37] border border-[#0A1D37]/20 rounded-lg hover:bg-gray-50 transition-colors"
+                className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50"
               >
                 انصراف
               </button>
               <button
                 onClick={handleUpdateLottery}
                 disabled={submitting}
-                className="px-4 py-2 bg-[#0A1D37] text-white rounded-lg hover:bg-[#0A1D37]/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                className="px-4 py-2 text-sm font-medium text-white bg-[#0A1D37] rounded-lg hover:bg-[#0A1D37]/90 disabled:opacity-50"
               >
-                {submitting ? "در حال بروزرسانی..." : "ذخیره تغییرات"}
+                {submitting ? "در حال ذخیره..." : "ذخیره تغییرات"}
               </button>
             </div>
           </div>
@@ -1358,51 +1262,40 @@ const LotteryAdminList = () => {
       )}
 
       {/* Delete Confirmation Modal */}
-      {showDeleteModal &&
-        lotteryToDelete &&
-        typeof document !== "undefined" &&
-        createPortal(
-          <div
-            className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4"
-            dir="rtl"
-          >
-            <div className="bg-white rounded-2xl max-w-md w-full shadow-2xl border border-red-200">
-              <div className="p-6 text-center">
-                <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <FaTrash className="text-red-600 text-2xl" />
-                </div>
-                <h3 className="text-lg font-bold text-gray-900 mb-2">
-                  حذف ثبت نام لاتاری
-                </h3>
-                <p className="text-gray-600 mb-6">
-                  آیا مطمئن هستید که میخواهید ثبت نام{" "}
-                  <span className="font-semibold text-gray-900">
-                    {getRegistererName(lotteryToDelete)}
-                  </span>{" "}
-                  را حذف کنید؟ این عمل قابل بازگشت نیست.
-                </p>
-                <div className="flex gap-3 justify-center">
-                  <button
-                    onClick={() => {
-                      setShowDeleteModal(false);
-                      setLotteryToDelete(null);
-                    }}
-                    className="px-4 py-2 text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
-                  >
-                    انصراف
-                  </button>
-                  <button
-                    onClick={handleDeleteLottery}
-                    className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
-                  >
-                    حذف ثبت نام
-                  </button>
-                </div>
+      {showDeleteModal && lotteryToDelete && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-2xl w-full max-w-md shadow-2xl">
+            <div className="p-6">
+              <div className="flex items-center justify-center w-12 h-12 mx-auto mb-4 bg-red-100 rounded-full">
+                <FaTrash className="text-red-600 text-xl" />
+              </div>
+              <h3 className="text-xl font-bold text-center text-gray-900 mb-2">
+                حذف ثبت نام
+              </h3>
+              <p className="text-center text-gray-600 mb-6">
+                آیا مطمئن هستید که میخواهید این ثبت نام را حذف کنید؟
+              </p>
+              <div className="flex gap-3">
+                <button
+                  onClick={() => {
+                    setShowDeleteModal(false);
+                    setLotteryToDelete(null);
+                  }}
+                  className="flex-1 px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50"
+                >
+                  انصراف
+                </button>
+                <button
+                  onClick={handleDeleteLottery}
+                  className="flex-1 px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700"
+                >
+                  حذف
+                </button>
               </div>
             </div>
-          </div>,
-          document.body
-        )}
+          </div>
+        </div>
+      )}
     </div>
   );
 };

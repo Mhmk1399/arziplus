@@ -311,7 +311,7 @@ async function createLotteryRegistration(
         if (parsed && typeof parsed === "object") {
           registrationData = parsed as LotteryFormData;
         }
-      } catch (e) {
+      } catch   {
         console.log("Failed to parse lotteryData from metadata");
       }
     }
@@ -475,7 +475,7 @@ async function createHozoriReservation(
     if (!reservationData && payment.metadata?.hozoriData) {
       try {
         reservationData = JSON.parse(payment.metadata.hozoriData);
-      } catch (e) {
+      } catch   {
         console.log("Failed to parse hozoriData from metadata");
       }
     }

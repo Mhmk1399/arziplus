@@ -23,6 +23,7 @@ interface HozoriFormData {
   phoneNumber: string;
   childrensCount: number;
   maridgeStatus: string;
+  registrationType?: string;
   dateObject: {
     month: string;
     day: string;
@@ -51,6 +52,7 @@ const HozoriMultiStepForm: React.FC = () => {
     phoneNumber: "",
     childrensCount: 0,
     maridgeStatus: "",
+    registrationType: "",
     dateObject: {
       month: "",
       day: "",
@@ -127,6 +129,8 @@ const HozoriMultiStepForm: React.FC = () => {
       case 1: // Family Information
         if (!formData.maridgeStatus)
           errors.maridgeStatus = "وضعیت تأهل الزامی است";
+        if (formData.maridgeStatus === "married" && !formData.registrationType)
+          errors.registrationType = "نوع ثبت نام الزامی است";
         if (formData.childrensCount < 0 || formData.childrensCount > 10) {
           errors.childrensCount = "تعداد فرزندان باید بین 0 تا 10 باشد";
         }
@@ -405,8 +409,7 @@ const HozoriMultiStepForm: React.FC = () => {
         month: string;
         day: string;
       }): string => {
-        const persianYear = 1404;
-        const persianMonth = parseInt(dateObj.month);
+         const persianMonth = parseInt(dateObj.month);
         const persianDay = parseInt(dateObj.day);
         
         // Persian to Gregorian conversion for year 1404 (March 2025 - March 2026)
@@ -616,7 +619,12 @@ const HozoriMultiStepForm: React.FC = () => {
             </label>
             <select
               value={formData.maridgeStatus}
-              onChange={(e) => updateFormData("maridgeStatus", e.target.value)}
+              onChange={(e) => {
+                updateFormData("maridgeStatus", e.target.value);
+                if (e.target.value !== "married") {
+                  updateFormData("registrationType", "");
+                }
+              }}
               className={`w-full p-3 border rounded-xl focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] outline-none transition-all ${
                 validationErrors.maridgeStatus
                   ? "border-red-500"
@@ -637,6 +645,43 @@ const HozoriMultiStepForm: React.FC = () => {
               </p>
             )}
           </div>
+
+          {formData.maridgeStatus === "married" && (
+            <div className="sm:col-span-2">
+              <label className="block text-sm font-medium text-gray-700 mb-3">
+                نوع ثبت نام <span className="text-red-500">*</span>
+              </label>
+              <div className="space-y-3">
+                <label className="flex items-center p-3 border rounded-xl cursor-pointer hover:bg-gray-50 transition-all">
+                  <input
+                    type="radio"
+                    name="registrationType"
+                    value="couple"
+                    checked={formData.registrationType === "couple"}
+                    onChange={(e) => updateFormData("registrationType", e.target.value)}
+                    className="ml-3 w-4 h-4 text-[#0A1D37] focus:ring-[#0A1D37]"
+                  />
+                  <span className="text-gray-700">ثبت‌نام دو نفره (همراه همسر)</span>
+                </label>
+                <label className="flex items-center p-3 border rounded-xl cursor-pointer hover:bg-gray-50 transition-all">
+                  <input
+                    type="radio"
+                    name="registrationType"
+                    value="single"
+                    checked={formData.registrationType === "single"}
+                    onChange={(e) => updateFormData("registrationType", e.target.value)}
+                    className="ml-3 w-4 h-4 text-[#0A1D37] focus:ring-[#0A1D37]"
+                  />
+                  <span className="text-gray-700">ثبت‌نام تک نفره</span>
+                </label>
+              </div>
+              {validationErrors.registrationType && (
+                <p className="text-red-500 text-xs mt-1">
+                  {validationErrors.registrationType}
+                </p>
+              )}
+            </div>
+          )}
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -794,6 +839,14 @@ const HozoriMultiStepForm: React.FC = () => {
                     {selectedMaritalStatus}
                   </span>
                 </div>
+                {formData.maridgeStatus === "married" && formData.registrationType && (
+                  <div>
+                    <span className="text-gray-600">نوع ثبت نام:</span>
+                    <span className="font-medium mr-2">
+                      {formData.registrationType === "couple" ? "ثبت نام دو نفره (همراه همسر)" : "ثبت نام تک نفره"}
+                    </span>
+                  </div>
+                )}
                 <div>
                   <span className="text-gray-600">تعداد فرزندان:</span>
                   <span className="font-medium mr-2">

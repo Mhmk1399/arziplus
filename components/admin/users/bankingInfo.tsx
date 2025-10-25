@@ -46,7 +46,7 @@ interface PaginationData {
 }
 
 const BankingInfoAdmin = () => {
-  const { user: currentUser, isLoggedIn } = useCurrentUser();
+  const {   isLoggedIn } = useCurrentUser();
   const [users, setUsers] = useState<UserBankingData[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -248,21 +248,21 @@ const BankingInfoAdmin = () => {
 
  
 
-  if (
-    !currentUser?.roles.includes("admin") &&
-    !currentUser?.roles.includes("super_admin")
-  ) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">
-            دسترسی غیر مجاز
-          </h2>
-          <p className="text-gray-600">شما به این بخش دسترسی ندارید</p>
-        </div>
-      </div>
-    );
-  }
+  // if (
+  //   !currentUser?.roles.includes("admin") &&
+  //   !currentUser?.roles.includes("super_admin")
+  // ) {
+  //   return (
+  //     <div className="min-h-screen flex items-center justify-center">
+  //       <div className="text-center">
+  //         <h2 className="text-2xl font-bold text-gray-900 mb-2">
+  //           دسترسی غیر مجاز
+  //         </h2>
+  //         <p className="text-gray-600">شما به این بخش دسترسی ندارید</p>
+  //       </div>
+  //     </div>
+  //   );
+  // }
 
   return (
     <div className="min-h-screen p-2" dir="rtl">

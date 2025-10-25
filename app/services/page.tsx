@@ -8,8 +8,7 @@ import {
   FaArrowRight,
   FaSpinner,
   FaSearch,
-  FaStar,
-  FaCheckCircle,
+   FaCheckCircle,
 } from "react-icons/fa";
 import { estedadBold } from "@/next-persian-fonts/estedad/index";
 
@@ -325,7 +324,7 @@ const CategorySection = ({
         {/* Scrollable Services Grid */}
         <div
           ref={scrollContainerRef}
-          className="flex gap-4 sm:gap-5 lg:gap-6 overflow-x-auto scrollbar-hide   cursor-grab active:cursor-grabbing"
+          className="flex  sm:gap-5 lg:gap-1 overflow-x-auto scrollbar-hide   cursor-grab active:cursor-grabbing"
           style={{
             scrollbarWidth: "none",
             msOverflowStyle: "none",
@@ -342,9 +341,9 @@ const CategorySection = ({
           {services.map((service) => (
             <div
               key={service._id}
-              className="flex-shrink-0 w-full sm:w-[calc(50%-10px)] md:w-[calc(33.333%-14px)] lg:w-[calc(25%-18px)]"
+              className="flex-shrink-0 w-full   lg:w-[calc(25%-18px)]"
               style={{
-                minWidth: "280px",
+                minWidth: "220px",
                 maxWidth: "200px",
                 userSelect: isDragging ? "none" : "auto",
               }}
@@ -354,28 +353,7 @@ const CategorySection = ({
           ))}
         </div>
 
-        {/* Scroll Indicator - Mobile */}
-        {services.length > 1 && (
-          <div className="flex lg:hidden justify-center gap-1.5 mt-4">
-            <div
-              className={`h-1.5 rounded-full transition-all duration-300 ${
-                canScrollLeft ? "w-6 bg-gray-300" : "w-8 bg-[#0A1D37]"
-              }`}
-            />
-            <div
-              className={`h-1.5 rounded-full transition-all duration-300 ${
-                !canScrollLeft && !canScrollRight
-                  ? "w-8 bg-[#0A1D37]"
-                  : "w-6 bg-gray-300"
-              }`}
-            />
-            <div
-              className={`h-1.5 rounded-full transition-all duration-300 ${
-                canScrollRight ? "w-6 bg-gray-300" : "w-8 bg-[#0A1D37]"
-              }`}
-            />
-          </div>
-        )}
+      
       </div>
 
       {/* Custom Scrollbar Styles */}
@@ -447,7 +425,7 @@ export default function ServicesPage() {
       className="min-h-screen  py-8"
       dir="rtl"
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto   sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-12 sm:mb-16 lg:mb-20">
           <div className="inline-block mb-4 sm:mb-6 px-4 sm:px-6 py-2 sm:py-3 bg-gradient-to-r from-[#0A1D37]/10 to-[#4DBFF0]/10 rounded-full">
@@ -523,7 +501,7 @@ export default function ServicesPage() {
               </div>
             </div>
             <span className="text-base sm:text-lg font-medium text-gray-700">
-              در حال بارگذاری خدمات...
+              در حال بارگذاری خدمات
             </span>
             <p className="text-xs sm:text-sm text-gray-500 mt-2">
               لطفاً صبر کنید

@@ -27,7 +27,7 @@ export function startCurrencySyncWorker() {
 
   // Run immediately on startup
   syncCurrencyPrices().catch((error) => {
-    console.error("❌ Initial currency sync failed:", error);
+    console.log("❌ Initial currency sync failed:", error);
   });
 
   // Run every 10 minutes
@@ -35,7 +35,7 @@ export function startCurrencySyncWorker() {
     () => {
       console.log("⏰ Running scheduled currency sync...");
       syncCurrencyPrices().catch((error) => {
-        console.error("❌ Scheduled currency sync failed:", error);
+        console.log("❌ Scheduled currency sync failed:", error);
       });
     },
     10 * 60 * 1000

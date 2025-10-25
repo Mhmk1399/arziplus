@@ -83,7 +83,7 @@ export const schemaConfig: Record<string, Partial<SchemaData>> = {
     description: 'راهنمای کامل باز کردن حساب Wise برای ایرانیان با تمام مراحل',
     category: 'Financial Services',
     provider: 'Wise',
-    steps: ['ثبتنام', 'تأیید هویت', 'واریز اولیه', 'فعالسازی کارت']
+    steps: ['ثبت نام ', 'تأیید هویت', 'واریز اولیه', 'فعالسازی کارت']
   },
 
   '/Opening-a-PayPal-account': {
@@ -229,7 +229,7 @@ export const schemaConfig: Record<string, Partial<SchemaData>> = {
   '/toeflPayment': {
     type: 'Service',
     title: 'پرداخت هزینه آزمون TOEFL از ایران',
-    description: 'ثبتنام و پرداخت هزینه آزمون TOEFL',
+    description: 'ثبت نام  و پرداخت هزینه آزمون TOEFL',
     category: 'Education Services',
     provider: 'ETS'
   },
@@ -237,7 +237,7 @@ export const schemaConfig: Record<string, Partial<SchemaData>> = {
   '/IeltsPayment': {
     type: 'Service',
     title: 'پرداخت هزینه آزمون IELTS از ایران',
-    description: 'ثبتنام و پرداخت هزینه آزمون IELTS',
+    description: 'ثبت نام  و پرداخت هزینه آزمون IELTS',
     category: 'Education Services',
     provider: 'British Council'
   },
@@ -245,7 +245,7 @@ export const schemaConfig: Record<string, Partial<SchemaData>> = {
   '/grePayment': {
     type: 'Service',
     title: 'پرداخت هزینه آزمون GRE از ایران',
-    description: 'ثبتنام و پرداخت هزینه آزمون GRE',
+    description: 'ثبت نام  و پرداخت هزینه آزمون GRE',
     category: 'Education Services',
     provider: 'ETS'
   },
@@ -261,15 +261,15 @@ export const schemaConfig: Record<string, Partial<SchemaData>> = {
   '/prometricPayment': {
     type: 'Service',
     title: 'پرداخت آزمون Prometric از ایران',
-    description: 'ثبتنام و پرداخت آزمون Prometric',
+    description: 'ثبت نام  و پرداخت آزمون Prometric',
     category: 'Education Services',
     provider: 'Prometric'
   },
 
   '/register-international-exams': {
     type: 'Service',
-    title: 'ثبتنام آزمونهای بینالمللی از ایران',
-    description: 'ثبتنام و پرداخت انواع آزمونهای بینالمللی',
+    title: 'ثبت نام  آزمونهای بینالمللی از ایران',
+    description: 'ثبت نام  و پرداخت انواع آزمونهای بینالمللی',
     category: 'Education Services'
   },
 
@@ -392,14 +392,14 @@ export const schemaConfig: Record<string, Partial<SchemaData>> = {
   // // صفحه لاتاری گرین کارت
   // '/lottery': {
   //   type: 'Service',
-  //   title: 'ثبتنام لاتاری گرین کارت آمریکا از ایران - ارزی پلاس',
-  //   description: 'ثبتنام حرفه‌ای در لاتاری گرین کارت آمریکا با ارزی پلاس. خدمات کامل شامل ثبتنام، بررسی مدارک، اصلاح عکس و پیگیری تا دریافت ویزا',
+  //   title: 'ثبت نام  لاتاری گرین کارت آمریکا از ایران - ارزی پلاس',
+  //   description: 'ثبت نام  حرفه‌ای در لاتاری گرین کارت آمریکا با ارزی پلاس. خدمات کامل شامل ثبت نام ، بررسی مدارک، اصلاح عکس و پیگیری تا دریافت ویزا',
   //   category: 'Immigration Services',
   //   provider: 'US Government',
   //   price: '150000',
   //   currency: 'IRR',
   //   features: [
-  //     'ثبتنام کامل لاتاری گرین کارت',
+  //     'ثبت نام  کامل لاتاری گرین کارت',
   //     'بررسی و اصلاح اطلاعات',
   //     'اصلاح عکس استاندارد لاتاری',
   //     'ترجمه مدارک به انگلیسی',
@@ -407,14 +407,14 @@ export const schemaConfig: Record<string, Partial<SchemaData>> = {
   //     'اعلام نتایج فوری',
   //     'کارگزاری کامل برندگان',
   //     'مشاوره رایگان',
-  //     'ضمانت ثبتنام موفق',
+  //     'ضمانت ثبت نام  موفق',
   //     'پیگیری تا دریافت ویزا'
   //   ],
   //   steps: [
   //     'تکمیل فرم اطلاعات شخصی',
   //     'آپلود عکس استاندارد',
   //     'بررسی و تأیید اطلاعات',
-  //     'پرداخت هزینه ثبتنام',
+  //     'پرداخت هزینه ثبت نام ',
   //     'دریافت کد تأیید',
   //     'اعلام نتایج در زمان مقرر'
   //   ]

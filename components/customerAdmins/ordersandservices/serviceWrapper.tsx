@@ -11,8 +11,7 @@ import {
   FaClock,
 } from "react-icons/fa";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
-import { showToast } from "@/utilities/toast";
-
+ 
 // Import customer components
 import ServicesPage from "@/app/services/page";
 import CustomerRequestsTable from "./orderHistory";
@@ -298,7 +297,7 @@ const ServiceWrapper: React.FC<ServiceWrapperProps> = ({
         </div>
 
         {/* Content Area */}
-        <div className="backdrop-blur-sm bg-white/80 border border-gray-100 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300">
+        <div className="backdrop-blur-sm bg-white/80   rounded-2xl overflow-hidden   transition-shadow duration-300">
           {/* Tab Content */}
           <div className="min-h-[400px] sm:min-h-[500px] lg:min-h-[600px]">
             <ActiveComponent />

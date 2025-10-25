@@ -68,7 +68,7 @@ interface PaginationData {
 }
 
 const UsersList = () => {
-  const { user: currentUser, isLoggedIn } = useCurrentUser();
+  const {   isLoggedIn } = useCurrentUser();
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -86,7 +86,7 @@ const UsersList = () => {
   const [roleFilter, setRoleFilter] = useState("");
   const [verificationFilter, setVerificationFilter] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(10);
+  const [pageSize] = useState(10);
   console.log(setVerificationFilter);
   // Modal states
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
@@ -201,31 +201,31 @@ const UsersList = () => {
     }
   };
 
-  const oldHandleDeleteUser = async (userId: string) => {
-    if (!confirm("آیا مطمئن هستید که می‌خواهید این کاربر را حذف کنید؟")) {
-      return;
-    }
+  // const oldHandleDeleteUser = async (userId: string) => {
+  //   if (!confirm("آیا مطمئن هستید که می‌خواهید این کاربر را حذف کنید؟")) {
+  //     return;
+  //   }
 
-    try {
-      const token = localStorage.getItem("authToken");
-      const response = await fetch(`/api/users?userId=${userId}`, {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+  //   try {
+  //     const token = localStorage.getItem("authToken");
+  //     const response = await fetch(`/api/users?userId=${userId}`, {
+  //       method: "DELETE",
+  //       headers: {
+  //         Authorization: `Bearer ${token}`,
+  //       },
+  //     });
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || "خطا در حذف کاربر");
-      }
+  //     if (!response.ok) {
+  //       const errorData = await response.json();
+  //       throw new Error(errorData.error || "خطا در حذف کاربر");
+  //     }
 
-      showToast.success("کاربر با موفقیت حذف شد");
-      await fetchUsers();
-    } catch (err) {
-      showToast.error(err instanceof Error ? err.message : "خطا در حذف کاربر");
-    }
-  };
+  //     showToast.success("کاربر با موفقیت حذف شد");
+  //     await fetchUsers();
+  //   } catch (err) {
+  //     showToast.error(err instanceof Error ? err.message : "خطا در حذف کاربر");
+  //   }
+  // };
 
   // Update user
   const handleUpdateUser = async () => {
@@ -449,21 +449,21 @@ const UsersList = () => {
 
   
 
-  if (
-    !currentUser?.roles.includes("admin") &&
-    !currentUser?.roles.includes("super_admin")
-  ) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">
-            دسترسی غیر مجاز
-          </h2>
-          <p className="text-gray-600">شما به این بخش دسترسی ندارید</p>
-        </div>
-      </div>
-    );
-  }
+  // if (
+  //   !currentUser?.roles.includes("admin") &&
+  //   !currentUser?.roles.includes("super_admin")
+  // ) {
+  //   return (
+  //     <div className="min-h-screen flex items-center justify-center">
+  //       <div className="text-center">
+  //         <h2 className="text-2xl font-bold text-gray-900 mb-2">
+  //           دسترسی غیر مجاز
+  //         </h2>
+  //         <p className="text-gray-600">شما به این بخش دسترسی ندارید</p>
+  //       </div>
+  //     </div>
+  //   );
+  // }
 
   return (
     <div className=" " dir="rtl">

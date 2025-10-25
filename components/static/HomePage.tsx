@@ -5,6 +5,7 @@ import { FaRocket, FaGlobe, FaShieldAlt } from "react-icons/fa";
 import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
+import { estedadBold } from "@/next-persian-fonts/estedad";
 
 const LOGO_PLACEHOLDER = "/assets/images/loggo.png"; // مثلاً لوگوی ارزی‌پلاس
 const HomePage = () => {
@@ -765,7 +766,7 @@ const HomePage = () => {
 
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-2xl md:text-4xl font-bold text-[#0A1D37] mb-6">
+            <h2 className={`text-2xl md:text-4xl ${estedadBold.className} text-[#0A1D37] mb-6`}>
               خدمات ارزی پلاس
             </h2>
             <p className="text-[#A0A0A0] md:text-lg text-xs max-w-2xl mx-auto">
@@ -778,7 +779,7 @@ const HomePage = () => {
               {/* Category Header – بدون تغییر */}
               <div className="text-center mb-12">
                 <div className="inline-flex items-center gap-3 px-6 py-3 bg-gradient-to-r from-[#0A1D37]/10 to-[#0A1D37]/10 rounded-xl border border-[#0A1D37]/20 backdrop-blur-sm">
-                  <h3 className="md:text-xl font-bold text-[#0A1D37]">
+                  <h3 className={`md:text-xl ${estedadBold.className} text-[#0A1D37]`}>
                     {category.title}
                   </h3>
                 </div>
@@ -859,7 +860,9 @@ const HomePage = () => {
                               )}
                             </div>
 
-                            <h5 className="text-[#0A1D37] font-bold text-center text-sm mb-2 group-hover:text-[#0A1D37] transition-colors duration-300 line-clamp-2">
+                            <h5
+                              className={`text-[#0A1D37] ${estedadBold.className} text-center text-sm mb-2 group-hover:text-[#0A1D37] transition-colors duration-300 line-clamp-2`}
+                            >
                               {service.title}
                             </h5>
 
@@ -935,7 +938,7 @@ const HomePage = () => {
                             )}
                           </div>
 
-                          <h5 className="text-[#0A1D37] font-bold text-center text-sm mb-2 group-hover:text-[#0A1D37] transition-colors duration-300 line-clamp-2">
+                          <h5 className={`text-[#0A1D37]/90 ${estedadBold.className} text-center text-sm mb-2 group-hover:text-[#0A1D37] transition-colors duration-300 line-clamp-2 `}>
                             {service.title}
                           </h5>
 

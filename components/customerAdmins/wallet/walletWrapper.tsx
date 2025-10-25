@@ -5,8 +5,7 @@ import {
   FaWallet,
   FaArrowUp,
   FaArrowDown,
-  FaUser,
-  FaRedo,
+   FaRedo,
   FaHourglassHalf,
 } from "react-icons/fa";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
