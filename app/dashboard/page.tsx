@@ -17,6 +17,7 @@ import {
   FaMoneyBillWave,
   FaChevronRight,
   FaTicketAlt,
+  FaHeadset,
 } from "react-icons/fa";
 import { showToast } from "@/utilities/toast";
 
@@ -29,6 +30,8 @@ import WalletWrapper from "@/components/customerAdmins/wallet/walletWrapper";
 import PaymentWrapper from "@/components/admin/payments/paymentWrapper";
 import LotteryAdminWrapper from "@/components/admin/lottery/lotteryWrapper";
 import CustomerLotteryWrapper from "@/components/customerAdmins/lottery/lotteryWrapper";
+import AdminTicketsWrapper from "@/components/admin/tickets/ticketsWrapper";
+import TicketsWrapper from "@/components/customerAdmins/tickets/ticketsWrapper";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -62,8 +65,8 @@ const Dashboard: React.FC = () => {
           currentUser.roles.includes("admin") ||
           currentUser.roles.includes("super_admin");
         const validTabs = isAdmin
-          ? ["users", "lottery", "payments", "admin-services"]
-          : ["services", "lottery", "wallet", "credentials"];
+          ? ["users", "lottery", "tickets", "payments", "admin-services"]
+          : ["services", "lottery", "tickets", "wallet", "credentials"];
 
         if (validTabs.includes(hash)) {
           setSelectedMenuItem(hash);
@@ -113,8 +116,8 @@ const Dashboard: React.FC = () => {
         currentUser.roles.includes("admin") ||
         currentUser.roles.includes("super_admin");
       const validTabs = isAdmin
-        ? ["users", "lottery", "payments", "admin-services"]
-        : ["services", "lottery", "wallet", "credentials"];
+        ? ["users", "lottery", "tickets", "payments", "admin-services"]
+        : ["services", "lottery", "tickets", "wallet", "credentials"];
 
       if (validTabs.includes(targetTab)) {
         setSelectedMenuItem(targetTab);
@@ -174,6 +177,13 @@ const Dashboard: React.FC = () => {
       description: "مدیریت ثبت‌نام‌های قرعه‌کشی گرین کارت",
     },
     {
+      id: "tickets",
+      label: "مدیریت تیکت‌ها",
+      icon: <FaHeadset className="text-lg" />,
+      component: AdminTicketsWrapper,
+      description: "مدیریت تیکت‌های پشتیبانی و پاسخ به کاربران",
+    },
+    {
       id: "payments",
       label: "مدیریت پرداخت‌ها",
       icon: <FaMoneyBillWave className="text-lg" />,
@@ -204,6 +214,13 @@ const Dashboard: React.FC = () => {
       icon: <FaTicketAlt className="text-lg" />,
       component: CustomerLotteryWrapper,
       description: "مدیریت ثبت‌نام‌های قرعه‌کشی گرین کارت",
+    },
+    {
+      id: "tickets",
+      label: "پشتیبانی",
+      icon: <FaHeadset className="text-lg" />,
+      component: TicketsWrapper,
+      description: "ایجاد تیکت و دریافت پشتیبانی",
     },
     {
       id: "wallet",
