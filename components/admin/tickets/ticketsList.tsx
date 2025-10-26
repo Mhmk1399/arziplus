@@ -686,7 +686,7 @@ const AdminTicketsList = () => {
 
                   <div className="flex gap-2">
                     <select
-                      onChange={(e) => updateTicketStatus(selectedTicket._id, e.target.value as any)}
+                      onChange={(e) => updateTicketStatus(selectedTicket._id, e.target.value as "open" | "in_progress" | "closed")}
                       className="px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37]"
                     >
                       <option value="">تغییر وضعیت</option>

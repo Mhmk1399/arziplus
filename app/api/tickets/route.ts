@@ -5,10 +5,15 @@ import User from "@/models/users";
 import { getAuthUser } from "@/lib/auth";
 
 // GET - Fetch tickets
+
+interface data {
+  adminAnswer: string;
+  status: string;
+}
 export async function GET(request: NextRequest) {
   try {
     await connect();
-    
+
     const { searchParams } = new URL(request.url);
     const userId = searchParams.get("userId");
     const status = searchParams.get("status");
@@ -23,21 +28,18 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    let query: any = {};
+    const query: Record<string, string> = {};
 
     // If user is not admin, only show their own tickets
-    const isAdmin = authUser.roles && (
-      authUser.roles.includes("admin") || 
-      authUser.roles.includes("super_admin")
-    );
-    
+    const isAdmin =
+      authUser.roles &&
+      (authUser.roles.includes("admin") ||
+        authUser.roles.includes("super_admin"));
+
     if (!isAdmin) {
       // Find user in database to get their MongoDB _id
-      const currentUser = await User.findOne({ 
-        $or: [
-          { username: authUser.id },
-          { _id: authUser.id }
-        ]
+      const currentUser = await User.findOne({
+        $or: [{ username: authUser.id }, { _id: authUser.id }],
       });
       if (!currentUser) {
         return NextResponse.json(
@@ -70,15 +72,13 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json({
       success: true,
-      data: tickets
+      data: tickets,
     });
-
-  } catch (error: any) {
+  } catch (error) {
     console.error("Error fetching tickets:", error);
     return NextResponse.json(
-      { 
-        success: false, 
-        message: error.message || "Failed to fetch tickets" 
+      {
+        success: false,
       },
       { status: 500 }
     );
@@ -89,7 +89,7 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     await connect();
-    
+
     const body = await request.json();
     const { category, description } = body;
 
@@ -111,11 +111,8 @@ export async function POST(request: NextRequest) {
     }
 
     // Find user in database to get their MongoDB _id
-    const currentUser = await User.findOne({ 
-      $or: [
-        { username: authUser.id },
-        { _id: authUser.id }
-      ]
+    const currentUser = await User.findOne({
+      $or: [{ username: authUser.id }, { _id: authUser.id }],
     });
     if (!currentUser) {
       return NextResponse.json(
@@ -129,27 +126,27 @@ export async function POST(request: NextRequest) {
       user: currentUser._id,
       category,
       description,
-      status: "open"
+      status: "open",
     });
 
     await ticket.save();
 
     // Populate user data for response
-    const populatedTicket = await Tickets.findById(ticket._id)
-      .populate("user", "nationalCredentials personalInformations");
+    const populatedTicket = await Tickets.findById(ticket._id).populate(
+      "user",
+      "nationalCredentials personalInformations"
+    );
 
     return NextResponse.json({
       success: true,
       data: populatedTicket,
-      message: "Ticket created successfully"
+      message: "Ticket created successfully",
     });
-
-  } catch (error: any) {
+  } catch (error) {
     console.error("Error creating ticket:", error);
     return NextResponse.json(
-      { 
-        success: false, 
-        message: error.message || "Failed to create ticket" 
+      {
+        success: false,
       },
       { status: 500 }
     );
@@ -160,7 +157,7 @@ export async function POST(request: NextRequest) {
 export async function PUT(request: NextRequest) {
   try {
     await connect();
-    
+
     const body = await request.json();
     const { ticketId, adminAnswer, status } = body;
 
@@ -190,20 +187,20 @@ export async function PUT(request: NextRequest) {
     }
 
     // Check permissions
-    const isAdmin = authUser.roles && (
-      authUser.roles.includes("admin") || 
-      authUser.roles.includes("super_admin")
-    );
-    
+    const isAdmin =
+      authUser.roles &&
+      (authUser.roles.includes("admin") ||
+        authUser.roles.includes("super_admin"));
+
     // For non-admin users, find user in database to verify ownership
     if (!isAdmin) {
-      const currentUser = await User.findOne({ 
-        $or: [
-          { username: authUser.id },
-          { _id: authUser.id }
-        ]
+      const currentUser = await User.findOne({
+        $or: [{ username: authUser.id }, { _id: authUser.id }],
       });
-      if (!currentUser || ticket.user.toString() !== currentUser._id.toString()) {
+      if (
+        !currentUser ||
+        ticket.user.toString() !== currentUser._id.toString()
+      ) {
         return NextResponse.json(
           { success: false, message: "Not authorized to update this ticket" },
           { status: 403 }
@@ -212,13 +209,16 @@ export async function PUT(request: NextRequest) {
     }
 
     // Update ticket
-    const updateData: any = {};
-    
+    const updateData: data = {
+      adminAnswer: "",
+      status: "",
+    };
+
     if (adminAnswer && isAdmin) {
       updateData.adminAnswer = adminAnswer;
       updateData.status = "in_progress"; // Auto-set to in_progress when admin responds
     }
-    
+
     if (status && isAdmin) {
       updateData.status = status;
     }
@@ -232,15 +232,13 @@ export async function PUT(request: NextRequest) {
     return NextResponse.json({
       success: true,
       data: updatedTicket,
-      message: "Ticket updated successfully"
+      message: "Ticket updated successfully",
     });
-
-  } catch (error: any) {
+  } catch (error) {
     console.error("Error updating ticket:", error);
     return NextResponse.json(
-      { 
-        success: false, 
-        message: error.message || "Failed to update ticket" 
+      {
+        success: false,
       },
       { status: 500 }
     );
@@ -251,7 +249,7 @@ export async function PUT(request: NextRequest) {
 export async function DELETE(request: NextRequest) {
   try {
     await connect();
-    
+
     const { searchParams } = new URL(request.url);
     const ticketId = searchParams.get("ticketId");
 
@@ -270,13 +268,13 @@ export async function DELETE(request: NextRequest) {
         { status: 401 }
       );
     }
-    
+
     // Check if user is admin
-    const isAdmin = authUser.roles && (
-      authUser.roles.includes("admin") || 
-      authUser.roles.includes("super_admin")
-    );
-    
+    const isAdmin =
+      authUser.roles &&
+      (authUser.roles.includes("admin") ||
+        authUser.roles.includes("super_admin"));
+
     if (!isAdmin) {
       return NextResponse.json(
         { success: false, message: "Admin access required" },
@@ -295,15 +293,13 @@ export async function DELETE(request: NextRequest) {
 
     return NextResponse.json({
       success: true,
-      message: "Ticket deleted successfully"
+      message: "Ticket deleted successfully",
     });
-
-  } catch (error: any) {
+  } catch (error) {
     console.error("Error deleting ticket:", error);
     return NextResponse.json(
-      { 
-        success: false, 
-        message: error.message || "Failed to delete ticket" 
+      {
+        success: false,
       },
       { status: 500 }
     );
