@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   FaIdCard,
   FaUser,
@@ -15,6 +15,7 @@ import {
   FaInfoCircle,
   FaSpinner,
   FaImage,
+  FaQuestion,
 } from "react-icons/fa";
 import { estedadBold } from "@/next-persian-fonts/estedad/index";
 import Image from "next/image";
@@ -56,12 +57,25 @@ const NationalCredentials = ({
   const [isLoading, setIsLoading] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
+  
+  // Identity validation portal state
+  const [showValidationPortal, setShowValidationPortal] = useState(false);
 
   // Modal states
   const [showUploadModal, setShowUploadModal] = useState(false);
   const [currentUploadField, setCurrentUploadField] = useState<
     "nationalCardImageUrl" | "verificationImageUrl" | null
   >(null);
+
+  // Show validation portal on mount if user hasn't validated their national ID
+  useEffect(() => {
+    const hasValidatedNationalId = formData.status === "accepted" || 
+                                  (formData.nationalCardImageUrl && formData.verificationImageUrl);
+    
+    if (!hasValidatedNationalId) {
+      setShowValidationPortal(true);
+    }
+  }, [formData.status, formData.nationalCardImageUrl, formData.verificationImageUrl]);
 
   // Validation functions
   const validateNationalNumber = (nationalNumber: string): boolean => {
@@ -455,6 +469,17 @@ const NationalCredentials = ({
               <span>حجم فایل‌ها نباید بیش از 10 مگابایت باشد</span>
             </li>
           </ul>
+          
+          {/* Identity Validation Guidelines Button */}
+          <div className="mt-4 mr-14 sm:mr-16">
+            <button
+              onClick={() => setShowValidationPortal(true)}
+              className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white text-xs sm:text-sm font-bold rounded-xl hover:from-emerald-600 hover:to-emerald-700 transition-all duration-300 shadow-md hover:shadow-lg transform hover:scale-105 active:scale-95"
+            >
+              <FaQuestion className="text-white" />
+              <span>شرایط بارگذاری عکس هویتی</span>
+            </button>
+          </div>
         </div>
 
         {/* Form */}
@@ -677,6 +702,126 @@ const NationalCredentials = ({
           </div>
         </div>
       </div>
+
+      {/* Identity Validation Guidelines Portal */}
+      {showValidationPortal && (
+        <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-2xl sm:rounded-3xl max-w-4xl w-full max-h-[90vh] overflow-auto shadow-2xl">
+            <div className="sticky top-0 bg-gradient-to-r from-amber-50 to-amber-100 p-4 sm:p-6 border-b-2 border-amber-200 flex justify-between items-center backdrop-blur-sm z-10">
+              <h3 className="text-base sm:text-lg font-bold text-amber-900 flex items-center gap-2">
+                <FaExclamationTriangle className="text-amber-600" />
+                <span>⚠️ نکات مهم در ارسال مدارک هویتی</span>
+              </h3>
+              <button
+                onClick={() => setShowValidationPortal(false)}
+                className="p-2.5 sm:p-3 hover:bg-amber-200 rounded-xl transition-all duration-300 hover:scale-110 active:scale-95"
+              >
+                <FaTimes className="text-amber-700 text-lg sm:text-xl" />
+              </button>
+            </div>
+            
+            <div className="p-4 sm:p-6 space-y-6" dir="rtl">
+              {/* Main Warning */}
+              <div className="bg-gradient-to-r from-red-50 to-red-100 border-r-4 border-red-400 p-4 rounded-lg">
+                <p className="text-sm sm:text-base text-red-800 font-bold">
+                  کارت ملی قدیمی مورد تأیید نمی‌باشد.
+                </p>
+                <p className="text-xs sm:text-sm text-red-700 mt-2">
+                  در صورت نداشتن کارت ملی جدید، لطفاً دو مدرک هویتی معتبر از میان گزینه‌های زیر انتخاب و ارسال نمایید:
+                </p>
+              </div>
+
+              {/* Alternative Documents */}
+              <div className="bg-gradient-to-r from-blue-50 to-blue-100 rounded-xl p-4 sm:p-5">
+                <h4 className="text-sm sm:text-base font-bold text-blue-900 mb-3 flex items-center gap-2">
+                  <FaIdCard className="text-blue-600" />
+                  مدارک هویتی مورد قبول:
+                </h4>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div className="flex items-center gap-2 text-xs sm:text-sm text-blue-800">
+                    <span className="bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold">1</span>
+                    <span>کارت پایان خدمت</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-xs sm:text-sm text-blue-800">
+                    <span className="bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold">2</span>
+                    <span>گواهینامه رانندگی</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-xs sm:text-sm text-blue-800">
+                    <span className="bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold">3</span>
+                    <span>شناسنامه</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-xs sm:text-sm text-blue-800">
+                    <span className="bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold">4</span>
+                    <span>رسید کارت ملی جدید</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-xs sm:text-sm text-blue-800 sm:col-span-2">
+                    <span className="bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold">5</span>
+                    <span>پاسپورت معتبر</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Upload Instructions */}
+              <div className="bg-gradient-to-r from-green-50 to-green-100 rounded-xl p-4 sm:p-5">
+                <h4 className="text-sm sm:text-base font-bold text-green-900 mb-3 flex items-center gap-2">
+                  <FaUpload className="text-green-600" />
+                  نحوه آپلود مدارک:
+                </h4>
+                <div className="space-y-2">
+                  <div className="flex items-start gap-2 text-xs sm:text-sm text-green-800">
+                    <span className="text-green-600 mt-1">🔸</span>
+                    <span>نیازی به ارسال پشت مدارک نیست.</span>
+                  </div>
+                  <div className="flex items-start gap-2 text-xs sm:text-sm text-green-800">
+                    <span className="text-green-600 mt-1">🔸</span>
+                    <span>لطفاً یک مدرک را در بخش روی کارت ملی و مدرک دوم را در بخش پشت کارت ملی آپلود نمایید.</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Photo Guidelines */}
+              <div className="bg-gradient-to-r from-purple-50 to-purple-100 rounded-xl p-4 sm:p-5">
+                <h4 className="text-sm sm:text-base font-bold text-purple-900 mb-3 flex items-center gap-2">
+                  <FaImage className="text-purple-600" />
+                  📸 راهنمای ارسال تصویر مدارک:
+                </h4>
+                <div className="space-y-2">
+                  <div className="flex items-start gap-2 text-xs sm:text-sm text-purple-800">
+                    <span className="text-purple-600 mt-1">✓</span>
+                    <span>لبه‌های مدارک باید کاملاً مشخص و درون کادر عکس قرار داشته باشند.</span>
+                  </div>
+                  <div className="flex items-start gap-2 text-xs sm:text-sm text-purple-800">
+                    <span className="text-purple-600 mt-1">✓</span>
+                    <span>از ارسال عکس اسکن‌شده یا تیره خودداری کنید.</span>
+                  </div>
+                  <div className="flex items-start gap-2 text-xs sm:text-sm text-purple-800">
+                    <span className="text-purple-600 mt-1">✓</span>
+                    <span>تمامی اطلاعات مدارک باید واضح و خوانا باشند.</span>
+                  </div>
+                  <div className="flex items-start gap-2 text-xs sm:text-sm text-purple-800">
+                    <span className="text-purple-600 mt-1">✓</span>
+                    <span>لطفاً از پوشاندن هر بخش از اطلاعات هویتی خودداری نمایید.</span>
+                  </div>
+                  <div className="flex items-start gap-2 text-xs sm:text-sm text-purple-800">
+                    <span className="text-purple-600 mt-1">✓</span>
+                    <span>تصاویر را با کیفیت مناسب و نور کافی ارسال کنید تا بررسی سریع‌تر انجام شود.</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="flex gap-3 justify-end pt-4 border-t border-gray-200">
+                <button
+                  onClick={() => setShowValidationPortal(false)}
+                  className="px-6 py-2.5 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white text-sm font-bold rounded-xl hover:from-emerald-600 hover:to-emerald-700 transition-all duration-300 shadow-md hover:shadow-lg transform hover:scale-105 active:scale-95"
+                >
+                  متوجه شدم
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Image Preview Modal */}
       {previewImage && (
