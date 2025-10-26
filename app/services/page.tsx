@@ -373,6 +373,21 @@ const CategorySection = ({
 // Main Services Page Component
 export default function ServicesPage() {
   const [searchTerm, setSearchTerm] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+
+  // Categories array for filtering
+  const categories = [
+    "وریفای حساب های خارجی",
+    "ثبت نام سایت های فریلنسری", 
+    "سیم کارت های فیزیکی",
+    "هاستینگ و دامنه",
+    "پرداخت‌های دانشجویی",
+    "سفارت / ویزا / هتل",
+    "آزمون بین‌المللی",
+    "اکانت هوش مصنوعی",
+    "خدمات حساب وایز",
+    "خدمات پی پال"
+  ];
 
   // Fetch services using SWR
   const {
@@ -384,13 +399,20 @@ export default function ServicesPage() {
     revalidateOnFocus: false,
   });
 
-  // Filter services based on search
+  // Filter services based on search and category
   const filteredServices =
     services?.filter(
-      (service) =>
-        service.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        service.description?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        service.category?.toLowerCase().includes(searchTerm.toLowerCase())
+      (service) => {
+        const matchesSearch = service.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          service.description?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          service.category?.toLowerCase().includes(searchTerm.toLowerCase());
+        
+        const matchesCategory = selectedCategory 
+          ? service.category === selectedCategory 
+          : true;
+
+        return matchesSearch && matchesCategory;
+      }
     ) || [];
 
   // Group filtered services by category
@@ -490,6 +512,99 @@ export default function ServicesPage() {
             )}
           </div>
         </div>
+
+        {/* Category Filter Bar - Horizontal Scrollable */}
+        {!isLoading && services && services.length > 0 && (
+          <div className="mb-8 sm:mb-12 lg:mb-16 px-4">
+            {/* Header with Clear Filter */}
+            <div className="flex py-2 items-center justify-between mb-4 sm:mb-6">
+              <h3 className={`text-lg sm:text-xl lg:text-2xl font-bold text-[#0A1D37] ${estedadBold.className}`}>
+                دسته‌بندی خدمات
+              </h3>
+              {selectedCategory && (
+                <button
+                  onClick={() => setSelectedCategory(null)}
+                  className="flex items-center gap-2 px-3 sm:px-4 py-2 text-sm font-medium text-red-600 bg-red-50 hover:bg-red-100 rounded-xl transition-all duration-300 hover:scale-105"
+                >
+                  <span>پاک کردن فیلتر</span>
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              )}
+            </div>
+
+            {/* Horizontal Scrollable Filter Pills */}
+            <div className="relative overflow-hidden">
+              <div className="flex gap-3 mx-6 sm:gap-4 overflow-x-auto scrollbar-hide pb-2 scroll-smooth" 
+                   style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}>
+                {/* All Categories Button */}
+                <button
+                  onClick={() => setSelectedCategory(null)}
+                  className={`flex-shrink-0 px-4 sm:px-5 lg:px-6 py-2 sm:py-3 rounded-xl sm:rounded-2xl font-medium text-sm sm:text-base transition-all duration-300  whitespace-nowrap ${
+                    selectedCategory === null
+                      ? "bg-gradient-to-r from-[#0A1D37] to-[#0A1D37]/90 text-white shadow-lg"
+                      : "bg-white hover:bg-gray-50 text-[#0A1D37] border border-gray-200 hover:border-[#0A1D37]/30"
+                  }`}
+                >
+                  همه خدمات
+                  <span className="mr-2 text-xs opacity-75">
+                    ({services?.length || 0})
+                  </span>
+                </button>
+
+                {/* Category Filter Buttons */}
+                {categories.map((category) => {
+                  const categoryCount = services?.filter(service => service.category === category).length || 0;
+                  
+                  // Only show categories that have services
+                  if (categoryCount === 0) return null;
+                  
+                  return (
+                    <button
+                      key={category}
+                      onClick={() => setSelectedCategory(category)}
+                      className={`flex-shrink-0 px-4 sm:px-5 lg:px-6 py-2 sm:py-3 rounded-xl sm:rounded-2xl font-medium text-sm sm:text-base transition-all duration-300 whitespace-nowrap ${
+                        selectedCategory === category
+                          ? "bg-gradient-to-r from-[#0A1D37] to-[#0A1D37]/90 text-white shadow-lg"
+                          : "bg-white hover:bg-gray-50 text-[#0A1D37] border border-gray-200 hover:border-[#0A1D37]/30"
+                      }`}
+                    >
+                      {category}
+                      <span className="mr-2 text-xs opacity-75">
+                        ({categoryCount})
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+              
+              {/* Gradient Fade Effects */}
+              <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-white to-transparent pointer-events-none" />
+              <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-white to-transparent pointer-events-none" />
+            </div>
+
+            {/* Active Filter Display */}
+            {selectedCategory && (
+              <div className="mt-4 sm:mt-6 flex items-center gap-2 text-sm sm:text-base text-gray-600">
+                <span>در حال نمایش:</span>
+                <span className="font-bold text-[#0A1D37]">{selectedCategory}</span>
+                <span>({filteredServices.length} خدمت)</span>
+              </div>
+            )}
+
+            {/* Custom Scrollbar Hide Styles */}
+            <style jsx>{`
+              .scrollbar-hide {
+                -ms-overflow-style: none;
+                scrollbar-width: none;
+              }
+              .scrollbar-hide::-webkit-scrollbar {
+                display: none;
+              }
+            `}</style>
+          </div>
+        )}
 
         {/* Loading State */}
         {isLoading && (

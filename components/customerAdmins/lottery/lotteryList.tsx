@@ -43,7 +43,7 @@ interface LotteryRegistration {
     towPeopleRegistration: boolean;
   }>;
   // Payment information
-  paymentMethod?: "card" | "direct";
+  paymentMethod?: "card" | "direct" | "wallet";
   paymentAmount?: number;
   paymentDate?: string;
   receiptUrl?: string;
@@ -549,19 +549,16 @@ const CustomerLotteryList = () => {
                     <FaEye className="text-base" />
                     مشاهده جزئیات
                   </button>
-                  {(lottery.status === "pending" ||
-                    lottery.status === "in_review") && (
-                    <button
-                      onClick={() => {
-                        openLotteryDetails(lottery);
-                        startEdit(lottery);
-                      }}
-                      className="flex items-center justify-center gap-2 px-4 py-3 bg-green-600 text-white font-bold rounded-xl hover:bg-green-700 hover:shadow-xl hover:scale-[1.02] active:scale-95 transition-all duration-300 text-sm"
-                    >
-                      <FaEdit className="text-base" />
-                      ویرایش
-                    </button>
-                  )}
+                  <button
+                    onClick={() => {
+                      openLotteryDetails(lottery);
+                      startEdit(lottery);
+                    }}
+                    className="flex items-center justify-center gap-2 px-4 py-3 bg-green-600 text-white font-bold rounded-xl hover:bg-green-700 hover:shadow-xl hover:scale-[1.02] active:scale-95 transition-all duration-300 text-sm"
+                  >
+                    <FaEdit className="text-base" />
+                    ویرایش
+                  </button>
                 </div>
               </div>
             </div>
@@ -592,39 +589,36 @@ const CustomerLotteryList = () => {
               </div>
               <div className="flex items-center gap-2">
                 {/* Edit Mode Controls */}
-                {(selectedLottery.status === "pending" ||
-                  selectedLottery.status === "in_review") && (
-                  <>
-                    {isEditMode ? (
-                      <>
-                        <button
-                          onClick={saveEdit}
-                          disabled={isUpdating}
-                          className="flex items-center gap-2 px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors disabled:opacity-50 text-sm"
-                        >
-                          <FaSave className="text-sm" />
-                          {isUpdating ? "در حال ذخیره..." : "ذخیره"}
-                        </button>
-                        <button
-                          onClick={cancelEdit}
-                          disabled={isUpdating}
-                          className="flex items-center gap-2 px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors disabled:opacity-50 text-sm"
-                        >
-                          <FaTimes className="text-sm" />
-                          انصراف
-                        </button>
-                      </>
-                    ) : (
+                <>
+                  {isEditMode ? (
+                    <>
                       <button
-                        onClick={() => startEdit(selectedLottery)}
-                        className="flex items-center gap-2 px-4 py-2 bg-[#0A1D37] text-white rounded-lg hover:bg-[#0A1D37]/90 transition-colors text-sm"
+                        onClick={saveEdit}
+                        disabled={isUpdating}
+                        className="flex items-center gap-2 px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors disabled:opacity-50 text-sm"
                       >
-                        <FaEdit className="text-sm" />
-                        ویرایش
+                        <FaSave className="text-sm" />
+                        {isUpdating ? "در حال ذخیره..." : "ذخیره"}
                       </button>
-                    )}
-                  </>
-                )}
+                      <button
+                        onClick={cancelEdit}
+                        disabled={isUpdating}
+                        className="flex items-center gap-2 px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors disabled:opacity-50 text-sm"
+                      >
+                        <FaTimes className="text-sm" />
+                        انصراف
+                      </button>
+                    </>
+                  ) : (
+                    <button
+                      onClick={() => startEdit(selectedLottery)}
+                      className="flex items-center gap-2 px-4 py-2 bg-[#0A1D37] text-white rounded-lg hover:bg-[#0A1D37]/90 transition-colors text-sm"
+                    >
+                      <FaEdit className="text-sm" />
+                      ویرایش
+                    </button>
+                  )}
+                </>
                 <button
                   onClick={() => {
                     setShowLotteryDetails(false);
@@ -742,12 +736,16 @@ const CustomerLotteryList = () => {
                       <div className="flex items-center gap-2">
                         {selectedLottery.paymentMethod === "card" ? (
                           <FaCreditCard className="text-blue-500 text-lg" />
+                        ) : selectedLottery.paymentMethod === "wallet" ? (
+                          <FaMoneyBillWave className="text-purple-500 text-lg" />
                         ) : (
                           <FaMoneyBillWave className="text-green-500 text-lg" />
                         )}
                         <p className="text-sm sm:text-base font-bold text-[#0A1D37]">
                           {selectedLottery.paymentMethod === "card"
                             ? "کارت به کارت"
+                            : selectedLottery.paymentMethod === "wallet"
+                            ? "پرداخت از کیف پول"
                             : "پرداخت مستقیم (زرین‌پال)"}
                         </p>
                       </div>
@@ -961,54 +959,507 @@ const CustomerLotteryList = () => {
                   اطلاعات ثبت کننده
                 </h3>
                 {selectedLottery.registererInformations[0] && (
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                    <div className="bg-white p-4 rounded-xl border border-blue-200">
-                      <p className="text-xs sm:text-sm text-gray-600 mb-2">
-                        نام
-                      </p>
-                      <p className="text-sm sm:text-base font-bold text-[#0A1D37]">
-                        {
-                          selectedLottery.registererInformations[0]
-                            .initialInformations.firstName
-                        }
-                      </p>
+                  <div className="space-y-6">
+                    {/* Basic Information */}
+                    <div>
+                      <h4 className="text-sm font-semibold text-gray-700 mb-3">اطلاعات اولیه</h4>
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <div className="bg-white p-4 rounded-xl border border-blue-200">
+                          <p className="text-xs sm:text-sm text-gray-600 mb-2">نام</p>
+                          {isEditMode && editData ? (
+                            <input
+                              type="text"
+                              value={editData.registererInformations[0]?.initialInformations?.firstName || ''}
+                              onChange={(e) => {
+                                const newEditData = { ...editData };
+                                if (newEditData.registererInformations[0]?.initialInformations) {
+                                  newEditData.registererInformations[0].initialInformations.firstName = e.target.value;
+                                  setEditData(newEditData);
+                                }
+                              }}
+                              className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] text-sm"
+                            />
+                          ) : (
+                            <p className="text-sm sm:text-base font-bold text-[#0A1D37]">
+                              {selectedLottery.registererInformations[0].initialInformations.firstName}
+                            </p>
+                          )}
+                        </div>
+                        <div className="bg-white p-4 rounded-xl border border-blue-200">
+                          <p className="text-xs sm:text-sm text-gray-600 mb-2">نام خانوادگی</p>
+                          {isEditMode && editData ? (
+                            <input
+                              type="text"
+                              value={editData.registererInformations[0]?.initialInformations?.lastName || ''}
+                              onChange={(e) => {
+                                const newEditData = { ...editData };
+                                if (newEditData.registererInformations[0]?.initialInformations) {
+                                  newEditData.registererInformations[0].initialInformations.lastName = e.target.value;
+                                  setEditData(newEditData);
+                                }
+                              }}
+                              className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] text-sm"
+                            />
+                          ) : (
+                            <p className="text-sm sm:text-base font-bold text-[#0A1D37]">
+                              {selectedLottery.registererInformations[0].initialInformations.lastName}
+                            </p>
+                          )}
+                        </div>
+                        <div className="bg-white p-4 rounded-xl border border-blue-200">
+                          <p className="text-xs sm:text-sm text-gray-600 mb-2">جنسیت</p>
+                          {isEditMode && editData ? (
+                            <select
+                              value={editData.registererInformations[0]?.initialInformations?.gender || 'male'}
+                              onChange={(e) => {
+                                const newEditData = { ...editData };
+                                if (newEditData.registererInformations[0]?.initialInformations) {
+                                  newEditData.registererInformations[0].initialInformations.gender = e.target.value;
+                                  setEditData(newEditData);
+                                }
+                              }}
+                              className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] text-sm"
+                            >
+                              <option value="male">مرد</option>
+                              <option value="female">زن</option>
+                            </select>
+                          ) : (
+                            <p className="text-sm sm:text-base font-bold text-[#0A1D37]">
+                              {selectedLottery.registererInformations[0].initialInformations.gender === 'male' ? 'مرد' : 'زن'}
+                            </p>
+                          )}
+                        </div>
+                        <div className="bg-white p-4 rounded-xl border border-blue-200">
+                          <p className="text-xs sm:text-sm text-gray-600 mb-2">تاریخ تولد</p>
+                          {isEditMode && editData ? (
+                            <div className="flex gap-2">
+                              <input
+                                type="text"
+                                placeholder="سال"
+                                value={editData.registererInformations[0]?.initialInformations?.birthDate?.year || ''}
+                                onChange={(e) => {
+                                  const newEditData = { ...editData };
+                                  if (newEditData.registererInformations[0]?.initialInformations?.birthDate) {
+                                    newEditData.registererInformations[0].initialInformations.birthDate.year = e.target.value;
+                                    setEditData(newEditData);
+                                  }
+                                }}
+                                className="flex-1 p-1 border border-gray-300 rounded text-xs focus:ring-1 focus:ring-[#0A1D37]"
+                              />
+                              <input
+                                type="text"
+                                placeholder="ماه"
+                                value={editData.registererInformations[0]?.initialInformations?.birthDate?.month || ''}
+                                onChange={(e) => {
+                                  const newEditData = { ...editData };
+                                  if (newEditData.registererInformations[0]?.initialInformations?.birthDate) {
+                                    newEditData.registererInformations[0].initialInformations.birthDate.month = e.target.value;
+                                    setEditData(newEditData);
+                                  }
+                                }}
+                                className="flex-1 p-1 border border-gray-300 rounded text-xs focus:ring-1 focus:ring-[#0A1D37]"
+                              />
+                              <input
+                                type="text"
+                                placeholder="روز"
+                                value={editData.registererInformations[0]?.initialInformations?.birthDate?.day || ''}
+                                onChange={(e) => {
+                                  const newEditData = { ...editData };
+                                  if (newEditData.registererInformations[0]?.initialInformations?.birthDate) {
+                                    newEditData.registererInformations[0].initialInformations.birthDate.day = e.target.value;
+                                    setEditData(newEditData);
+                                  }
+                                }}
+                                className="flex-1 p-1 border border-gray-300 rounded text-xs focus:ring-1 focus:ring-[#0A1D37]"
+                              />
+                            </div>
+                          ) : (
+                            <p className="text-sm sm:text-base font-bold text-[#0A1D37]">
+                              {selectedLottery.registererInformations[0].initialInformations.birthDate.year}/
+                              {selectedLottery.registererInformations[0].initialInformations.birthDate.month}/
+                              {selectedLottery.registererInformations[0].initialInformations.birthDate.day}
+                            </p>
+                          )}
+                        </div>
+                        <div className="bg-white p-4 rounded-xl border border-blue-200">
+                          <p className="text-xs sm:text-sm text-gray-600 mb-2">کشور</p>
+                          {isEditMode && editData ? (
+                            <input
+                              type="text"
+                              value={editData.registererInformations[0]?.initialInformations?.country || ''}
+                              onChange={(e) => {
+                                const newEditData = { ...editData };
+                                if (newEditData.registererInformations[0]?.initialInformations) {
+                                  newEditData.registererInformations[0].initialInformations.country = e.target.value;
+                                  setEditData(newEditData);
+                                }
+                              }}
+                              className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] text-sm"
+                            />
+                          ) : (
+                            <p className="text-sm sm:text-base font-bold text-[#0A1D37]">
+                              {selectedLottery.registererInformations[0].initialInformations.country}
+                            </p>
+                          )}
+                        </div>
+                        <div className="bg-white p-4 rounded-xl border border-blue-200">
+                          <p className="text-xs sm:text-sm text-gray-600 mb-2">شهر</p>
+                          {isEditMode && editData ? (
+                            <input
+                              type="text"
+                              value={editData.registererInformations[0]?.initialInformations?.city || ''}
+                              onChange={(e) => {
+                                const newEditData = { ...editData };
+                                if (newEditData.registererInformations[0]?.initialInformations) {
+                                  newEditData.registererInformations[0].initialInformations.city = e.target.value;
+                                  setEditData(newEditData);
+                                }
+                              }}
+                              className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] text-sm"
+                            />
+                          ) : (
+                            <p className="text-sm sm:text-base font-bold text-[#0A1D37]">
+                              {selectedLottery.registererInformations[0].initialInformations.city}
+                            </p>
+                          )}
+                        </div>
+                        <div className="bg-white p-4 rounded-xl border border-blue-200">
+                          <p className="text-xs sm:text-sm text-gray-600 mb-2">کشور شهروندی</p>
+                          {isEditMode && editData ? (
+                            <input
+                              type="text"
+                              value={editData.registererInformations[0]?.initialInformations?.citizenshipCountry || ''}
+                              onChange={(e) => {
+                                const newEditData = { ...editData };
+                                if (newEditData.registererInformations[0]?.initialInformations) {
+                                  newEditData.registererInformations[0].initialInformations.citizenshipCountry = e.target.value;
+                                  setEditData(newEditData);
+                                }
+                              }}
+                              className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] text-sm"
+                            />
+                          ) : (
+                            <p className="text-sm sm:text-base font-bold text-[#0A1D37]">
+                              {selectedLottery.registererInformations[0].initialInformations.citizenshipCountry}
+                            </p>
+                          )}
+                        </div>
+                      </div>
                     </div>
-                    <div className="bg-white p-4 rounded-xl border border-blue-200">
-                      <p className="text-xs sm:text-sm text-gray-600 mb-2">
-                        نام خانوادگی
-                      </p>
-                      <p className="text-sm sm:text-base font-bold text-[#0A1D37]">
-                        {
-                          selectedLottery.registererInformations[0]
-                            .initialInformations.lastName
-                        }
-                      </p>
-                    </div>
-                    <div className="bg-white p-4 rounded-xl border border-blue-200">
-                      <p className="text-xs sm:text-sm text-gray-600 mb-2">
-                        تصویر
-                      </p>
-                      {selectedLottery.registererInformations[0]
-                        .otherInformations[0]?.imageUrl ? (
-                        <img
-                          src={
-                            selectedLottery.registererInformations[0]
-                              .otherInformations[0].imageUrl
-                          }
-                          alt="تصویر ثبت کننده"
-                          className="w-16 h-16 object-cover rounded-lg border cursor-pointer"
-                          onClick={() =>
-                            window.open(
-                              selectedLottery.registererInformations[0]
-                                .otherInformations[0].imageUrl,
-                              "_blank"
-                            )
-                          }
-                        />
-                      ) : (
-                        <p className="text-sm text-gray-400">بدون تصویر</p>
-                      )}
-                    </div>
+
+                    {/* Residence Information */}
+                    {selectedLottery.registererInformations[0].residanceInformation?.[0] && (
+                      <div>
+                        <h4 className="text-sm font-semibold text-gray-700 mb-3">اطلاعات محل سکونت</h4>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                          <div className="bg-white p-4 rounded-xl border border-blue-200">
+                            <p className="text-xs sm:text-sm text-gray-600 mb-2">کشور سکونت</p>
+                            {isEditMode && editData ? (
+                              <input
+                                type="text"
+                                value={editData.registererInformations[0]?.residanceInformation?.[0]?.residanceCountry || ''}
+                                onChange={(e) => {
+                                  const newEditData = { ...editData };
+                                  if (newEditData.registererInformations[0]?.residanceInformation?.[0]) {
+                                    newEditData.registererInformations[0].residanceInformation[0].residanceCountry = e.target.value;
+                                    setEditData(newEditData);
+                                  }
+                                }}
+                                className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] text-sm"
+                              />
+                            ) : (
+                              <p className="text-sm sm:text-base font-bold text-[#0A1D37]">
+                                {selectedLottery.registererInformations[0].residanceInformation[0].residanceCountry}
+                              </p>
+                            )}
+                          </div>
+                          <div className="bg-white p-4 rounded-xl border border-blue-200">
+                            <p className="text-xs sm:text-sm text-gray-600 mb-2">شهر سکونت</p>
+                            {isEditMode && editData ? (
+                              <input
+                                type="text"
+                                value={editData.registererInformations[0]?.residanceInformation?.[0]?.residanceCity || ''}
+                                onChange={(e) => {
+                                  const newEditData = { ...editData };
+                                  if (newEditData.registererInformations[0]?.residanceInformation?.[0]) {
+                                    newEditData.registererInformations[0].residanceInformation[0].residanceCity = e.target.value;
+                                    setEditData(newEditData);
+                                  }
+                                }}
+                                className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] text-sm"
+                              />
+                            ) : (
+                              <p className="text-sm sm:text-base font-bold text-[#0A1D37]">
+                                {selectedLottery.registererInformations[0].residanceInformation[0].residanceCity}
+                              </p>
+                            )}
+                          </div>
+                          <div className="bg-white p-4 rounded-xl border border-blue-200">
+                            <p className="text-xs sm:text-sm text-gray-600 mb-2">استان</p>
+                            {isEditMode && editData ? (
+                              <input
+                                type="text"
+                                value={editData.registererInformations[0]?.residanceInformation?.[0]?.residanseState || ''}
+                                onChange={(e) => {
+                                  const newEditData = { ...editData };
+                                  if (newEditData.registererInformations[0]?.residanceInformation?.[0]) {
+                                    newEditData.registererInformations[0].residanceInformation[0].residanseState = e.target.value;
+                                    setEditData(newEditData);
+                                  }
+                                }}
+                                className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] text-sm"
+                              />
+                            ) : (
+                              <p className="text-sm sm:text-base font-bold text-[#0A1D37]">
+                                {selectedLottery.registererInformations[0].residanceInformation[0].residanseState}
+                              </p>
+                            )}
+                          </div>
+                          <div className="bg-white p-4 rounded-xl border border-blue-200">
+                            <p className="text-xs sm:text-sm text-gray-600 mb-2">کد پستی</p>
+                            {isEditMode && editData ? (
+                              <input
+                                type="text"
+                                value={editData.registererInformations[0]?.residanceInformation?.[0]?.postalCode || ''}
+                                onChange={(e) => {
+                                  const newEditData = { ...editData };
+                                  if (newEditData.registererInformations[0]?.residanceInformation?.[0]) {
+                                    newEditData.registererInformations[0].residanceInformation[0].postalCode = e.target.value;
+                                    setEditData(newEditData);
+                                  }
+                                }}
+                                className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] text-sm"
+                              />
+                            ) : (
+                              <p className="text-sm sm:text-base font-bold text-[#0A1D37]">
+                                {selectedLottery.registererInformations[0].residanceInformation[0].postalCode}
+                              </p>
+                            )}
+                          </div>
+                          <div className="bg-white p-4 rounded-xl border border-blue-200 sm:col-span-2">
+                            <p className="text-xs sm:text-sm text-gray-600 mb-2">آدرس</p>
+                            {isEditMode && editData ? (
+                              <textarea
+                                value={editData.registererInformations[0]?.residanceInformation?.[0]?.residanseAdress || ''}
+                                onChange={(e) => {
+                                  const newEditData = { ...editData };
+                                  if (newEditData.registererInformations[0]?.residanceInformation?.[0]) {
+                                    newEditData.registererInformations[0].residanceInformation[0].residanseAdress = e.target.value;
+                                    setEditData(newEditData);
+                                  }
+                                }}
+                                className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] text-sm resize-none"
+                                rows={2}
+                              />
+                            ) : (
+                              <p className="text-sm sm:text-base font-bold text-[#0A1D37]">
+                                {selectedLottery.registererInformations[0].residanceInformation[0].residanseAdress}
+                              </p>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Contact Information */}
+                    {selectedLottery.registererInformations[0].contactInformations?.[0] && (
+                      <div>
+                        <h4 className="text-sm font-semibold text-gray-700 mb-3">اطلاعات تماس</h4>
+                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                          <div className="bg-white p-4 rounded-xl border border-blue-200">
+                            <p className="text-xs sm:text-sm text-gray-600 mb-2">شماره تلفن اصلی</p>
+                            {isEditMode && editData ? (
+                              <input
+                                type="text"
+                                value={editData.registererInformations[0]?.contactInformations?.[0]?.activePhoneNumber || ''}
+                                onChange={(e) => {
+                                  const newEditData = { ...editData };
+                                  if (newEditData.registererInformations[0]?.contactInformations?.[0]) {
+                                    newEditData.registererInformations[0].contactInformations[0].activePhoneNumber = e.target.value;
+                                    setEditData(newEditData);
+                                  }
+                                }}
+                                className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] text-sm"
+                              />
+                            ) : (
+                              <p className="text-sm sm:text-base font-bold text-[#0A1D37]">
+                                {selectedLottery.registererInformations[0].contactInformations[0].activePhoneNumber}
+                              </p>
+                            )}
+                          </div>
+                          <div className="bg-white p-4 rounded-xl border border-blue-200">
+                            <p className="text-xs sm:text-sm text-gray-600 mb-2">شماره تلفن ثانویه</p>
+                            {isEditMode && editData ? (
+                              <input
+                                type="text"
+                                value={editData.registererInformations[0]?.contactInformations?.[0]?.secondaryPhoneNumber || ''}
+                                onChange={(e) => {
+                                  const newEditData = { ...editData };
+                                  if (newEditData.registererInformations[0]?.contactInformations?.[0]) {
+                                    newEditData.registererInformations[0].contactInformations[0].secondaryPhoneNumber = e.target.value;
+                                    setEditData(newEditData);
+                                  }
+                                }}
+                                className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] text-sm"
+                              />
+                            ) : (
+                              <p className="text-sm sm:text-base font-bold text-[#0A1D37]">
+                                {selectedLottery.registererInformations[0].contactInformations[0].secondaryPhoneNumber}
+                              </p>
+                            )}
+                          </div>
+                          <div className="bg-white p-4 rounded-xl border border-blue-200">
+                            <p className="text-xs sm:text-sm text-gray-600 mb-2">ایمیل</p>
+                            {isEditMode && editData ? (
+                              <input
+                                type="email"
+                                value={editData.registererInformations[0]?.contactInformations?.[0]?.email || ''}
+                                onChange={(e) => {
+                                  const newEditData = { ...editData };
+                                  if (newEditData.registererInformations[0]?.contactInformations?.[0]) {
+                                    newEditData.registererInformations[0].contactInformations[0].email = e.target.value;
+                                    setEditData(newEditData);
+                                  }
+                                }}
+                                className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] text-sm"
+                              />
+                            ) : (
+                              <p className="text-sm sm:text-base font-bold text-[#0A1D37]">
+                                {selectedLottery.registererInformations[0].contactInformations[0].email}
+                              </p>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Other Information */}
+                    {selectedLottery.registererInformations[0].otherInformations?.[0] && (
+                      <div>
+                        <h4 className="text-sm font-semibold text-gray-700 mb-3">سایر اطلاعات</h4>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                          <div className="bg-white p-4 rounded-xl border border-blue-200">
+                            <p className="text-xs sm:text-sm text-gray-600 mb-2">نام فارسی</p>
+                            {isEditMode && editData ? (
+                              <input
+                                type="text"
+                                value={editData.registererInformations[0]?.otherInformations?.[0]?.persianName || ''}
+                                onChange={(e) => {
+                                  const newEditData = { ...editData };
+                                  if (newEditData.registererInformations[0]?.otherInformations?.[0]) {
+                                    newEditData.registererInformations[0].otherInformations[0].persianName = e.target.value;
+                                    setEditData(newEditData);
+                                  }
+                                }}
+                                className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] text-sm"
+                              />
+                            ) : (
+                              <p className="text-sm sm:text-base font-bold text-[#0A1D37]">
+                                {selectedLottery.registererInformations[0].otherInformations[0].persianName}
+                              </p>
+                            )}
+                          </div>
+                          <div className="bg-white p-4 rounded-xl border border-blue-200">
+                            <p className="text-xs sm:text-sm text-gray-600 mb-2">نام خانوادگی فارسی</p>
+                            {isEditMode && editData ? (
+                              <input
+                                type="text"
+                                value={editData.registererInformations[0]?.otherInformations?.[0]?.persianLastName || ''}
+                                onChange={(e) => {
+                                  const newEditData = { ...editData };
+                                  if (newEditData.registererInformations[0]?.otherInformations?.[0]) {
+                                    newEditData.registererInformations[0].otherInformations[0].persianLastName = e.target.value;
+                                    setEditData(newEditData);
+                                  }
+                                }}
+                                className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] text-sm"
+                              />
+                            ) : (
+                              <p className="text-sm sm:text-base font-bold text-[#0A1D37]">
+                                {selectedLottery.registererInformations[0].otherInformations[0].persianLastName}
+                              </p>
+                            )}
+                          </div>
+                          <div className="bg-white p-4 rounded-xl border border-blue-200">
+                            <p className="text-xs sm:text-sm text-gray-600 mb-2">آخرین مدرک تحصیلی</p>
+                            {isEditMode && editData ? (
+                              <select
+                                value={editData.registererInformations[0]?.otherInformations?.[0]?.lastDegree || ''}
+                                onChange={(e) => {
+                                  const newEditData = { ...editData };
+                                  if (newEditData.registererInformations[0]?.otherInformations?.[0]) {
+                                    newEditData.registererInformations[0].otherInformations[0].lastDegree = e.target.value;
+                                    setEditData(newEditData);
+                                  }
+                                }}
+                                className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] text-sm"
+                              >
+                                <option value="">انتخاب کنید</option>
+                                {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((grade) => (
+                                  <option key={grade} value={grade.toString()}>
+                                    {grade === 12 ? 'دیپلم' : grade === 11 ? 'یازدهم' : `${grade}`}
+                                  </option>
+                                ))}
+                                <option value="فوق دیپلم">فوق دیپلم</option>
+                                <option value="لیسانس">لیسانس</option>
+                                <option value="فوق لیسانس">فوق لیسانس</option>
+                                <option value="دکترا">دکترا</option>
+                              </select>
+                            ) : (
+                              <p className="text-sm sm:text-base font-bold text-[#0A1D37]">
+                                {selectedLottery.registererInformations[0].otherInformations[0].lastDegree}
+                              </p>
+                            )}
+                          </div>
+                          <div className="bg-white p-4 rounded-xl border border-blue-200">
+                            <p className="text-xs sm:text-sm text-gray-600 mb-2">وضعیت شهروندی همسر</p>
+                            {isEditMode && editData ? (
+                              <select
+                                value={editData.registererInformations[0]?.otherInformations?.[0]?.partnerCitizenShip || ''}
+                                onChange={(e) => {
+                                  const newEditData = { ...editData };
+                                  if (newEditData.registererInformations[0]?.otherInformations?.[0]) {
+                                    newEditData.registererInformations[0].otherInformations[0].partnerCitizenShip = e.target.value;
+                                    setEditData(newEditData);
+                                  }
+                                }}
+                                className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] text-sm"
+                              >
+                                <option value="">انتخاب کنید</option>
+                                <option value="my spouse is not a resident of america">همسر من ساکن آمریکا نیست</option>
+                                <option value="my spouse live in america">همسر من در آمریکا زندگی می‌کند</option>
+                              </select>
+                            ) : (
+                              <p className="text-sm sm:text-base font-bold text-[#0A1D37]">
+                                {selectedLottery.registererInformations[0].otherInformations[0].partnerCitizenShip === 'my spouse is not a resident of america' 
+                                  ? 'همسر من ساکن آمریکا نیست'
+                                  : selectedLottery.registererInformations[0].otherInformations[0].partnerCitizenShip === 'my spouse live in america'
+                                  ? 'همسر من در آمریکا زندگی می‌کند'
+                                  : selectedLottery.registererInformations[0].otherInformations[0].partnerCitizenShip}
+                              </p>
+                            )}
+                          </div>
+                          <div className="bg-white p-4 rounded-xl border border-blue-200">
+                            <p className="text-xs sm:text-sm text-gray-600 mb-2">تصویر</p>
+                            {selectedLottery.registererInformations[0].otherInformations[0]?.imageUrl ? (
+                              <img
+                                src={selectedLottery.registererInformations[0].otherInformations[0].imageUrl}
+                                alt="تصویر ثبت کننده"
+                                className="w-16 h-16 object-cover rounded-lg border cursor-pointer"
+                                onClick={() =>
+                                  window.open(
+                                    selectedLottery.registererInformations[0].otherInformations[0].imageUrl,
+                                    "_blank"
+                                  )
+                                }
+                              />
+                            ) : (
+                              <p className="text-sm text-gray-400">بدون تصویر</p>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 )}
               </div>
@@ -1021,54 +1472,293 @@ const CustomerLotteryList = () => {
                       <FaIdCard className="text-pink-500 text-xl" />
                       اطلاعات همسر
                     </h3>
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                      <div className="bg-white p-4 rounded-xl border border-pink-200">
-                        <p className="text-xs sm:text-sm text-gray-600 mb-2">
-                          نام
-                        </p>
-                        <p className="text-sm sm:text-base font-bold text-[#0A1D37]">
-                          {
-                            selectedLottery.registererPartnerInformations[0]
-                              .initialInformations.firstName
-                          }
-                        </p>
+                    <div className="space-y-6">
+                      {/* Basic Information */}
+                      <div>
+                        <h4 className="text-sm font-semibold text-gray-700 mb-3">اطلاعات اولیه</h4>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                          <div className="bg-white p-4 rounded-xl border border-pink-200">
+                            <p className="text-xs sm:text-sm text-gray-600 mb-2">نام</p>
+                            {isEditMode && editData ? (
+                              <input
+                                type="text"
+                                value={editData.registererPartnerInformations[0]?.initialInformations?.firstName || ''}
+                                onChange={(e) => {
+                                  const newEditData = { ...editData };
+                                  if (newEditData.registererPartnerInformations[0]?.initialInformations) {
+                                    newEditData.registererPartnerInformations[0].initialInformations.firstName = e.target.value;
+                                    setEditData(newEditData);
+                                  }
+                                }}
+                                className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] text-sm"
+                              />
+                            ) : (
+                              <p className="text-sm sm:text-base font-bold text-[#0A1D37]">
+                                {selectedLottery.registererPartnerInformations[0].initialInformations.firstName}
+                              </p>
+                            )}
+                          </div>
+                          <div className="bg-white p-4 rounded-xl border border-pink-200">
+                            <p className="text-xs sm:text-sm text-gray-600 mb-2">نام خانوادگی</p>
+                            {isEditMode && editData ? (
+                              <input
+                                type="text"
+                                value={editData.registererPartnerInformations[0]?.initialInformations?.lastName || ''}
+                                onChange={(e) => {
+                                  const newEditData = { ...editData };
+                                  if (newEditData.registererPartnerInformations[0]?.initialInformations) {
+                                    newEditData.registererPartnerInformations[0].initialInformations.lastName = e.target.value;
+                                    setEditData(newEditData);
+                                  }
+                                }}
+                                className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] text-sm"
+                              />
+                            ) : (
+                              <p className="text-sm sm:text-base font-bold text-[#0A1D37]">
+                                {selectedLottery.registererPartnerInformations[0].initialInformations.lastName}
+                              </p>
+                            )}
+                          </div>
+                          <div className="bg-white p-4 rounded-xl border border-pink-200">
+                            <p className="text-xs sm:text-sm text-gray-600 mb-2">جنسیت</p>
+                            {isEditMode && editData ? (
+                              <select
+                                value={editData.registererPartnerInformations[0]?.initialInformations?.gender || 'male'}
+                                onChange={(e) => {
+                                  const newEditData = { ...editData };
+                                  if (newEditData.registererPartnerInformations[0]?.initialInformations) {
+                                    newEditData.registererPartnerInformations[0].initialInformations.gender = e.target.value;
+                                    setEditData(newEditData);
+                                  }
+                                }}
+                                className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] text-sm"
+                              >
+                                <option value="male">مرد</option>
+                                <option value="female">زن</option>
+                              </select>
+                            ) : (
+                              <p className="text-sm sm:text-base font-bold text-[#0A1D37]">
+                                {selectedLottery.registererPartnerInformations[0].initialInformations.gender === 'male' ? 'مرد' : 'زن'}
+                              </p>
+                            )}
+                          </div>
+                          <div className="bg-white p-4 rounded-xl border border-pink-200">
+                            <p className="text-xs sm:text-sm text-gray-600 mb-2">تاریخ تولد</p>
+                            {isEditMode && editData ? (
+                              <div className="flex gap-2">
+                                <input
+                                  type="text"
+                                  placeholder="سال"
+                                  value={editData.registererPartnerInformations[0]?.initialInformations?.birthDate?.year || ''}
+                                  onChange={(e) => {
+                                    const newEditData = { ...editData };
+                                    if (newEditData.registererPartnerInformations[0]?.initialInformations?.birthDate) {
+                                      newEditData.registererPartnerInformations[0].initialInformations.birthDate.year = e.target.value;
+                                      setEditData(newEditData);
+                                    }
+                                  }}
+                                  className="flex-1 p-1 border border-gray-300 rounded text-xs focus:ring-1 focus:ring-[#0A1D37]"
+                                />
+                                <input
+                                  type="text"
+                                  placeholder="ماه"
+                                  value={editData.registererPartnerInformations[0]?.initialInformations?.birthDate?.month || ''}
+                                  onChange={(e) => {
+                                    const newEditData = { ...editData };
+                                    if (newEditData.registererPartnerInformations[0]?.initialInformations?.birthDate) {
+                                      newEditData.registererPartnerInformations[0].initialInformations.birthDate.month = e.target.value;
+                                      setEditData(newEditData);
+                                    }
+                                  }}
+                                  className="flex-1 p-1 border border-gray-300 rounded text-xs focus:ring-1 focus:ring-[#0A1D37]"
+                                />
+                                <input
+                                  type="text"
+                                  placeholder="روز"
+                                  value={editData.registererPartnerInformations[0]?.initialInformations?.birthDate?.day || ''}
+                                  onChange={(e) => {
+                                    const newEditData = { ...editData };
+                                    if (newEditData.registererPartnerInformations[0]?.initialInformations?.birthDate) {
+                                      newEditData.registererPartnerInformations[0].initialInformations.birthDate.day = e.target.value;
+                                      setEditData(newEditData);
+                                    }
+                                  }}
+                                  className="flex-1 p-1 border border-gray-300 rounded text-xs focus:ring-1 focus:ring-[#0A1D37]"
+                                />
+                              </div>
+                            ) : (
+                              <p className="text-sm sm:text-base font-bold text-[#0A1D37]">
+                                {selectedLottery.registererPartnerInformations[0].initialInformations.birthDate.year}/
+                                {selectedLottery.registererPartnerInformations[0].initialInformations.birthDate.month}/
+                                {selectedLottery.registererPartnerInformations[0].initialInformations.birthDate.day}
+                              </p>
+                            )}
+                          </div>
+                          <div className="bg-white p-4 rounded-xl border border-pink-200">
+                            <p className="text-xs sm:text-sm text-gray-600 mb-2">کشور</p>
+                            {isEditMode && editData ? (
+                              <input
+                                type="text"
+                                value={editData.registererPartnerInformations[0]?.initialInformations?.country || ''}
+                                onChange={(e) => {
+                                  const newEditData = { ...editData };
+                                  if (newEditData.registererPartnerInformations[0]?.initialInformations) {
+                                    newEditData.registererPartnerInformations[0].initialInformations.country = e.target.value;
+                                    setEditData(newEditData);
+                                  }
+                                }}
+                                className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] text-sm"
+                              />
+                            ) : (
+                              <p className="text-sm sm:text-base font-bold text-[#0A1D37]">
+                                {selectedLottery.registererPartnerInformations[0].initialInformations.country}
+                              </p>
+                            )}
+                          </div>
+                          <div className="bg-white p-4 rounded-xl border border-pink-200">
+                            <p className="text-xs sm:text-sm text-gray-600 mb-2">شهر</p>
+                            {isEditMode && editData ? (
+                              <input
+                                type="text"
+                                value={editData.registererPartnerInformations[0]?.initialInformations?.city || ''}
+                                onChange={(e) => {
+                                  const newEditData = { ...editData };
+                                  if (newEditData.registererPartnerInformations[0]?.initialInformations) {
+                                    newEditData.registererPartnerInformations[0].initialInformations.city = e.target.value;
+                                    setEditData(newEditData);
+                                  }
+                                }}
+                                className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] text-sm"
+                              />
+                            ) : (
+                              <p className="text-sm sm:text-base font-bold text-[#0A1D37]">
+                                {selectedLottery.registererPartnerInformations[0].initialInformations.city}
+                              </p>
+                            )}
+                          </div>
+                          <div className="bg-white p-4 rounded-xl border border-pink-200">
+                            <p className="text-xs sm:text-sm text-gray-600 mb-2">کشور شهروندی</p>
+                            {isEditMode && editData ? (
+                              <input
+                                type="text"
+                                value={editData.registererPartnerInformations[0]?.initialInformations?.citizenshipCountry || ''}
+                                onChange={(e) => {
+                                  const newEditData = { ...editData };
+                                  if (newEditData.registererPartnerInformations[0]?.initialInformations) {
+                                    newEditData.registererPartnerInformations[0].initialInformations.citizenshipCountry = e.target.value;
+                                    setEditData(newEditData);
+                                  }
+                                }}
+                                className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] text-sm"
+                              />
+                            ) : (
+                              <p className="text-sm sm:text-base font-bold text-[#0A1D37]">
+                                {selectedLottery.registererPartnerInformations[0].initialInformations.citizenshipCountry}
+                              </p>
+                            )}
+                          </div>
+                        </div>
                       </div>
-                      <div className="bg-white p-4 rounded-xl border border-pink-200">
-                        <p className="text-xs sm:text-sm text-gray-600 mb-2">
-                          نام خانوادگی
-                        </p>
-                        <p className="text-sm sm:text-base font-bold text-[#0A1D37]">
-                          {
-                            selectedLottery.registererPartnerInformations[0]
-                              .initialInformations.lastName
-                          }
-                        </p>
-                      </div>
-                      <div className="bg-white p-4 rounded-xl border border-pink-200">
-                        <p className="text-xs sm:text-sm text-gray-600 mb-2">
-                          تصویر
-                        </p>
-                        {selectedLottery.registererPartnerInformations[0]
-                          .otherInformations[0]?.imageUrl ? (
-                          <img
-                            src={
-                              selectedLottery.registererPartnerInformations[0]
-                                .otherInformations[0].imageUrl
-                            }
-                            alt="تصویر همسر"
-                            className="w-16 h-16 object-cover rounded-lg border cursor-pointer"
-                            onClick={() =>
-                              window.open(
-                                selectedLottery.registererPartnerInformations[0]
-                                  .otherInformations[0].imageUrl,
-                                "_blank"
-                              )
-                            }
-                          />
-                        ) : (
-                          <p className="text-sm text-gray-400">بدون تصویر</p>
-                        )}
-                      </div>
+
+                      {/* Other Information */}
+                      {selectedLottery.registererPartnerInformations[0].otherInformations?.[0] && (
+                        <div>
+                          <h4 className="text-sm font-semibold text-gray-700 mb-3">سایر اطلاعات</h4>
+                          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                            <div className="bg-white p-4 rounded-xl border border-pink-200">
+                              <p className="text-xs sm:text-sm text-gray-600 mb-2">نام فارسی</p>
+                              {isEditMode && editData ? (
+                                <input
+                                  type="text"
+                                  value={editData.registererPartnerInformations[0]?.otherInformations?.[0]?.persianName || ''}
+                                  onChange={(e) => {
+                                    const newEditData = { ...editData };
+                                    if (newEditData.registererPartnerInformations[0]?.otherInformations?.[0]) {
+                                      newEditData.registererPartnerInformations[0].otherInformations[0].persianName = e.target.value;
+                                      setEditData(newEditData);
+                                    }
+                                  }}
+                                  className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] text-sm"
+                                />
+                              ) : (
+                                <p className="text-sm sm:text-base font-bold text-[#0A1D37]">
+                                  {selectedLottery.registererPartnerInformations[0].otherInformations[0].persianName}
+                                </p>
+                              )}
+                            </div>
+                            <div className="bg-white p-4 rounded-xl border border-pink-200">
+                              <p className="text-xs sm:text-sm text-gray-600 mb-2">نام خانوادگی فارسی</p>
+                              {isEditMode && editData ? (
+                                <input
+                                  type="text"
+                                  value={editData.registererPartnerInformations[0]?.otherInformations?.[0]?.persianLastName || ''}
+                                  onChange={(e) => {
+                                    const newEditData = { ...editData };
+                                    if (newEditData.registererPartnerInformations[0]?.otherInformations?.[0]) {
+                                      newEditData.registererPartnerInformations[0].otherInformations[0].persianLastName = e.target.value;
+                                      setEditData(newEditData);
+                                    }
+                                  }}
+                                  className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] text-sm"
+                                />
+                              ) : (
+                                <p className="text-sm sm:text-base font-bold text-[#0A1D37]">
+                                  {selectedLottery.registererPartnerInformations[0].otherInformations[0].persianLastName}
+                                </p>
+                              )}
+                            </div>
+                            <div className="bg-white p-4 rounded-xl border border-pink-200">
+                              <p className="text-xs sm:text-sm text-gray-600 mb-2">آخرین مدرک تحصیلی</p>
+                              {isEditMode && editData ? (
+                                <select
+                                  value={editData.registererPartnerInformations[0]?.otherInformations?.[0]?.lastDegree || ''}
+                                  onChange={(e) => {
+                                    const newEditData = { ...editData };
+                                    if (newEditData.registererPartnerInformations[0]?.otherInformations?.[0]) {
+                                      newEditData.registererPartnerInformations[0].otherInformations[0].lastDegree = e.target.value;
+                                      setEditData(newEditData);
+                                    }
+                                  }}
+                                  className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] text-sm"
+                                >
+                                  <option value="">انتخاب کنید</option>
+                                  {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((grade) => (
+                                    <option key={grade} value={grade.toString()}>
+                                      {grade === 12 ? 'دیپلم' : grade === 11 ? 'یازدهم' : `${grade}`}
+                                    </option>
+                                  ))}
+                                  <option value="فوق دیپلم">فوق دیپلم</option>
+                                  <option value="لیسانس">لیسانس</option>
+                                  <option value="فوق لیسانس">فوق لیسانس</option>
+                                  <option value="دکترا">دکترا</option>
+                                </select>
+                              ) : (
+                                <p className="text-sm sm:text-base font-bold text-[#0A1D37]">
+                                  {selectedLottery.registererPartnerInformations[0].otherInformations[0].lastDegree}
+                                </p>
+                              )}
+                            </div>
+                            <div className="bg-white p-4 rounded-xl border border-pink-200">
+                              <p className="text-xs sm:text-sm text-gray-600 mb-2">تصویر</p>
+                              {selectedLottery.registererPartnerInformations[0].otherInformations[0]?.imageUrl ? (
+                                <img
+                                  src={selectedLottery.registererPartnerInformations[0].otherInformations[0].imageUrl}
+                                  alt="تصویر همسر"
+                                  className="w-16 h-16 object-cover rounded-lg border cursor-pointer"
+                                  onClick={() =>
+                                    window.open(
+                                      selectedLottery.registererPartnerInformations[0].otherInformations[0].imageUrl,
+                                      "_blank"
+                                    )
+                                  }
+                                />
+                              ) : (
+                                <p className="text-sm text-gray-400">بدون تصویر</p>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      )}
                     </div>
                   </div>
                 )}
@@ -1085,49 +1775,219 @@ const CustomerLotteryList = () => {
                       (child, index) => (
                         <div
                           key={index}
-                          className="mb-4 last:mb-0 pb-4 last:pb-0 border-b last:border-b-0"
+                          className="mb-6 last:mb-0 pb-6 last:pb-0 border-b last:border-b-0"
                         >
-                          <h4 className="text-sm font-semibold text-gray-700 mb-3">
+                          <h4 className="text-sm font-semibold text-gray-700 mb-4">
                             فرزند {index + 1}
                           </h4>
-                          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                            <div className="bg-white p-4 rounded-xl border border-yellow-200">
-                              <p className="text-xs sm:text-sm text-gray-600 mb-2">
-                                نام
-                              </p>
-                              <p className="text-sm sm:text-base font-bold text-[#0A1D37]">
-                                {child.initialInformations.firstName}
-                              </p>
-                            </div>
-                            <div className="bg-white p-4 rounded-xl border border-yellow-200">
-                              <p className="text-xs sm:text-sm text-gray-600 mb-2">
-                                نام خانوادگی
-                              </p>
-                              <p className="text-sm sm:text-base font-bold text-[#0A1D37]">
-                                {child.initialInformations.lastName}
-                              </p>
-                            </div>
-                            <div className="bg-white p-4 rounded-xl border border-yellow-200">
-                              <p className="text-xs sm:text-sm text-gray-600 mb-2">
-                                تصویر
-                              </p>
-                              {child.otherInformations[0]?.imageUrl ? (
-                                <img
-                                  src={child.otherInformations[0].imageUrl}
-                                  alt={`تصویر فرزند ${index + 1}`}
-                                  className="w-16 h-16 object-cover rounded-lg border cursor-pointer"
-                                  onClick={() =>
-                                    window.open(
-                                      child.otherInformations[0].imageUrl,
-                                      "_blank"
-                                    )
-                                  }
-                                />
-                              ) : (
-                                <p className="text-sm text-gray-400">
-                                  بدون تصویر
-                                </p>
-                              )}
+                          <div className="space-y-4">
+                            {/* Basic Information */}
+                            <div>
+                              <h5 className="text-xs font-semibold text-gray-600 mb-2">اطلاعات اولیه</h5>
+                              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                                <div className="bg-white p-4 rounded-xl border border-yellow-200">
+                                  <p className="text-xs sm:text-sm text-gray-600 mb-2">نام</p>
+                                  {isEditMode && editData ? (
+                                    <input
+                                      type="text"
+                                      value={editData.registererChildformations[index]?.initialInformations?.firstName || ''}
+                                      onChange={(e) => {
+                                        const newEditData = { ...editData };
+                                        if (newEditData.registererChildformations[index]?.initialInformations) {
+                                          newEditData.registererChildformations[index].initialInformations.firstName = e.target.value;
+                                          setEditData(newEditData);
+                                        }
+                                      }}
+                                      className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] text-sm"
+                                    />
+                                  ) : (
+                                    <p className="text-sm sm:text-base font-bold text-[#0A1D37]">
+                                      {child.initialInformations.firstName}
+                                    </p>
+                                  )}
+                                </div>
+                                <div className="bg-white p-4 rounded-xl border border-yellow-200">
+                                  <p className="text-xs sm:text-sm text-gray-600 mb-2">نام خانوادگی</p>
+                                  {isEditMode && editData ? (
+                                    <input
+                                      type="text"
+                                      value={editData.registererChildformations[index]?.initialInformations?.lastName || ''}
+                                      onChange={(e) => {
+                                        const newEditData = { ...editData };
+                                        if (newEditData.registererChildformations[index]?.initialInformations) {
+                                          newEditData.registererChildformations[index].initialInformations.lastName = e.target.value;
+                                          setEditData(newEditData);
+                                        }
+                                      }}
+                                      className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] text-sm"
+                                    />
+                                  ) : (
+                                    <p className="text-sm sm:text-base font-bold text-[#0A1D37]">
+                                      {child.initialInformations.lastName}
+                                    </p>
+                                  )}
+                                </div>
+                                <div className="bg-white p-4 rounded-xl border border-yellow-200">
+                                  <p className="text-xs sm:text-sm text-gray-600 mb-2">جنسیت</p>
+                                  {isEditMode && editData ? (
+                                    <select
+                                      value={editData.registererChildformations[index]?.initialInformations?.gender || 'male'}
+                                      onChange={(e) => {
+                                        const newEditData = { ...editData };
+                                        if (newEditData.registererChildformations[index]?.initialInformations) {
+                                          newEditData.registererChildformations[index].initialInformations.gender = e.target.value;
+                                          setEditData(newEditData);
+                                        }
+                                      }}
+                                      className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] text-sm"
+                                    >
+                                      <option value="male">پسر</option>
+                                      <option value="female">دختر</option>
+                                    </select>
+                                  ) : (
+                                    <p className="text-sm sm:text-base font-bold text-[#0A1D37]">
+                                      {child.initialInformations.gender === 'male' ? 'پسر' : 'دختر'}
+                                    </p>
+                                  )}
+                                </div>
+                                <div className="bg-white p-4 rounded-xl border border-yellow-200">
+                                  <p className="text-xs sm:text-sm text-gray-600 mb-2">تاریخ تولد</p>
+                                  {isEditMode && editData ? (
+                                    <div className="flex gap-2">
+                                      <input
+                                        type="text"
+                                        placeholder="سال"
+                                        value={editData.registererChildformations[index]?.initialInformations?.birthDate?.year || ''}
+                                        onChange={(e) => {
+                                          const newEditData = { ...editData };
+                                          if (newEditData.registererChildformations[index]?.initialInformations?.birthDate) {
+                                            newEditData.registererChildformations[index].initialInformations.birthDate.year = e.target.value;
+                                            setEditData(newEditData);
+                                          }
+                                        }}
+                                        className="flex-1 p-1 border border-gray-300 rounded text-xs focus:ring-1 focus:ring-[#0A1D37]"
+                                      />
+                                      <input
+                                        type="text"
+                                        placeholder="ماه"
+                                        value={editData.registererChildformations[index]?.initialInformations?.birthDate?.month || ''}
+                                        onChange={(e) => {
+                                          const newEditData = { ...editData };
+                                          if (newEditData.registererChildformations[index]?.initialInformations?.birthDate) {
+                                            newEditData.registererChildformations[index].initialInformations.birthDate.month = e.target.value;
+                                            setEditData(newEditData);
+                                          }
+                                        }}
+                                        className="flex-1 p-1 border border-gray-300 rounded text-xs focus:ring-1 focus:ring-[#0A1D37]"
+                                      />
+                                      <input
+                                        type="text"
+                                        placeholder="روز"
+                                        value={editData.registererChildformations[index]?.initialInformations?.birthDate?.day || ''}
+                                        onChange={(e) => {
+                                          const newEditData = { ...editData };
+                                          if (newEditData.registererChildformations[index]?.initialInformations?.birthDate) {
+                                            newEditData.registererChildformations[index].initialInformations.birthDate.day = e.target.value;
+                                            setEditData(newEditData);
+                                          }
+                                        }}
+                                        className="flex-1 p-1 border border-gray-300 rounded text-xs focus:ring-1 focus:ring-[#0A1D37]"
+                                      />
+                                    </div>
+                                  ) : (
+                                    <p className="text-sm sm:text-base font-bold text-[#0A1D37]">
+                                      {child.initialInformations.birthDate.year}/
+                                      {child.initialInformations.birthDate.month}/
+                                      {child.initialInformations.birthDate.day}
+                                    </p>
+                                  )}
+                                </div>
+                                <div className="bg-white p-4 rounded-xl border border-yellow-200">
+                                  <p className="text-xs sm:text-sm text-gray-600 mb-2">کشور</p>
+                                  {isEditMode && editData ? (
+                                    <input
+                                      type="text"
+                                      value={editData.registererChildformations[index]?.initialInformations?.country || ''}
+                                      onChange={(e) => {
+                                        const newEditData = { ...editData };
+                                        if (newEditData.registererChildformations[index]?.initialInformations) {
+                                          newEditData.registererChildformations[index].initialInformations.country = e.target.value;
+                                          setEditData(newEditData);
+                                        }
+                                      }}
+                                      className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] text-sm"
+                                    />
+                                  ) : (
+                                    <p className="text-sm sm:text-base font-bold text-[#0A1D37]">
+                                      {child.initialInformations.country}
+                                    </p>
+                                  )}
+                                </div>
+                                <div className="bg-white p-4 rounded-xl border border-yellow-200">
+                                  <p className="text-xs sm:text-sm text-gray-600 mb-2">شهر</p>
+                                  {isEditMode && editData ? (
+                                    <input
+                                      type="text"
+                                      value={editData.registererChildformations[index]?.initialInformations?.city || ''}
+                                      onChange={(e) => {
+                                        const newEditData = { ...editData };
+                                        if (newEditData.registererChildformations[index]?.initialInformations) {
+                                          newEditData.registererChildformations[index].initialInformations.city = e.target.value;
+                                          setEditData(newEditData);
+                                        }
+                                      }}
+                                      className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] text-sm"
+                                    />
+                                  ) : (
+                                    <p className="text-sm sm:text-base font-bold text-[#0A1D37]">
+                                      {child.initialInformations.city}
+                                    </p>
+                                  )}
+                                </div>
+                                <div className="bg-white p-4 rounded-xl border border-yellow-200">
+                                  <p className="text-xs sm:text-sm text-gray-600 mb-2">وضعیت شهروندی</p>
+                                  {isEditMode && editData ? (
+                                    <select
+                                      value={editData.registererChildformations[index]?.initialInformations?.citizenshipCountry || 'child_not_american'}
+                                      onChange={(e) => {
+                                        const newEditData = { ...editData };
+                                        if (newEditData.registererChildformations[index]?.initialInformations) {
+                                          newEditData.registererChildformations[index].initialInformations.citizenshipCountry = e.target.value;
+                                          setEditData(newEditData);
+                                        }
+                                      }}
+                                      className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] text-sm"
+                                    >
+                                      <option value="child_not_american">فرزند آمریکایی نیست</option>
+                                      <option value="child_american">فرزند آمریکایی است</option>
+                                    </select>
+                                  ) : (
+                                    <p className="text-sm sm:text-base font-bold text-[#0A1D37]">
+                                      {child.initialInformations.citizenshipCountry === 'child_not_american' 
+                                        ? 'فرزند آمریکایی نیست' 
+                                        : child.initialInformations.citizenshipCountry}
+                                    </p>
+                                  )}
+                                </div>
+                                <div className="bg-white p-4 rounded-xl border border-yellow-200">
+                                  <p className="text-xs sm:text-sm text-gray-600 mb-2">تصویر</p>
+                                  {child.otherInformations[0]?.imageUrl ? (
+                                    <img
+                                      src={child.otherInformations[0].imageUrl}
+                                      alt={`تصویر فرزند ${index + 1}`}
+                                      className="w-16 h-16 object-cover rounded-lg border cursor-pointer"
+                                      onClick={() =>
+                                        window.open(
+                                          child.otherInformations[0].imageUrl,
+                                          "_blank"
+                                        )
+                                      }
+                                    />
+                                  ) : (
+                                    <p className="text-sm text-gray-400">بدون تصویر</p>
+                                  )}
+                                </div>
+                              </div>
                             </div>
                           </div>
                         </div>

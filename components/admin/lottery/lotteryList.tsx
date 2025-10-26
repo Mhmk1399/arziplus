@@ -39,7 +39,7 @@ interface LotteryRegistration {
     towPeopleRegistration: boolean;
   }>;
   // Payment information
-  paymentMethod?: "card" | "direct";
+  paymentMethod?: "card" | "direct" | "wallet";
   paymentAmount?: number;
   paymentDate?: string;
   receiptUrl?: string;
@@ -51,9 +51,11 @@ interface LotteryRegistration {
       firstName: string;
       lastName: string;
       gender: string;
-      yearOfBirth: string;
-      monthOfBirth: string;
-      dayOfBirth: string;
+      birthDate: {
+        year: string;
+        month: string;
+        day: string;
+      };
       country: string;
       city: string;
       citizenshipCountry: string;
@@ -84,9 +86,11 @@ interface LotteryRegistration {
       firstName: string;
       lastName: string;
       gender: string;
-      yearOfBirth: string;
-      monthOfBirth: string;
-      dayOfBirth: string;
+      birthDate: {
+        year: string;
+        month: string;
+        day: string;
+      };
       country: string;
       city: string;
       citizenshipCountry: string;
@@ -104,9 +108,11 @@ interface LotteryRegistration {
       firstName: string;
       lastName: string;
       gender: string;
-      yearOfBirth: string;
-      monthOfBirth: string;
-      dayOfBirth: string;
+      birthDate: {
+        year: string;
+        month: string;
+        day: string;
+      };
       country: string;
       city: string;
       citizenshipCountry: string;
@@ -594,12 +600,16 @@ const LotteryAdminList = () => {
                             <div className="flex items-center gap-2">
                               {lottery.paymentMethod === "card" ? (
                                 <FaCreditCard className="text-blue-500 text-xs" />
+                              ) : lottery.paymentMethod === "wallet" ? (
+                                <FaMoneyBillWave className="text-purple-500 text-xs" />
                               ) : (
                                 <FaMoneyBillWave className="text-green-500 text-xs" />
                               )}
                               <span className="text-gray-600 text-xs">
                                 {lottery.paymentMethod === "card"
                                   ? "کارت"
+                                  : lottery.paymentMethod === "wallet"
+                                  ? "کیف پول"
                                   : "زرین‌پال"}
                               </span>
                             </div>
@@ -844,12 +854,16 @@ const LotteryAdminList = () => {
                       <div className="flex items-center gap-2">
                         {selectedLottery.paymentMethod === "card" ? (
                           <FaCreditCard className="text-blue-500 text-sm" />
+                        ) : selectedLottery.paymentMethod === "wallet" ? (
+                          <FaMoneyBillWave className="text-purple-500 text-sm" />
                         ) : (
                           <FaMoneyBillWave className="text-green-500 text-sm" />
                         )}
                         <p className="text-sm font-medium text-gray-900">
                           {selectedLottery.paymentMethod === "card"
                             ? "کارت به کارت"
+                            : selectedLottery.paymentMethod === "wallet"
+                            ? "پرداخت از کیف پول"
                             : "پرداخت مستقیم (زرین‌پال)"}
                         </p>
                       </div>
@@ -985,58 +999,178 @@ const LotteryAdminList = () => {
                   اطلاعات ثبت‌کننده
                 </h3>
                 {selectedLottery.registererInformations[0] && (
-                  <div className="space-y-4">
-                    {/* Basic Info */}
+                  <div className="space-y-6">
+                    {/* Basic Information */}
                     <div>
-                      <h4 className="text-sm font-semibold text-gray-700 mb-2">
-                        اطلاعات اولیه
-                      </h4>
-                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                        <div>
+                      <h4 className="text-sm font-semibold text-gray-700 mb-3">اطلاعات اولیه</h4>
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <div className="bg-white p-3 rounded-lg border">
                           <p className="text-xs text-gray-600 mb-1">نام</p>
-                          <p className="text-sm font-medium">
-                            {
-                              selectedLottery.registererInformations[0]
-                                .initialInformations.firstName
-                            }
+                          <p className="text-sm font-medium text-gray-900">
+                            {selectedLottery.registererInformations[0].initialInformations.firstName}
                           </p>
                         </div>
-                        <div>
-                          <p className="text-xs text-gray-600 mb-1">
-                            نام خانوادگی
-                          </p>
-                          <p className="text-sm font-medium">
-                            {
-                              selectedLottery.registererInformations[0]
-                                .initialInformations.lastName
-                            }
+                        <div className="bg-white p-3 rounded-lg border">
+                          <p className="text-xs text-gray-600 mb-1">نام خانوادگی</p>
+                          <p className="text-sm font-medium text-gray-900">
+                            {selectedLottery.registererInformations[0].initialInformations.lastName}
                           </p>
                         </div>
-                        <div>
-                          <p className="text-xs text-gray-600 mb-1">تصویر</p>
-                          {selectedLottery.registererInformations[0]
-                            .otherInformations[0]?.imageUrl ? (
-                            <img
-                              src={
-                                selectedLottery.registererInformations[0]
-                                  .otherInformations[0].imageUrl
-                              }
-                              alt="تصویر ثبت کننده"
-                              className="w-16 h-16 object-cover rounded-lg border cursor-pointer"
-                              onClick={() =>
-                                window.open(
-                                  selectedLottery.registererInformations[0]
-                                    .otherInformations[0].imageUrl,
-                                  "_blank"
-                                )
-                              }
-                            />
-                          ) : (
-                            <p className="text-sm text-gray-400">بدون تصویر</p>
-                          )}
+                        <div className="bg-white p-3 rounded-lg border">
+                          <p className="text-xs text-gray-600 mb-1">جنسیت</p>
+                          <p className="text-sm font-medium text-gray-900">
+                            {selectedLottery.registererInformations[0].initialInformations.gender === 'male' ? 'مرد' : 'زن'}
+                          </p>
+                        </div>
+                        <div className="bg-white p-3 rounded-lg border">
+                          <p className="text-xs text-gray-600 mb-1">تاریخ تولد</p>
+                          <p className="text-sm font-medium text-gray-900">
+                            {selectedLottery.registererInformations[0].initialInformations.birthDate.year}/
+                            {selectedLottery.registererInformations[0].initialInformations.birthDate.month}/
+                            {selectedLottery.registererInformations[0].initialInformations.birthDate.day}
+                          </p>
+                        </div>
+                        <div className="bg-white p-3 rounded-lg border">
+                          <p className="text-xs text-gray-600 mb-1">کشور</p>
+                          <p className="text-sm font-medium text-gray-900">
+                            {selectedLottery.registererInformations[0].initialInformations.country}
+                          </p>
+                        </div>
+                        <div className="bg-white p-3 rounded-lg border">
+                          <p className="text-xs text-gray-600 mb-1">شهر</p>
+                          <p className="text-sm font-medium text-gray-900">
+                            {selectedLottery.registererInformations[0].initialInformations.city}
+                          </p>
+                        </div>
+                        <div className="bg-white p-3 rounded-lg border">
+                          <p className="text-xs text-gray-600 mb-1">کشور شهروندی</p>
+                          <p className="text-sm font-medium text-gray-900">
+                            {selectedLottery.registererInformations[0].initialInformations.citizenshipCountry}
+                          </p>
                         </div>
                       </div>
                     </div>
+
+                    {/* Residence Information */}
+                    {selectedLottery.registererInformations[0].residanceInformation?.[0] && (
+                      <div>
+                        <h4 className="text-sm font-semibold text-gray-700 mb-3">اطلاعات محل سکونت</h4>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                          <div className="bg-white p-3 rounded-lg border">
+                            <p className="text-xs text-gray-600 mb-1">کشور سکونت</p>
+                            <p className="text-sm font-medium text-gray-900">
+                              {selectedLottery.registererInformations[0].residanceInformation[0].residanceCountry}
+                            </p>
+                          </div>
+                          <div className="bg-white p-3 rounded-lg border">
+                            <p className="text-xs text-gray-600 mb-1">شهر سکونت</p>
+                            <p className="text-sm font-medium text-gray-900">
+                              {selectedLottery.registererInformations[0].residanceInformation[0].residanceCity}
+                            </p>
+                          </div>
+                          <div className="bg-white p-3 rounded-lg border">
+                            <p className="text-xs text-gray-600 mb-1">استان</p>
+                            <p className="text-sm font-medium text-gray-900">
+                              {selectedLottery.registererInformations[0].residanceInformation[0].residanseState}
+                            </p>
+                          </div>
+                          <div className="bg-white p-3 rounded-lg border">
+                            <p className="text-xs text-gray-600 mb-1">کد پستی</p>
+                            <p className="text-sm font-medium text-gray-900">
+                              {selectedLottery.registererInformations[0].residanceInformation[0].postalCode}
+                            </p>
+                          </div>
+                          <div className="bg-white p-3 rounded-lg border sm:col-span-2">
+                            <p className="text-xs text-gray-600 mb-1">آدرس</p>
+                            <p className="text-sm font-medium text-gray-900">
+                              {selectedLottery.registererInformations[0].residanceInformation[0].residanseAdress}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Contact Information */}
+                    {selectedLottery.registererInformations[0].contactInformations?.[0] && (
+                      <div>
+                        <h4 className="text-sm font-semibold text-gray-700 mb-3">اطلاعات تماس</h4>
+                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                          <div className="bg-white p-3 rounded-lg border">
+                            <p className="text-xs text-gray-600 mb-1">شماره تلفن اصلی</p>
+                            <p className="text-sm font-medium text-gray-900">
+                              {selectedLottery.registererInformations[0].contactInformations[0].activePhoneNumber}
+                            </p>
+                          </div>
+                          <div className="bg-white p-3 rounded-lg border">
+                            <p className="text-xs text-gray-600 mb-1">شماره تلفن ثانویه</p>
+                            <p className="text-sm font-medium text-gray-900">
+                              {selectedLottery.registererInformations[0].contactInformations[0].secondaryPhoneNumber}
+                            </p>
+                          </div>
+                          <div className="bg-white p-3 rounded-lg border">
+                            <p className="text-xs text-gray-600 mb-1">ایمیل</p>
+                            <p className="text-sm font-medium text-gray-900">
+                              {selectedLottery.registererInformations[0].contactInformations[0].email}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Other Information */}
+                    {selectedLottery.registererInformations[0].otherInformations?.[0] && (
+                      <div>
+                        <h4 className="text-sm font-semibold text-gray-700 mb-3">سایر اطلاعات</h4>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                          <div className="bg-white p-3 rounded-lg border">
+                            <p className="text-xs text-gray-600 mb-1">نام فارسی</p>
+                            <p className="text-sm font-medium text-gray-900">
+                              {selectedLottery.registererInformations[0].otherInformations[0].persianName}
+                            </p>
+                          </div>
+                          <div className="bg-white p-3 rounded-lg border">
+                            <p className="text-xs text-gray-600 mb-1">نام خانوادگی فارسی</p>
+                            <p className="text-sm font-medium text-gray-900">
+                              {selectedLottery.registererInformations[0].otherInformations[0].persianLastName}
+                            </p>
+                          </div>
+                          <div className="bg-white p-3 rounded-lg border">
+                            <p className="text-xs text-gray-600 mb-1">آخرین مدرک تحصیلی</p>
+                            <p className="text-sm font-medium text-gray-900">
+                              {selectedLottery.registererInformations[0].otherInformations[0].lastDegree}
+                            </p>
+                          </div>
+                          <div className="bg-white p-3 rounded-lg border">
+                            <p className="text-xs text-gray-600 mb-1">وضعیت شهروندی همسر</p>
+                            <p className="text-sm font-medium text-gray-900">
+                              {selectedLottery.registererInformations[0].otherInformations[0].partnerCitizenShip === 'my spouse is not a resident of america' 
+                                ? 'همسر من ساکن آمریکا نیست'
+                                : selectedLottery.registererInformations[0].otherInformations[0].partnerCitizenShip === 'my spouse live in america'
+                                ? 'همسر من در آمریکا زندگی می‌کند'
+                                : selectedLottery.registererInformations[0].otherInformations[0].partnerCitizenShip}
+                            </p>
+                          </div>
+                          <div className="bg-white p-3 rounded-lg border">
+                            <p className="text-xs text-gray-600 mb-1">تصویر</p>
+                            {selectedLottery.registererInformations[0].otherInformations[0]?.imageUrl ? (
+                              <img
+                                src={selectedLottery.registererInformations[0].otherInformations[0].imageUrl}
+                                alt="تصویر ثبت کننده"
+                                className="w-16 h-16 object-cover rounded-lg border cursor-pointer"
+                                onClick={() =>
+                                  window.open(
+                                    selectedLottery.registererInformations[0].otherInformations[0].imageUrl,
+                                    "_blank"
+                                  )
+                                }
+                              />
+                            ) : (
+                              <p className="text-sm text-gray-400">بدون تصویر</p>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 )}
               </div>
@@ -1049,50 +1183,102 @@ const LotteryAdminList = () => {
                       <FaIdCard className="text-pink-500" />
                       اطلاعات همسر
                     </h3>
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    <div className="space-y-6">
+                      {/* Basic Information */}
                       <div>
-                        <p className="text-xs text-gray-600 mb-1">نام</p>
-                        <p className="text-sm font-medium">
-                          {
-                            selectedLottery.registererPartnerInformations[0]
-                              .initialInformations.firstName
-                          }
-                        </p>
+                        <h4 className="text-sm font-semibold text-gray-700 mb-3">اطلاعات اولیه</h4>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                          <div className="bg-white p-3 rounded-lg border">
+                            <p className="text-xs text-gray-600 mb-1">نام</p>
+                            <p className="text-sm font-medium text-gray-900">
+                              {selectedLottery.registererPartnerInformations[0].initialInformations.firstName}
+                            </p>
+                          </div>
+                          <div className="bg-white p-3 rounded-lg border">
+                            <p className="text-xs text-gray-600 mb-1">نام خانوادگی</p>
+                            <p className="text-sm font-medium text-gray-900">
+                              {selectedLottery.registererPartnerInformations[0].initialInformations.lastName}
+                            </p>
+                          </div>
+                          <div className="bg-white p-3 rounded-lg border">
+                            <p className="text-xs text-gray-600 mb-1">جنسیت</p>
+                            <p className="text-sm font-medium text-gray-900">
+                              {selectedLottery.registererPartnerInformations[0].initialInformations.gender === 'male' ? 'مرد' : 'زن'}
+                            </p>
+                          </div>
+                          <div className="bg-white p-3 rounded-lg border">
+                            <p className="text-xs text-gray-600 mb-1">تاریخ تولد</p>
+                            <p className="text-sm font-medium text-gray-900">
+                              {selectedLottery.registererPartnerInformations[0].initialInformations.birthDate.year}/
+                              {selectedLottery.registererPartnerInformations[0].initialInformations.birthDate.month}/
+                              {selectedLottery.registererPartnerInformations[0].initialInformations.birthDate.day}
+                            </p>
+                          </div>
+                          <div className="bg-white p-3 rounded-lg border">
+                            <p className="text-xs text-gray-600 mb-1">کشور</p>
+                            <p className="text-sm font-medium text-gray-900">
+                              {selectedLottery.registererPartnerInformations[0].initialInformations.country}
+                            </p>
+                          </div>
+                          <div className="bg-white p-3 rounded-lg border">
+                            <p className="text-xs text-gray-600 mb-1">شهر</p>
+                            <p className="text-sm font-medium text-gray-900">
+                              {selectedLottery.registererPartnerInformations[0].initialInformations.city}
+                            </p>
+                          </div>
+                          <div className="bg-white p-3 rounded-lg border">
+                            <p className="text-xs text-gray-600 mb-1">کشور شهروندی</p>
+                            <p className="text-sm font-medium text-gray-900">
+                              {selectedLottery.registererPartnerInformations[0].initialInformations.citizenshipCountry}
+                            </p>
+                          </div>
+                        </div>
                       </div>
-                      <div>
-                        <p className="text-xs text-gray-600 mb-1">
-                          نام خانوادگی
-                        </p>
-                        <p className="text-sm font-medium">
-                          {
-                            selectedLottery.registererPartnerInformations[0]
-                              .initialInformations.lastName
-                          }
-                        </p>
-                      </div>
-                      <div>
-                        <p className="text-xs text-gray-600 mb-1">تصویر</p>
-                        {selectedLottery.registererPartnerInformations[0]
-                          .otherInformations[0]?.imageUrl ? (
-                          <img
-                            src={
-                              selectedLottery.registererPartnerInformations[0]
-                                .otherInformations[0].imageUrl
-                            }
-                            alt="تصویر همسر"
-                            className="w-16 h-16 object-cover rounded-lg border cursor-pointer"
-                            onClick={() =>
-                              window.open(
-                                selectedLottery.registererPartnerInformations[0]
-                                  .otherInformations[0].imageUrl,
-                                "_blank"
-                              )
-                            }
-                          />
-                        ) : (
-                          <p className="text-sm text-gray-400">بدون تصویر</p>
-                        )}
-                      </div>
+
+                      {/* Other Information */}
+                      {selectedLottery.registererPartnerInformations[0].otherInformations?.[0] && (
+                        <div>
+                          <h4 className="text-sm font-semibold text-gray-700 mb-3">سایر اطلاعات</h4>
+                          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                            <div className="bg-white p-3 rounded-lg border">
+                              <p className="text-xs text-gray-600 mb-1">نام فارسی</p>
+                              <p className="text-sm font-medium text-gray-900">
+                                {selectedLottery.registererPartnerInformations[0].otherInformations[0].persianName}
+                              </p>
+                            </div>
+                            <div className="bg-white p-3 rounded-lg border">
+                              <p className="text-xs text-gray-600 mb-1">نام خانوادگی فارسی</p>
+                              <p className="text-sm font-medium text-gray-900">
+                                {selectedLottery.registererPartnerInformations[0].otherInformations[0].persianLastName}
+                              </p>
+                            </div>
+                            <div className="bg-white p-3 rounded-lg border">
+                              <p className="text-xs text-gray-600 mb-1">آخرین مدرک تحصیلی</p>
+                              <p className="text-sm font-medium text-gray-900">
+                                {selectedLottery.registererPartnerInformations[0].otherInformations[0].lastDegree}
+                              </p>
+                            </div>
+                            <div className="bg-white p-3 rounded-lg border">
+                              <p className="text-xs text-gray-600 mb-1">تصویر</p>
+                              {selectedLottery.registererPartnerInformations[0].otherInformations[0]?.imageUrl ? (
+                                <img
+                                  src={selectedLottery.registererPartnerInformations[0].otherInformations[0].imageUrl}
+                                  alt="تصویر همسر"
+                                  className="w-16 h-16 object-cover rounded-lg border cursor-pointer"
+                                  onClick={() =>
+                                    window.open(
+                                      selectedLottery.registererPartnerInformations[0].otherInformations[0].imageUrl,
+                                      "_blank"
+                                    )
+                                  }
+                                />
+                              ) : (
+                                <p className="text-sm text-gray-400">بدون تصویر</p>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      )}
                     </div>
                   </div>
                 )}
@@ -1109,44 +1295,81 @@ const LotteryAdminList = () => {
                       (child, index) => (
                         <div
                           key={index}
-                          className="mb-4 last:mb-0 pb-4 last:pb-0 border-b last:border-b-0"
+                          className="mb-6 last:mb-0 pb-6 last:pb-0 border-b last:border-b-0"
                         >
-                          <h4 className="text-sm font-semibold text-gray-700 mb-2">
+                          <h4 className="text-sm font-semibold text-gray-700 mb-4">
                             فرزند {index + 1}
                           </h4>
-                          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                          <div className="space-y-4">
+                            {/* Basic Information */}
                             <div>
-                              <p className="text-xs text-gray-600 mb-1">نام</p>
-                              <p className="text-sm font-medium">
-                                {child.initialInformations.firstName}
-                              </p>
-                            </div>
-                            <div>
-                              <p className="text-sm font-medium">
-                                {child.initialInformations.lastName}
-                              </p>
-                            </div>
-                            <div>
-                              <p className="text-xs text-gray-600 mb-1">
-                                تصویر
-                              </p>
-                              {child.otherInformations[0]?.imageUrl ? (
-                                <img
-                                  src={child.otherInformations[0].imageUrl}
-                                  alt={`تصویر فرزند ${index + 1}`}
-                                  className="w-16 h-16 object-cover rounded-lg border cursor-pointer"
-                                  onClick={() =>
-                                    window.open(
-                                      child.otherInformations[0].imageUrl,
-                                      "_blank"
-                                    )
-                                  }
-                                />
-                              ) : (
-                                <p className="text-sm text-gray-400">
-                                  بدون تصویر
-                                </p>
-                              )}
+                              <h5 className="text-xs font-semibold text-gray-600 mb-2">اطلاعات اولیه</h5>
+                              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                                <div className="bg-white p-3 rounded-lg border">
+                                  <p className="text-xs text-gray-600 mb-1">نام</p>
+                                  <p className="text-sm font-medium text-gray-900">
+                                    {child.initialInformations.firstName}
+                                  </p>
+                                </div>
+                                <div className="bg-white p-3 rounded-lg border">
+                                  <p className="text-xs text-gray-600 mb-1">نام خانوادگی</p>
+                                  <p className="text-sm font-medium text-gray-900">
+                                    {child.initialInformations.lastName}
+                                  </p>
+                                </div>
+                                <div className="bg-white p-3 rounded-lg border">
+                                  <p className="text-xs text-gray-600 mb-1">جنسیت</p>
+                                  <p className="text-sm font-medium text-gray-900">
+                                    {child.initialInformations.gender === 'male' ? 'پسر' : 'دختر'}
+                                  </p>
+                                </div>
+                                <div className="bg-white p-3 rounded-lg border">
+                                  <p className="text-xs text-gray-600 mb-1">تاریخ تولد</p>
+                                  <p className="text-sm font-medium text-gray-900">
+                                    {child.initialInformations.birthDate.year}/
+                                    {child.initialInformations.birthDate.month}/
+                                    {child.initialInformations.birthDate.day}
+                                  </p>
+                                </div>
+                                <div className="bg-white p-3 rounded-lg border">
+                                  <p className="text-xs text-gray-600 mb-1">کشور</p>
+                                  <p className="text-sm font-medium text-gray-900">
+                                    {child.initialInformations.country}
+                                  </p>
+                                </div>
+                                <div className="bg-white p-3 rounded-lg border">
+                                  <p className="text-xs text-gray-600 mb-1">شهر</p>
+                                  <p className="text-sm font-medium text-gray-900">
+                                    {child.initialInformations.city}
+                                  </p>
+                                </div>
+                                <div className="bg-white p-3 rounded-lg border">
+                                  <p className="text-xs text-gray-600 mb-1">وضعیت شهروندی</p>
+                                  <p className="text-sm font-medium text-gray-900">
+                                    {child.initialInformations.citizenshipCountry === 'child_not_american' 
+                                      ? 'فرزند آمریکایی نیست' 
+                                      : child.initialInformations.citizenshipCountry}
+                                  </p>
+                                </div>
+                                <div className="bg-white p-3 rounded-lg border">
+                                  <p className="text-xs text-gray-600 mb-1">تصویر</p>
+                                  {child.otherInformations[0]?.imageUrl ? (
+                                    <img
+                                      src={child.otherInformations[0].imageUrl}
+                                      alt={`تصویر فرزند ${index + 1}`}
+                                      className="w-16 h-16 object-cover rounded-lg border cursor-pointer"
+                                      onClick={() =>
+                                        window.open(
+                                          child.otherInformations[0].imageUrl,
+                                          "_blank"
+                                        )
+                                      }
+                                    />
+                                  ) : (
+                                    <p className="text-sm text-gray-400">بدون تصویر</p>
+                                  )}
+                                </div>
+                              </div>
                             </div>
                           </div>
                         </div>
