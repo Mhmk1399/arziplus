@@ -485,12 +485,10 @@ const UsersList = () => {
         </div>
 
         {/* Filters */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-6">
+        <div className="bg-white/80 backdrop-blur-sm  rounded-2xl p-2 mb-6">
           <div className="grid grid-cols-1 md:grid-cols-5 gap-4 items-end">
             <div className="md:col-span-2">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                جستجو
-              </label>
+            
               <div className="relative">
                 <FaSearch className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
                 <input
@@ -504,9 +502,7 @@ const UsersList = () => {
             </div>
                {" "}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  وضعیت
-                </label>
+            
                 <select
                   value={statusFilter}
                   onChange={(e) => setStatusFilter(e.target.value)}
@@ -520,9 +516,7 @@ const UsersList = () => {
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  نقش
-                </label>
+              
                 <select
                   value={roleFilter}
                   onChange={(e) => setRoleFilter(e.target.value)}

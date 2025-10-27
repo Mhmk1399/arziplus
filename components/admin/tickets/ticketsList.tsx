@@ -333,28 +333,28 @@ const AdminTicketsList = () => {
     setShowDetailsModal(true);
   };
 
-  const isCurrentUserAdmin = currentUser?.roles && (
-    currentUser.roles.includes("admin") || 
-    currentUser.roles.includes("super_admin")
-  );
+  // const isCurrentUserAdmin = currentUser?.roles && (
+  //   currentUser.roles.includes("admin") || 
+  //   currentUser.roles.includes("super_admin")
+  // );
 
-  if (!isCurrentUserAdmin) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-white via-[#E8F4FD] to-[#F0F9FF] flex items-center justify-center px-4">
-        <div className="text-center p-6 sm:p-8 lg:p-12 bg-white rounded-3xl shadow-2xl max-w-md border border-red-100">
-          <div className="w-20 h-20 sm:w-24 sm:h-24 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6">
-            <FaExclamationTriangle className="text-red-500 text-4xl sm:text-5xl" />
-          </div>
-          <h2 className="text-xl sm:text-2xl font-bold text-[#0A1D37] mb-3 sm:mb-4">
-            دسترسی غیرمجاز
-          </h2>
-          <p className="text-sm sm:text-base text-gray-600">
-            شما دسترسی ادمین ندارید
-          </p>
-        </div>
-      </div>
-    );
-  }
+  // if (!isCurrentUserAdmin) {
+  //   return (
+  //     <div className="min-h-screen bg-gradient-to-br from-white via-[#E8F4FD] to-[#F0F9FF] flex items-center justify-center px-4">
+  //       <div className="text-center p-6 sm:p-8 lg:p-12 bg-white rounded-3xl shadow-2xl max-w-md border border-red-100">
+  //         <div className="w-20 h-20 sm:w-24 sm:h-24 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6">
+  //           <FaExclamationTriangle className="text-red-500 text-4xl sm:text-5xl" />
+  //         </div>
+  //         <h2 className="text-xl sm:text-2xl font-bold text-[#0A1D37] mb-3 sm:mb-4">
+  //           دسترسی غیرمجاز
+  //         </h2>
+  //         <p className="text-sm sm:text-base text-gray-600">
+  //           شما دسترسی ادمین ندارید
+  //         </p>
+  //       </div>
+  //     </div>
+  //   );
+  // }
 
   return (
     <div className="space-y-6 sm:space-y-8" dir="rtl">

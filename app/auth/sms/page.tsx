@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { FaPhone, FaKey, FaSpinner } from "react-icons/fa";
 import { showToast } from "@/utilities/toast";
 import { estedadBold } from "@/next-persian-fonts/estedad";
+import Link from "next/link";
 
 // Loading component for Suspense fallback
 function SMSAuthLoading() {
@@ -477,12 +478,12 @@ function SMSAuthContent() {
             </svg>
             <span className="text-[#A0A0A0] text-sm">
               با ورود یا ثبت نام، شما
-              <a
-                href="/terms"
+              <Link
+                href="/terms-and-conditions"
                 className="text-[#0A1D37] hover:text-[#4DBFF0] mx-1 transition-colors duration-300"
               >
                 {""} قوانین و مقررات {""}
-              </a>
+              </Link>
               را می‌پذیرید
             </span>
           </div>

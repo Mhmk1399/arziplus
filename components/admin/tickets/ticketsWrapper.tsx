@@ -4,7 +4,7 @@ import AdminTicketsList from "./ticketsList";
 
 const AdminTicketsWrapper = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-white via-[#E8F4FD] to-[#F0F9FF] py-8">
+    <div className="min-h-screen  py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <Suspense
           fallback={

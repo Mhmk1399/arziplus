@@ -46,7 +46,7 @@ interface PaginationData {
 }
 
 const BankingInfoAdmin = () => {
-  const {   isLoggedIn } = useCurrentUser();
+  const { isLoggedIn } = useCurrentUser();
   const [users, setUsers] = useState<UserBankingData[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -246,8 +246,6 @@ const BankingInfoAdmin = () => {
     setShowReviewModal(true);
   };
 
- 
-
   // if (
   //   !currentUser?.roles.includes("admin") &&
   //   !currentUser?.roles.includes("super_admin")
@@ -265,18 +263,26 @@ const BankingInfoAdmin = () => {
   // }
 
   return (
-    <div className="min-h-screen p-2" dir="rtl">
-      <div className="max-w-7xl mx-auto">
+    <div className="min-h-screen" dir="rtl">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
-        <div className="  mb-8">
-          <h1 className="md:text-3xl text-xl font-bold text-[#0A1D37]">
-            مدیریت اطلاعات بانکی
-          </h1>
-          <p className="text-gray-600">بررسی و تایید اطلاعات بانکی کاربران</p>
+        <div className="mb-8">
+          <div className="flex items-center gap-3 mb-4">
+            <div>
+              <h1 className="md:text-3xl text-xl font-bold text-gray-900">
+                مدیریت اطلاعات بانکی
+              </h1>
+              <p className="text-gray-600">
+                بررسی و تایید اطلاعات بانکی کاربران
+              </p>
+            </div>
+          </div>
+
+          {/* Stats */}
         </div>
 
         {/* Filters */}
-        <div className="bg-white/80 backdrop-blur-sm border border-gray-200/50 rounded-2xl p-2 mb-6">
+        <div className="bg-white/80 backdrop-blur-sm  rounded-2xl p-2 mb-6">
           <div className="flex  flex-col md:flex-row gap-4 items-center">
             <div className="flex-1 min-w-64">
               <div className="relative">
@@ -286,7 +292,7 @@ const BankingInfoAdmin = () => {
                   placeholder="جستجو بر اساس نام، شماره کارت یا شبا..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full pr-12 pl-4 py-4 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] transition-all"
+                  className="w-full pr-12 pl-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] transition-all"
                 />
               </div>
             </div>
@@ -295,7 +301,7 @@ const BankingInfoAdmin = () => {
               <select
                 value={statusFilter}
                 onChange={(e) => setStatusFilter(e.target.value)}
-                className="px-4 py-4 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] transition-all"
+                className="px-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] transition-all"
               >
                 <option value="">همه وضعیت‌ها</option>
                 <option value="pending_verification">در انتظار بررسی</option>
@@ -304,7 +310,7 @@ const BankingInfoAdmin = () => {
               </select>
               <button
                 onClick={() => fetchBankingData()}
-                className="flex items-center gap-2 px-6 py-4 bg-gradient-to-r from-[#0A1D37] to-[#4DBFF0] text-white rounded-xl hover:shadow-lg transition-all"
+                className="flex items-center gap-2 px-6 py-2 bg-gradient-to-r from-[#0A1D37] to-[#4DBFF0] text-white rounded-xl hover:shadow-lg transition-all"
               >
                 <FaFilter />
                 اعمال فیلتر
@@ -374,7 +380,6 @@ const BankingInfoAdmin = () => {
                               <div className="text-sm font-medium text-gray-900">
                                 {getUserName(user)}
                               </div>
-                             
                             </div>
                           </div>
                         </td>
@@ -568,7 +573,8 @@ const BankingInfoAdmin = () => {
                       {getStatusText(selectedBankingInfo.bankingInfo.status)}
                     </span>
                     <span className="text-sm text-gray-600">
-                      ثبت شده در: {formatDateTime(selectedBankingInfo.user.createdAt)}
+                      ثبت شده در:{" "}
+                      {formatDateTime(selectedBankingInfo.user.createdAt)}
                     </span>
                   </div>
                 </div>
@@ -654,7 +660,7 @@ const BankingInfoAdmin = () => {
                     <div>
                       <span className="text-blue-600 font-medium">کاربر:</span>{" "}
                       <span className="text-blue-900">
-                        { (selectedBankingInfo.bankingInfo.accountHolderName)}
+                        {selectedBankingInfo.bankingInfo.accountHolderName}
                       </span>
                     </div>
                     <div>

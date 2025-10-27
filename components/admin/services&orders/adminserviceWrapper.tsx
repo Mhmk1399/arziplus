@@ -280,36 +280,7 @@ const ServiceWrapper: React.FC<AdminWrapperProps> = ({
         {/* Stats Cards */}
         {renderStatsCards()}
 
-        {/* Navigation Tabs */}
-        <div className=" backdrop-blur-sm border border-white/20 rounded-2xl p-2 mb-8 ">
-          <div className="grid  grid-cols-3 gap-1 md:gap-3">
-            {tabs.map((tab) => (
-              <button
-                key={tab.id}
-                onClick={() => handleTabChange(tab.id)}
-                className={`relative flex items-center justify-center gap-3 md:px-6 p-2 md:py-4 rounded-xl font-medium transition-all duration-300 ${
-                  activeTab === tab.id
-                    ? "border-[#0A1D37] border bg-gray-50 text-[#0A1D37] shadow-lg scale-105"
-                    : "text-gray-700  hover:scale-105"
-                }`}
-              >
-                {tab.icon}
-                <div className="text-center">
-                  <div className="font-bold text-xs md:text-sm">
-                    {tab.label}
-                  </div>
-                  <div
-                    className={`text-xs md:block hidden ${
-                      activeTab === tab.id ? "text-[#0A1D37]" : "text-gray-500"
-                    }`}
-                  >
-                    {tab.description}
-                  </div>
-                </div>
-              </button>
-            ))}
-          </div>
-        </div>
+       
 
         {/* Content Area */}
         <div className="bg-white/50 backdrop-blur-sm border border-white/20 rounded-2xl overflow-hidden shadow-xl">

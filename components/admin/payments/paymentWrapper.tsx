@@ -27,25 +27,7 @@ const PaymentWrapper: React.FC = () => {
 
   return (
     <div className="space-y-6 my-8 px-4">
-      {/* Tab Navigation */}
-      <div className="bg-white rounded-xl">
-        <div className="flex flex-row gap-2 justify-center items-center">
-          {tabs.map((tab) => (
-            <button
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id)}
-              className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${
-                activeTab === tab.id
-                  ? "bg-[#0A1D37] text-white"
-                  : "text-[#0A1D37] hover:bg-gray-100"
-              }`}
-            >
-              {tab.icon}
-              <span className="text-xs md:text-sm font-medium">{tab.label}</span>
-            </button>
-          ))}
-        </div>
-      </div>
+      
 
       {/* Active Component */}
       <div>

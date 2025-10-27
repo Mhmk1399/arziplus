@@ -18,22 +18,41 @@ import {
   FaChevronRight,
   FaTicketAlt,
   FaHeadset,
+  FaChevronDown,
+  FaUniversity,
 } from "react-icons/fa";
 import { showToast } from "@/utilities/toast";
 
 // Import wrappers
-import UserWrapper from "@/components/admin/users/userWrapper";
+import UsersList from "@/components/admin/users/usersList";
+import NationalCredentialAdmin from "@/components/admin/users/nationalCredintial";
+import BankingInfoAdmin from "@/components/admin/users/bankingInfo";
 import AdminServiceWrapper from "@/components/admin/services&orders/adminserviceWrapper";
 import ServiceWrapper from "@/components/customerAdmins/ordersandservices/serviceWrapper";
 import CredentialWrapper from "@/components/customerAdmins/credintials/credintialWrapper";
 import WalletWrapper from "@/components/customerAdmins/wallet/walletWrapper";
 import PaymentWrapper from "@/components/admin/payments/paymentWrapper";
-import LotteryAdminWrapper from "@/components/admin/lottery/lotteryWrapper";
 import CustomerLotteryWrapper from "@/components/customerAdmins/lottery/lotteryWrapper";
 import AdminTicketsWrapper from "@/components/admin/tickets/ticketsWrapper";
 import TicketsWrapper from "@/components/customerAdmins/tickets/ticketsWrapper";
 import Link from "next/link";
 import Image from "next/image";
+import { FaList } from "react-icons/fa";
+import LotteryAdminList from "@/components/admin/lottery/lotteryList";
+import { FaCalendarCheck } from "react-icons/fa";
+import HozoriAdminList from "@/components/admin/hozori/hozoriList";
+import WalletsList from "@/components/admin/payments/walletsList";
+import WithdrawRequestsList from "@/components/admin/payments/outcomes";
+import AdminRequestsTable from "@/components/admin/services&orders/AdminRequestsTable";
+import ServiceManager from "@/components/admin/services&orders/serviceBuilder/ServiceManager";
+import { FaChartBar } from "react-icons/fa";
+import BankingInfo from "@/components/customerAdmins/credintials/banckinginfo";
+import NationalCredentials from "@/components/customerAdmins/credintials/natinals";
+import ContactInfo from "@/components/customerAdmins/credintials/phonrnumber";
+import Security from "@/components/customerAdmins/credintials/security";
+import { FaShieldAlt, FaPhone } from "react-icons/fa";
+import CustomerHozoriList from "@/components/customerAdmins/hozori/hozoriList";
+import CustomerLotteryList from "@/components/customerAdmins/lottery/lotteryList";
 
 interface MenuItem {
   id: string;
@@ -42,12 +61,14 @@ interface MenuItem {
   component: React.ComponentType;
   description: string;
   badge?: number;
+  children?: MenuItem[];
 }
 
 const Dashboard: React.FC = () => {
   const [selectedMenuItem, setSelectedMenuItem] = useState<string>("");
-  const [sidebarOpen, setSidebarOpen] = useState(true); // Default open on desktop
+  const [sidebarOpen, setSidebarOpen] = useState(true);
   const [loading, setLoading] = useState(true);
+  const [expandedMenus, setExpandedMenus] = useState<string[]>([]);
   const {
     user: currentUser,
     isLoggedIn,
@@ -65,7 +86,15 @@ const Dashboard: React.FC = () => {
           currentUser.roles.includes("admin") ||
           currentUser.roles.includes("super_admin");
         const validTabs = isAdmin
-          ? ["users", "lottery", "tickets", "payments", "admin-services"]
+          ? [
+              "users",
+              "credentials",
+              "banking",
+              "lottery",
+              "tickets",
+              "payments",
+              "admin-services",
+            ]
           : ["services", "lottery", "tickets", "wallet", "credentials"];
 
         if (validTabs.includes(hash)) {
@@ -116,7 +145,15 @@ const Dashboard: React.FC = () => {
         currentUser.roles.includes("admin") ||
         currentUser.roles.includes("super_admin");
       const validTabs = isAdmin
-        ? ["users", "lottery", "tickets", "payments", "admin-services"]
+        ? [
+            "users",
+            "credentials",
+            "banking",
+            "lottery",
+            "tickets",
+            "payments",
+            "admin-services",
+          ]
         : ["services", "lottery", "tickets", "wallet", "credentials"];
 
       if (validTabs.includes(targetTab)) {
@@ -166,15 +203,54 @@ const Dashboard: React.FC = () => {
       id: "users",
       label: "مدیریت کاربران",
       icon: <FaUsers className="text-lg" />,
-      component: UserWrapper,
+      component: UsersList,
       description: "مدیریت کاربران و احراز هویت",
+      children: [
+        {
+          id: "users",
+          label: "مدیریت کاربران",
+          icon: <FaUsers className="text-lg" />,
+          component: UsersList,
+          description: "مشاهده و مدیریت کاربران",
+        },
+        {
+          id: "credentials",
+          label: "احراز هویت",
+          icon: <FaIdCard className="text-lg" />,
+          component: NationalCredentialAdmin,
+          description: "بررسی مدارک هویتی",
+        },
+        {
+          id: "banking",
+          label: "اطلاعات بانکی",
+          icon: <FaUniversity className="text-lg" />,
+          component: BankingInfoAdmin,
+          description: "بررسی اطلاعات بانکی",
+        },
+      ],
     },
     {
-      id: "lottery",
+      id: "list",
       label: "مدیریت لاتاری",
       icon: <FaTicketAlt className="text-lg" />,
-      component: LotteryAdminWrapper,
+      component: LotteryAdminList,
       description: "مدیریت ثبت‌نام‌های قرعه‌کشی گرین کارت",
+      children: [
+        {
+          id: "list",
+          label: "لیست ثبت‌نام‌ها",
+          icon: <FaList className="text-lg" />,
+          component: LotteryAdminList,
+          description: "مشاهده و مدیریت تمام ثبت‌نام‌های لاتاری",
+        },
+        {
+          id: "hozori",
+          label: "رزروهای حضوری",
+          icon: <FaCalendarCheck className="text-lg" />,
+          component: HozoriAdminList,
+          description: "مشاهده و مدیریت تمام رزروهای حضوری",
+        },
+      ],
     },
     {
       id: "tickets",
@@ -184,29 +260,106 @@ const Dashboard: React.FC = () => {
       description: "مدیریت تیکت‌های پشتیبانی و پاسخ به کاربران",
     },
     {
-      id: "payments",
+      id: "wallets",
       label: "مدیریت پرداخت‌ها",
       icon: <FaMoneyBillWave className="text-lg" />,
       component: PaymentWrapper,
       description: "مدیریت کیف پول‌ها و درخواست‌های برداشت",
+      children: [
+        {
+          id: "wallets" as const,
+          label: "مدیریت کیف پول‌ها",
+          icon: <FaWallet className="text-lg" />,
+          component: WalletsList,
+          description: "مدیریت تمام کیف پول ها",
+        },
+        {
+          id: "withdraws" as const,
+          label: "درخواست‌های برداشت",
+          icon: <FaMoneyBillWave className="text-lg" />,
+          component: WithdrawRequestsList,
+          description: "مدیریت تمام درخواست های برداشت",
+        },
+      ],
     },
     {
-      id: "admin-services",
+      id: "requests",
       label: "مدیریت سرویس‌ها",
       icon: <FaServicestack className="text-lg" />,
       component: AdminServiceWrapper,
       description: "مدیریت سرویس‌ها و درخواست‌ها",
+      children: [
+        {
+          id: "requests" as const,
+          label: "مدیریت درخواست‌ها",
+          icon: <FaClipboardList className="text-lg" />,
+          description: "مشاهده و مدیریت درخواست‌های سرویس",
+          component: AdminRequestsTable,
+        },
+        {
+          id: "services" as const,
+          label: "مدیریت سرویس‌ها",
+          icon: <FaServicestack className="text-lg" />,
+          description: "مدیریت و ویرایش سرویس‌ها",
+          component: ServiceManager,
+        },
+        {
+          id: "analytics" as const,
+          label: "آنالیز و گزارشات",
+          icon: <FaChartBar className="text-lg" />,
+          description: "آمار و گزارشات سرویس‌ها",
+          component: () => (
+            <div className="p-8 text-center">
+              <FaChartBar className="text-6xl text-gray-400 mx-auto mb-4" />
+              <h3 className="text-xl font-bold text-gray-700 mb-2">
+                آنالیز و گزارشات
+              </h3>
+              <p className="text-gray-500">این بخش در حال توسعه است</p>
+            </div>
+          ),
+        },
+      ],
     },
   ];
 
   // Customer menu items
   const customerMenuItems: MenuItem[] = [
     {
-      id: "services",
+      id: "security",
       label: "خدمات و سفارشات",
       icon: <FaClipboardList className="text-lg" />,
       component: ServiceWrapper,
       description: "مشاهده خدمات و سفارشات",
+      children: [
+        {
+          id: "security",
+          label: "امنیت و دسترسی",
+          icon: <FaShieldAlt className="text-lg sm:text-xl" />,
+          component: Security,
+          description: "نام کاربری، رمز عبور و تنظیمات امنیتی",
+        },
+        {
+          id: "nationalCredentials",
+          label: "مدارک هویتی",
+          icon: <FaIdCard className="text-lg sm:text-xl" />,
+          component: NationalCredentials,
+          description: "کارت ملی، احراز هویت و مدارک شخصی",
+        },
+        {
+          id: "contactInfo",
+          label: "اطلاعات تماس",
+          icon: <FaPhone className="text-lg sm:text-xl" />,
+          component: ContactInfo,
+          description: "شماره تماس، ایمیل و آدرس",
+        },
+        {
+          id: "bankingInfo",
+          label: "اطلاعات بانکی",
+          icon: <FaUniversity className="text-lg sm:text-xl" />,
+          component: BankingInfo,
+          description: "حساب بانکی برای دریافت درآمد",
+        },
+      ],
     },
     {
       id: "lottery",
@@ -214,6 +367,22 @@ const Dashboard: React.FC = () => {
       icon: <FaTicketAlt className="text-lg" />,
       component: CustomerLotteryWrapper,
       description: "مدیریت ثبت‌نام‌های قرعه‌کشی گرین کارت",
+      children: [
+        {
+          id: "list",
+          label: "ثبت‌نام‌های من",
+          icon: <FaList className="text-lg" />,
+          component: CustomerLotteryList,
+          description: "مشاهده تمام ثبت‌نام‌های لاتاری  ",
+        },
+        {
+          id: "hozori",
+          label: "رزروهای حضوری",
+          icon: <FaCalendarCheck className="text-lg" />,
+          component: CustomerHozoriList,
+          description: "مشاهده تمام رزروهای حضوری شما",
+        },
+      ],
     },
     {
       id: "tickets",
@@ -221,6 +390,7 @@ const Dashboard: React.FC = () => {
       icon: <FaHeadset className="text-lg" />,
       component: TicketsWrapper,
       description: "ایجاد تیکت و دریافت پشتیبانی",
+      children: [],
     },
     {
       id: "wallet",
@@ -228,6 +398,7 @@ const Dashboard: React.FC = () => {
       icon: <FaWallet className="text-lg" />,
       component: WalletWrapper,
       description: "مدیریت موجودی و تراکنش‌ها",
+      children: [],
     },
     {
       id: "credentials",
@@ -235,6 +406,7 @@ const Dashboard: React.FC = () => {
       icon: <FaIdCard className="text-lg" />,
       component: CredentialWrapper,
       description: "مدارک و احراز هویت",
+      children: [],
     },
   ];
 
@@ -252,7 +424,19 @@ const Dashboard: React.FC = () => {
   };
 
   const menuItems = getMenuItems();
-  const activeMenuItem = menuItems.find((item) => item.id === selectedMenuItem);
+
+  const findMenuItem = (id: string): MenuItem | undefined => {
+    for (const item of menuItems) {
+      if (item.id === id) return item;
+      if (item.children) {
+        const child = item.children.find((c) => c.id === id);
+        if (child) return child;
+      }
+    }
+    return undefined;
+  };
+
+  const activeMenuItem = findMenuItem(selectedMenuItem);
   const ActiveComponent =
     activeMenuItem?.component || (() => <div>صفحه پیدا نشد</div>);
 
@@ -384,65 +568,127 @@ const Dashboard: React.FC = () => {
         </div>
 
         {/* Navigation Menu */}
-        <nav className="p-6 flex-1 overflow-y-auto max-h-[calc(100vh-300px)]">
-          <div className="space-y-2.5">
+        <nav className="p-3 flex-1 overflow-y-auto max-h-[calc(100vh-330px)]">
+          <div className="space-y-1.5">
             {menuItems.map((item) => (
-              <button
-                key={item.id}
-                onClick={() => {
-                  setSelectedMenuItem(item.id);
-                  window.location.hash = item.id;
-                  if (window.innerWidth < 1024) {
-                    setSidebarOpen(false);
-                  }
-                }}
-                className={`w-full flex items-center gap-4 p-4 rounded-2xl transition-all duration-300 group relative overflow-hidden ${
-                  selectedMenuItem === item.id
-                    ? "bg-gradient-to-r from-[#0A1D37]/15 to-[#4DBFF0]/15 border-2 border-[#0A1D37]/30 text-[#0A1D37] shadow-lg transform scale-[1.02]"
-                    : "hover:bg-gray-50 text-gray-700 hover:text-[#0A1D37] hover:shadow-md hover:scale-[1.01] border-2 border-transparent"
-                }`}
-              >
-                {selectedMenuItem === item.id && (
-                  <div className="absolute inset-0 bg-gradient-to-r from-[#0A1D37]/5 to-[#4DBFF0]/5 rounded-2xl animate-pulse" />
-                )}
-                <div
-                  className={`flex-shrink-0 relative z-10 p-2.5 rounded-xl ${
-                    selectedMenuItem === item.id
-                      ? "text-[#0A1D37] bg-white/70 shadow-md"
-                      : "text-gray-500 group-hover:text-[#0A1D37] group-hover:bg-[#0A1D37]/10"
-                  } transition-all duration-300`}
+              <div key={item.id}>
+                <button
+                  onClick={() => {
+                    if (item.children) {
+                      setExpandedMenus((prev) =>
+                        prev.includes(item.id)
+                          ? prev.filter((id) => id !== item.id)
+                          : [...prev, item.id]
+                      );
+                    } else {
+                      setSelectedMenuItem(item.id);
+                      window.location.hash = item.id;
+                      if (window.innerWidth < 1024) {
+                        setSidebarOpen(false);
+                      }
+                    }
+                  }}
+                  className={`w-full flex items-center gap-2 p-2.5 rounded-lg transition-all duration-200 group ${
+                    selectedMenuItem === item.id ||
+                    (item.children &&
+                      item.children.some((c) => c.id === selectedMenuItem))
+                      ? "bg-[#0A1D37]/10 border border-[#0A1D37]/20 text-[#0A1D37]"
+                      : "hover:bg-gray-50 text-gray-700 hover:text-[#0A1D37] border border-transparent"
+                  }`}
                 >
-                  {item.icon}
-                </div>
-                <div className="flex-1 text-right relative z-10 min-w-0">
-                  <p
-                    className={`font-bold text-base mb-1 truncate ${
-                      selectedMenuItem === item.id
-                        ? "text-[#0A1D37]"
-                        : "text-gray-700 group-hover:text-[#0A1D37]"
-                    }`}
+                  <div
+                    className={`flex-shrink-0 p-1.5 rounded-lg ${
+                      selectedMenuItem === item.id ||
+                      (item.children &&
+                        item.children.some((c) => c.id === selectedMenuItem))
+                        ? "text-[#0A1D37] bg-white/70"
+                        : "text-gray-500 group-hover:text-[#0A1D37]"
+                    } transition-all duration-200`}
                   >
-                    {item.label}
-                  </p>
-                  <p className="text-xs opacity-70 leading-relaxed line-clamp-1">
-                    {item.description}
-                  </p>
-                </div>
-                <div className="flex items-center gap-2 relative z-10 flex-shrink-0">
-                  {item.badge && (
-                    <div className="min-w-[24px] h-6 px-2 bg-red-500 text-white text-xs rounded-full flex items-center justify-center font-bold shadow-md animate-bounce">
-                      {item.badge}
-                    </div>
-                  )}
-                  <FaChevronLeft
-                    className={`text-sm transition-all duration-300 ${
-                      selectedMenuItem === item.id
-                        ? "rotate-90 text-[#0A1D37]"
-                        : "text-gray-400 group-hover:text-[#0A1D37] group-hover:translate-x-[-2px]"
-                    }`}
-                  />
-                </div>
-              </button>
+                    {item.icon}
+                  </div>
+                  <div className="flex-1 text-right min-w-0">
+                    <p
+                      className={`font-semibold text-sm truncate ${
+                        selectedMenuItem === item.id ||
+                        (item.children &&
+                          item.children.some((c) => c.id === selectedMenuItem))
+                          ? "text-[#0A1D37]"
+                          : "text-gray-700 group-hover:text-[#0A1D37]"
+                      }`}
+                    >
+                      {item.label}
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-1 flex-shrink-0">
+                    {item.badge && (
+                      <div className="min-w-[20px] h-5 px-1.5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center font-bold">
+                        {item.badge}
+                      </div>
+                    )}
+                    {item.children ? (
+                      <FaChevronDown
+                        className={`text-xs transition-all duration-200 ${
+                          expandedMenus.includes(item.id)
+                            ? "rotate-180 text-[#0A1D37]"
+                            : "text-gray-400 group-hover:text-[#0A1D37]"
+                        }`}
+                      />
+                    ) : (
+                      <FaChevronLeft
+                        className={`text-xs transition-all duration-200 ${
+                          selectedMenuItem === item.id
+                            ? "rotate-90 text-[#0A1D37]"
+                            : "text-gray-400 group-hover:text-[#0A1D37]"
+                        }`}
+                      />
+                    )}
+                  </div>
+                </button>
+
+                {item.children && expandedMenus.includes(item.id) && (
+                  <div className="mr-6 mt-1 space-y-1">
+                    {item.children.map((child) => (
+                      <button
+                        key={child.id}
+                        onClick={() => {
+                          setSelectedMenuItem(child.id);
+                          window.location.hash = child.id;
+                          if (window.innerWidth < 1024) {
+                            setSidebarOpen(false);
+                          }
+                        }}
+                        className={`w-full flex items-center gap-2 p-2 rounded-lg transition-all duration-200 group ${
+                          selectedMenuItem === child.id
+                            ? "bg-[#0A1D37]/10 border border-[#0A1D37]/20 text-[#0A1D37]"
+                            : "hover:bg-gray-50 text-gray-600 hover:text-[#0A1D37] border border-transparent"
+                        }`}
+                      >
+                        <div
+                          className={`flex-shrink-0 p-1 rounded-md text-sm ${
+                            selectedMenuItem === child.id
+                              ? "text-[#0A1D37] bg-white/70"
+                              : "text-gray-500 group-hover:text-[#0A1D37]"
+                          } transition-all duration-200`}
+                        >
+                          {child.icon}
+                        </div>
+                        <div className="flex-1 text-right min-w-0">
+                          <p
+                            className={`font-medium text-xs truncate ${
+                              selectedMenuItem === child.id
+                                ? "text-[#0A1D37]"
+                                : "text-gray-700 group-hover:text-[#0A1D37]"
+                            }`}
+                          >
+                            {child.label}
+                          </p>
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
             ))}
           </div>
         </nav>

@@ -45,7 +45,7 @@ interface PaginationData {
 }
 
 const NationalCredentialAdmin = () => {
-  const {   isLoggedIn } = useCurrentUser();
+  const { isLoggedIn } = useCurrentUser();
   const [credentials, setCredentials] = useState<NationalCredential[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -216,8 +216,6 @@ const NationalCredentialAdmin = () => {
     setShowImageModal(true);
   };
 
- 
-
   // if (
   //   !currentUser?.roles.includes("admin") &&
   //   !currentUser?.roles.includes("super_admin")
@@ -254,7 +252,7 @@ const NationalCredentialAdmin = () => {
         </div>
 
         {/* Filters */}
-        <div className=" rounded-xl shadow-sm border border-gray-200 p-6 mb-6">
+        <div className="bg-white/80 backdrop-blur-sm  rounded-2xl p-2 mb-6">
           <div className="flex flex-wrap gap-4 items-center">
             <div className="flex-1 min-w-64">
               <div className="relative">

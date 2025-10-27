@@ -161,6 +161,8 @@ export default function NewNavbar() {
         {
           x: 0,
           opacity: 1,
+          duration: 0.3, // Explicit shorter duration
+          stagger: 0.05, // Stagger for smoother cascade
           ease: "power2.out",
         }
       );
@@ -168,6 +170,7 @@ export default function NewNavbar() {
       gsap.to(mobileMenuRef.current, {
         x: "100%",
         opacity: 0,
+        duration: 0.3, // Match shorter duration for close
         ease: "power3.in",
       });
     }
@@ -351,7 +354,9 @@ export default function NewNavbar() {
                   onMouseLeave={handleMenuLeave}
                 >
                   <button
-                    className={`relative px-5 py-3 ${estedadBold.className} cursor-pointer text-sm transition-all duration-300 rounded-xl ${
+                    className={`relative px-5 py-3 ${
+                      estedadBold.className
+                    } cursor-pointer text-sm transition-all duration-300 rounded-xl ${
                       activeDropdown === item.title
                         ? "text-[#0A1D37]  "
                         : "text-[#0A1D37] hover:text-[#0A1D37]"
@@ -560,7 +565,9 @@ export default function NewNavbar() {
                                 />
                               </div>
                             )}
-                            <h3 className={`text-[#0A1D37] ${estedadBold.className} text-base`}>
+                            <h3
+                              className={`text-[#0A1D37] ${estedadBold.className} text-base`}
+                            >
                               {dropdown.name}
                             </h3>
                           </div>
@@ -658,12 +665,18 @@ export default function NewNavbar() {
             </div>
 
             {/* Mobile Menu Items */}
-            <div className="flex-1 overflow-y-auto p-3 space-y-3 ">
+            <div className="flex-1 overflow-y-auto p-3 space-y-3">
               {menuItems.map((item) => (
                 <div key={item.title} className="mobile-menu-item space-y-2">
                   <button
                     onClick={() => handleMobileItemClick(item.title)}
-                    className={`w-full flex items-center justify-between p-4 text-sm ${estedadBold.className} rounded-xl transition-all duration-300`}
+                    className={`w-full flex items-center justify-between p-4 text-sm ${
+                      estedadBold.className
+                    } rounded-xl transition-all duration-300 ${
+                      mobileActiveItem === item.title
+                        ? "bg-gradient-to-r from-[#0A1D37]/5 to-[#4DBFF0]/5"
+                        : "hover:bg-gray-50"
+                    }`} // Add active state for better feedback
                   >
                     <span>{item.title}</span>
                     <svg
@@ -683,8 +696,15 @@ export default function NewNavbar() {
                     </svg>
                   </button>
 
-                  {/* Mobile Dropdown Items */}
-                  {mobileActiveItem === item.title && (
+                  {/* Always-rendered Top-Level Dropdown with Transition */}
+                  <div
+                    className="overflow-hidden transition-all duration-300 ease-in-out"
+                    style={{
+                      maxHeight:
+                        mobileActiveItem === item.title ? "800px" : "0px", // Large enough for content; adjust if needed
+                      opacity: mobileActiveItem === item.title ? 1 : 0,
+                    }}
+                  >
                     <div
                       className="space-y-2 pr-4"
                       data-mobile-item={item.title}
@@ -696,7 +716,11 @@ export default function NewNavbar() {
                               onClick={() =>
                                 handleMobileSubItemClick(dropdown.name)
                               }
-                              className="w-full flex items-center justify-between p-3 bg-white rounded-lg hover:bg-gray-50 transition-all duration-200 border border-gray-200"
+                              className={`w-full flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 transition-all duration-200 border border-gray-200 ${
+                                mobileActiveSubItem === dropdown.name
+                                  ? "bg-gradient-to-r from-[#0A1D37]/5 to-[#4DBFF0]/5"
+                                  : ""
+                              }`} // Add active state
                             >
                               <div className="flex items-center gap-1">
                                 {dropdown.icon && (
@@ -728,8 +752,22 @@ export default function NewNavbar() {
                               </svg>
                             </button>
 
-                            {/* Mobile Sub Items */}
-                            {mobileActiveSubItem === dropdown.name && (
+                            {/* Always-rendered Sub-Sub Dropdown with Transition */}
+                            <div
+                              className="overflow-hidden transition-all duration-300 ease-in-out"
+                              style={{
+                                maxHeight:
+                                  mobileActiveSubItem === dropdown.name
+                                    ? "600px"
+                                    : "0px", // Adjust based on sub-item count
+                                opacity:
+                                  mobileActiveSubItem === dropdown.name ? 1 : 0,
+                                paddingRight:
+                                  mobileActiveSubItem === dropdown.name
+                                    ? "1rem"
+                                    : "0", // Optional: animate indent
+                              }}
+                            >
                               <div className="space-y-1 pr-4">
                                 {dropdown.childrens.map((subItem) => (
                                   <Link
@@ -750,12 +788,12 @@ export default function NewNavbar() {
                                   </Link>
                                 ))}
                               </div>
-                            )}
+                            </div>
                           </div>
                         )
                       )}
                     </div>
-                  )}
+                  </div>
                 </div>
               ))}
             </div>
@@ -782,7 +820,9 @@ export default function NewNavbar() {
                     {!user?.profile?.avatar && (
                       <FaUser className="text-[#0A1D37]" />
                     )}
-                    <span className={` ${estedadBold.className} text-[#0A1D37]`}>
+                    <span
+                      className={` ${estedadBold.className} text-[#0A1D37]`}
+                    >
                       {getUserDisplayName()}
                     </span>
                   </div>
