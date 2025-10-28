@@ -384,13 +384,13 @@ const UserValidationWrapper = ({
             onSave={(data) => handleSectionSave(activeTab, data)}
           />
         );
-      case "nationalCredentials":
-        return (
-          <NationalCredentials
-            initialData={userData?.nationalCredentials}
-            onSave={(data) => handleSectionSave(activeTab, data)}
-          />
-        );
+      // case "nationalCredentials":
+      //   return (
+      //     <NationalCredentials
+      //       initialData={userData?.nationalCredentials}
+      //       onSave={(data) => handleSectionSave(activeTab, data)}
+      //     />
+      //   );
       case "contactInfo":
         return (
           <ContactInfo

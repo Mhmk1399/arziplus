@@ -17,16 +17,16 @@ import {
   FaImage,
   FaQuestion,
 } from "react-icons/fa";
- import Image from "next/image";
+import Image from "next/image";
 import { showToast } from "@/utilities/toast";
 import FileUploaderModal from "@/components/FileUploaderModal";
 
 interface NationalCredentialsData {
-  firstName: string;
-  lastName: string;
-  nationalNumber: string;
-  nationalCardImageUrl: string;
-  verificationImageUrl: string;
+  firstName?: string;
+  lastName?: string;
+  nationalNumber?: string;
+  nationalCardImageUrl?: string;
+  verificationImageUrl?: string;
   status?: "accepted" | "rejected" | "pending_verification";
   rejectionNotes?: string;
 }
@@ -56,7 +56,7 @@ const NationalCredentials = ({
   const [isLoading, setIsLoading] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
-  
+
   // Identity validation portal state
   const [showValidationPortal, setShowValidationPortal] = useState(false);
 
@@ -68,16 +68,22 @@ const NationalCredentials = ({
 
   // Show validation portal on mount if user hasn't validated their national ID
   useEffect(() => {
-    const hasValidatedNationalId = formData.status === "accepted" || 
-                                  (formData.nationalCardImageUrl && formData.verificationImageUrl);
-    
+    const hasValidatedNationalId =
+      formData.status === "accepted" ||
+      (formData.nationalCardImageUrl && formData.verificationImageUrl);
+
     if (!hasValidatedNationalId) {
       setShowValidationPortal(true);
     }
-  }, [formData.status, formData.nationalCardImageUrl, formData.verificationImageUrl]);
+  }, [
+    formData.status,
+    formData.nationalCardImageUrl,
+    formData.verificationImageUrl,
+  ]);
 
   // Validation functions
-  const validateNationalNumber = (nationalNumber: string): boolean => {
+  const validateNationalNumber = (nationalNumber?: string): boolean => {
+    if (!nationalNumber) return false;
     const regex = /^\d{10}$/;
     if (!regex.test(nationalNumber)) return false;
 
@@ -96,19 +102,19 @@ const NationalCredentials = ({
   const validateForm = (): boolean => {
     const newErrors: Partial<NationalCredentialsData> = {};
 
-    if (!formData.firstName.trim()) {
+    if (!formData.firstName?.trim()) {
       newErrors.firstName = "نام الزامی است";
     } else if (formData.firstName.trim().length < 2) {
       newErrors.firstName = "نام باید حداقل 2 کاراکتر باشد";
     }
 
-    if (!formData.lastName.trim()) {
+    if (!formData.lastName?.trim()) {
       newErrors.lastName = "نام خانوادگی الزامی است";
     } else if (formData.lastName.trim().length < 2) {
       newErrors.lastName = "نام خانوادگی باید حداقل 2 کاراکتر باشد";
     }
 
-    if (!formData.nationalNumber.trim()) {
+    if (!formData.nationalNumber?.trim()) {
       newErrors.nationalNumber = "کد ملی الزامی است";
     } else if (!validateNationalNumber(formData.nationalNumber)) {
       newErrors.nationalNumber = "کد ملی معتبر نیست";
@@ -258,7 +264,7 @@ const NationalCredentials = ({
               <div className="flex gap-2">
                 <button
                   type="button"
-                  onClick={() => setPreviewImage(formData[field])}
+                  onClick={() => setPreviewImage(formData[field] ?? null)}
                   className="p-2.5 sm:p-3 text-green-700 hover:bg-green-200 rounded-xl transition-all duration-300 hover:scale-110 active:scale-95"
                   title="پیش‌نمایش"
                 >
@@ -330,8 +336,6 @@ const NationalCredentials = ({
       dir="rtl"
     >
       <div className="max-w-7xl mx-auto">
-     
-
         {/* Status Display */}
         {formData.status && (
           <div
@@ -451,7 +455,7 @@ const NationalCredentials = ({
               <span>حجم فایل‌ها نباید بیش از 10 مگابایت باشد</span>
             </li>
           </ul>
-          
+
           {/* Identity Validation Guidelines Button */}
           <div className="mt-4 mr-14 sm:mr-16">
             <button
@@ -496,7 +500,7 @@ const NationalCredentials = ({
                     className={`w-full px-4 sm:px-5 py-3 sm:py-4 pr-12 sm:pr-14 rounded-xl sm:rounded-2xl border-2 transition-all duration-300 text-sm sm:text-base ${
                       errors.firstName
                         ? "border-red-300 bg-red-50 focus:ring-2 focus:ring-red-500/30"
-                        : formData.firstName.length >= 2
+                        : (formData.firstName?.length ?? 0) >= 2
                         ? "border-green-300 bg-green-50 focus:ring-2 focus:ring-green-500/30"
                         : "border-gray-200 bg-gray-50 focus:ring-2 focus:ring-emerald-500/30 focus:border-emerald-500"
                     }`}
@@ -505,7 +509,7 @@ const NationalCredentials = ({
                   <div className="absolute right-4 sm:right-5 top-1/2 transform -translate-y-1/2">
                     {errors.firstName ? (
                       <FaTimesCircle className="text-red-500 text-base sm:text-lg" />
-                    ) : formData.firstName.length >= 2 ? (
+                    ) : (formData.firstName?.length ?? 0) >= 2 ? (
                       <FaCheckCircle className="text-green-500 text-base sm:text-lg" />
                     ) : (
                       <FaUser className="text-gray-400 text-base sm:text-lg" />
@@ -538,7 +542,7 @@ const NationalCredentials = ({
                     className={`w-full px-4 sm:px-5 py-3 sm:py-4 pr-12 sm:pr-14 rounded-xl sm:rounded-2xl border-2 transition-all duration-300 text-sm sm:text-base ${
                       errors.lastName
                         ? "border-red-300 bg-red-50 focus:ring-2 focus:ring-red-500/30"
-                        : formData.lastName.length >= 2
+                        : (formData.lastName?.length ?? 0) >= 2
                         ? "border-green-300 bg-green-50 focus:ring-2 focus:ring-green-500/30"
                         : "border-gray-200 bg-gray-50 focus:ring-2 focus:ring-emerald-500/30 focus:border-emerald-500"
                     }`}
@@ -547,7 +551,7 @@ const NationalCredentials = ({
                   <div className="absolute right-4 sm:right-5 top-1/2 transform -translate-y-1/2">
                     {errors.lastName ? (
                       <FaTimesCircle className="text-red-500 text-base sm:text-lg" />
-                    ) : formData.lastName.length >= 2 ? (
+                    ) : (formData.lastName?.length ?? 0) >= 2 ? (
                       <FaCheckCircle className="text-green-500 text-base sm:text-lg" />
                     ) : (
                       <FaUser className="text-gray-400 text-base sm:text-lg" />
@@ -701,7 +705,7 @@ const NationalCredentials = ({
                 <FaTimes className="text-amber-700 text-lg sm:text-xl" />
               </button>
             </div>
-            
+
             <div className="p-4 sm:p-6 space-y-6" dir="rtl">
               {/* Main Warning */}
               <div className="bg-gradient-to-r from-red-50 to-red-100 border-r-4 border-red-400 p-4 rounded-lg">
@@ -709,7 +713,8 @@ const NationalCredentials = ({
                   کارت ملی قدیمی مورد تأیید نمی‌باشد.
                 </p>
                 <p className="text-xs sm:text-sm text-red-700 mt-2">
-                  در صورت نداشتن کارت ملی جدید، لطفاً دو مدرک هویتی معتبر از میان گزینه‌های زیر انتخاب و ارسال نمایید:
+                  در صورت نداشتن کارت ملی جدید، لطفاً دو مدرک هویتی معتبر از
+                  میان گزینه‌های زیر انتخاب و ارسال نمایید:
                 </p>
               </div>
 
@@ -721,23 +726,33 @@ const NationalCredentials = ({
                 </h4>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div className="flex items-center gap-2 text-xs sm:text-sm text-blue-800">
-                    <span className="bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold">1</span>
+                    <span className="bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold">
+                      1
+                    </span>
                     <span>کارت پایان خدمت</span>
                   </div>
                   <div className="flex items-center gap-2 text-xs sm:text-sm text-blue-800">
-                    <span className="bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold">2</span>
+                    <span className="bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold">
+                      2
+                    </span>
                     <span>گواهینامه رانندگی</span>
                   </div>
                   <div className="flex items-center gap-2 text-xs sm:text-sm text-blue-800">
-                    <span className="bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold">3</span>
+                    <span className="bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold">
+                      3
+                    </span>
                     <span>شناسنامه</span>
                   </div>
                   <div className="flex items-center gap-2 text-xs sm:text-sm text-blue-800">
-                    <span className="bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold">4</span>
+                    <span className="bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold">
+                      4
+                    </span>
                     <span>رسید کارت ملی جدید</span>
                   </div>
                   <div className="flex items-center gap-2 text-xs sm:text-sm text-blue-800 sm:col-span-2">
-                    <span className="bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold">5</span>
+                    <span className="bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold">
+                      5
+                    </span>
                     <span>پاسپورت معتبر</span>
                   </div>
                 </div>
@@ -756,7 +771,10 @@ const NationalCredentials = ({
                   </div>
                   <div className="flex items-start gap-2 text-xs sm:text-sm text-green-800">
                     <span className="text-green-600 mt-1">🔸</span>
-                    <span>لطفاً یک مدرک را در بخش روی کارت ملی و مدرک دوم را در بخش پشت کارت ملی آپلود نمایید.</span>
+                    <span>
+                      لطفاً یک مدرک را در بخش روی کارت ملی و مدرک دوم را در بخش
+                      پشت کارت ملی آپلود نمایید.
+                    </span>
                   </div>
                 </div>
               </div>
@@ -770,7 +788,10 @@ const NationalCredentials = ({
                 <div className="space-y-2">
                   <div className="flex items-start gap-2 text-xs sm:text-sm text-purple-800">
                     <span className="text-purple-600 mt-1">✓</span>
-                    <span>لبه‌های مدارک باید کاملاً مشخص و درون کادر عکس قرار داشته باشند.</span>
+                    <span>
+                      لبه‌های مدارک باید کاملاً مشخص و درون کادر عکس قرار داشته
+                      باشند.
+                    </span>
                   </div>
                   <div className="flex items-start gap-2 text-xs sm:text-sm text-purple-800">
                     <span className="text-purple-600 mt-1">✓</span>
@@ -782,11 +803,16 @@ const NationalCredentials = ({
                   </div>
                   <div className="flex items-start gap-2 text-xs sm:text-sm text-purple-800">
                     <span className="text-purple-600 mt-1">✓</span>
-                    <span>لطفاً از پوشاندن هر بخش از اطلاعات هویتی خودداری نمایید.</span>
+                    <span>
+                      لطفاً از پوشاندن هر بخش از اطلاعات هویتی خودداری نمایید.
+                    </span>
                   </div>
                   <div className="flex items-start gap-2 text-xs sm:text-sm text-purple-800">
                     <span className="text-purple-600 mt-1">✓</span>
-                    <span>تصاویر را با کیفیت مناسب و نور کافی ارسال کنید تا بررسی سریع‌تر انجام شود.</span>
+                    <span>
+                      تصاویر را با کیفیت مناسب و نور کافی ارسال کنید تا بررسی
+                      سریع‌تر انجام شود.
+                    </span>
                   </div>
                 </div>
               </div>

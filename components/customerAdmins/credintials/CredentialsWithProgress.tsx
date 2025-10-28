@@ -31,21 +31,26 @@ const CredentialsWithProgress = ({
       completed: !!(
         user.nationalCredentials?.firstName &&
         user.nationalCredentials?.lastName &&
-        user.nationalCredentials?.nationalCode
+        user.nationalCredentials?.nationalNumber &&
+        user.nationalCredentials?.nationalCardImageUrl &&
+        user.nationalCredentials?.verificationImageUrl
       ),
     },
     {
       id: "contact",
       hash: "contactInfo",
       label: "تماس",
-      completed: !!user.contactInfo?.mobilePhone,
+      completed: !!(user.contactInfo?.mobilePhone && user.contactInfo?.email),
     },
     {
       id: "banking",
       hash: "bankingInfo",
       label: "بانکی",
       completed: !!(
-        user.bankingInfo?.accountNumber && user.bankingInfo?.shabaNumber
+        user.bankingInfo &&
+        user.bankingInfo.length > 0 &&
+        user.bankingInfo[0]?.cardNumber &&
+        user.bankingInfo[0]?.shebaNumber
       ),
     },
   ];

@@ -27,11 +27,11 @@ interface SecurityData {
   status: "active" | "suspended" | "banned" | "pending_verification";
   roles: ("user" | "admin" | "super_admin" | "moderator" | "support")[];
   profile: {
-    avatar: string;
-    bio: string;
-    preferences: {
+    avatar?: string;
+    bio?: string;
+    preferences?: {
       language: "fa" | "en";
-      notifications: {
+      notifications?: {
         email: boolean;
         sms: boolean;
         push: boolean;
@@ -220,31 +220,60 @@ const Security = ({
           },
         }));
       } else if (profileField === "language") {
-        setFormData((prev) => ({
-          ...prev,
-          profile: {
-            ...prev.profile,
-            preferences: {
-              ...prev.profile.preferences,
-              language: value as "fa" | "en",
-            },
-          },
-        }));
-      } else if (profileField.startsWith("notifications.")) {
-        const notificationField = profileField.split(".")[1];
-        setFormData((prev) => ({
-          ...prev,
-          profile: {
-            ...prev.profile,
-            preferences: {
-              ...prev.profile.preferences,
-              notifications: {
-                ...prev.profile.preferences.notifications,
-                [notificationField]: value as boolean,
+        setFormData((prev) => {
+          const prevPrefs = prev.profile.preferences ?? {
+            language: "fa",
+            notifications: { email: true, sms: true, push: true },
+          };
+          const prevNotifications = prevPrefs.notifications ?? {
+            email: true,
+            sms: true,
+            push: true,
+          };
+          return {
+            ...prev,
+            profile: {
+              ...prev.profile,
+              preferences: {
+                language: value as "fa" | "en",
+                notifications: {
+                  email: prevNotifications.email,
+                  sms: prevNotifications.sms,
+                  push: prevNotifications.push,
+                },
               },
             },
-          },
-        }));
+          };
+        });
+      } else if (profileField.startsWith("notifications.")) {
+        const notificationField = profileField.split(".")[1] as
+          | "email"
+          | "sms"
+          | "push";
+        setFormData((prev) => {
+          const prevPrefs = prev.profile.preferences ?? {
+            language: "fa",
+            notifications: { email: true, sms: true, push: true },
+          };
+          const prevNotifications = prevPrefs.notifications ?? {
+            email: true,
+            sms: true,
+            push: true,
+          };
+          return {
+            ...prev,
+            profile: {
+              ...prev.profile,
+              preferences: {
+                language: prevPrefs.language ?? "fa",
+                notifications: {
+                  ...prevNotifications,
+                  [notificationField]: value as boolean,
+                },
+              },
+            },
+          };
+        });
       }
     } else {
       setFormData((prev) => ({ ...prev, [field]: value }));
@@ -291,11 +320,11 @@ const Security = ({
           avatar: formData.profile.avatar,
           bio: formData.profile.bio,
           preferences: {
-            language: formData.profile.preferences.language,
+            language: formData.profile.preferences?.language,
             notifications: {
-              email: formData.profile.preferences.notifications.email,
-              sms: formData.profile.preferences.notifications.sms,
-              push: formData.profile.preferences.notifications.push,
+              email: formData.profile.preferences?.notifications?.email,
+              sms: formData.profile.preferences?.notifications?.sms,
+              push: formData.profile.preferences?.notifications?.push,
             },
           },
         },
@@ -341,8 +370,6 @@ const Security = ({
           <div className="p-4 sm:p-6 lg:p-8 space-y-6 sm:space-y-8">
             {/* Profile Section */}
             <div className="relative">
-            
-
               {/* Avatar & Bio Grid */}
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 sm:gap-6 lg:gap-8">
                 {/* Avatar Section */}
@@ -431,7 +458,7 @@ const Security = ({
                       className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-300 text-sm resize-none placeholder:text-gray-400"
                     />
                     <div className="absolute bottom-3 left-3 text-xs text-gray-400 bg-white px-2 py-1 rounded-lg border border-gray-200">
-                      {formData.profile.bio.length}/500
+                      {formData.profile.bio?.length}/500
                     </div>
                   </div>
                 </div>

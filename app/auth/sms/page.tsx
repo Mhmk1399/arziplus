@@ -380,14 +380,14 @@ function SMSAuthContent() {
                   type="text"
                   name="otp"
                   autoComplete="one-time-code"
-                  placeholder="کد تایید"
+                  placeholder="123456"
                   inputMode="numeric"
                   pattern="[0-9]*"
                   value={verificationCode}
                   onChange={(e) =>
                     setVerificationCode(e.target.value.replace(/\D/g, ""))
                   }
-                  className="w-full pr-12 pl-4 py-4 bg-white/10 border border-[#0A1D37]/30 rounded-2xl focus:ring-2 focus:ring-[#4DBFF0] focus:border-[#4DBFF0] focus:outline-none backdrop-blur-sm transition-all duration-300 text-[#0A1D37] placeholder:text-[#A0A0A0] text-center text-2xl tracking-widest hover:bg-white/15"
+                  className="w-full placeholder:text-xs text-lg pr-12 pl-4 py-4 bg-white/10 border border-[#0A1D37]/30 rounded-2xl focus:ring-2 focus:ring-[#4DBFF0] focus:border-[#4DBFF0] focus:outline-none backdrop-blur-sm transition-all duration-300 text-[#0A1D37] placeholder:text-[#A0A0A0] text-center   tracking-widest hover:bg-white/15"
                   maxLength={6}
                   required
                 />

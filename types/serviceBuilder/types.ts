@@ -50,7 +50,6 @@ export interface DynamicService {
   fields: ServiceField[];
   createdAt?: string;
   updatedAt?: string;
-  
 }
 
 export interface ServiceBuilderFormData {

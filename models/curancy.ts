@@ -9,6 +9,7 @@ const currencySchema = new mongoose.Schema({
   buyPrice: { type: Number, required: true },
 });
 
-const Currency = mongoose.models.Currency || mongoose.model("Currency", currencySchema);
+const Currency =
+  mongoose.models.Currency || mongoose.model("Currency", currencySchema);
 
 export default Currency;

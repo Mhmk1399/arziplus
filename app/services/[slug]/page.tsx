@@ -1306,7 +1306,7 @@ export default function ServiceDetailPage() {
                                   {!hasBankingAccepted && "اطلاعات بانکی"} خود
                                   را تکمیل کنید
                                 </p>
-                                <Link href="/dashboard#credentials">
+                                <Link href="/dashboard#securities">
                                   <div className="text-blue-600 mt-2 text-center mx-auto hover:underline">
                                     تکمیل پروفایل{" "}
                                   </div>
