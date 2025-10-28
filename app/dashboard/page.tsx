@@ -53,6 +53,12 @@ import Security from "@/components/customerAdmins/credintials/security";
 import { FaShieldAlt, FaPhone } from "react-icons/fa";
 import CustomerHozoriList from "@/components/customerAdmins/hozori/hozoriList";
 import CustomerLotteryList from "@/components/customerAdmins/lottery/lotteryList";
+import CustomerRequestsTable from "@/components/customerAdmins/ordersandservices/orderHistory";
+import TermsPage from "@/components/static/TermsPage";
+import { FaShoppingCart, FaHistory, FaFileContract } from "react-icons/fa";
+import ServicesPage from "../services/page";
+import { FaArrowDown } from "react-icons/fa";
+import { FaArrowUp } from "react-icons/fa";
 
 interface MenuItem {
   id: string;
@@ -77,32 +83,296 @@ const Dashboard: React.FC = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
 
+  // Get menu items based on user role
+  const menuItems = React.useMemo(() => {
+    if (!currentUser) return [];
+
+    const isAdmin =
+      currentUser.roles.includes("admin") ||
+      currentUser.roles.includes("super_admin");
+
+    if (isAdmin) {
+      return [
+        {
+          id: "users",
+          label: "مدیریت کاربران",
+          icon: <FaUsers className="text-lg" />,
+          component: UsersList,
+          description: "مدیریت کاربران و احراز هویت",
+          children: [
+            {
+              id: "users",
+              label: "مدیریت کاربران",
+              icon: <FaUsers className="text-lg" />,
+              component: UsersList,
+              description: "مشاهده و مدیریت کاربران",
+            },
+            {
+              id: "credentials",
+              label: "احراز هویت",
+              icon: <FaIdCard className="text-lg" />,
+              component: NationalCredentialAdmin,
+              description: "بررسی مدارک هویتی",
+            },
+            {
+              id: "banking",
+              label: "اطلاعات بانکی",
+              icon: <FaUniversity className="text-lg" />,
+              component: BankingInfoAdmin,
+              description: "بررسی اطلاعات بانکی",
+            },
+          ],
+        },
+        {
+          id: "list",
+          label: "مدیریت لاتاری",
+          icon: <FaTicketAlt className="text-lg" />,
+          component: LotteryAdminList,
+          description: "مدیریت ثبت نام های قرعه کشی گرین کارت",
+          children: [
+            {
+              id: "list",
+              label: "لیست ثبت نام ها",
+              icon: <FaList className="text-lg" />,
+              component: LotteryAdminList,
+              description: "مشاهده و مدیریت تمام ثبت نام های لاتاری",
+            },
+            {
+              id: "hozori",
+              label: "رزروهای حضوری",
+              icon: <FaCalendarCheck className="text-lg" />,
+              component: HozoriAdminList,
+              description: "مشاهده و مدیریت تمام رزروهای حضوری",
+            },
+          ],
+        },
+        {
+          id: "tickets",
+          label: "مدیریت تیکت ها",
+          icon: <FaHeadset className="text-lg" />,
+          component: AdminTicketsWrapper,
+          description: "مدیریت تیکت های پشتیبانی و پاسخ به کاربران",
+        },
+        {
+          id: "wallets",
+          label: "مدیریت پرداخت ها",
+          icon: <FaMoneyBillWave className="text-lg" />,
+          component: PaymentWrapper,
+          description: "مدیریت کیف پول ها و درخواست های برداشت",
+          children: [
+            {
+              id: "walletss" as const,
+              label: "مدیریت کیف پول‌ها",
+              icon: <FaWallet className="text-lg" />,
+              component: WalletsList,
+              description: "مدیریت تمام کیف پول ها",
+            },
+            {
+              id: "withdraws" as const,
+              label: "درخواست‌های برداشت",
+              icon: <FaMoneyBillWave className="text-lg" />,
+              component: WithdrawRequestsList,
+              description: "مدیریت تمام درخواست های برداشت",
+            },
+          ],
+        },
+        {
+          id: "requests",
+          label: "مدیریت سرویس ها",
+          icon: <FaServicestack className="text-lg" />,
+          component: AdminServiceWrapper,
+          description: "مدیریت سرویس ها و درخواست ها",
+          children: [
+            {
+              id: "requests",
+              label: "مدیریت درخواست ها",
+              icon: <FaClipboardList className="text-lg" />,
+              description: "مشاهده و مدیریت درخواست های سرویس",
+              component: AdminRequestsTable,
+            },
+            {
+              id: "services",
+              label: "مدیریت سرویس ها",
+              icon: <FaServicestack className="text-lg" />,
+              description: "مدیریت و ویرایش سرویس ها",
+              component: ServiceManager,
+            },
+            {
+              id: "analytics",
+              label: "آنالیز و گزارشات",
+              icon: <FaChartBar className="text-lg" />,
+              description: "آمار و گزارشات سرویس ها",
+              component: () => (
+                <div className="p-8 text-center">
+                  <FaChartBar className="text-6xl text-gray-400 mx-auto mb-4" />
+                  <h3 className="text-xl font-bold text-gray-700 mb-2">
+                    آنالیز و گزارشات
+                  </h3>
+                  <p className="text-gray-500">این بخش در حال توسعه است</p>
+                </div>
+              ),
+            },
+          ],
+        },
+      ];
+    }
+
+    return [
+      {
+        id: "security",
+        label: "خدمات و سفارشات",
+        icon: <FaClipboardList className="text-lg" />,
+        component: ServiceWrapper,
+        description: "مشاهده خدمات و سفارشات",
+        children: [
+          {
+            id: "services",
+            label: "خدمات",
+            icon: <FaShoppingCart className="text-lg sm:text-xl" />,
+            description: "مشاهده و سفارش خدمات",
+            component: ServicesPage,
+          },
+          {
+            id: "orders",
+            label: "سفارشات من",
+            icon: <FaHistory className="text-lg sm:text-xl" />,
+            description: "تاریخچه و وضعیت سفارشات",
+            component: CustomerRequestsTable,
+          },
+          {
+            id: "terms",
+            label: "قوانین و شرایط",
+            icon: <FaFileContract className="text-lg sm:text-xl" />,
+            description: "شرایط استفاده از خدمات",
+            component: TermsPage,
+          },
+        ],
+      },
+      {
+        id: "lottery",
+        label: "ثبت نام های لاتاری",
+        icon: <FaTicketAlt className="text-lg" />,
+        component: CustomerLotteryWrapper,
+        description: "مدیریت ثبت نام های قرعه کشی گرین کارت",
+        children: [
+          {
+            id: "list",
+            label: "ثبت نام های من",
+            icon: <FaList className="text-lg" />,
+            component: CustomerLotteryList,
+            description: "مشاهده تمام ثبت نام های لاتاری  ",
+          },
+          {
+            id: "hozori",
+            label: "رزروهای حضوری",
+            icon: <FaCalendarCheck className="text-lg" />,
+            component: CustomerHozoriList,
+            description: "مشاهده تمام رزروهای حضوری شما",
+          },
+        ],
+      },
+      {
+        id: "tickets",
+        label: "پشتیبانی",
+        icon: <FaHeadset className="text-lg" />,
+        component: TicketsWrapper,
+        description: "ایجاد تیکت و دریافت پشتیبانی",
+      },
+      {
+        id: "wallet",
+        label: "کیف پول",
+        icon: <FaWallet className="text-lg" />,
+        component: WalletWrapper,
+        description: "مدیریت موجودی و تراکنشها",
+        children: [
+          {
+            id: "wallet-dashboard",
+            label: "داشبورد کیف پول",
+            icon: <FaWallet className="text-lg" />,
+            component: () => <WalletWrapper initialTab="dashboard" />,
+            description: "نمای کلی و موجودی",
+          },
+          {
+            id: "wallet-incomes",
+            label: "تاریخچه واریزیها",
+            icon: <FaArrowUp className="text-lg" />,
+            component: () => <WalletWrapper initialTab="incomes" />,
+            description: "تاریخچه پرداخت ها",
+          },
+          {
+            id: "wallet-withdraws",
+            label: "درخواست برداشت",
+            icon: <FaArrowDown className="text-lg" />,
+            component: () => <WalletWrapper initialTab="withdraws" />,
+            description: "تاریخچه برداشتها",
+          },
+        ],
+      },
+      {
+        id: "credentials",
+        label: "احراز هویت",
+        icon: <FaIdCard className="text-lg" />,
+        component: CredentialWrapper,
+        description: "مدارک و احراز هویت",
+        children: [
+          {
+            id: "securities",
+            label: "امنیت و دسترسی",
+            icon: <FaShieldAlt className="text-lg sm:text-xl" />,
+            component: Security,
+            description: "نام کاربری، رمز عبور و تنظیمات امنیتی",
+          },
+          {
+            id: "nationalCredentials",
+            label: "مدارک هویتی",
+            icon: <FaIdCard className="text-lg sm:text-xl" />,
+            component: NationalCredentials,
+            description: "کارت ملی، احراز هویت و مدارک شخصی",
+          },
+          {
+            id: "contactInfo",
+            label: "اطلاعات تماس",
+            icon: <FaPhone className="text-lg sm:text-xl" />,
+            component: ContactInfo,
+            description: "شماره تماس، ایمیل و آدرس",
+          },
+          {
+            id: "bankingInfo",
+            label: "اطلاعات بانکی",
+            icon: <FaUniversity className="text-lg sm:text-xl" />,
+            component: BankingInfo,
+            description: "حساب بانکی برای دریافت درآمد",
+          },
+        ],
+      },
+    ];
+  }, [currentUser]);
+
   // Handle URL hash changes for navigation
   useEffect(() => {
     const handleHashChange = () => {
       const hash = window.location.hash.substring(1);
       if (hash && currentUser) {
-        const isAdmin =
-          currentUser.roles.includes("admin") ||
-          currentUser.roles.includes("super_admin");
-        const validTabs = isAdmin
-          ? [
-              "users",
-              "credentials",
-              "banking",
-              "lottery",
-              "tickets",
-              "payments",
-              "admin-services",
-            ]
-          : ["services", "lottery", "tickets", "wallet", "credentials"];
-
-        if (validTabs.includes(hash)) {
-          setSelectedMenuItem(hash);
+        // Find if hash matches any menu item or child
+        for (const item of menuItems) {
+          if (item.id === hash) {
+            setSelectedMenuItem(hash);
+            setExpandedMenus([]);
+            return;
+          }
+          if (item.children) {
+            const child = item.children.find((c) => c.id === hash);
+            if (child) {
+              setSelectedMenuItem(hash);
+              setExpandedMenus([item.id]);
+              return;
+            }
+          }
         }
       }
     };
 
+    handleHashChange();
     window.addEventListener("hashchange", handleHashChange);
     return () => window.removeEventListener("hashchange", handleHashChange);
   }, [currentUser]);
@@ -140,41 +410,46 @@ const Dashboard: React.FC = () => {
 
     // Set menu item based on URL hash/parameter or user role
     if (targetTab) {
-      // Validate the tab parameter against available menu items
-      const isAdmin =
-        currentUser.roles.includes("admin") ||
-        currentUser.roles.includes("super_admin");
-      const validTabs = isAdmin
-        ? [
-            "users",
-            "credentials",
-            "banking",
-            "lottery",
-            "tickets",
-            "payments",
-            "admin-services",
-          ]
-        : ["services", "lottery", "tickets", "wallet", "credentials"];
+      let found = false;
 
-      if (validTabs.includes(targetTab)) {
-        setSelectedMenuItem(targetTab);
-        // Update hash if it came from tab parameter
+      // Check if targetTab exists in menu items or children
+      for (const item of menuItems) {
+        if (item.id === targetTab) {
+          setSelectedMenuItem(targetTab);
+          setExpandedMenus([]);
+          found = true;
+          break;
+        }
+        if (item.children) {
+          const child = item.children.find((c) => c.id === targetTab);
+          if (child) {
+            setSelectedMenuItem(targetTab);
+            setExpandedMenus([item.id]);
+            found = true;
+            break;
+          }
+        }
+      }
+
+      if (found) {
         if (!hash && tabParam) {
           window.location.hash = targetTab;
         }
       } else {
         // Invalid tab, set default
+        const isAdmin =
+          currentUser.roles.includes("admin") ||
+          currentUser.roles.includes("super_admin");
         const defaultTab = isAdmin ? "users" : "services";
         setSelectedMenuItem(defaultTab);
         window.location.hash = defaultTab;
       }
     } else {
       // No tab parameter, set default based on role
-      const defaultTab =
+      const isAdmin =
         currentUser.roles.includes("admin") ||
-        currentUser.roles.includes("super_admin")
-          ? "users"
-          : "services";
+        currentUser.roles.includes("super_admin");
+      const defaultTab = isAdmin ? "users" : "services";
       setSelectedMenuItem(defaultTab);
       window.location.hash = defaultTab;
     }
@@ -238,7 +513,7 @@ const Dashboard: React.FC = () => {
       children: [
         {
           id: "list",
-          label: "لیست ثبت‌نام‌ها",
+          label: "لیست ثبت‌ نام‌ها",
           icon: <FaList className="text-lg" />,
           component: LotteryAdminList,
           description: "مشاهده و مدیریت تمام ثبت‌نام‌های لاتاری",
@@ -332,32 +607,25 @@ const Dashboard: React.FC = () => {
       description: "مشاهده خدمات و سفارشات",
       children: [
         {
-          id: "security",
-          label: "امنیت و دسترسی",
-          icon: <FaShieldAlt className="text-lg sm:text-xl" />,
-          component: Security,
-          description: "نام کاربری، رمز عبور و تنظیمات امنیتی",
+          id: "services" as const,
+          label: "خدمات",
+          icon: <FaShoppingCart className="text-lg sm:text-xl" />,
+          description: "مشاهده و سفارش خدمات",
+          component: ServicesPage,
         },
         {
-          id: "nationalCredentials",
-          label: "مدارک هویتی",
-          icon: <FaIdCard className="text-lg sm:text-xl" />,
-          component: NationalCredentials,
-          description: "کارت ملی، احراز هویت و مدارک شخصی",
+          id: "orders" as const,
+          label: "سفارشات من",
+          icon: <FaHistory className="text-lg sm:text-xl" />,
+          description: "تاریخچه و وضعیت سفارشات",
+          component: CustomerRequestsTable,
         },
         {
-          id: "contactInfo",
-          label: "اطلاعات تماس",
-          icon: <FaPhone className="text-lg sm:text-xl" />,
-          component: ContactInfo,
-          description: "شماره تماس، ایمیل و آدرس",
-        },
-        {
-          id: "bankingInfo",
-          label: "اطلاعات بانکی",
-          icon: <FaUniversity className="text-lg sm:text-xl" />,
-          component: BankingInfo,
-          description: "حساب بانکی برای دریافت درآمد",
+          id: "terms" as const,
+          label: "قوانین و شرایط",
+          icon: <FaFileContract className="text-lg sm:text-xl" />,
+          description: "شرایط استفاده از خدمات",
+          component: TermsPage,
         },
       ],
     },
@@ -390,7 +658,6 @@ const Dashboard: React.FC = () => {
       icon: <FaHeadset className="text-lg" />,
       component: TicketsWrapper,
       description: "ایجاد تیکت و دریافت پشتیبانی",
-      children: [],
     },
     {
       id: "wallet",
@@ -398,7 +665,29 @@ const Dashboard: React.FC = () => {
       icon: <FaWallet className="text-lg" />,
       component: WalletWrapper,
       description: "مدیریت موجودی و تراکنش‌ها",
-      children: [],
+      children: [
+        {
+          id: "wallet-dashboard",
+          label: "داشبورد کیف پول",
+          icon: <FaWallet className="text-lg" />,
+          component: () => <WalletWrapper initialTab="dashboard" />,
+          description: "نمای کلی و موجودی",
+        },
+        {
+          id: "wallet-incomes",
+          label: "تاریخچه واریزیها",
+          icon: <FaArrowUp className="text-lg" />,
+          component: () => <WalletWrapper initialTab="incomes" />,
+          description: "تاریخچه پرداخت ها",
+        },
+        {
+          id: "wallet-withdraws",
+          label: "درخواست برداشت",
+          icon: <FaArrowDown className="text-lg" />,
+          component: () => <WalletWrapper initialTab="withdraws" />,
+          description: "تاریخچه برداشتها",
+        },
+      ],
     },
     {
       id: "credentials",
@@ -406,7 +695,36 @@ const Dashboard: React.FC = () => {
       icon: <FaIdCard className="text-lg" />,
       component: CredentialWrapper,
       description: "مدارک و احراز هویت",
-      children: [],
+      children: [
+        {
+          id: "securities",
+          label: "امنیت و دسترسی",
+          icon: <FaShieldAlt className="text-lg sm:text-xl" />,
+          component: Security,
+          description: "نام کاربری، رمز عبور و تنظیمات امنیتی",
+        },
+        {
+          id: "nationalCredentials",
+          label: "مدارک هویتی",
+          icon: <FaIdCard className="text-lg sm:text-xl" />,
+          component: NationalCredentials,
+          description: "کارت ملی، احراز هویت و مدارک شخصی",
+        },
+        {
+          id: "contactInfo",
+          label: "اطلاعات تماس",
+          icon: <FaPhone className="text-lg sm:text-xl" />,
+          component: ContactInfo,
+          description: "شماره تماس، ایمیل و آدرس",
+        },
+        {
+          id: "bankingInfo",
+          label: "اطلاعات بانکی",
+          icon: <FaUniversity className="text-lg sm:text-xl" />,
+          component: BankingInfo,
+          description: "حساب بانکی برای دریافت درآمد",
+        },
+      ],
     },
   ];
 
@@ -422,8 +740,6 @@ const Dashboard: React.FC = () => {
     }
     return customerMenuItems;
   };
-
-  const menuItems = getMenuItems();
 
   const findMenuItem = (id: string): MenuItem | undefined => {
     for (const item of menuItems) {
@@ -576,9 +892,7 @@ const Dashboard: React.FC = () => {
                   onClick={() => {
                     if (item.children) {
                       setExpandedMenus((prev) =>
-                        prev.includes(item.id)
-                          ? prev.filter((id) => id !== item.id)
-                          : [...prev, item.id]
+                        prev.includes(item.id) ? [] : [item.id]
                       );
                     } else {
                       setSelectedMenuItem(item.id);
@@ -621,11 +935,6 @@ const Dashboard: React.FC = () => {
                     </p>
                   </div>
                   <div className="flex items-center gap-1 flex-shrink-0">
-                    {item.badge && (
-                      <div className="min-w-[20px] h-5 px-1.5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center font-bold">
-                        {item.badge}
-                      </div>
-                    )}
                     {item.children ? (
                       <FaChevronDown
                         className={`text-xs transition-all duration-200 ${
@@ -646,8 +955,14 @@ const Dashboard: React.FC = () => {
                   </div>
                 </button>
 
-                {item.children && expandedMenus.includes(item.id) && (
-                  <div className="mr-6 mt-1 space-y-1">
+                {item.children && (
+                  <div
+                    className={`mr-6 mt-1 space-y-1 overflow-hidden transition-all duration-300 ease-in-out ${
+                      expandedMenus.includes(item.id)
+                        ? "max-h-96 opacity-100"
+                        : "max-h-0 opacity-0"
+                    }`}
+                  >
                     {item.children.map((child) => (
                       <button
                         key={child.id}
@@ -798,7 +1113,7 @@ const Dashboard: React.FC = () => {
                 />
               </div>
             ) : (
-              <div className="max-w-7xl  mx-auto">
+              <div className="   mx-auto">
                 <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
                   <ActiveComponent />
                 </div>

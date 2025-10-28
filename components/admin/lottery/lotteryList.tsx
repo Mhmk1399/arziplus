@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
- import { useCurrentUser } from "@/hooks/useCurrentUser";
+import { useCurrentUser } from "@/hooks/useCurrentUser";
 import { showToast } from "@/utilities/toast";
 import {
   FaUsers,
@@ -25,6 +25,7 @@ interface LotteryRegistration {
   rejectionReason?: string;
   adminNotes?: string;
   submittedAt: string;
+  createdAt: string;
   reviewedAt?: string;
   reviewedBy?: {
     _id: string;
@@ -135,7 +136,7 @@ interface PaginationData {
 }
 
 const LotteryAdminList = () => {
-  const {   isLoggedIn } = useCurrentUser();
+  const { isLoggedIn } = useCurrentUser();
   const [lotteries, setLotteries] = useState<LotteryRegistration[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -431,25 +432,9 @@ const LotteryAdminList = () => {
   return (
     <div className=" " dir="rtl">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Header */}
-        <div className="mb-8">
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center gap-3">
-              <div>
-                <h1 className="md:text-3xl text-xl font-bold text-gray-900">
-                  مدیریت ثبت‌نام‌های لاتاری
-                </h1>
-                <p className="text-gray-600 text-xs md:text-sm">
-                  مشاهده و مدیریت درخواست‌های ثبت‌نام در قرعه‌کشی گرین کارت
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-
         {/* Filters */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-6">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
+        <div className="bg-white  mb-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-center justify-between">
             <div className="md:col-span-2">
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 جستجو
@@ -461,7 +446,7 @@ const LotteryAdminList = () => {
                   placeholder="جستجو بر اساس نام، ایمیل یا کشور..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full pr-10 pl-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37]"
+                  className="w-full pr-10   py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37]"
                 />
               </div>
             </div>
@@ -473,7 +458,7 @@ const LotteryAdminList = () => {
               <select
                 value={statusFilter}
                 onChange={(e) => setStatusFilter(e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37]"
+                className="w-full px-4 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37]"
               >
                 <option value="">همه وضعیت‌ها</option>
                 <option value="pending">در انتظار بررسی</option>
@@ -632,7 +617,7 @@ const LotteryAdminList = () => {
                         </span>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                        {new Date(lottery.submittedAt).toLocaleDateString(
+                        {new Date(lottery.createdAt).toLocaleDateString(
                           "fa-IR"
                         )}
                       </td>
@@ -1002,88 +987,149 @@ const LotteryAdminList = () => {
                   <div className="space-y-6">
                     {/* Basic Information */}
                     <div>
-                      <h4 className="text-sm font-semibold text-gray-700 mb-3">اطلاعات اولیه</h4>
+                      <h4 className="text-sm font-semibold text-gray-700 mb-3">
+                        اطلاعات اولیه
+                      </h4>
                       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                         <div className="bg-white p-3 rounded-lg border">
                           <p className="text-xs text-gray-600 mb-1">نام</p>
                           <p className="text-sm font-medium text-gray-900">
-                            {selectedLottery.registererInformations[0].initialInformations.firstName}
+                            {
+                              selectedLottery.registererInformations[0]
+                                .initialInformations.firstName
+                            }
                           </p>
                         </div>
                         <div className="bg-white p-3 rounded-lg border">
-                          <p className="text-xs text-gray-600 mb-1">نام خانوادگی</p>
+                          <p className="text-xs text-gray-600 mb-1">
+                            نام خانوادگی
+                          </p>
                           <p className="text-sm font-medium text-gray-900">
-                            {selectedLottery.registererInformations[0].initialInformations.lastName}
+                            {
+                              selectedLottery.registererInformations[0]
+                                .initialInformations.lastName
+                            }
                           </p>
                         </div>
                         <div className="bg-white p-3 rounded-lg border">
                           <p className="text-xs text-gray-600 mb-1">جنسیت</p>
                           <p className="text-sm font-medium text-gray-900">
-                            {selectedLottery.registererInformations[0].initialInformations.gender === 'male' ? 'مرد' : 'زن'}
+                            {selectedLottery.registererInformations[0]
+                              .initialInformations.gender === "male"
+                              ? "مرد"
+                              : "زن"}
                           </p>
                         </div>
                         <div className="bg-white p-3 rounded-lg border">
-                          <p className="text-xs text-gray-600 mb-1">تاریخ تولد</p>
+                          <p className="text-xs text-gray-600 mb-1">
+                            تاریخ تولد
+                          </p>
                           <p className="text-sm font-medium text-gray-900">
-                            {selectedLottery.registererInformations[0].initialInformations.birthDate.year}/
-                            {selectedLottery.registererInformations[0].initialInformations.birthDate.month}/
-                            {selectedLottery.registererInformations[0].initialInformations.birthDate.day}
+                            {
+                              selectedLottery.registererInformations[0]
+                                .initialInformations.birthDate.year
+                            }
+                            /
+                            {
+                              selectedLottery.registererInformations[0]
+                                .initialInformations.birthDate.month
+                            }
+                            /
+                            {
+                              selectedLottery.registererInformations[0]
+                                .initialInformations.birthDate.day
+                            }
                           </p>
                         </div>
                         <div className="bg-white p-3 rounded-lg border">
                           <p className="text-xs text-gray-600 mb-1">کشور</p>
                           <p className="text-sm font-medium text-gray-900">
-                            {selectedLottery.registererInformations[0].initialInformations.country}
+                            {
+                              selectedLottery.registererInformations[0]
+                                .initialInformations.country
+                            }
                           </p>
                         </div>
                         <div className="bg-white p-3 rounded-lg border">
                           <p className="text-xs text-gray-600 mb-1">شهر</p>
                           <p className="text-sm font-medium text-gray-900">
-                            {selectedLottery.registererInformations[0].initialInformations.city}
+                            {
+                              selectedLottery.registererInformations[0]
+                                .initialInformations.city
+                            }
                           </p>
                         </div>
                         <div className="bg-white p-3 rounded-lg border">
-                          <p className="text-xs text-gray-600 mb-1">کشور شهروندی</p>
+                          <p className="text-xs text-gray-600 mb-1">
+                            کشور شهروندی
+                          </p>
                           <p className="text-sm font-medium text-gray-900">
-                            {selectedLottery.registererInformations[0].initialInformations.citizenshipCountry}
+                            {
+                              selectedLottery.registererInformations[0]
+                                .initialInformations.citizenshipCountry
+                            }
                           </p>
                         </div>
                       </div>
                     </div>
 
                     {/* Residence Information */}
-                    {selectedLottery.registererInformations[0].residanceInformation?.[0] && (
+                    {selectedLottery.registererInformations[0]
+                      .residanceInformation?.[0] && (
                       <div>
-                        <h4 className="text-sm font-semibold text-gray-700 mb-3">اطلاعات محل سکونت</h4>
+                        <h4 className="text-sm font-semibold text-gray-700 mb-3">
+                          اطلاعات محل سکونت
+                        </h4>
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                           <div className="bg-white p-3 rounded-lg border">
-                            <p className="text-xs text-gray-600 mb-1">کشور سکونت</p>
+                            <p className="text-xs text-gray-600 mb-1">
+                              کشور سکونت
+                            </p>
                             <p className="text-sm font-medium text-gray-900">
-                              {selectedLottery.registererInformations[0].residanceInformation[0].residanceCountry}
+                              {
+                                selectedLottery.registererInformations[0]
+                                  .residanceInformation[0].residanceCountry
+                              }
                             </p>
                           </div>
                           <div className="bg-white p-3 rounded-lg border">
-                            <p className="text-xs text-gray-600 mb-1">شهر سکونت</p>
+                            <p className="text-xs text-gray-600 mb-1">
+                              شهر سکونت
+                            </p>
                             <p className="text-sm font-medium text-gray-900">
-                              {selectedLottery.registererInformations[0].residanceInformation[0].residanceCity}
+                              {
+                                selectedLottery.registererInformations[0]
+                                  .residanceInformation[0].residanceCity
+                              }
                             </p>
                           </div>
                           <div className="bg-white p-3 rounded-lg border">
                             <p className="text-xs text-gray-600 mb-1">استان</p>
                             <p className="text-sm font-medium text-gray-900">
-                              {selectedLottery.registererInformations[0].residanceInformation[0].residanseState}
+                              {
+                                selectedLottery.registererInformations[0]
+                                  .residanceInformation[0].residanseState
+                              }
                             </p>
                           </div>
                           <div className="bg-white p-3 rounded-lg border">
-                            <p className="text-xs text-gray-600 mb-1">کد پستی</p>
+                            <p className="text-xs text-gray-600 mb-1">
+                              کد پستی
+                            </p>
                             <p className="text-sm font-medium text-gray-900">
-                              {selectedLottery.registererInformations[0].residanceInformation[0].postalCode}
+                              {
+                                selectedLottery.registererInformations[0]
+                                  .residanceInformation[0].postalCode
+                              }
                             </p>
                           </div>
                           <div className="bg-white p-3 rounded-lg border sm:col-span-2">
                             <p className="text-xs text-gray-600 mb-1">آدرس</p>
                             <p className="text-sm font-medium text-gray-900">
-                              {selectedLottery.registererInformations[0].residanceInformation[0].residanseAdress}
+                              {
+                                selectedLottery.registererInformations[0]
+                                  .residanceInformation[0].residanseAdress
+                              }
                             </p>
                           </div>
                         </div>
@@ -1091,26 +1137,42 @@ const LotteryAdminList = () => {
                     )}
 
                     {/* Contact Information */}
-                    {selectedLottery.registererInformations[0].contactInformations?.[0] && (
+                    {selectedLottery.registererInformations[0]
+                      .contactInformations?.[0] && (
                       <div>
-                        <h4 className="text-sm font-semibold text-gray-700 mb-3">اطلاعات تماس</h4>
+                        <h4 className="text-sm font-semibold text-gray-700 mb-3">
+                          اطلاعات تماس
+                        </h4>
                         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                           <div className="bg-white p-3 rounded-lg border">
-                            <p className="text-xs text-gray-600 mb-1">شماره تلفن اصلی</p>
+                            <p className="text-xs text-gray-600 mb-1">
+                              شماره تلفن اصلی
+                            </p>
                             <p className="text-sm font-medium text-gray-900">
-                              {selectedLottery.registererInformations[0].contactInformations[0].activePhoneNumber}
+                              {
+                                selectedLottery.registererInformations[0]
+                                  .contactInformations[0].activePhoneNumber
+                              }
                             </p>
                           </div>
                           <div className="bg-white p-3 rounded-lg border">
-                            <p className="text-xs text-gray-600 mb-1">شماره تلفن ثانویه</p>
+                            <p className="text-xs text-gray-600 mb-1">
+                              شماره تلفن ثانویه
+                            </p>
                             <p className="text-sm font-medium text-gray-900">
-                              {selectedLottery.registererInformations[0].contactInformations[0].secondaryPhoneNumber}
+                              {
+                                selectedLottery.registererInformations[0]
+                                  .contactInformations[0].secondaryPhoneNumber
+                              }
                             </p>
                           </div>
                           <div className="bg-white p-3 rounded-lg border">
                             <p className="text-xs text-gray-600 mb-1">ایمیل</p>
                             <p className="text-sm font-medium text-gray-900">
-                              {selectedLottery.registererInformations[0].contactInformations[0].email}
+                              {
+                                selectedLottery.registererInformations[0]
+                                  .contactInformations[0].email
+                              }
                             </p>
                           </div>
                         </div>
@@ -1118,54 +1180,86 @@ const LotteryAdminList = () => {
                     )}
 
                     {/* Other Information */}
-                    {selectedLottery.registererInformations[0].otherInformations?.[0] && (
+                    {selectedLottery.registererInformations[0]
+                      .otherInformations?.[0] && (
                       <div>
-                        <h4 className="text-sm font-semibold text-gray-700 mb-3">سایر اطلاعات</h4>
+                        <h4 className="text-sm font-semibold text-gray-700 mb-3">
+                          سایر اطلاعات
+                        </h4>
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                           <div className="bg-white p-3 rounded-lg border">
-                            <p className="text-xs text-gray-600 mb-1">نام فارسی</p>
+                            <p className="text-xs text-gray-600 mb-1">
+                              نام فارسی
+                            </p>
                             <p className="text-sm font-medium text-gray-900">
-                              {selectedLottery.registererInformations[0].otherInformations[0].persianName}
+                              {
+                                selectedLottery.registererInformations[0]
+                                  .otherInformations[0].persianName
+                              }
                             </p>
                           </div>
                           <div className="bg-white p-3 rounded-lg border">
-                            <p className="text-xs text-gray-600 mb-1">نام خانوادگی فارسی</p>
+                            <p className="text-xs text-gray-600 mb-1">
+                              نام خانوادگی فارسی
+                            </p>
                             <p className="text-sm font-medium text-gray-900">
-                              {selectedLottery.registererInformations[0].otherInformations[0].persianLastName}
+                              {
+                                selectedLottery.registererInformations[0]
+                                  .otherInformations[0].persianLastName
+                              }
                             </p>
                           </div>
                           <div className="bg-white p-3 rounded-lg border">
-                            <p className="text-xs text-gray-600 mb-1">آخرین مدرک تحصیلی</p>
+                            <p className="text-xs text-gray-600 mb-1">
+                              آخرین مدرک تحصیلی
+                            </p>
                             <p className="text-sm font-medium text-gray-900">
-                              {selectedLottery.registererInformations[0].otherInformations[0].lastDegree}
+                              {
+                                selectedLottery.registererInformations[0]
+                                  .otherInformations[0].lastDegree
+                              }
                             </p>
                           </div>
                           <div className="bg-white p-3 rounded-lg border">
-                            <p className="text-xs text-gray-600 mb-1">وضعیت شهروندی همسر</p>
+                            <p className="text-xs text-gray-600 mb-1">
+                              وضعیت شهروندی همسر
+                            </p>
                             <p className="text-sm font-medium text-gray-900">
-                              {selectedLottery.registererInformations[0].otherInformations[0].partnerCitizenShip === 'my spouse is not a resident of america' 
-                                ? 'همسر من ساکن آمریکا نیست'
-                                : selectedLottery.registererInformations[0].otherInformations[0].partnerCitizenShip === 'my spouse live in america'
-                                ? 'همسر من در آمریکا زندگی می‌کند'
-                                : selectedLottery.registererInformations[0].otherInformations[0].partnerCitizenShip}
+                              {selectedLottery.registererInformations[0]
+                                .otherInformations[0].partnerCitizenShip ===
+                              "my spouse is not a resident of america"
+                                ? "همسر من ساکن آمریکا نیست"
+                                : selectedLottery.registererInformations[0]
+                                    .otherInformations[0].partnerCitizenShip ===
+                                  "my spouse live in america"
+                                ? "همسر من در آمریکا زندگی می‌کند"
+                                : selectedLottery.registererInformations[0]
+                                    .otherInformations[0].partnerCitizenShip}
                             </p>
                           </div>
                           <div className="bg-white p-3 rounded-lg border">
                             <p className="text-xs text-gray-600 mb-1">تصویر</p>
-                            {selectedLottery.registererInformations[0].otherInformations[0]?.imageUrl ? (
+                            {selectedLottery.registererInformations[0]
+                              .otherInformations[0]?.imageUrl ? (
                               <img
-                                src={selectedLottery.registererInformations[0].otherInformations[0].imageUrl}
+                                src={
+                                  selectedLottery.registererInformations[0]
+                                    .otherInformations[0].imageUrl
+                                }
                                 alt="تصویر ثبت کننده"
                                 className="w-16 h-16 object-cover rounded-lg border cursor-pointer"
                                 onClick={() =>
                                   window.open(
-                                    selectedLottery.registererInformations[0].otherInformations[0].imageUrl,
+                                    selectedLottery.registererInformations[0]
+                                      .otherInformations[0].imageUrl,
                                     "_blank"
                                   )
                                 }
                               />
                             ) : (
-                              <p className="text-sm text-gray-400">بدون تصویر</p>
+                              <p className="text-sm text-gray-400">
+                                بدون تصویر
+                              </p>
                             )}
                           </div>
                         </div>
@@ -1186,94 +1280,163 @@ const LotteryAdminList = () => {
                     <div className="space-y-6">
                       {/* Basic Information */}
                       <div>
-                        <h4 className="text-sm font-semibold text-gray-700 mb-3">اطلاعات اولیه</h4>
+                        <h4 className="text-sm font-semibold text-gray-700 mb-3">
+                          اطلاعات اولیه
+                        </h4>
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                           <div className="bg-white p-3 rounded-lg border">
                             <p className="text-xs text-gray-600 mb-1">نام</p>
                             <p className="text-sm font-medium text-gray-900">
-                              {selectedLottery.registererPartnerInformations[0].initialInformations.firstName}
+                              {
+                                selectedLottery.registererPartnerInformations[0]
+                                  .initialInformations.firstName
+                              }
                             </p>
                           </div>
                           <div className="bg-white p-3 rounded-lg border">
-                            <p className="text-xs text-gray-600 mb-1">نام خانوادگی</p>
+                            <p className="text-xs text-gray-600 mb-1">
+                              نام خانوادگی
+                            </p>
                             <p className="text-sm font-medium text-gray-900">
-                              {selectedLottery.registererPartnerInformations[0].initialInformations.lastName}
+                              {
+                                selectedLottery.registererPartnerInformations[0]
+                                  .initialInformations.lastName
+                              }
                             </p>
                           </div>
                           <div className="bg-white p-3 rounded-lg border">
                             <p className="text-xs text-gray-600 mb-1">جنسیت</p>
                             <p className="text-sm font-medium text-gray-900">
-                              {selectedLottery.registererPartnerInformations[0].initialInformations.gender === 'male' ? 'مرد' : 'زن'}
+                              {selectedLottery.registererPartnerInformations[0]
+                                .initialInformations.gender === "male"
+                                ? "مرد"
+                                : "زن"}
                             </p>
                           </div>
                           <div className="bg-white p-3 rounded-lg border">
-                            <p className="text-xs text-gray-600 mb-1">تاریخ تولد</p>
+                            <p className="text-xs text-gray-600 mb-1">
+                              تاریخ تولد
+                            </p>
                             <p className="text-sm font-medium text-gray-900">
-                              {selectedLottery.registererPartnerInformations[0].initialInformations.birthDate.year}/
-                              {selectedLottery.registererPartnerInformations[0].initialInformations.birthDate.month}/
-                              {selectedLottery.registererPartnerInformations[0].initialInformations.birthDate.day}
+                              {
+                                selectedLottery.registererPartnerInformations[0]
+                                  .initialInformations.birthDate.year
+                              }
+                              /
+                              {
+                                selectedLottery.registererPartnerInformations[0]
+                                  .initialInformations.birthDate.month
+                              }
+                              /
+                              {
+                                selectedLottery.registererPartnerInformations[0]
+                                  .initialInformations.birthDate.day
+                              }
                             </p>
                           </div>
                           <div className="bg-white p-3 rounded-lg border">
                             <p className="text-xs text-gray-600 mb-1">کشور</p>
                             <p className="text-sm font-medium text-gray-900">
-                              {selectedLottery.registererPartnerInformations[0].initialInformations.country}
+                              {
+                                selectedLottery.registererPartnerInformations[0]
+                                  .initialInformations.country
+                              }
                             </p>
                           </div>
                           <div className="bg-white p-3 rounded-lg border">
                             <p className="text-xs text-gray-600 mb-1">شهر</p>
                             <p className="text-sm font-medium text-gray-900">
-                              {selectedLottery.registererPartnerInformations[0].initialInformations.city}
+                              {
+                                selectedLottery.registererPartnerInformations[0]
+                                  .initialInformations.city
+                              }
                             </p>
                           </div>
                           <div className="bg-white p-3 rounded-lg border">
-                            <p className="text-xs text-gray-600 mb-1">کشور شهروندی</p>
+                            <p className="text-xs text-gray-600 mb-1">
+                              کشور شهروندی
+                            </p>
                             <p className="text-sm font-medium text-gray-900">
-                              {selectedLottery.registererPartnerInformations[0].initialInformations.citizenshipCountry}
+                              {
+                                selectedLottery.registererPartnerInformations[0]
+                                  .initialInformations.citizenshipCountry
+                              }
                             </p>
                           </div>
                         </div>
                       </div>
 
                       {/* Other Information */}
-                      {selectedLottery.registererPartnerInformations[0].otherInformations?.[0] && (
+                      {selectedLottery.registererPartnerInformations[0]
+                        .otherInformations?.[0] && (
                         <div>
-                          <h4 className="text-sm font-semibold text-gray-700 mb-3">سایر اطلاعات</h4>
+                          <h4 className="text-sm font-semibold text-gray-700 mb-3">
+                            سایر اطلاعات
+                          </h4>
                           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                             <div className="bg-white p-3 rounded-lg border">
-                              <p className="text-xs text-gray-600 mb-1">نام فارسی</p>
+                              <p className="text-xs text-gray-600 mb-1">
+                                نام فارسی
+                              </p>
                               <p className="text-sm font-medium text-gray-900">
-                                {selectedLottery.registererPartnerInformations[0].otherInformations[0].persianName}
+                                {
+                                  selectedLottery
+                                    .registererPartnerInformations[0]
+                                    .otherInformations[0].persianName
+                                }
                               </p>
                             </div>
                             <div className="bg-white p-3 rounded-lg border">
-                              <p className="text-xs text-gray-600 mb-1">نام خانوادگی فارسی</p>
+                              <p className="text-xs text-gray-600 mb-1">
+                                نام خانوادگی فارسی
+                              </p>
                               <p className="text-sm font-medium text-gray-900">
-                                {selectedLottery.registererPartnerInformations[0].otherInformations[0].persianLastName}
+                                {
+                                  selectedLottery
+                                    .registererPartnerInformations[0]
+                                    .otherInformations[0].persianLastName
+                                }
                               </p>
                             </div>
                             <div className="bg-white p-3 rounded-lg border">
-                              <p className="text-xs text-gray-600 mb-1">آخرین مدرک تحصیلی</p>
+                              <p className="text-xs text-gray-600 mb-1">
+                                آخرین مدرک تحصیلی
+                              </p>
                               <p className="text-sm font-medium text-gray-900">
-                                {selectedLottery.registererPartnerInformations[0].otherInformations[0].lastDegree}
+                                {
+                                  selectedLottery
+                                    .registererPartnerInformations[0]
+                                    .otherInformations[0].lastDegree
+                                }
                               </p>
                             </div>
                             <div className="bg-white p-3 rounded-lg border">
-                              <p className="text-xs text-gray-600 mb-1">تصویر</p>
-                              {selectedLottery.registererPartnerInformations[0].otherInformations[0]?.imageUrl ? (
+                              <p className="text-xs text-gray-600 mb-1">
+                                تصویر
+                              </p>
+                              {selectedLottery.registererPartnerInformations[0]
+                                .otherInformations[0]?.imageUrl ? (
                                 <img
-                                  src={selectedLottery.registererPartnerInformations[0].otherInformations[0].imageUrl}
+                                  src={
+                                    selectedLottery
+                                      .registererPartnerInformations[0]
+                                      .otherInformations[0].imageUrl
+                                  }
                                   alt="تصویر همسر"
                                   className="w-16 h-16 object-cover rounded-lg border cursor-pointer"
                                   onClick={() =>
                                     window.open(
-                                      selectedLottery.registererPartnerInformations[0].otherInformations[0].imageUrl,
+                                      selectedLottery
+                                        .registererPartnerInformations[0]
+                                        .otherInformations[0].imageUrl,
                                       "_blank"
                                     )
                                   }
                                 />
                               ) : (
-                                <p className="text-sm text-gray-400">بدون تصویر</p>
+                                <p className="text-sm text-gray-400">
+                                  بدون تصویر
+                                </p>
                               )}
                             </div>
                           </div>
@@ -1303,28 +1466,40 @@ const LotteryAdminList = () => {
                           <div className="space-y-4">
                             {/* Basic Information */}
                             <div>
-                              <h5 className="text-xs font-semibold text-gray-600 mb-2">اطلاعات اولیه</h5>
+                              <h5 className="text-xs font-semibold text-gray-600 mb-2">
+                                اطلاعات اولیه
+                              </h5>
                               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                                 <div className="bg-white p-3 rounded-lg border">
-                                  <p className="text-xs text-gray-600 mb-1">نام</p>
+                                  <p className="text-xs text-gray-600 mb-1">
+                                    نام
+                                  </p>
                                   <p className="text-sm font-medium text-gray-900">
                                     {child.initialInformations.firstName}
                                   </p>
                                 </div>
                                 <div className="bg-white p-3 rounded-lg border">
-                                  <p className="text-xs text-gray-600 mb-1">نام خانوادگی</p>
+                                  <p className="text-xs text-gray-600 mb-1">
+                                    نام خانوادگی
+                                  </p>
                                   <p className="text-sm font-medium text-gray-900">
                                     {child.initialInformations.lastName}
                                   </p>
                                 </div>
                                 <div className="bg-white p-3 rounded-lg border">
-                                  <p className="text-xs text-gray-600 mb-1">جنسیت</p>
+                                  <p className="text-xs text-gray-600 mb-1">
+                                    جنسیت
+                                  </p>
                                   <p className="text-sm font-medium text-gray-900">
-                                    {child.initialInformations.gender === 'male' ? 'پسر' : 'دختر'}
+                                    {child.initialInformations.gender === "male"
+                                      ? "پسر"
+                                      : "دختر"}
                                   </p>
                                 </div>
                                 <div className="bg-white p-3 rounded-lg border">
-                                  <p className="text-xs text-gray-600 mb-1">تاریخ تولد</p>
+                                  <p className="text-xs text-gray-600 mb-1">
+                                    تاریخ تولد
+                                  </p>
                                   <p className="text-sm font-medium text-gray-900">
                                     {child.initialInformations.birthDate.year}/
                                     {child.initialInformations.birthDate.month}/
@@ -1332,27 +1507,38 @@ const LotteryAdminList = () => {
                                   </p>
                                 </div>
                                 <div className="bg-white p-3 rounded-lg border">
-                                  <p className="text-xs text-gray-600 mb-1">کشور</p>
+                                  <p className="text-xs text-gray-600 mb-1">
+                                    کشور
+                                  </p>
                                   <p className="text-sm font-medium text-gray-900">
                                     {child.initialInformations.country}
                                   </p>
                                 </div>
                                 <div className="bg-white p-3 rounded-lg border">
-                                  <p className="text-xs text-gray-600 mb-1">شهر</p>
+                                  <p className="text-xs text-gray-600 mb-1">
+                                    شهر
+                                  </p>
                                   <p className="text-sm font-medium text-gray-900">
                                     {child.initialInformations.city}
                                   </p>
                                 </div>
                                 <div className="bg-white p-3 rounded-lg border">
-                                  <p className="text-xs text-gray-600 mb-1">وضعیت شهروندی</p>
+                                  <p className="text-xs text-gray-600 mb-1">
+                                    وضعیت شهروندی
+                                  </p>
                                   <p className="text-sm font-medium text-gray-900">
-                                    {child.initialInformations.citizenshipCountry === 'child_not_american' 
-                                      ? 'فرزند آمریکایی نیست' 
-                                      : child.initialInformations.citizenshipCountry}
+                                    {child.initialInformations
+                                      .citizenshipCountry ===
+                                    "child_not_american"
+                                      ? "فرزند آمریکایی نیست"
+                                      : child.initialInformations
+                                          .citizenshipCountry}
                                   </p>
                                 </div>
                                 <div className="bg-white p-3 rounded-lg border">
-                                  <p className="text-xs text-gray-600 mb-1">تصویر</p>
+                                  <p className="text-xs text-gray-600 mb-1">
+                                    تصویر
+                                  </p>
                                   {child.otherInformations[0]?.imageUrl ? (
                                     <img
                                       src={child.otherInformations[0].imageUrl}
@@ -1366,7 +1552,9 @@ const LotteryAdminList = () => {
                                       }
                                     />
                                   ) : (
-                                    <p className="text-sm text-gray-400">بدون تصویر</p>
+                                    <p className="text-sm text-gray-400">
+                                      بدون تصویر
+                                    </p>
                                   )}
                                 </div>
                               </div>

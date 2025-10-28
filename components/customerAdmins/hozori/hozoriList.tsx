@@ -19,9 +19,105 @@ import {
   FaMoneyBillWave,
   FaReceipt,
   FaCalendarAlt,
-   FaEye,
+  FaEye,
 } from "react-icons/fa";
 
+interface ReservationStatsData {
+  totalReservations: number;
+  pendingReservations: number;
+  confirmedReservations: number;
+  completedReservations: number;
+  cancelledReservations: number;
+}
+
+interface StatConfig {
+  id: string;
+  label: string;
+  key: keyof ReservationStatsData;
+  icon: React.ComponentType<{ className?: string }>;
+  colors: {
+    gradient: string;
+    border: string;
+    text: string;
+    number: string;
+    iconBg: string;
+    icon: string;
+  };
+}
+
+// Configuration
+const reservationStatsConfig: StatConfig[] = [
+  {
+    id: "total",
+    label: "کل رزروها",
+    key: "totalReservations",
+    icon: FaCalendarCheck,
+    colors: {
+      gradient: "from-blue-50 to-blue-100",
+      border: "border-blue-200",
+      text: "text-blue-600",
+      number: "text-blue-900",
+      iconBg: "bg-blue-500/10",
+      icon: "text-blue-500",
+    },
+  },
+  {
+    id: "pending",
+    label: "در انتظار",
+    key: "pendingReservations",
+    icon: FaHourglassHalf,
+    colors: {
+      gradient: "from-orange-50 to-orange-100",
+      border: "border-orange-200",
+      text: "text-orange-600",
+      number: "text-orange-900",
+      iconBg: "bg-orange-500/10",
+      icon: "text-orange-500",
+    },
+  },
+  {
+    id: "confirmed",
+    label: "تایید شده",
+    key: "confirmedReservations",
+    icon: FaCheckCircle,
+    colors: {
+      gradient: "from-blue-50 to-blue-100",
+      border: "border-blue-200",
+      text: "text-blue-600",
+      number: "text-blue-900",
+      iconBg: "bg-blue-500/10",
+      icon: "text-blue-500",
+    },
+  },
+  {
+    id: "completed",
+    label: "تکمیل شده",
+    key: "completedReservations",
+    icon: FaCheck,
+    colors: {
+      gradient: "from-green-50 to-green-100",
+      border: "border-green-200",
+      text: "text-green-600",
+      number: "text-green-900",
+      iconBg: "bg-green-500/10",
+      icon: "text-green-500",
+    },
+  },
+  {
+    id: "cancelled",
+    label: "لغو شده",
+    key: "cancelledReservations",
+    icon: FaTimesCircle,
+    colors: {
+      gradient: "from-red-50 to-red-100",
+      border: "border-red-200",
+      text: "text-red-600",
+      number: "text-red-900",
+      iconBg: "bg-red-500/10",
+      icon: "text-red-500",
+    },
+  },
+];
 interface HozoriReservation {
   _id: string;
   name: string;
@@ -54,7 +150,8 @@ const CustomerHozoriList = () => {
   const [reservations, setReservations] = useState<HozoriReservation[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [selectedReservation, setSelectedReservation] = useState<HozoriReservation | null>(null);
+  const [selectedReservation, setSelectedReservation] =
+    useState<HozoriReservation | null>(null);
   const [showReservationDetails, setShowReservationDetails] = useState(false);
   const [stats, setStats] = useState<HozoriStats>({
     totalReservations: 0,
@@ -170,10 +267,14 @@ const CustomerHozoriList = () => {
       card: { label: "کارت", color: "bg-green-100 text-green-800" },
     };
 
-    const config = paymentConfig[paymentType as keyof typeof paymentConfig] || paymentConfig.direct;
+    const config =
+      paymentConfig[paymentType as keyof typeof paymentConfig] ||
+      paymentConfig.direct;
 
     return (
-      <span className={`inline-flex items-center px-2 py-1 rounded text-xs font-medium ${config.color}`}>
+      <span
+        className={`inline-flex items-center px-2 py-1 rounded text-xs font-medium ${config.color}`}
+      >
         {config.label}
       </span>
     );
@@ -191,91 +292,39 @@ const CustomerHozoriList = () => {
     setSelectedReservation(reservation);
     setShowReservationDetails(true);
   };
- 
 
   return (
-    <div className="space-y-6 sm:space-y-8" dir="rtl">
+    <div className="space-y-6 sm:space-y-8 max-w-7xl mx-auto" dir="rtl">
       {/* Stats Cards */}
-      <div className="grid grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-4">
-        <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-4 sm:p-6 rounded-xl sm:rounded-2xl border border-blue-200 hover:shadow-lg transition-all duration-300 hover:scale-[1.02]">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-            <div className="space-y-1">
-              <p className="text-blue-600 text-xs sm:text-sm font-medium">
-                کل رزروها
-              </p>
-              <p className="text-2xl sm:text-3xl font-bold text-blue-900">
-                {stats.totalReservations}
-              </p>
+      <div className="grid grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-2 mx-2 mt-2">
+        {reservationStatsConfig.map(
+          ({ id, label, key, icon: Icon, colors }) => (
+            <div
+              key={id}
+              className={`bg-gradient-to-br ${colors.gradient} p-4 sm:p-6 rounded-xl sm:rounded-2xl border ${colors.border} hover:shadow-lg transition-all duration-300 hover:scale-[1.02]`}
+            >
+              <div className="flex  flex-row items-start sm:items-center justify-between gap-3">
+                <div className="space-y-1">
+                  <p
+                    className={`${colors.text} text-xs sm:text-sm font-medium`}
+                  >
+                    {label}
+                  </p>
+                  <p
+                    className={`text-2xl sm:text-3xl font-bold ${colors.number}`}
+                  >
+                    {stats[key].toLocaleString("fa-IR")}
+                  </p>
+                </div>
+                <div
+                  className={`w-10 h-10 sm:w-12 sm:h-12 ${colors.iconBg} rounded-xl flex items-center justify-center`}
+                >
+                  <Icon className={`${colors.icon} text-xl sm:text-2xl`} />
+                </div>
+              </div>
             </div>
-            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-blue-500/10 rounded-xl flex items-center justify-center">
-              <FaCalendarCheck className="text-blue-500 text-xl sm:text-2xl" />
-            </div>
-          </div>
-        </div>
-
-        <div className="bg-gradient-to-br from-orange-50 to-orange-100 p-4 sm:p-6 rounded-xl sm:rounded-2xl border border-orange-200 hover:shadow-lg transition-all duration-300 hover:scale-[1.02]">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-            <div className="space-y-1">
-              <p className="text-orange-600 text-xs sm:text-sm font-medium">
-                در انتظار
-              </p>
-              <p className="text-2xl sm:text-3xl font-bold text-orange-900">
-                {stats.pendingReservations}
-              </p>
-            </div>
-            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-orange-500/10 rounded-xl flex items-center justify-center">
-              <FaHourglassHalf className="text-orange-500 text-xl sm:text-2xl" />
-            </div>
-          </div>
-        </div>
-
-        <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-4 sm:p-6 rounded-xl sm:rounded-2xl border border-blue-200 hover:shadow-lg transition-all duration-300 hover:scale-[1.02]">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-            <div className="space-y-1">
-              <p className="text-blue-600 text-xs sm:text-sm font-medium">
-                تایید شده
-              </p>
-              <p className="text-2xl sm:text-3xl font-bold text-blue-900">
-                {stats.confirmedReservations}
-              </p>
-            </div>
-            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-blue-500/10 rounded-xl flex items-center justify-center">
-              <FaCheckCircle className="text-blue-500 text-xl sm:text-2xl" />
-            </div>
-          </div>
-        </div>
-
-        <div className="bg-gradient-to-br from-green-50 to-green-100 p-4 sm:p-6 rounded-xl sm:rounded-2xl border border-green-200 hover:shadow-lg transition-all duration-300 hover:scale-[1.02]">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-            <div className="space-y-1">
-              <p className="text-green-600 text-xs sm:text-sm font-medium">
-                تکمیل شده
-              </p>
-              <p className="text-2xl sm:text-3xl font-bold text-green-900">
-                {stats.completedReservations}
-              </p>
-            </div>
-            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-green-500/10 rounded-xl flex items-center justify-center">
-              <FaCheck className="text-green-500 text-xl sm:text-2xl" />
-            </div>
-          </div>
-        </div>
-
-        <div className="bg-gradient-to-br from-red-50 to-red-100 p-4 sm:p-6 rounded-xl sm:rounded-2xl border border-red-200 hover:shadow-lg transition-all duration-300 hover:scale-[1.02]">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-            <div className="space-y-1">
-              <p className="text-red-600 text-xs sm:text-sm font-medium">
-                لغو شده
-              </p>
-              <p className="text-2xl sm:text-3xl font-bold text-red-900">
-                {stats.cancelledReservations}
-              </p>
-            </div>
-            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-red-500/10 rounded-xl flex items-center justify-center">
-              <FaTimesCircle className="text-red-500 text-xl sm:text-2xl" />
-            </div>
-          </div>
-        </div>
+          )
+        )}
       </div>
 
       {/* Hozori Reservations List */}
@@ -343,7 +392,11 @@ const CustomerHozoriList = () => {
                       </p>
                     </div>
                   </div>
-                  <div className={`inline-flex items-center gap-1.5  px-3 py-1.5 rounded-full border text-nowrap text-xs sm:text-sm font-semibold ${getStatusColor(reservation.status)}`}>
+                  <div
+                    className={`inline-flex items-center gap-1.5  px-3 py-1.5 rounded-full border text-nowrap text-xs sm:text-sm font-semibold ${getStatusColor(
+                      reservation.status
+                    )}`}
+                  >
                     {getStatusIcon(reservation.status)}
                     {getStatusText(reservation.status)}
                   </div>
@@ -384,14 +437,18 @@ const CustomerHozoriList = () => {
                     <div className="flex-1 min-w-0">
                       <p className="text-xs text-gray-500 mb-0.5">وضعیت تأهل</p>
                       <p className="font-semibold text-[#0A1D37] text-sm">
-                        {reservation.maridgeStatus === "married" ? "متأهل" : "مجرد"}
+                        {reservation.maridgeStatus === "married"
+                          ? "متأهل"
+                          : "مجرد"}
                       </p>
                     </div>
                   </div>
                   <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-xl">
                     <FaChild className="text-[#4DBFF0] text-lg flex-shrink-0" />
                     <div className="flex-1 min-w-0">
-                      <p className="text-xs text-gray-500 mb-0.5">تعداد فرزندان</p>
+                      <p className="text-xs text-gray-500 mb-0.5">
+                        تعداد فرزندان
+                      </p>
                       <p className="font-semibold text-[#0A1D37] text-sm">
                         {reservation.childrensCount} نفر
                       </p>
@@ -411,8 +468,12 @@ const CustomerHozoriList = () => {
                     <div className="flex items-start gap-3">
                       <FaIdCard className="text-blue-500 text-lg flex-shrink-0 mt-0.5" />
                       <div className="flex-1">
-                        <p className="font-bold text-blue-900 text-sm mb-2">یادداشت مدیر</p>
-                        <p className="text-blue-800 text-xs max-w-sm whitespace-break-spaces leading-relaxed">{reservation.adminNotes}</p>
+                        <p className="font-bold text-blue-900 text-sm mb-2">
+                          یادداشت مدیر
+                        </p>
+                        <p className="text-blue-800 text-xs max-w-sm whitespace-break-spaces leading-relaxed">
+                          {reservation.adminNotes}
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -469,25 +530,35 @@ const CustomerHozoriList = () => {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
                   <div className="space-y-2">
                     <span className="text-gray-600">نام:</span>
-                    <p className="font-medium text-[#0A1D37]">{selectedReservation.name}</p>
+                    <p className="font-medium text-[#0A1D37]">
+                      {selectedReservation.name}
+                    </p>
                   </div>
                   <div className="space-y-2">
                     <span className="text-gray-600">نام خانوادگی:</span>
-                    <p className="font-medium text-[#0A1D37]">{selectedReservation.lastname}</p>
+                    <p className="font-medium text-[#0A1D37]">
+                      {selectedReservation.lastname}
+                    </p>
                   </div>
                   <div className="space-y-2">
                     <span className="text-gray-600">شماره تلفن:</span>
-                    <p className="font-medium text-[#0A1D37]">{selectedReservation.phoneNumber}</p>
+                    <p className="font-medium text-[#0A1D37]">
+                      {selectedReservation.phoneNumber}
+                    </p>
                   </div>
                   <div className="space-y-2">
                     <span className="text-gray-600">وضعیت تأهل:</span>
                     <p className="font-medium text-[#0A1D37]">
-                      {selectedReservation.maridgeStatus === "married" ? "متأهل" : "مجرد"}
+                      {selectedReservation.maridgeStatus === "married"
+                        ? "متأهل"
+                        : "مجرد"}
                     </p>
                   </div>
                   <div className="space-y-2">
                     <span className="text-gray-600">تعداد فرزندان:</span>
-                    <p className="font-medium text-[#0A1D37]">{selectedReservation.childrensCount} نفر</p>
+                    <p className="font-medium text-[#0A1D37]">
+                      {selectedReservation.childrensCount} نفر
+                    </p>
                   </div>
                 </div>
               </div>
@@ -501,15 +572,23 @@ const CustomerHozoriList = () => {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
                   <div className="space-y-2">
                     <span className="text-gray-600">تاریخ مراجعه:</span>
-                    <p className="font-medium text-[#0A1D37]">{formatDate(selectedReservation.Date)}</p>
+                    <p className="font-medium text-[#0A1D37]">
+                      {formatDate(selectedReservation.Date)}
+                    </p>
                   </div>
                   <div className="space-y-2">
                     <span className="text-gray-600">زمان مراجعه:</span>
-                    <p className="font-medium text-[#0A1D37]">{formatTime(selectedReservation.time)}</p>
+                    <p className="font-medium text-[#0A1D37]">
+                      {formatTime(selectedReservation.time)}
+                    </p>
                   </div>
                   <div className="space-y-2">
                     <span className="text-gray-600">وضعیت رزرو:</span>
-                    <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full border text-xs font-medium ${getStatusColor(selectedReservation.status)}`}>
+                    <div
+                      className={`inline-flex items-center gap-2 px-3 py-1 rounded-full border text-xs font-medium ${getStatusColor(
+                        selectedReservation.status
+                      )}`}
+                    >
                       {getStatusIcon(selectedReservation.status)}
                       {getStatusText(selectedReservation.status)}
                     </div>
@@ -526,11 +605,15 @@ const CustomerHozoriList = () => {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
                   <div className="space-y-2">
                     <span className="text-gray-600">روش پرداخت:</span>
-                    <div>{getPaymentTypeBadge(selectedReservation.paymentType)}</div>
+                    <div>
+                      {getPaymentTypeBadge(selectedReservation.paymentType)}
+                    </div>
                   </div>
                   <div className="space-y-2">
                     <span className="text-gray-600">تاریخ پرداخت:</span>
-                    <p className="font-medium text-[#0A1D37]">{formatDate(selectedReservation.paymentDate)}</p>
+                    <p className="font-medium text-[#0A1D37]">
+                      {formatDate(selectedReservation.paymentDate)}
+                    </p>
                   </div>
                   {selectedReservation.paymentImage && (
                     <div className="space-y-2 sm:col-span-2">
@@ -556,21 +639,29 @@ const CustomerHozoriList = () => {
                     <FaIdCard className="text-[#4DBFF0]" />
                     یادداشت مدیر
                   </h3>
-                  <p className="text-gray-700 leading-relaxed">{selectedReservation.adminNotes}</p>
+                  <p className="text-gray-700 leading-relaxed">
+                    {selectedReservation.adminNotes}
+                  </p>
                 </div>
               )}
 
               {/* Timestamps */}
               <div className="bg-gradient-to-br from-gray-50 to-slate-50 rounded-xl mb-12 sm:rounded-2xl p-5 sm:p-6 border-2 border-gray-200">
-                <h3 className="text-lg font-bold text-[#0A1D37] mb-4">تاریخچه</h3>
+                <h3 className="text-lg font-bold text-[#0A1D37] mb-4">
+                  تاریخچه
+                </h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
                   <div className="space-y-2">
                     <span className="text-gray-600">تاریخ ثبت:</span>
-                    <p className="font-medium text-[#0A1D37]">{formatDate(selectedReservation.createdAt)}</p>
+                    <p className="font-medium text-[#0A1D37]">
+                      {formatDate(selectedReservation.createdAt)}
+                    </p>
                   </div>
                   <div className="space-y-2">
                     <span className="text-gray-600">آخرین بروزرسانی:</span>
-                    <p className="font-medium text-[#0A1D37]">{formatDate(selectedReservation.updatedAt)}</p>
+                    <p className="font-medium text-[#0A1D37]">
+                      {formatDate(selectedReservation.updatedAt)}
+                    </p>
                   </div>
                 </div>
               </div>

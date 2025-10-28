@@ -15,15 +15,23 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    await connect();
+    try {
+      await connect();
+    } catch (dbError) {
+      console.error("Database connection failed:", dbError);
+      return NextResponse.json(
+        { error: "خطا در اتصال به پایگاه داده" },
+        { status: 503 }
+      );
+    }
 
     // Generate verification code
     const verificationCode = generateVerificationCode();
     const expiresAt = new Date(Date.now() + 5 * 60 * 1000); // 5 minutes
 
     // Check if user exists
-    let user = await User.findOne({ 'contactInfo.mobilePhone': phone });
-    
+    let user = await User.findOne({ "contactInfo.mobilePhone": phone });
+
     if (user) {
       // Update existing user's verification code
       user.verifications.phone.verificationCode = verificationCode;
@@ -34,30 +42,30 @@ export async function POST(request: NextRequest) {
       // Create new user with phone number only
       const username = `user_${phone.slice(-8)}`;
       const tempEmail = `${phone}@temp.arziPlus.com`;
-      
+
       user = await User.create({
         username,
         contactInfo: {
           mobilePhone: phone,
-          email: tempEmail
+          email: tempEmail,
         },
         verifications: {
           phone: {
             verificationCode,
             verificationCodeExpires: expiresAt,
-            isVerified: false
+            isVerified: false,
           },
           email: {
-            isVerified: false
-          }
+            isVerified: false,
+          },
         },
-        status: 'pending_verification'
+        status: "pending_verification",
       });
     }
 
     // Send SMS
     const smsSent = await sendVerificationCode(phone, verificationCode);
-    
+
     if (!smsSent) {
       return NextResponse.json(
         { error: "خطا در ارسال پیامک" },
@@ -68,14 +76,10 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({
       message: "کد تایید به شماره شما ارسال شد",
       userId: user._id.toString(),
-      isExistingUser: !!user.nationalCredentials?.firstName
+      isExistingUser: !!user.nationalCredentials?.firstName,
     });
-
   } catch (error) {
-    console.log('SMS send error:', error);
-    return NextResponse.json(
-      { error: "خطای سرور" },
-      { status: 500 }
-    );
+    console.error("SMS send error:", error);
+    return NextResponse.json({ error: "خطای سرور" }, { status: 500 });
   }
 }

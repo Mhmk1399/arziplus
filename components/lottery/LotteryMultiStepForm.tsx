@@ -528,7 +528,7 @@ const LotteryMultiStepForm: React.FC = () => {
   };
 
   const lotteryFee =
-    600000 + (formData.famillyInformations[0]?.numberOfChildren || 0) * 150000;
+    5000 + (formData.famillyInformations[0]?.numberOfChildren || 0) * 150000;
 
   // Handle wallet payment
   const handleWalletPayment = async () => {

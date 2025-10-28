@@ -5,7 +5,7 @@ import {
   FaWallet,
   FaArrowUp,
   FaArrowDown,
-   FaRedo,
+  FaRedo,
   FaHourglassHalf,
 } from "react-icons/fa";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
@@ -119,33 +119,6 @@ const WalletWrapper: React.FC<WalletWrapperProps> = ({
     }
   }, [isLoggedIn, userLoading]);
 
-  const tabs = [
-    {
-      id: "dashboard" as const,
-      label: "داشبورد کیف پول",
-      icon: <FaWallet className="text-lg sm:text-xl" />,
-      description: "نمای کلی و موجودی",
-      badge:
-        walletStats.currentBalance > 0
-          ? `${walletStats.currentBalance.toLocaleString()} تومان`
-          : undefined,
-    },
-    {
-      id: "incomes" as const,
-      label: "تاریخچه واریزی‌ها",
-      icon: <FaArrowUp className="text-lg sm:text-xl" />,
-      description: "تاریخچه پرداخت‌ها",
-      badge:
-        walletStats.pendingIncomes > 0 ? walletStats.pendingIncomes : undefined,
-    },
-    {
-      id: "withdraws" as const,
-      label: "درخواست‌  برداشت",
-      icon: <FaArrowDown className="text-lg sm:text-xl" />,
-      description: "تاریخچه برداشت‌ها",
-    },
-  ];
-
   // Stats cards data
   const statsCards = [
     {
@@ -190,12 +163,7 @@ const WalletWrapper: React.FC<WalletWrapperProps> = ({
     },
   ];
 
-  const handleTabChange = (
-    tabId: "dashboard" | "incomes" | "withdraws" | "add-funds"
-  ) => {
-    setActiveTab(tabId);
-    fetchWalletData(); // Refresh data when switching tabs
-  };
+ 
 
   // Stats cards section
   const renderStatsCards = () => {
@@ -320,53 +288,9 @@ const WalletWrapper: React.FC<WalletWrapperProps> = ({
 
   return (
     <div className={`min-h-screen ${className}`} dir="rtl">
-      <div className="container mx-auto px-3 sm:px-4 lg:px-6 py-4 sm:py-6 lg:py-8">
+      <div className="container mx-auto max-w-7xl px-3 sm:px-4 lg:px-6 py-4 sm:py-6 lg:py-8">
         {/* Stats Cards */}
         {renderStatsCards()}
-
-        {/* Navigation Tabs */}
-        <div className="backdrop-blur-sm bg-white/80 border border-gray-100 rounded-2xl p-2 sm:p-3 lg:p-4 mb-6 sm:mb-8 shadow-sm">
-          <div className="grid  grid-cols-3 gap-1 lg:gap-4">
-            {tabs.map((tab) => (
-              <button
-                key={tab.id}
-                onClick={() => handleTabChange(tab.id)}
-                className={`relative flex  items-center justify-center gap-2 sm:gap-3 px-1 sm:px-5 lg:px-6 py-3 sm:py-4 rounded-xl sm:rounded-xl lg:rounded-2xl font-medium transition-all duration-300 group ${
-                  activeTab === tab.id
-                    ? "border-2 border-[#0A1D37] bg-gradient-to-br from-[#0A1D37]/5 to-[#0A1D37]/10 text-[#0A1D37] shadow-md scale-[1.02]"
-                    : "border-2 border-transparent text-gray-700 hover:bg-gray-50 hover:scale-[1.02] hover:shadow-sm"
-                }`}
-              >
-                {/* Icon */}
-                <div
-                  className={`transition-all hidden lg:block duration-300 ${
-                    activeTab === tab.id
-                      ? "text-[#0A1D37] scale-110"
-                      : "text-gray-500 group-hover:text-[#0A1D37] group-hover:scale-110"
-                  }`}
-                >
-                  {tab.icon}
-                </div>
-
-                {/* Text Content */}
-                <div className="text-center sm:text-right flex-1 min-w-0">
-                  <div className="font-bold text-xs sm:text-base lg:text-lg mb-0.5 sm:mb-1 truncate">
-                    {tab.label}
-                  </div>
-                  <div
-                    className={`text-xs sm:text-sm hidden sm:block transition-colors duration-300 truncate ${
-                      activeTab === tab.id
-                        ? "text-gray-600"
-                        : "text-gray-500 group-hover:text-gray-600"
-                    }`}
-                  >
-                    {tab.description}
-                  </div>
-                </div>
-              </button>
-            ))}
-          </div>
-        </div>
 
         {/* Content Area */}
         <div className="backdrop-blur-sm bg-white/90 border border-gray-100 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300">

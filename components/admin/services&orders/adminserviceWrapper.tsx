@@ -1,17 +1,13 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import {
-  FaServicestack,
-  FaClipboardList,
-   FaChartBar,
-} from "react-icons/fa";
+import { FaServicestack, FaClipboardList, FaChartBar } from "react-icons/fa";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
- 
+
 // Import admin components
 import AdminRequestsTable from "./AdminRequestsTable";
 import { ServiceManager } from "./serviceBuilder";
- 
+
 interface AdminWrapperProps {
   initialTab?: "requests" | "services" | "analytics";
   className?: string;
@@ -26,8 +22,8 @@ interface AdminStats {
 
 const ServiceWrapper: React.FC<AdminWrapperProps> = ({
   initialTab = "requests",
- }) => {
-  const [activeTab, setActiveTab] = useState<
+}) => {
+  const [activeTab] = useState<
     "requests" | "services" | "analytics"
   >(initialTab);
   const [adminStats, setAdminStats] = useState<AdminStats>({
@@ -37,7 +33,7 @@ const ServiceWrapper: React.FC<AdminWrapperProps> = ({
     totalServices: 0,
   });
   const [statsLoading, setStatsLoading] = useState(true);
-  const { user: currentUser, isLoggedIn } = useCurrentUser();
+  const {   isLoggedIn } = useCurrentUser();
 
   // Fetch admin statistics
   const fetchAdminStats = async () => {
@@ -160,55 +156,12 @@ const ServiceWrapper: React.FC<AdminWrapperProps> = ({
     },
   ];
 
-  const handleTabChange = (tabId: "requests" | "services" | "analytics") => {
-    setActiveTab(tabId);
-
-    // Refresh stats when switching tabs
-    if (isLoggedIn) {
-      fetchAdminStats();
-    }
-
-    
-
-   };
-
-  // Admin welcome section
-  const renderAdminWelcome = () => {
-    if (!currentUser) return null;
-
-    const adminName =
-      currentUser.firstName && currentUser.lastName
-        ? `${currentUser.firstName} ${currentUser.lastName}`
-        : currentUser.firstName || "مدیر محترم";
-
-    return (
-      <div className=" backdrop-blur-sm  rounded-2xl p-6  ">
-        <div className="flex items-center justify-between flex-wrap gap-4">
-          <div className="flex items-center gap-4">
-            <div>
-              <h2 className="sm:text-2xl text-base font-bold mb-2 text-[#0A1D37]">
-                سلام {adminName} عزیز
-              </h2>
-              <p className="text-gray-600 text-xs sm:text-md">
-                به پنل مدیریت ارزی پلاس خوش آمدید
-              </p>
-            </div>
-          </div>
-
-          <div className="text-sm hidden sm:block  text-gray-500">
-            آخرین بروزرسانی: {new Date().toLocaleDateString("fa-IR")}
-          </div>
-        </div>
-      </div>
-    );
-  };
-
   // Stats cards section
   const renderStatsCards = () => {
     if (!isLoggedIn || statsLoading) return null;
 
     return (
-      <div className="grid  grid-cols-4 w-full max-w-3xl  mx-auto gap-1 md:gap-4 mb-8">
+      <div className="grid  grid-cols-4 w-full max-w-7xl  mx-auto gap-1 md:gap-4 mb-8">
         {statsCards.map((stat, index) => (
           <div
             key={index}
@@ -234,8 +187,6 @@ const ServiceWrapper: React.FC<AdminWrapperProps> = ({
       </div>
     );
   };
-
-  
 
   // if (
   //   !currentUser?.roles.includes("admin") &&
@@ -272,15 +223,12 @@ const ServiceWrapper: React.FC<AdminWrapperProps> = ({
     tabs.find((tab) => tab.id === activeTab)?.component || AdminRequestsTable;
 
   return (
-    <div className={`min-h-screen   `} dir="rtl">
-      <div className="container mx-auto px-4 ">
-        {/* Admin Welcome Section */}
-        {renderAdminWelcome()}
+    <div className={`min-h-screen  mt-2 `} dir="rtl">
+      <div className="max-w-7xl mx-auto px-4 ">
+        
 
         {/* Stats Cards */}
         {renderStatsCards()}
-
-       
 
         {/* Content Area */}
         <div className="bg-white/50 backdrop-blur-sm border border-white/20 rounded-2xl overflow-hidden shadow-xl">

@@ -317,7 +317,7 @@ async function createLotteryRegistration(
     }
 
     if (!registrationData) {
-      throw new Error("اطلاعات قرعهکشی یافت نشد");
+      throw new Error("اطلاعات قرعه کشی یافت نشد");
     }
 
     // Normalize registrationData to ensure required sections exist so Mongoose save won't fail

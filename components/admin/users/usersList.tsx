@@ -469,20 +469,7 @@ const UsersList = () => {
     <div className=" " dir="rtl">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
-        <div className="mb-8">
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center gap-3">
-              <div>
-                <h1 className="text-xl md:text-3xl font-bold text-gray-900">
-                  مدیریت کاربران
-                </h1>
-                <p className="text-gray-600 text-xs md:text-sm">
-                  مشاهده و مدیریت اطلاعات کاربران سیستم
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
+      
 
         {/* Filters */}
         <div className="bg-white/80 backdrop-blur-sm  rounded-2xl p-2 mb-6">

@@ -51,7 +51,7 @@ interface PaginationData {
 }
 
 const HozoriAdminList = () => {
-  const {   isLoggedIn } = useCurrentUser();
+  const { isLoggedIn } = useCurrentUser();
   const [reservations, setReservations] = useState<HozoriReservation[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -290,36 +290,15 @@ const HozoriAdminList = () => {
   useEffect(() => {
     fetchReservations();
   }, [currentPage, pageSize, statusFilter, isLoggedIn]);
- 
 
   return (
-    <div className="space-y-6">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       {/* Header and Controls */}
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-        <div className="flex   lg:items-center  justify-between gap-4 mb-6">
-          <div>
-            <h2 className="md:text-2xl text-base font-bold text-[#0A1D37] mb-2">
-              مدیریت رزروهای حضوری
-            </h2>
-            <p className="text-gray-600 text-xs md:text-base">
-              مجموع {pagination.totalCount} رزرو ثبت شده
-            </p>
-          </div>
-
-          <div className="flex gap-3">
-            <button
-              onClick={fetchReservations}
-              className="px-4 py-2 bg-[#4DBFF0] text-white rounded-lg hover:bg-[#4DBFF0]/90 transition-colors"
-            >
-              بروزرسانی
-            </button>
-          </div>
-        </div>
-
+      <div className="bg-white   mb-6">
         {/* Filters */}
-        <div className="grid grid-cols-1 md:grid-cols-3 justify-center items-center gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-6 justify-center items-center gap-4">
           {/* Search */}
-          <div className="relative">
+          <div className="relative col-span-4">
             <FaSearch className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
             <input
               type="text"
@@ -329,28 +308,19 @@ const HozoriAdminList = () => {
               onKeyPress={(e) => e.key === "Enter" && handleSearch()}
               className="w-full pr-10 pl-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#4DBFF0] focus:border-transparent"
             />
-          </div>
-          <div className="flex ">
-            {" "}
-            {/* Status Filter */}
-            <select
-              value={statusFilter}
-              onChange={(e) => handleStatusFilterChange(e.target.value)}
-              className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#4DBFF0] focus:border-transparent"
-            >
-              <option value="">همه وضعیت‌ها</option>
-              <option value="pending">در انتظار</option>
-              <option value="confirmed">تأیید شده</option>
-              <option value="completed">تکمیل شده</option>
-              <option value="cancelled">لغو شده</option>
-            </select>
-            {/* Page Size */}
-        
-          </div>
-        </div>
-
-        {/* Search Button */}
-        <div className="mt-4">
+          </div>{" "}
+          {/* Status Filter */}
+          <select
+            value={statusFilter}
+            onChange={(e) => handleStatusFilterChange(e.target.value)}
+            className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#4DBFF0] focus:border-transparent"
+          >
+            <option value="">همه وضعیت‌ها</option>
+            <option value="pending">در انتظار</option>
+            <option value="confirmed">تأیید شده</option>
+            <option value="completed">تکمیل شده</option>
+            <option value="cancelled">لغو شده</option>
+          </select>
           <button
             onClick={handleSearch}
             className="px-6 py-2 bg-[#0A1D37] text-white rounded-lg hover:bg-[#0A1D37]/90 transition-colors"

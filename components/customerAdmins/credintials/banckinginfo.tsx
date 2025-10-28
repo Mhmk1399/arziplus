@@ -194,25 +194,8 @@ const BankingInfo = ({
   };
 
   return (
-    <div className="w-full max-w-4xl mx-auto">
-      {/* Header */}
-      <div className="mb-8">
-        <div className="flex items-center gap-3 mb-4">
-          <div className="p-3 bg-indigo-100 rounded-xl">
-            <FaUniversity className="text-indigo-700 text-xl" />
-          </div>
-          <div>
-            <h2
-              className={`text-2xl font-bold text-gray-900 ${estedadBold.className}`}
-            >
-              اطلاعات بانکی
-            </h2>
-            <p className="text-gray-600 mt-1">
-              اطلاعات حساب بانکی خود را برای دریافت درآمد وارد کنید
-            </p>
-          </div>
-        </div>
-      </div>
+    <div className="w-full max-w-7xl mx-auto">
+  
       {/* Status Display */}
       {formData.status && (
         <div

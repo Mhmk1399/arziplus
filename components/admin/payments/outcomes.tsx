@@ -11,6 +11,14 @@ import {
   FiX,
   FiClock,
 } from "react-icons/fi";
+import { FaHourglassHalf } from "react-icons/fa";
+import {
+  FaList,
+  FaClock,
+  FaCheckCircle,
+  FaTimesCircle,
+  FaMoneyBillWave,
+} from "react-icons/fa";
 
 interface banckinfo {
   cardNumber: string;
@@ -55,6 +63,120 @@ interface Stats {
   totalAmount: number;
   pendingAmount: number;
 }
+
+interface RequestStats {
+  total: number;
+  pending: number;
+  approved: number;
+  rejected: number;
+  totalAmount: number;
+  pendingAmount: number;
+}
+
+interface StatConfig {
+  id: string;
+  label: string;
+  key: keyof RequestStats;
+  icon?: React.ComponentType<{ className?: string }>;
+  isCurrency?: boolean;
+  colors: {
+    text: string;
+    number: string;
+    bg?: string;
+    border?: string;
+    iconBg?: string;
+    icon?: string;
+  };
+}
+
+const requestStatsConfig: StatConfig[] = [
+  {
+    id: "total",
+    label: "کل درخواست‌ها",
+    key: "total",
+    icon: FaList,
+    colors: {
+      text: "text-gray-600",
+      number: "text-[#0A1D37]",
+      bg: "bg-blue-50",
+      border: "border-blue-200",
+      iconBg: "bg-blue-500/10",
+      icon: "text-blue-500",
+    },
+  },
+  {
+    id: "pending",
+    label: "در انتظار",
+    key: "pending",
+    icon: FaClock,
+    colors: {
+      text: "text-gray-600",
+      number: "text-yellow-600",
+      bg: "bg-yellow-50",
+      border: "border-yellow-200",
+      iconBg: "bg-yellow-500/10",
+      icon: "text-yellow-500",
+    },
+  },
+  {
+    id: "approved",
+    label: "تایید شده",
+    key: "approved",
+    icon: FaCheckCircle,
+    colors: {
+      text: "text-gray-600",
+      number: "text-green-600",
+      bg: "bg-green-50",
+      border: "border-green-200",
+      iconBg: "bg-green-500/10",
+      icon: "text-green-500",
+    },
+  },
+  {
+    id: "rejected",
+    label: "رد شده",
+    key: "rejected",
+    icon: FaTimesCircle,
+    colors: {
+      text: "text-gray-600",
+      number: "text-red-600",
+      bg: "bg-red-50",
+      border: "border-red-200",
+      iconBg: "bg-red-500/10",
+      icon: "text-red-500",
+    },
+  },
+  {
+    id: "totalAmount",
+    label: "مبلغ تایید شده",
+    key: "totalAmount",
+    icon: FaMoneyBillWave,
+    isCurrency: true,
+    colors: {
+      text: "text-gray-600",
+      number: "text-green-600",
+      bg: "bg-green-50",
+      border: "border-green-200",
+      iconBg: "bg-green-500/10",
+      icon: "text-green-500",
+    },
+  },
+  {
+    id: "pendingAmount",
+    label: "مبلغ در انتظار",
+    key: "pendingAmount",
+    icon: FaHourglassHalf,
+    isCurrency: true,
+    colors: {
+      text: "text-gray-600",
+      number: "text-yellow-600",
+      bg: "bg-yellow-50",
+      border: "border-yellow-200",
+      iconBg: "bg-yellow-500/10",
+      icon: "text-yellow-500",
+    },
+  },
+];
 
 const WithdrawRequestsList: React.FC = () => {
   const [withdrawRequests, setWithdrawRequests] = useState<WithdrawRequest[]>(
@@ -358,118 +480,73 @@ const WithdrawRequestsList: React.FC = () => {
   }
 
   return (
-    <div className="space-y-6 my-8">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-        <div>
-          <h1 className="text-2xl font-bold text-[#0A1D37] flex items-center gap-3">
-            <span className="w-3 h-3 bg-[#0A1D37] rounded-full"></span>
-            مدیریت درخواست‌های برداشت
-          </h1>
-          <p className="text-gray-600 mt-1">
-            مشاهده و مدیریت تمام درخواست‌های برداشت کاربران
-          </p>
-        </div>
-        <button
-          onClick={exportRequests}
-          className="flex items-center gap-2 px-4 py-2 bg-[#0A1D37] text-white rounded-lg hover:bg-[#0A1D37]/90 transition-colors"
-        >
-          <FiDownload />
-          خروجی CSV
-        </button>
-      </div>
-
+    <div className="space-y-6 my-8 max-w-7xl mx-auto">
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
-        <div className="bg-white p-4 rounded-xl border border-[#0A1D37]/10">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-gray-600">کل درخواست‌ها</p>
-              <p className="text-2xl font-bold text-[#0A1D37]">
-                {stats.total.toLocaleString("fa-IR")}
-              </p>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-3 sm:gap-4">
+        {requestStatsConfig.map(
+          ({ id, label, key, icon: Icon, isCurrency, colors }) => (
+            <div
+              key={id}
+              className={`group bg-white hover:${colors.bg} p-4 sm:p-5 rounded-xl sm:rounded-2xl border-2 border-[#0A1D37]/10 hover:${colors.border} hover:shadow-lg transition-all duration-300 hover:scale-[1.02]`}
+            >
+              <div className="flex items-start justify-between gap-3">
+                <div className="space-y-1 sm:space-y-2 flex-1">
+                  <p
+                    className={`text-xs sm:text-sm ${colors.text} font-medium`}
+                  >
+                    {label}
+                  </p>
+                  <p
+                    className={`text-xl sm:text-2xl font-bold ${colors.number} transition-transform duration-300 group-hover:scale-105`}
+                  >
+                    {isCurrency
+                      ? formatCurrency(stats[key] as number)
+                      : (stats[key] as number).toLocaleString("fa-IR")}
+                  </p>
+                </div>
+                {Icon && (
+                  <div
+                    className={`w-10 h-10 sm:w-12 sm:h-12 ${colors.iconBg} rounded-xl flex items-center justify-center transition-all duration-300 group-hover:scale-110 group-hover:rotate-6`}
+                  >
+                    <Icon className={`${colors.icon} text-lg sm:text-xl`} />
+                  </div>
+                )}
+              </div>
             </div>
-          </div>
-        </div>
-        <div className="bg-white p-4 rounded-xl border border-[#0A1D37]/10">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-gray-600">در انتظار</p>
-              <p className="text-2xl font-bold text-yellow-600">
-                {stats.pending.toLocaleString("fa-IR")}
-              </p>
-            </div>
-          </div>
-        </div>
-        <div className="bg-white p-4 rounded-xl border border-[#0A1D37]/10">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-gray-600">تایید شده</p>
-              <p className="text-2xl font-bold text-green-600">
-                {stats.approved.toLocaleString("fa-IR")}
-              </p>
-            </div>
-          </div>
-        </div>
-        <div className="bg-white p-4 rounded-xl border border-[#0A1D37]/10">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-gray-600">رد شده</p>
-              <p className="text-2xl font-bold text-red-600">
-                {stats.rejected.toLocaleString("fa-IR")}
-              </p>
-            </div>
-          </div>
-        </div>
-        <div className="bg-white p-4 rounded-xl border border-[#0A1D37]/10">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-gray-600">مبلغ تایید شده</p>
-              <p className="text-lg font-bold text-green-600">
-                {formatCurrency(stats.totalAmount)}
-              </p>
-            </div>
-          </div>
-        </div>
-        <div className="bg-white p-4 rounded-xl border border-[#0A1D37]/10">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-gray-600">مبلغ در انتظار</p>
-              <p className="text-lg font-bold text-yellow-600">
-                {formatCurrency(stats.pendingAmount)}
-              </p>
-            </div>
-          </div>
-        </div>
+          )
+        )}
       </div>
 
       {/* Filters */}
-      <div className="bg-white p-4 rounded-xl border border-[#0A1D37]/10">
-        <div className="flex flex-col sm:flex-row gap-4">
-          <div className="flex-1">
-            <div className="relative">
-              <FiSearch className="absolute right-3 top-3 h-4 w-4 text-gray-400" />
-              <input
-                type="text"
-                placeholder="جستجو بر اساس نام کاربری، نام، یا شماره تلفن..."
-                className="w-full pr-10 pl-3 py-2 border border-[#0A1D37]/20 rounded-lg focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] transition-colors"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
-            </div>
+      <div className="bg-white  ">
+        <div className="grid grid-cols-6 gap-4">
+          <div className="relative col-span-4">
+            <FiSearch className="absolute right-3 top-3 h-4 w-4 text-gray-400" />
+            <input
+              type="text"
+              placeholder="جستجو بر اساس نام کاربری، نام، یا شماره تلفن..."
+              className="w-full pr-10 pl-3 py-2 border border-[#0A1D37]/20 rounded-lg focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] transition-colors"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
           </div>
-          <div className="flex flex-col sm:flex-row gap-2">
-            <select
-              value={statusFilter}
-              onChange={(e) => setStatusFilter(e.target.value)}
-              className="px-3 py-2 border border-[#0A1D37]/20 rounded-lg focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] transition-colors"
-            >
-              <option value="">همه وضعیت‌ها</option>
-              <option value="pending">در انتظار</option>
-              <option value="approved">تایید شده</option>
-              <option value="rejected">رد شده</option>
-            </select>
-          </div>
+          <select
+            value={statusFilter}
+            onChange={(e) => setStatusFilter(e.target.value)}
+            className="px-3 py-2 border border-[#0A1D37]/20 rounded-lg focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] transition-colors"
+          >
+            <option value="">همه وضعیت‌ها</option>
+            <option value="pending">در انتظار</option>
+            <option value="approved">تایید شده</option>
+            <option value="rejected">رد شده</option>
+          </select>
+          <button
+            onClick={exportRequests}
+            className="flex items-center gap-2 px-4 py-2 bg-[#0A1D37] text-white rounded-lg hover:bg-[#0A1D37]/90 transition-colors"
+          >
+            <FiDownload />
+            خروجی CSV
+          </button>
         </div>
       </div>
 

@@ -13,6 +13,8 @@ import {
   FaSpinner,
   FaCamera,
   FaUserCircle,
+  FaInfoCircle,
+  FaCheck,
 } from "react-icons/fa";
 import { showToast } from "@/utilities/toast";
 import FileUploaderModal from "@/components/FileUploaderModal";
@@ -95,7 +97,6 @@ const Security = ({
   const [isSaved, setIsSaved] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-
   const [isFileModalOpen, setIsFileModalOpen] = useState(false);
 
   // Load current user data on component mount
@@ -114,8 +115,6 @@ const Security = ({
         if (response.ok) {
           const userData = await response.json();
           const user = userData.user;
-
-          console.log("Loaded user data:", user);
 
           setFormData((prev) => ({
             ...prev,
@@ -180,7 +179,6 @@ const Security = ({
   const validateForm = (): boolean => {
     const newErrors: Partial<SecurityData & { confirmPassword: string }> = {};
 
-    // Username validation
     if (!formData.username.trim()) {
       newErrors.username = "نام کاربری الزامی است";
     } else if (!validateUsername(formData.username)) {
@@ -188,7 +186,6 @@ const Security = ({
         "نام کاربری باید 3-30 کاراکتر و شامل حروف، اعداد و _ باشد";
     }
 
-    // Password validation (only if provided)
     if (formData.password) {
       if (!validatePassword(formData.password)) {
         newErrors.password =
@@ -251,11 +248,9 @@ const Security = ({
       }
     } else {
       setFormData((prev) => ({ ...prev, [field]: value }));
-      console.log(formData);
     }
     setIsSaved(false);
 
-    // Clear error for this field
     if (errors[field as keyof typeof errors]) {
       setErrors((prev) => ({ ...prev, [field]: undefined }));
     }
@@ -274,7 +269,6 @@ const Security = ({
     try {
       const token = localStorage.getItem("authToken");
 
-      // Get current user info to determine userId
       const currentUserResponse = await fetch("/api/auth/me", {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -307,8 +301,6 @@ const Security = ({
         },
       };
 
-      console.log("Sending security data:", requestData);
-
       const response = await fetch("/api/users", {
         method: "PATCH",
         headers: {
@@ -320,20 +312,17 @@ const Security = ({
 
       if (!response.ok) {
         const errorData = await response.json();
-        console.log("Security API Error Response:", errorData);
         throw new Error(
           errorData.error || `خطا در ذخیره اطلاعات (${response.status})`
         );
       }
 
       const result = await response.json();
-      console.log(result);
       onSave?.(formData);
       setIsSaved(true);
       showToast.success("تنظیمات امنیتی با موفقیت ذخیره شد");
       setTimeout(() => setIsSaved(false), 3000);
     } catch (error) {
-      console.log("Error saving security settings:", error);
       showToast.error(
         error instanceof Error ? error.message : "خطا در ذخیره اطلاعات"
       );
@@ -345,68 +334,75 @@ const Security = ({
   const passwordStrength = getPasswordStrength(formData.password);
 
   return (
-    <div className="w-full min-h-screen sm:p-4 lg:p-6" dir="rtl">
-      <div className="max-w-5xl mx-auto">
-        {/* Main Form */}
-        <div className="bg-white rounded-2xl sm:rounded-3xl shadow-lg border-2 border-gray-100 overflow-hidden">
-          <div className="bg-gradient-to-r from-[#4DBFF0]/10 to-[#0A1D37]/5 px-4 sm:px-6 lg:px-8 py-4 sm:py-5 border-b border-gray-100">
-            <h3 className="text-base sm:text-lg lg:text-xl font-bold text-[#0A1D37] flex items-center gap-2 sm:gap-3">
-              <div className="w-8 h-8 sm:w-10 sm:h-10 bg-white rounded-xl flex items-center justify-center shadow-sm">
-                <FaUser className="text-[#0A1D37] text-sm sm:text-base" />
-              </div>
-              <span>اطلاعات حساب کاربری</span>
-            </h3>
-          </div>
+    <div
+      className="w-full min-h-screen   p-3 sm:p-6 lg:p-8"
+      dir="rtl"
+    >
+      <div className="max-w-7xl mx-auto">
+        
 
+        {/* Main Form */}
+        <div className="bg-white rounded-2xl sm:rounded-3xl   overflow-hidden">
           <div className="p-4 sm:p-6 lg:p-8 space-y-6 sm:space-y-8">
             {/* Profile Section */}
-            <div className="bg-gradient-to-br from-blue-50 to-indigo-50/30 rounded-2xl sm:rounded-3xl p-4 sm:p-6 border-2 border-blue-100">
-              <div className="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6">
-                <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-r from-blue-500/20 to-indigo-500/10 rounded-xl flex items-center justify-center">
-                  <FaUserCircle className="text-blue-600 text-sm sm:text-base" />
-                </div>
-                <div>
-                  <h4 className="text-base sm:text-lg font-bold text-[#0A1D37]">
-                    پروفایل کاربری
-                  </h4>
-                  <p className="text-xs sm:text-sm text-gray-600">
-                    تصویر، بیوگرافی و تنظیمات شخصی
-                  </p>
+            <div className="relative">
+              {/* Section Header */}
+              <div className="flex items-start sm:items-center justify-between mb-5 sm:mb-6 pb-4 sm:pb-5 border-b-2 border-gray-100">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-blue-500/10 to-indigo-500/10 rounded-xl flex items-center justify-center">
+                    <FaUserCircle className="text-blue-600 text-lg sm:text-xl" />
+                  </div>
+                  <div>
+                    <h3 className="text-lg sm:text-xl font-bold text-gray-900">
+                      پروفایل کاربری
+                    </h3>
+                    <p className="text-xs sm:text-sm text-gray-500 mt-0.5">
+                      تصویر و اطلاعات شخصی
+                    </p>
+                  </div>
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
+              {/* Avatar & Bio Grid */}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 sm:gap-6 lg:gap-8">
                 {/* Avatar Section */}
-                <div className="space-y-3">
-                  <label className="flex items-center gap-2 text-sm sm:text-base font-bold text-[#0A1D37]">
-                    <FaCamera className="text-blue-500 text-sm sm:text-base" />
+                <div className="space-y-4">
+                  <label className="flex items-center gap-2 text-sm font-semibold text-gray-700">
+                    <FaCamera className="text-blue-500" />
                     <span>تصویر پروفایل</span>
                   </label>
 
-                  <div className="flex items-center gap-4">
+                  <div className="flex items-center gap-4 sm:gap-5 p-4 sm:p-5 bg-gradient-to-br from-gray-50 to-blue-50/30 rounded-2xl border-2 border-dashed border-gray-200 hover:border-blue-300 transition-all duration-300">
                     {/* Avatar Display */}
-                    <div className="relative w-20 h-20 sm:w-24 sm:h-24 rounded-full overflow-hidden border-4 border-blue-200 bg-gradient-to-br from-blue-100 to-indigo-100">
-                      {formData.profile.avatar ? (
-                        <Image
-                          src={formData.profile.avatar}
-                          alt="تصویر پروفایل"
-                          fill
-                          className="object-cover"
-                          unoptimized={true}
-                        />
-                      ) : (
-                        <div className="w-full h-full flex items-center justify-center">
-                          <FaUserCircle className="text-blue-400 text-3xl sm:text-4xl" />
+                    <div className="relative">
+                      <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl overflow-hidden border-4 border-white shadow-lg bg-gradient-to-br from-blue-100 to-indigo-100">
+                        {formData.profile.avatar ? (
+                          <Image
+                            src={formData.profile.avatar}
+                            alt="تصویر پروفایل"
+                            fill
+                            className="object-cover"
+                            unoptimized={true}
+                          />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center">
+                            <FaUserCircle className="text-blue-300 text-4xl sm:text-5xl" />
+                          </div>
+                        )}
+                      </div>
+                      {formData.profile.avatar && (
+                        <div className="absolute -top-1 -right-1 w-6 h-6 bg-green-500 rounded-full border-2 border-white flex items-center justify-center">
+                          <FaCheck className="text-white text-xs" />
                         </div>
                       )}
                     </div>
 
-                    {/* Upload Button */}
-                    <div className="flex-1">
+                    {/* Upload Controls */}
+                    <div className="flex-1 space-y-2">
                       <button
                         type="button"
                         onClick={() => setIsFileModalOpen(true)}
-                        className="w-full px-4 py-3 bg-white border-2 border-blue-200 rounded-xl hover:border-blue-300 hover:bg-blue-50 transition-all duration-300 flex items-center justify-center gap-2 text-sm sm:text-base font-medium text-blue-700"
+                        className="w-full px-4 py-2.5 sm:py-3 bg-white border-2 border-blue-200 rounded-xl hover:border-blue-400 hover:bg-blue-50 transition-all duration-300 flex items-center justify-center gap-2 text-sm font-semibold text-blue-700 shadow-sm hover:shadow"
                       >
                         <FaCamera className="text-sm" />
                         <span>انتخاب تصویر</span>
@@ -417,64 +413,89 @@ const Security = ({
                           onClick={() =>
                             handleInputChange("profile.avatar", "")
                           }
-                          className="w-full mt-2 px-4 py-2 bg-red-50 border border-red-200 rounded-lg hover:bg-red-100 transition-all duration-300 text-xs sm:text-sm font-medium text-red-600"
+                          className="w-full px-4 py-2 bg-red-50 border border-red-200 rounded-lg hover:bg-red-100 transition-all duration-300 text-xs sm:text-sm font-medium text-red-600"
                         >
                           حذف تصویر
                         </button>
                       )}
                     </div>
                   </div>
+
+                  {/* Image Tips */}
+                  <div className="flex items-start gap-2 p-3 bg-blue-50 rounded-xl border border-blue-100">
+                    <FaInfoCircle className="text-blue-500 text-sm mt-0.5 flex-shrink-0" />
+                    <p className="text-xs text-blue-700">
+                      فرمت‌های مجاز: JPG, PNG, GIF, WEBP - حداکثر حجم: 5MB
+                    </p>
+                  </div>
                 </div>
 
                 {/* Bio Section */}
-                <div className="space-y-3">
-                  <label className="flex items-center gap-2 text-sm sm:text-base font-bold text-[#0A1D37]">
-                    <FaUser className="text-blue-500 text-sm sm:text-base" />
+                <div className="space-y-4">
+                  <label className="flex items-center gap-2 text-sm font-semibold text-gray-700">
+                    <FaUser className="text-blue-500" />
                     <span>بیوگرافی</span>
-                    <span className="text-gray-400 text-xs sm:text-sm font-normal">
-                      (حداکثر 500 کاراکتر)
+                    <span className="text-gray-400 text-xs font-normal">
+                      (اختیاری)
                     </span>
                   </label>
-                  <textarea
-                    value={formData.profile.bio}
-                    onChange={(e) =>
-                      handleInputChange("profile.bio", e.target.value)
-                    }
-                    placeholder="درباره خود بنویسید..."
-                    maxLength={500}
-                    rows={4}
-                    className="w-full px-4 sm:px-5 py-3 sm:py-4 rounded-xl sm:rounded-2xl border-2 border-gray-200 bg-white focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition-all duration-300 text-sm sm:text-base resize-none"
-                  />
-                  <div className="text-xs text-gray-500 text-left">
-                    {formData.profile.bio.length}/500
+                  <div className="relative">
+                    <textarea
+                      value={formData.profile.bio}
+                      onChange={(e) =>
+                        handleInputChange("profile.bio", e.target.value)
+                      }
+                      placeholder="چند کلمه درباره خودتان بنویسید..."
+                      maxLength={500}
+                      rows={6}
+                      className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-300 text-sm resize-none placeholder:text-gray-400"
+                    />
+                    <div className="absolute bottom-3 left-3 text-xs text-gray-400 bg-white px-2 py-1 rounded-lg border border-gray-200">
+                      {formData.profile.bio.length}/500
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
 
+            {/* Divider */}
+            <div className="relative py-4">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t-2 border-gray-100"></div>
+              </div>
+              <div className="relative flex justify-center">
+                <span className="bg-white px-4 text-xs sm:text-sm font-medium text-gray-400">
+                  امنیت حساب
+                </span>
+              </div>
+            </div>
+
             {/* Password Section */}
-            <div className="bg-gradient-to-br from-gray-50 to-blue-50/30 rounded-2xl sm:rounded-3xl p-4 sm:p-6 border-2 border-gray-100">
-              <div className="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6">
-                <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-r from-[#4DBFF0]/20 to-[#0A1D37]/10 rounded-xl flex items-center justify-center">
-                  <FaLock className="text-[#0A1D37] text-sm sm:text-base" />
-                </div>
-                <div>
-                  <h4 className="text-base sm:text-lg font-bold text-[#0A1D37]">
-                    تغییر رمز عبور
-                  </h4>
-                  <p className="text-xs sm:text-sm text-gray-600">
-                    فقط در صورت نیاز به تغییر رمز عبور، این فیلدها را پر کنید
-                  </p>
+            <div className="relative">
+              {/* Section Header */}
+              <div className="flex items-start sm:items-center justify-between mb-5 sm:mb-6 pb-4 sm:pb-5 border-b-2 border-gray-100">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-indigo-500/10 to-purple-500/10 rounded-xl flex items-center justify-center">
+                    <FaLock className="text-indigo-600 text-lg sm:text-xl" />
+                  </div>
+                  <div>
+                    <h3 className="text-lg sm:text-xl font-bold text-gray-900">
+                      تغییر رمز عبور
+                    </h3>
+                    <p className="text-xs sm:text-sm text-gray-500 mt-0.5">
+                      فقط در صورت نیاز به تغییر رمز عبور، این فیلدها را پر کنید
+                    </p>
+                  </div>
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 sm:gap-6">
                 {/* New Password */}
                 <div className="space-y-3">
-                  <label className="flex items-center gap-2 text-sm sm:text-base font-bold text-[#0A1D37]">
-                    <FaLock className="text-[#4DBFF0] text-sm sm:text-base" />
+                  <label className="flex items-center gap-2 text-sm font-semibold text-gray-700">
+                    <FaLock className="text-indigo-500" />
                     <span>رمز عبور جدید</span>
-                    <span className="text-gray-400 text-xs sm:text-sm font-normal">
+                    <span className="text-gray-400 text-xs font-normal">
                       (اختیاری)
                     </span>
                   </label>
@@ -486,56 +507,135 @@ const Security = ({
                         handleInputChange("password", e.target.value)
                       }
                       placeholder="حداقل 6 کاراکتر"
-                      className={`w-full px-4 sm:px-5 py-3 sm:py-4 pr-12 sm:pr-14 rounded-xl sm:rounded-2xl border-2 transition-all duration-300 text-sm sm:text-base ${
+                      className={`w-full px-5 py-3.5 pr-12 rounded-xl border-2 transition-all duration-300 text-sm focus:outline-none ${
                         errors.password
-                          ? "border-red-300 bg-red-50 focus:ring-2 focus:ring-red-500/30"
+                          ? "border-red-300 bg-red-50/50 focus:ring-2 focus:ring-red-500/20 focus:border-red-500"
                           : formData.password &&
                             validatePassword(formData.password)
-                          ? "border-green-300 bg-green-50 focus:ring-2 focus:ring-green-500/30"
-                          : "border-gray-200 bg-white focus:ring-2 focus:ring-[#4DBFF0]/30 focus:border-[#4DBFF0]"
+                          ? "border-green-300 bg-green-50/50 focus:ring-2 focus:ring-green-500/20 focus:border-green-500"
+                          : "border-gray-200 bg-white focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500"
                       }`}
                       dir="ltr"
                     />
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-4 sm:right-5 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-[#0A1D37] transition-colors p-1"
+                      className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors p-1"
                     >
                       {showPassword ? (
-                        <FaEyeSlash className="text-base sm:text-lg" />
+                        <FaEyeSlash className="text-lg" />
                       ) : (
-                        <FaEye className="text-base sm:text-lg" />
+                        <FaEye className="text-lg" />
                       )}
                     </button>
                   </div>
 
                   {/* Password Strength Indicator */}
                   {formData.password && (
-                    <div className="space-y-2">
-                      <div className="flex items-center gap-2">
-                        <div className="flex-1 h-2 bg-gray-200 rounded-full overflow-hidden">
+                    <div className="space-y-3">
+                      <div className="space-y-2">
+                        <div className="flex items-center justify-between">
+                          <span className="text-xs text-gray-600 font-medium">
+                            قدرت رمز عبور:
+                          </span>
+                          <span
+                            className={`text-xs font-bold ${
+                              passwordStrength.level === 1
+                                ? "text-red-600"
+                                : passwordStrength.level === 2
+                                ? "text-yellow-600"
+                                : "text-green-600"
+                            }`}
+                          >
+                            {passwordStrength.text}
+                          </span>
+                        </div>
+                        <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
                           <div
-                            className={`h-full transition-all duration-300 ${passwordStrength.color}`}
+                            className={`h-full transition-all duration-500 ${passwordStrength.color}`}
                             style={{
                               width: `${(passwordStrength.level / 3) * 100}%`,
                             }}
                           />
                         </div>
-                        <span
-                          className={`text-xs sm:text-sm font-bold ${
-                            passwordStrength.level === 1
-                              ? "text-red-600"
-                              : passwordStrength.level === 2
-                              ? "text-yellow-600"
-                              : "text-green-600"
-                          }`}
-                        >
-                          {passwordStrength.text}
-                        </span>
                       </div>
+
+                      {/* Password Requirements */}
+                      <div className="p-3 bg-gray-50 rounded-xl border border-gray-200 space-y-2">
+                        <p className="text-xs font-semibold text-gray-700 mb-2">
+                          الزامات رمز عبور:
+                        </p>
+                        <div className="space-y-1.5">
+                          <div
+                            className={`flex items-center gap-2 text-xs ${
+                              formData.password.length >= 6
+                                ? "text-green-600"
+                                : "text-gray-500"
+                            }`}
+                          >
+                            <FaCheckCircle
+                              className={
+                                formData.password.length >= 6
+                                  ? "text-green-500"
+                                  : "text-gray-300"
+                              }
+                            />
+                            <span>حداقل 6 کاراکتر</span>
+                          </div>
+                          <div
+                            className={`flex items-center gap-2 text-xs ${
+                              /[A-Z]/.test(formData.password)
+                                ? "text-green-600"
+                                : "text-gray-500"
+                            }`}
+                          >
+                            <FaCheckCircle
+                              className={
+                                /[A-Z]/.test(formData.password)
+                                  ? "text-green-500"
+                                  : "text-gray-300"
+                              }
+                            />
+                            <span>حداقل یک حرف بزرگ (A-Z)</span>
+                          </div>
+                          <div
+                            className={`flex items-center gap-2 text-xs ${
+                              /[a-z]/.test(formData.password)
+                                ? "text-green-600"
+                                : "text-gray-500"
+                            }`}
+                          >
+                            <FaCheckCircle
+                              className={
+                                /[a-z]/.test(formData.password)
+                                  ? "text-green-500"
+                                  : "text-gray-300"
+                              }
+                            />
+                            <span>حداقل یک حرف کوچک (a-z)</span>
+                          </div>
+                          <div
+                            className={`flex items-center gap-2 text-xs ${
+                              /[0-9]/.test(formData.password)
+                                ? "text-green-600"
+                                : "text-gray-500"
+                            }`}
+                          >
+                            <FaCheckCircle
+                              className={
+                                /[0-9]/.test(formData.password)
+                                  ? "text-green-500"
+                                  : "text-gray-300"
+                              }
+                            />
+                            <span>حداقل یک عدد (0-9)</span>
+                          </div>
+                        </div>
+                      </div>
+
                       {errors.password && (
-                        <div className="flex items-center gap-2 text-red-600 text-xs sm:text-sm bg-red-50 p-2 sm:p-3 rounded-xl border border-red-200">
-                          <FaExclamationTriangle className="text-sm flex-shrink-0" />
+                        <div className="flex items-start gap-2 text-red-600 text-xs bg-red-50 p-3 rounded-xl border border-red-200">
+                          <FaExclamationTriangle className="text-sm mt-0.5 flex-shrink-0" />
                           <span>{errors.password}</span>
                         </div>
                       )}
@@ -545,8 +645,8 @@ const Security = ({
 
                 {/* Confirm Password */}
                 <div className="space-y-3">
-                  <label className="flex items-center gap-2 text-sm sm:text-base font-bold text-[#0A1D37]">
-                    <FaKey className="text-[#4DBFF0] text-sm sm:text-base" />
+                  <label className="flex items-center gap-2 text-sm font-semibold text-gray-700">
+                    <FaKey className="text-indigo-500" />
                     <span>تکرار رمز عبور</span>
                   </label>
                   <div className="relative">
@@ -556,15 +656,15 @@ const Security = ({
                       onChange={(e) =>
                         handleInputChange("confirmPassword", e.target.value)
                       }
-                      placeholder="تکرار رمز عبور"
+                      placeholder="تکرار رمز عبور جدید"
                       disabled={!formData.password}
-                      className={`w-full px-4 sm:px-5 py-3 sm:py-4 pr-12 sm:pr-14 rounded-xl sm:rounded-2xl border-2 transition-all duration-300 text-sm sm:text-base disabled:opacity-50 disabled:cursor-not-allowed ${
+                      className={`w-full px-5 py-3.5 pr-12 rounded-xl border-2 transition-all duration-300 text-sm focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-gray-50 ${
                         errors.confirmPassword
-                          ? "border-red-300 bg-red-50 focus:ring-2 focus:ring-red-500/30"
+                          ? "border-red-300 bg-red-50/50 focus:ring-2 focus:ring-red-500/20 focus:border-red-500"
                           : formData.confirmPassword &&
                             formData.password === formData.confirmPassword
-                          ? "border-green-300 bg-green-50 focus:ring-2 focus:ring-green-500/30"
-                          : "border-gray-200 bg-white focus:ring-2 focus:ring-[#4DBFF0]/30 focus:border-[#4DBFF0]"
+                          ? "border-green-300 bg-green-50/50 focus:ring-2 focus:ring-green-500/20 focus:border-green-500"
+                          : "border-gray-200 bg-white focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500"
                       }`}
                       dir="ltr"
                     />
@@ -574,50 +674,88 @@ const Security = ({
                         setShowConfirmPassword(!showConfirmPassword)
                       }
                       disabled={!formData.password}
-                      className="absolute right-4 sm:right-5 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-[#0A1D37] transition-colors disabled:opacity-50 disabled:cursor-not-allowed p-1"
+                      className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed p-1"
                     >
                       {showConfirmPassword ? (
-                        <FaEyeSlash className="text-base sm:text-lg" />
+                        <FaEyeSlash className="text-lg" />
                       ) : (
-                        <FaEye className="text-base sm:text-lg" />
+                        <FaEye className="text-lg" />
                       )}
                     </button>
-                    <div className="absolute right-4 sm:right-20 top-1/2 transform -translate-y-1/2">
-                      {errors.confirmPassword ? (
-                        <FaTimesCircle className="text-red-500 text-base sm:text-lg" />
-                      ) : formData.confirmPassword &&
-                        formData.password === formData.confirmPassword ? (
-                        <FaCheckCircle className="text-green-500 text-base sm:text-lg" />
-                      ) : (
-                        <span />
-                      )}
-                    </div>
+                    {formData.confirmPassword && (
+                      <div className="absolute left-4 top-1/2 transform -translate-y-1/2">
+                        {formData.password === formData.confirmPassword ? (
+                          <FaCheckCircle className="text-green-500 text-lg" />
+                        ) : (
+                          <FaTimesCircle className="text-red-500 text-lg" />
+                        )}
+                      </div>
+                    )}
                   </div>
+
                   {errors.confirmPassword && (
-                    <div className="flex items-center gap-2 text-red-600 text-xs sm:text-sm bg-red-50 p-2 sm:p-3 rounded-xl border border-red-200">
-                      <FaExclamationTriangle className="text-sm flex-shrink-0" />
+                    <div className="flex items-start gap-2 text-red-600 text-xs bg-red-50 p-3 rounded-xl border border-red-200">
+                      <FaExclamationTriangle className="text-sm mt-0.5 flex-shrink-0" />
                       <span>{errors.confirmPassword}</span>
                     </div>
                   )}
+
+                  {formData.confirmPassword &&
+                    formData.password === formData.confirmPassword && (
+                      <div className="flex items-start gap-2 text-green-600 text-xs bg-green-50 p-3 rounded-xl border border-green-200">
+                        <FaCheckCircle className="text-sm mt-0.5 flex-shrink-0" />
+                        <span>رمز عبور با موفقیت تطابق دارد</span>
+                      </div>
+                    )}
                 </div>
               </div>
             </div>
 
             {/* Security Tips */}
+            <div className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl p-4 sm:p-5 border-2 border-amber-100">
+              <div className="flex items-start gap-3">
+                <div className="w-8 h-8 bg-amber-500/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <FaShieldAlt className="text-amber-600 text-sm" />
+                </div>
+                <div className="space-y-2">
+                  <h4 className="text-sm font-bold text-amber-900">
+                    نکات امنیتی مهم
+                  </h4>
+                  <ul className="space-y-1.5 text-xs text-amber-800">
+                    <li className="flex items-start gap-2">
+                      <span className="text-amber-500 mt-0.5">•</span>
+                      <span>از رمز عبور قوی و منحصر به فرد استفاده کنید</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-amber-500 mt-0.5">•</span>
+                      <span>رمز عبور خود را در اختیار دیگران قرار ندهید</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-amber-500 mt-0.5">•</span>
+                      <span>به صورت دوره‌ای رمز عبور خود را تغییر دهید</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
           </div>
 
-          {/* Action Buttons */}
-          <div className="bg-gradient-to-r from-gray-50 to-blue-50/30 px-4 sm:px-6 lg:px-8 py-4 sm:py-6 border-t-2 border-gray-100">
-            <div className="flex flex-col sm:flex-row justify-end gap-3 sm:gap-4">
+          {/* Action Buttons - Sticky Footer */}
+          <div className="sticky bottom-0 bg-gradient-to-r from-gray-50 via-white to-blue-50/30 px-4 sm:px-6 lg:px-8 py-4 sm:py-5 border-t-2 border-gray-100 backdrop-blur-sm">
+            <div className="flex flex-col sm:flex-row justify-between items-center gap-3 sm:gap-4">
+              <div className="flex items-center gap-2 text-xs sm:text-sm text-gray-600 order-2 sm:order-1">
+                <FaInfoCircle className="text-blue-500" />
+                <span>تمامی تغییرات پس از ذخیره اعمال می‌شود</span>
+              </div>
               <button
                 onClick={handleSave}
                 disabled={isLoading}
-                className={`flex items-center justify-center gap-2 px-6 sm:px-8 py-3 sm:py-4 rounded-xl sm:rounded-2xl font-bold text-sm sm:text-base transition-all duration-300 ${
+                className={`w-full sm:w-auto order-1 sm:order-2 flex items-center justify-center gap-2.5 px-6 sm:px-8 py-3 sm:py-3.5 rounded-xl sm:rounded-2xl font-bold text-sm sm:text-base transition-all duration-300 shadow-lg ${
                   isLoading
                     ? "bg-gray-300 text-gray-500 cursor-not-allowed"
                     : isSaved
-                    ? "bg-green-500 text-white shadow-lg"
-                    : "bg-gradient-to-r from-[#4DBFF0] to-[#4DBFF0] text-white shadow-lg hover:shadow-xl hover:scale-105 active:scale-95"
+                    ? "bg-gradient-to-r from-green-500 to-emerald-600 text-white shadow-green-500/30 shadow-xl"
+                    : "bg-gradient-to-r from-blue-500 to-indigo-600 text-white hover:shadow-xl hover:scale-105 active:scale-95 shadow-blue-500/30"
                 }`}
               >
                 {isLoading ? (
@@ -633,7 +771,7 @@ const Security = ({
                 ) : (
                   <>
                     <FaShieldAlt className="text-lg" />
-                    <span>ذخیره تنظیمات</span>
+                    <span>ذخیره تنظیمات امنیتی</span>
                   </>
                 )}
               </button>
@@ -648,7 +786,7 @@ const Security = ({
         onClose={() => setIsFileModalOpen(false)}
         onFileUploaded={handleFileUploaded}
         acceptedTypes={[".jpg", ".jpeg", ".png", ".gif", ".webp"]}
-        maxFileSize={5 * 1024 * 1024} // 5MB
+        maxFileSize={5 * 1024 * 1024}
         title="آپلود تصویر پروفایل"
       />
     </div>

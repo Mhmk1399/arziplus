@@ -13,7 +13,6 @@ import {
   FaUser,
   FaChild,
   FaHeart,
-  
   FaIdCard,
   FaExclamationTriangle,
   FaCheckCircle,
@@ -22,7 +21,86 @@ import {
   FaReceipt,
 } from "react-icons/fa";
 import { showToast } from "@/utilities/toast";
+interface StatsData {
+  totalRequests: number;
+  pendingRequests: number;
+  approvedRequests: number;
+  rejectedRequests: number;
+}
 
+interface StatConfig {
+  id: string;
+  label: string;
+  key: keyof StatsData;
+  icon: React.ComponentType<{ className?: string }>;
+  colors: {
+    gradient: string;
+    border: string;
+    text: string;
+    number: string;
+    iconBg: string;
+    icon: string;
+  };
+}
+
+const statsConfig: StatConfig[] = [
+  {
+    id: "total",
+    label: "کل درخواست‌ها",
+    key: "totalRequests",
+    icon: FaTicketAlt,
+    colors: {
+      gradient: "from-blue-50 to-blue-100",
+      border: "border-blue-200",
+      text: "text-blue-600",
+      number: "text-blue-900",
+      iconBg: "bg-blue-500/10",
+      icon: "text-blue-500",
+    },
+  },
+  {
+    id: "pending",
+    label: "در انتظار",
+    key: "pendingRequests",
+    icon: FaClock,
+    colors: {
+      gradient: "from-orange-50 to-orange-100",
+      border: "border-orange-200",
+      text: "text-orange-600",
+      number: "text-orange-900",
+      iconBg: "bg-orange-500/10",
+      icon: "text-orange-500",
+    },
+  },
+  {
+    id: "approved",
+    label: "تایید شده",
+    key: "approvedRequests",
+    icon: FaCheckCircle,
+    colors: {
+      gradient: "from-green-50 to-green-100",
+      border: "border-green-200",
+      text: "text-green-600",
+      number: "text-green-900",
+      iconBg: "bg-green-500/10",
+      icon: "text-green-500",
+    },
+  },
+  {
+    id: "rejected",
+    label: "رد شده",
+    key: "rejectedRequests",
+    icon: FaTimes,
+    colors: {
+      gradient: "from-red-50 to-red-100",
+      border: "border-red-200",
+      text: "text-red-600",
+      number: "text-red-900",
+      iconBg: "bg-red-500/10",
+      icon: "text-red-500",
+    },
+  },
+];
 interface LotteryRegistration {
   _id: string;
   status: "pending" | "in_review" | "approved" | "rejected" | "completed";
@@ -319,72 +397,33 @@ const CustomerLotteryList = () => {
   };
 
   return (
-    <div className="space-y-6 sm:space-y-8" dir="rtl">
+    <div className="space-y-6 sm:space-y-8 max-w-7xl mx-auto" dir="rtl">
       {/* Stats Cards - Improved Grid */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-        <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-4 sm:p-6 rounded-xl sm:rounded-2xl border border-blue-200 hover:shadow-lg transition-all duration-300 hover:scale-[1.02]">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-            <div className="space-y-1">
-              <p className="text-blue-600 text-xs sm:text-sm font-medium">
-                کل درخواست‌ها
-              </p>
-              <p className="text-2xl sm:text-3xl font-bold text-blue-900">
-                {stats.totalRequests}
-              </p>
-            </div>
-            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-blue-500/10 rounded-xl flex items-center justify-center">
-              <FaTicketAlt className="text-blue-500 text-xl sm:text-2xl" />
-            </div>
-          </div>
-        </div>
-
-        <div className="bg-gradient-to-br from-orange-50 to-orange-100 p-4 sm:p-6 rounded-xl sm:rounded-2xl border border-orange-200 hover:shadow-lg transition-all duration-300 hover:scale-[1.02]">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-            <div className="space-y-1">
-              <p className="text-orange-600 text-xs sm:text-sm font-medium">
-                در انتظار
-              </p>
-              <p className="text-2xl sm:text-3xl font-bold text-orange-900">
-                {stats.pendingRequests}
-              </p>
-            </div>
-            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-orange-500/10 rounded-xl flex items-center justify-center">
-              <FaClock className="text-orange-500 text-xl sm:text-2xl" />
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mx-2 mt-2">
+        {statsConfig.map(({ id, label, key, icon: Icon, colors }) => (
+          <div
+            key={id}
+            className={`bg-gradient-to-br ${colors.gradient} p-4 sm:p-6 rounded-xl sm:rounded-2xl border ${colors.border} hover:shadow-lg transition-all duration-300 hover:scale-[1.02]`}
+          >
+            <div className="flex  flex-row items-start sm:items-center justify-between gap-3">
+              <div className="space-y-1">
+                <p className={`${colors.text} text-xs sm:text-sm font-medium`}>
+                  {label}
+                </p>
+                <p
+                  className={`text-2xl sm:text-3xl font-bold ${colors.number}`}
+                >
+                  {stats[key].toLocaleString("fa-IR")}
+                </p>
+              </div>
+              <div
+                className={`w-10 h-10 sm:w-12 sm:h-12 ${colors.iconBg} rounded-xl flex items-center justify-center`}
+              >
+                <Icon className={`${colors.icon} text-xl sm:text-2xl`} />
+              </div>
             </div>
           </div>
-        </div>
-
-        <div className="bg-gradient-to-br from-green-50 to-green-100 p-4 sm:p-6 rounded-xl sm:rounded-2xl border border-green-200 hover:shadow-lg transition-all duration-300 hover:scale-[1.02]">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-            <div className="space-y-1">
-              <p className="text-green-600 text-xs sm:text-sm font-medium">
-                تایید شده
-              </p>
-              <p className="text-2xl sm:text-3xl font-bold text-green-900">
-                {stats.approvedRequests}
-              </p>
-            </div>
-            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-green-500/10 rounded-xl flex items-center justify-center">
-              <FaCheckCircle className="text-green-500 text-xl sm:text-2xl" />
-            </div>
-          </div>
-        </div>
-
-        <div className="bg-gradient-to-br from-red-50 to-red-100 p-4 sm:p-6 rounded-xl sm:rounded-2xl border border-red-200 hover:shadow-lg transition-all duration-300 hover:scale-[1.02]">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-            <div className="space-y-1">
-              <p className="text-red-600 text-xs sm:text-sm font-medium">
-                رد شده
-              </p>
-              <p className="text-2xl sm:text-3xl font-bold text-red-900">
-                {stats.rejectedRequests}
-              </p>
-            </div>
-            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-red-500/10 rounded-xl flex items-center justify-center">
-              <FaTimes className="text-red-500 text-xl sm:text-2xl" />
-            </div>
-          </div>
-        </div>
+        ))}
       </div>
 
       {/* Lottery Registrations List */}
@@ -962,18 +1001,29 @@ const CustomerLotteryList = () => {
                   <div className="space-y-6">
                     {/* Basic Information */}
                     <div>
-                      <h4 className="text-sm font-semibold text-gray-700 mb-3">اطلاعات اولیه</h4>
+                      <h4 className="text-sm font-semibold text-gray-700 mb-3">
+                        اطلاعات اولیه
+                      </h4>
                       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                         <div className="bg-white p-4 rounded-xl border border-blue-200">
-                          <p className="text-xs sm:text-sm text-gray-600 mb-2">نام</p>
+                          <p className="text-xs sm:text-sm text-gray-600 mb-2">
+                            نام
+                          </p>
                           {isEditMode && editData ? (
                             <input
                               type="text"
-                              value={editData.registererInformations[0]?.initialInformations?.firstName || ''}
+                              value={
+                                editData.registererInformations[0]
+                                  ?.initialInformations?.firstName || ""
+                              }
                               onChange={(e) => {
                                 const newEditData = { ...editData };
-                                if (newEditData.registererInformations[0]?.initialInformations) {
-                                  newEditData.registererInformations[0].initialInformations.firstName = e.target.value;
+                                if (
+                                  newEditData.registererInformations[0]
+                                    ?.initialInformations
+                                ) {
+                                  newEditData.registererInformations[0].initialInformations.firstName =
+                                    e.target.value;
                                   setEditData(newEditData);
                                 }
                               }}
@@ -981,20 +1031,32 @@ const CustomerLotteryList = () => {
                             />
                           ) : (
                             <p className="text-sm sm:text-base font-bold text-[#0A1D37]">
-                              {selectedLottery.registererInformations[0].initialInformations.firstName}
+                              {
+                                selectedLottery.registererInformations[0]
+                                  .initialInformations.firstName
+                              }
                             </p>
                           )}
                         </div>
                         <div className="bg-white p-4 rounded-xl border border-blue-200">
-                          <p className="text-xs sm:text-sm text-gray-600 mb-2">نام خانوادگی</p>
+                          <p className="text-xs sm:text-sm text-gray-600 mb-2">
+                            نام خانوادگی
+                          </p>
                           {isEditMode && editData ? (
                             <input
                               type="text"
-                              value={editData.registererInformations[0]?.initialInformations?.lastName || ''}
+                              value={
+                                editData.registererInformations[0]
+                                  ?.initialInformations?.lastName || ""
+                              }
                               onChange={(e) => {
                                 const newEditData = { ...editData };
-                                if (newEditData.registererInformations[0]?.initialInformations) {
-                                  newEditData.registererInformations[0].initialInformations.lastName = e.target.value;
+                                if (
+                                  newEditData.registererInformations[0]
+                                    ?.initialInformations
+                                ) {
+                                  newEditData.registererInformations[0].initialInformations.lastName =
+                                    e.target.value;
                                   setEditData(newEditData);
                                 }
                               }}
@@ -1002,19 +1064,31 @@ const CustomerLotteryList = () => {
                             />
                           ) : (
                             <p className="text-sm sm:text-base font-bold text-[#0A1D37]">
-                              {selectedLottery.registererInformations[0].initialInformations.lastName}
+                              {
+                                selectedLottery.registererInformations[0]
+                                  .initialInformations.lastName
+                              }
                             </p>
                           )}
                         </div>
                         <div className="bg-white p-4 rounded-xl border border-blue-200">
-                          <p className="text-xs sm:text-sm text-gray-600 mb-2">جنسیت</p>
+                          <p className="text-xs sm:text-sm text-gray-600 mb-2">
+                            جنسیت
+                          </p>
                           {isEditMode && editData ? (
                             <select
-                              value={editData.registererInformations[0]?.initialInformations?.gender || 'male'}
+                              value={
+                                editData.registererInformations[0]
+                                  ?.initialInformations?.gender || "male"
+                              }
                               onChange={(e) => {
                                 const newEditData = { ...editData };
-                                if (newEditData.registererInformations[0]?.initialInformations) {
-                                  newEditData.registererInformations[0].initialInformations.gender = e.target.value;
+                                if (
+                                  newEditData.registererInformations[0]
+                                    ?.initialInformations
+                                ) {
+                                  newEditData.registererInformations[0].initialInformations.gender =
+                                    e.target.value;
                                   setEditData(newEditData);
                                 }
                               }}
@@ -1025,22 +1099,34 @@ const CustomerLotteryList = () => {
                             </select>
                           ) : (
                             <p className="text-sm sm:text-base font-bold text-[#0A1D37]">
-                              {selectedLottery.registererInformations[0].initialInformations.gender === 'male' ? 'مرد' : 'زن'}
+                              {selectedLottery.registererInformations[0]
+                                .initialInformations.gender === "male"
+                                ? "مرد"
+                                : "زن"}
                             </p>
                           )}
                         </div>
                         <div className="bg-white p-4 rounded-xl border border-blue-200">
-                          <p className="text-xs sm:text-sm text-gray-600 mb-2">تاریخ تولد</p>
+                          <p className="text-xs sm:text-sm text-gray-600 mb-2">
+                            تاریخ تولد
+                          </p>
                           {isEditMode && editData ? (
                             <div className="flex gap-2">
                               <input
                                 type="text"
                                 placeholder="سال"
-                                value={editData.registererInformations[0]?.initialInformations?.birthDate?.year || ''}
+                                value={
+                                  editData.registererInformations[0]
+                                    ?.initialInformations?.birthDate?.year || ""
+                                }
                                 onChange={(e) => {
                                   const newEditData = { ...editData };
-                                  if (newEditData.registererInformations[0]?.initialInformations?.birthDate) {
-                                    newEditData.registererInformations[0].initialInformations.birthDate.year = e.target.value;
+                                  if (
+                                    newEditData.registererInformations[0]
+                                      ?.initialInformations?.birthDate
+                                  ) {
+                                    newEditData.registererInformations[0].initialInformations.birthDate.year =
+                                      e.target.value;
                                     setEditData(newEditData);
                                   }
                                 }}
@@ -1049,11 +1135,19 @@ const CustomerLotteryList = () => {
                               <input
                                 type="text"
                                 placeholder="ماه"
-                                value={editData.registererInformations[0]?.initialInformations?.birthDate?.month || ''}
+                                value={
+                                  editData.registererInformations[0]
+                                    ?.initialInformations?.birthDate?.month ||
+                                  ""
+                                }
                                 onChange={(e) => {
                                   const newEditData = { ...editData };
-                                  if (newEditData.registererInformations[0]?.initialInformations?.birthDate) {
-                                    newEditData.registererInformations[0].initialInformations.birthDate.month = e.target.value;
+                                  if (
+                                    newEditData.registererInformations[0]
+                                      ?.initialInformations?.birthDate
+                                  ) {
+                                    newEditData.registererInformations[0].initialInformations.birthDate.month =
+                                      e.target.value;
                                     setEditData(newEditData);
                                   }
                                 }}
@@ -1062,11 +1156,18 @@ const CustomerLotteryList = () => {
                               <input
                                 type="text"
                                 placeholder="روز"
-                                value={editData.registererInformations[0]?.initialInformations?.birthDate?.day || ''}
+                                value={
+                                  editData.registererInformations[0]
+                                    ?.initialInformations?.birthDate?.day || ""
+                                }
                                 onChange={(e) => {
                                   const newEditData = { ...editData };
-                                  if (newEditData.registererInformations[0]?.initialInformations?.birthDate) {
-                                    newEditData.registererInformations[0].initialInformations.birthDate.day = e.target.value;
+                                  if (
+                                    newEditData.registererInformations[0]
+                                      ?.initialInformations?.birthDate
+                                  ) {
+                                    newEditData.registererInformations[0].initialInformations.birthDate.day =
+                                      e.target.value;
                                     setEditData(newEditData);
                                   }
                                 }}
@@ -1075,22 +1176,42 @@ const CustomerLotteryList = () => {
                             </div>
                           ) : (
                             <p className="text-sm sm:text-base font-bold text-[#0A1D37]">
-                              {selectedLottery.registererInformations[0].initialInformations.birthDate.year}/
-                              {selectedLottery.registererInformations[0].initialInformations.birthDate.month}/
-                              {selectedLottery.registererInformations[0].initialInformations.birthDate.day}
+                              {
+                                selectedLottery.registererInformations[0]
+                                  .initialInformations.birthDate.year
+                              }
+                              /
+                              {
+                                selectedLottery.registererInformations[0]
+                                  .initialInformations.birthDate.month
+                              }
+                              /
+                              {
+                                selectedLottery.registererInformations[0]
+                                  .initialInformations.birthDate.day
+                              }
                             </p>
                           )}
                         </div>
                         <div className="bg-white p-4 rounded-xl border border-blue-200">
-                          <p className="text-xs sm:text-sm text-gray-600 mb-2">کشور</p>
+                          <p className="text-xs sm:text-sm text-gray-600 mb-2">
+                            کشور
+                          </p>
                           {isEditMode && editData ? (
                             <input
                               type="text"
-                              value={editData.registererInformations[0]?.initialInformations?.country || ''}
+                              value={
+                                editData.registererInformations[0]
+                                  ?.initialInformations?.country || ""
+                              }
                               onChange={(e) => {
                                 const newEditData = { ...editData };
-                                if (newEditData.registererInformations[0]?.initialInformations) {
-                                  newEditData.registererInformations[0].initialInformations.country = e.target.value;
+                                if (
+                                  newEditData.registererInformations[0]
+                                    ?.initialInformations
+                                ) {
+                                  newEditData.registererInformations[0].initialInformations.country =
+                                    e.target.value;
                                   setEditData(newEditData);
                                 }
                               }}
@@ -1098,20 +1219,32 @@ const CustomerLotteryList = () => {
                             />
                           ) : (
                             <p className="text-sm sm:text-base font-bold text-[#0A1D37]">
-                              {selectedLottery.registererInformations[0].initialInformations.country}
+                              {
+                                selectedLottery.registererInformations[0]
+                                  .initialInformations.country
+                              }
                             </p>
                           )}
                         </div>
                         <div className="bg-white p-4 rounded-xl border border-blue-200">
-                          <p className="text-xs sm:text-sm text-gray-600 mb-2">شهر</p>
+                          <p className="text-xs sm:text-sm text-gray-600 mb-2">
+                            شهر
+                          </p>
                           {isEditMode && editData ? (
                             <input
                               type="text"
-                              value={editData.registererInformations[0]?.initialInformations?.city || ''}
+                              value={
+                                editData.registererInformations[0]
+                                  ?.initialInformations?.city || ""
+                              }
                               onChange={(e) => {
                                 const newEditData = { ...editData };
-                                if (newEditData.registererInformations[0]?.initialInformations) {
-                                  newEditData.registererInformations[0].initialInformations.city = e.target.value;
+                                if (
+                                  newEditData.registererInformations[0]
+                                    ?.initialInformations
+                                ) {
+                                  newEditData.registererInformations[0].initialInformations.city =
+                                    e.target.value;
                                   setEditData(newEditData);
                                 }
                               }}
@@ -1119,20 +1252,33 @@ const CustomerLotteryList = () => {
                             />
                           ) : (
                             <p className="text-sm sm:text-base font-bold text-[#0A1D37]">
-                              {selectedLottery.registererInformations[0].initialInformations.city}
+                              {
+                                selectedLottery.registererInformations[0]
+                                  .initialInformations.city
+                              }
                             </p>
                           )}
                         </div>
                         <div className="bg-white p-4 rounded-xl border border-blue-200">
-                          <p className="text-xs sm:text-sm text-gray-600 mb-2">کشور شهروندی</p>
+                          <p className="text-xs sm:text-sm text-gray-600 mb-2">
+                            کشور شهروندی
+                          </p>
                           {isEditMode && editData ? (
                             <input
                               type="text"
-                              value={editData.registererInformations[0]?.initialInformations?.citizenshipCountry || ''}
+                              value={
+                                editData.registererInformations[0]
+                                  ?.initialInformations?.citizenshipCountry ||
+                                ""
+                              }
                               onChange={(e) => {
                                 const newEditData = { ...editData };
-                                if (newEditData.registererInformations[0]?.initialInformations) {
-                                  newEditData.registererInformations[0].initialInformations.citizenshipCountry = e.target.value;
+                                if (
+                                  newEditData.registererInformations[0]
+                                    ?.initialInformations
+                                ) {
+                                  newEditData.registererInformations[0].initialInformations.citizenshipCountry =
+                                    e.target.value;
                                   setEditData(newEditData);
                                 }
                               }}
@@ -1140,7 +1286,10 @@ const CustomerLotteryList = () => {
                             />
                           ) : (
                             <p className="text-sm sm:text-base font-bold text-[#0A1D37]">
-                              {selectedLottery.registererInformations[0].initialInformations.citizenshipCountry}
+                              {
+                                selectedLottery.registererInformations[0]
+                                  .initialInformations.citizenshipCountry
+                              }
                             </p>
                           )}
                         </div>
@@ -1148,20 +1297,33 @@ const CustomerLotteryList = () => {
                     </div>
 
                     {/* Residence Information */}
-                    {selectedLottery.registererInformations[0].residanceInformation?.[0] && (
+                    {selectedLottery.registererInformations[0]
+                      .residanceInformation?.[0] && (
                       <div>
-                        <h4 className="text-sm font-semibold text-gray-700 mb-3">اطلاعات محل سکونت</h4>
+                        <h4 className="text-sm font-semibold text-gray-700 mb-3">
+                          اطلاعات محل سکونت
+                        </h4>
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                           <div className="bg-white p-4 rounded-xl border border-blue-200">
-                            <p className="text-xs sm:text-sm text-gray-600 mb-2">کشور سکونت</p>
+                            <p className="text-xs sm:text-sm text-gray-600 mb-2">
+                              کشور سکونت
+                            </p>
                             {isEditMode && editData ? (
                               <input
                                 type="text"
-                                value={editData.registererInformations[0]?.residanceInformation?.[0]?.residanceCountry || ''}
+                                value={
+                                  editData.registererInformations[0]
+                                    ?.residanceInformation?.[0]
+                                    ?.residanceCountry || ""
+                                }
                                 onChange={(e) => {
                                   const newEditData = { ...editData };
-                                  if (newEditData.registererInformations[0]?.residanceInformation?.[0]) {
-                                    newEditData.registererInformations[0].residanceInformation[0].residanceCountry = e.target.value;
+                                  if (
+                                    newEditData.registererInformations[0]
+                                      ?.residanceInformation?.[0]
+                                  ) {
+                                    newEditData.registererInformations[0].residanceInformation[0].residanceCountry =
+                                      e.target.value;
                                     setEditData(newEditData);
                                   }
                                 }}
@@ -1169,20 +1331,33 @@ const CustomerLotteryList = () => {
                               />
                             ) : (
                               <p className="text-sm sm:text-base font-bold text-[#0A1D37]">
-                                {selectedLottery.registererInformations[0].residanceInformation[0].residanceCountry}
+                                {
+                                  selectedLottery.registererInformations[0]
+                                    .residanceInformation[0].residanceCountry
+                                }
                               </p>
                             )}
                           </div>
                           <div className="bg-white p-4 rounded-xl border border-blue-200">
-                            <p className="text-xs sm:text-sm text-gray-600 mb-2">شهر سکونت</p>
+                            <p className="text-xs sm:text-sm text-gray-600 mb-2">
+                              شهر سکونت
+                            </p>
                             {isEditMode && editData ? (
                               <input
                                 type="text"
-                                value={editData.registererInformations[0]?.residanceInformation?.[0]?.residanceCity || ''}
+                                value={
+                                  editData.registererInformations[0]
+                                    ?.residanceInformation?.[0]
+                                    ?.residanceCity || ""
+                                }
                                 onChange={(e) => {
                                   const newEditData = { ...editData };
-                                  if (newEditData.registererInformations[0]?.residanceInformation?.[0]) {
-                                    newEditData.registererInformations[0].residanceInformation[0].residanceCity = e.target.value;
+                                  if (
+                                    newEditData.registererInformations[0]
+                                      ?.residanceInformation?.[0]
+                                  ) {
+                                    newEditData.registererInformations[0].residanceInformation[0].residanceCity =
+                                      e.target.value;
                                     setEditData(newEditData);
                                   }
                                 }}
@@ -1190,20 +1365,33 @@ const CustomerLotteryList = () => {
                               />
                             ) : (
                               <p className="text-sm sm:text-base font-bold text-[#0A1D37]">
-                                {selectedLottery.registererInformations[0].residanceInformation[0].residanceCity}
+                                {
+                                  selectedLottery.registererInformations[0]
+                                    .residanceInformation[0].residanceCity
+                                }
                               </p>
                             )}
                           </div>
                           <div className="bg-white p-4 rounded-xl border border-blue-200">
-                            <p className="text-xs sm:text-sm text-gray-600 mb-2">استان</p>
+                            <p className="text-xs sm:text-sm text-gray-600 mb-2">
+                              استان
+                            </p>
                             {isEditMode && editData ? (
                               <input
                                 type="text"
-                                value={editData.registererInformations[0]?.residanceInformation?.[0]?.residanseState || ''}
+                                value={
+                                  editData.registererInformations[0]
+                                    ?.residanceInformation?.[0]
+                                    ?.residanseState || ""
+                                }
                                 onChange={(e) => {
                                   const newEditData = { ...editData };
-                                  if (newEditData.registererInformations[0]?.residanceInformation?.[0]) {
-                                    newEditData.registererInformations[0].residanceInformation[0].residanseState = e.target.value;
+                                  if (
+                                    newEditData.registererInformations[0]
+                                      ?.residanceInformation?.[0]
+                                  ) {
+                                    newEditData.registererInformations[0].residanceInformation[0].residanseState =
+                                      e.target.value;
                                     setEditData(newEditData);
                                   }
                                 }}
@@ -1211,20 +1399,33 @@ const CustomerLotteryList = () => {
                               />
                             ) : (
                               <p className="text-sm sm:text-base font-bold text-[#0A1D37]">
-                                {selectedLottery.registererInformations[0].residanceInformation[0].residanseState}
+                                {
+                                  selectedLottery.registererInformations[0]
+                                    .residanceInformation[0].residanseState
+                                }
                               </p>
                             )}
                           </div>
                           <div className="bg-white p-4 rounded-xl border border-blue-200">
-                            <p className="text-xs sm:text-sm text-gray-600 mb-2">کد پستی</p>
+                            <p className="text-xs sm:text-sm text-gray-600 mb-2">
+                              کد پستی
+                            </p>
                             {isEditMode && editData ? (
                               <input
                                 type="text"
-                                value={editData.registererInformations[0]?.residanceInformation?.[0]?.postalCode || ''}
+                                value={
+                                  editData.registererInformations[0]
+                                    ?.residanceInformation?.[0]?.postalCode ||
+                                  ""
+                                }
                                 onChange={(e) => {
                                   const newEditData = { ...editData };
-                                  if (newEditData.registererInformations[0]?.residanceInformation?.[0]) {
-                                    newEditData.registererInformations[0].residanceInformation[0].postalCode = e.target.value;
+                                  if (
+                                    newEditData.registererInformations[0]
+                                      ?.residanceInformation?.[0]
+                                  ) {
+                                    newEditData.registererInformations[0].residanceInformation[0].postalCode =
+                                      e.target.value;
                                     setEditData(newEditData);
                                   }
                                 }}
@@ -1232,19 +1433,32 @@ const CustomerLotteryList = () => {
                               />
                             ) : (
                               <p className="text-sm sm:text-base font-bold text-[#0A1D37]">
-                                {selectedLottery.registererInformations[0].residanceInformation[0].postalCode}
+                                {
+                                  selectedLottery.registererInformations[0]
+                                    .residanceInformation[0].postalCode
+                                }
                               </p>
                             )}
                           </div>
                           <div className="bg-white p-4 rounded-xl border border-blue-200 sm:col-span-2">
-                            <p className="text-xs sm:text-sm text-gray-600 mb-2">آدرس</p>
+                            <p className="text-xs sm:text-sm text-gray-600 mb-2">
+                              آدرس
+                            </p>
                             {isEditMode && editData ? (
                               <textarea
-                                value={editData.registererInformations[0]?.residanceInformation?.[0]?.residanseAdress || ''}
+                                value={
+                                  editData.registererInformations[0]
+                                    ?.residanceInformation?.[0]
+                                    ?.residanseAdress || ""
+                                }
                                 onChange={(e) => {
                                   const newEditData = { ...editData };
-                                  if (newEditData.registererInformations[0]?.residanceInformation?.[0]) {
-                                    newEditData.registererInformations[0].residanceInformation[0].residanseAdress = e.target.value;
+                                  if (
+                                    newEditData.registererInformations[0]
+                                      ?.residanceInformation?.[0]
+                                  ) {
+                                    newEditData.registererInformations[0].residanceInformation[0].residanseAdress =
+                                      e.target.value;
                                     setEditData(newEditData);
                                   }
                                 }}
@@ -1253,7 +1467,10 @@ const CustomerLotteryList = () => {
                               />
                             ) : (
                               <p className="text-sm sm:text-base font-bold text-[#0A1D37]">
-                                {selectedLottery.registererInformations[0].residanceInformation[0].residanseAdress}
+                                {
+                                  selectedLottery.registererInformations[0]
+                                    .residanceInformation[0].residanseAdress
+                                }
                               </p>
                             )}
                           </div>
@@ -1262,20 +1479,33 @@ const CustomerLotteryList = () => {
                     )}
 
                     {/* Contact Information */}
-                    {selectedLottery.registererInformations[0].contactInformations?.[0] && (
+                    {selectedLottery.registererInformations[0]
+                      .contactInformations?.[0] && (
                       <div>
-                        <h4 className="text-sm font-semibold text-gray-700 mb-3">اطلاعات تماس</h4>
+                        <h4 className="text-sm font-semibold text-gray-700 mb-3">
+                          اطلاعات تماس
+                        </h4>
                         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                           <div className="bg-white p-4 rounded-xl border border-blue-200">
-                            <p className="text-xs sm:text-sm text-gray-600 mb-2">شماره تلفن اصلی</p>
+                            <p className="text-xs sm:text-sm text-gray-600 mb-2">
+                              شماره تلفن اصلی
+                            </p>
                             {isEditMode && editData ? (
                               <input
                                 type="text"
-                                value={editData.registererInformations[0]?.contactInformations?.[0]?.activePhoneNumber || ''}
+                                value={
+                                  editData.registererInformations[0]
+                                    ?.contactInformations?.[0]
+                                    ?.activePhoneNumber || ""
+                                }
                                 onChange={(e) => {
                                   const newEditData = { ...editData };
-                                  if (newEditData.registererInformations[0]?.contactInformations?.[0]) {
-                                    newEditData.registererInformations[0].contactInformations[0].activePhoneNumber = e.target.value;
+                                  if (
+                                    newEditData.registererInformations[0]
+                                      ?.contactInformations?.[0]
+                                  ) {
+                                    newEditData.registererInformations[0].contactInformations[0].activePhoneNumber =
+                                      e.target.value;
                                     setEditData(newEditData);
                                   }
                                 }}
@@ -1283,20 +1513,33 @@ const CustomerLotteryList = () => {
                               />
                             ) : (
                               <p className="text-sm sm:text-base font-bold text-[#0A1D37]">
-                                {selectedLottery.registererInformations[0].contactInformations[0].activePhoneNumber}
+                                {
+                                  selectedLottery.registererInformations[0]
+                                    .contactInformations[0].activePhoneNumber
+                                }
                               </p>
                             )}
                           </div>
                           <div className="bg-white p-4 rounded-xl border border-blue-200">
-                            <p className="text-xs sm:text-sm text-gray-600 mb-2">شماره تلفن ثانویه</p>
+                            <p className="text-xs sm:text-sm text-gray-600 mb-2">
+                              شماره تلفن ثانویه
+                            </p>
                             {isEditMode && editData ? (
                               <input
                                 type="text"
-                                value={editData.registererInformations[0]?.contactInformations?.[0]?.secondaryPhoneNumber || ''}
+                                value={
+                                  editData.registererInformations[0]
+                                    ?.contactInformations?.[0]
+                                    ?.secondaryPhoneNumber || ""
+                                }
                                 onChange={(e) => {
                                   const newEditData = { ...editData };
-                                  if (newEditData.registererInformations[0]?.contactInformations?.[0]) {
-                                    newEditData.registererInformations[0].contactInformations[0].secondaryPhoneNumber = e.target.value;
+                                  if (
+                                    newEditData.registererInformations[0]
+                                      ?.contactInformations?.[0]
+                                  ) {
+                                    newEditData.registererInformations[0].contactInformations[0].secondaryPhoneNumber =
+                                      e.target.value;
                                     setEditData(newEditData);
                                   }
                                 }}
@@ -1304,20 +1547,32 @@ const CustomerLotteryList = () => {
                               />
                             ) : (
                               <p className="text-sm sm:text-base font-bold text-[#0A1D37]">
-                                {selectedLottery.registererInformations[0].contactInformations[0].secondaryPhoneNumber}
+                                {
+                                  selectedLottery.registererInformations[0]
+                                    .contactInformations[0].secondaryPhoneNumber
+                                }
                               </p>
                             )}
                           </div>
                           <div className="bg-white p-4 rounded-xl border border-blue-200">
-                            <p className="text-xs sm:text-sm text-gray-600 mb-2">ایمیل</p>
+                            <p className="text-xs sm:text-sm text-gray-600 mb-2">
+                              ایمیل
+                            </p>
                             {isEditMode && editData ? (
                               <input
                                 type="email"
-                                value={editData.registererInformations[0]?.contactInformations?.[0]?.email || ''}
+                                value={
+                                  editData.registererInformations[0]
+                                    ?.contactInformations?.[0]?.email || ""
+                                }
                                 onChange={(e) => {
                                   const newEditData = { ...editData };
-                                  if (newEditData.registererInformations[0]?.contactInformations?.[0]) {
-                                    newEditData.registererInformations[0].contactInformations[0].email = e.target.value;
+                                  if (
+                                    newEditData.registererInformations[0]
+                                      ?.contactInformations?.[0]
+                                  ) {
+                                    newEditData.registererInformations[0].contactInformations[0].email =
+                                      e.target.value;
                                     setEditData(newEditData);
                                   }
                                 }}
@@ -1325,7 +1580,10 @@ const CustomerLotteryList = () => {
                               />
                             ) : (
                               <p className="text-sm sm:text-base font-bold text-[#0A1D37]">
-                                {selectedLottery.registererInformations[0].contactInformations[0].email}
+                                {
+                                  selectedLottery.registererInformations[0]
+                                    .contactInformations[0].email
+                                }
                               </p>
                             )}
                           </div>
@@ -1334,20 +1592,32 @@ const CustomerLotteryList = () => {
                     )}
 
                     {/* Other Information */}
-                    {selectedLottery.registererInformations[0].otherInformations?.[0] && (
+                    {selectedLottery.registererInformations[0]
+                      .otherInformations?.[0] && (
                       <div>
-                        <h4 className="text-sm font-semibold text-gray-700 mb-3">سایر اطلاعات</h4>
+                        <h4 className="text-sm font-semibold text-gray-700 mb-3">
+                          سایر اطلاعات
+                        </h4>
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                           <div className="bg-white p-4 rounded-xl border border-blue-200">
-                            <p className="text-xs sm:text-sm text-gray-600 mb-2">نام فارسی</p>
+                            <p className="text-xs sm:text-sm text-gray-600 mb-2">
+                              نام فارسی
+                            </p>
                             {isEditMode && editData ? (
                               <input
                                 type="text"
-                                value={editData.registererInformations[0]?.otherInformations?.[0]?.persianName || ''}
+                                value={
+                                  editData.registererInformations[0]
+                                    ?.otherInformations?.[0]?.persianName || ""
+                                }
                                 onChange={(e) => {
                                   const newEditData = { ...editData };
-                                  if (newEditData.registererInformations[0]?.otherInformations?.[0]) {
-                                    newEditData.registererInformations[0].otherInformations[0].persianName = e.target.value;
+                                  if (
+                                    newEditData.registererInformations[0]
+                                      ?.otherInformations?.[0]
+                                  ) {
+                                    newEditData.registererInformations[0].otherInformations[0].persianName =
+                                      e.target.value;
                                     setEditData(newEditData);
                                   }
                                 }}
@@ -1355,20 +1625,33 @@ const CustomerLotteryList = () => {
                               />
                             ) : (
                               <p className="text-sm sm:text-base font-bold text-[#0A1D37]">
-                                {selectedLottery.registererInformations[0].otherInformations[0].persianName}
+                                {
+                                  selectedLottery.registererInformations[0]
+                                    .otherInformations[0].persianName
+                                }
                               </p>
                             )}
                           </div>
                           <div className="bg-white p-4 rounded-xl border border-blue-200">
-                            <p className="text-xs sm:text-sm text-gray-600 mb-2">نام خانوادگی فارسی</p>
+                            <p className="text-xs sm:text-sm text-gray-600 mb-2">
+                              نام خانوادگی فارسی
+                            </p>
                             {isEditMode && editData ? (
                               <input
                                 type="text"
-                                value={editData.registererInformations[0]?.otherInformations?.[0]?.persianLastName || ''}
+                                value={
+                                  editData.registererInformations[0]
+                                    ?.otherInformations?.[0]?.persianLastName ||
+                                  ""
+                                }
                                 onChange={(e) => {
                                   const newEditData = { ...editData };
-                                  if (newEditData.registererInformations[0]?.otherInformations?.[0]) {
-                                    newEditData.registererInformations[0].otherInformations[0].persianLastName = e.target.value;
+                                  if (
+                                    newEditData.registererInformations[0]
+                                      ?.otherInformations?.[0]
+                                  ) {
+                                    newEditData.registererInformations[0].otherInformations[0].persianLastName =
+                                      e.target.value;
                                     setEditData(newEditData);
                                   }
                                 }}
@@ -1376,30 +1659,51 @@ const CustomerLotteryList = () => {
                               />
                             ) : (
                               <p className="text-sm sm:text-base font-bold text-[#0A1D37]">
-                                {selectedLottery.registererInformations[0].otherInformations[0].persianLastName}
+                                {
+                                  selectedLottery.registererInformations[0]
+                                    .otherInformations[0].persianLastName
+                                }
                               </p>
                             )}
                           </div>
                           <div className="bg-white p-4 rounded-xl border border-blue-200">
-                            <p className="text-xs sm:text-sm text-gray-600 mb-2">آخرین مدرک تحصیلی</p>
+                            <p className="text-xs sm:text-sm text-gray-600 mb-2">
+                              آخرین مدرک تحصیلی
+                            </p>
                             {isEditMode && editData ? (
                               <select
-                                value={editData.registererInformations[0]?.otherInformations?.[0]?.lastDegree || ''}
+                                value={
+                                  editData.registererInformations[0]
+                                    ?.otherInformations?.[0]?.lastDegree || ""
+                                }
                                 onChange={(e) => {
                                   const newEditData = { ...editData };
-                                  if (newEditData.registererInformations[0]?.otherInformations?.[0]) {
-                                    newEditData.registererInformations[0].otherInformations[0].lastDegree = e.target.value;
+                                  if (
+                                    newEditData.registererInformations[0]
+                                      ?.otherInformations?.[0]
+                                  ) {
+                                    newEditData.registererInformations[0].otherInformations[0].lastDegree =
+                                      e.target.value;
                                     setEditData(newEditData);
                                   }
                                 }}
                                 className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] text-sm"
                               >
                                 <option value="">انتخاب کنید</option>
-                                {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((grade) => (
-                                  <option key={grade} value={grade.toString()}>
-                                    {grade === 12 ? 'دیپلم' : grade === 11 ? 'یازدهم' : `${grade}`}
-                                  </option>
-                                ))}
+                                {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map(
+                                  (grade) => (
+                                    <option
+                                      key={grade}
+                                      value={grade.toString()}
+                                    >
+                                      {grade === 12
+                                        ? "دیپلم"
+                                        : grade === 11
+                                        ? "یازدهم"
+                                        : `${grade}`}
+                                    </option>
+                                  )
+                                )}
                                 <option value="فوق دیپلم">فوق دیپلم</option>
                                 <option value="لیسانس">لیسانس</option>
                                 <option value="فوق لیسانس">فوق لیسانس</option>
@@ -1407,54 +1711,86 @@ const CustomerLotteryList = () => {
                               </select>
                             ) : (
                               <p className="text-sm sm:text-base font-bold text-[#0A1D37]">
-                                {selectedLottery.registererInformations[0].otherInformations[0].lastDegree}
+                                {
+                                  selectedLottery.registererInformations[0]
+                                    .otherInformations[0].lastDegree
+                                }
                               </p>
                             )}
                           </div>
                           <div className="bg-white p-4 rounded-xl border border-blue-200">
-                            <p className="text-xs sm:text-sm text-gray-600 mb-2">وضعیت شهروندی همسر</p>
+                            <p className="text-xs sm:text-sm text-gray-600 mb-2">
+                              وضعیت شهروندی همسر
+                            </p>
                             {isEditMode && editData ? (
                               <select
-                                value={editData.registererInformations[0]?.otherInformations?.[0]?.partnerCitizenShip || ''}
+                                value={
+                                  editData.registererInformations[0]
+                                    ?.otherInformations?.[0]
+                                    ?.partnerCitizenShip || ""
+                                }
                                 onChange={(e) => {
                                   const newEditData = { ...editData };
-                                  if (newEditData.registererInformations[0]?.otherInformations?.[0]) {
-                                    newEditData.registererInformations[0].otherInformations[0].partnerCitizenShip = e.target.value;
+                                  if (
+                                    newEditData.registererInformations[0]
+                                      ?.otherInformations?.[0]
+                                  ) {
+                                    newEditData.registererInformations[0].otherInformations[0].partnerCitizenShip =
+                                      e.target.value;
                                     setEditData(newEditData);
                                   }
                                 }}
                                 className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] text-sm"
                               >
                                 <option value="">انتخاب کنید</option>
-                                <option value="my spouse is not a resident of america">همسر من ساکن آمریکا نیست</option>
-                                <option value="my spouse live in america">همسر من در آمریکا زندگی می‌کند</option>
+                                <option value="my spouse is not a resident of america">
+                                  همسر من ساکن آمریکا نیست
+                                </option>
+                                <option value="my spouse live in america">
+                                  همسر من در آمریکا زندگی می‌کند
+                                </option>
                               </select>
                             ) : (
                               <p className="text-sm sm:text-base font-bold text-[#0A1D37]">
-                                {selectedLottery.registererInformations[0].otherInformations[0].partnerCitizenShip === 'my spouse is not a resident of america' 
-                                  ? 'همسر من ساکن آمریکا نیست'
-                                  : selectedLottery.registererInformations[0].otherInformations[0].partnerCitizenShip === 'my spouse live in america'
-                                  ? 'همسر من در آمریکا زندگی می‌کند'
-                                  : selectedLottery.registererInformations[0].otherInformations[0].partnerCitizenShip}
+                                {selectedLottery.registererInformations[0]
+                                  .otherInformations[0].partnerCitizenShip ===
+                                "my spouse is not a resident of america"
+                                  ? "همسر من ساکن آمریکا نیست"
+                                  : selectedLottery.registererInformations[0]
+                                      .otherInformations[0]
+                                      .partnerCitizenShip ===
+                                    "my spouse live in america"
+                                  ? "همسر من در آمریکا زندگی می‌کند"
+                                  : selectedLottery.registererInformations[0]
+                                      .otherInformations[0].partnerCitizenShip}
                               </p>
                             )}
                           </div>
                           <div className="bg-white p-4 rounded-xl border border-blue-200">
-                            <p className="text-xs sm:text-sm text-gray-600 mb-2">تصویر</p>
-                            {selectedLottery.registererInformations[0].otherInformations[0]?.imageUrl ? (
+                            <p className="text-xs sm:text-sm text-gray-600 mb-2">
+                              تصویر
+                            </p>
+                            {selectedLottery.registererInformations[0]
+                              .otherInformations[0]?.imageUrl ? (
                               <img
-                                src={selectedLottery.registererInformations[0].otherInformations[0].imageUrl}
+                                src={
+                                  selectedLottery.registererInformations[0]
+                                    .otherInformations[0].imageUrl
+                                }
                                 alt="تصویر ثبت کننده"
                                 className="w-16 h-16 object-cover rounded-lg border cursor-pointer"
                                 onClick={() =>
                                   window.open(
-                                    selectedLottery.registererInformations[0].otherInformations[0].imageUrl,
+                                    selectedLottery.registererInformations[0]
+                                      .otherInformations[0].imageUrl,
                                     "_blank"
                                   )
                                 }
                               />
                             ) : (
-                              <p className="text-sm text-gray-400">بدون تصویر</p>
+                              <p className="text-sm text-gray-400">
+                                بدون تصویر
+                              </p>
                             )}
                           </div>
                         </div>
@@ -1475,18 +1811,29 @@ const CustomerLotteryList = () => {
                     <div className="space-y-6">
                       {/* Basic Information */}
                       <div>
-                        <h4 className="text-sm font-semibold text-gray-700 mb-3">اطلاعات اولیه</h4>
+                        <h4 className="text-sm font-semibold text-gray-700 mb-3">
+                          اطلاعات اولیه
+                        </h4>
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                           <div className="bg-white p-4 rounded-xl border border-pink-200">
-                            <p className="text-xs sm:text-sm text-gray-600 mb-2">نام</p>
+                            <p className="text-xs sm:text-sm text-gray-600 mb-2">
+                              نام
+                            </p>
                             {isEditMode && editData ? (
                               <input
                                 type="text"
-                                value={editData.registererPartnerInformations[0]?.initialInformations?.firstName || ''}
+                                value={
+                                  editData.registererPartnerInformations[0]
+                                    ?.initialInformations?.firstName || ""
+                                }
                                 onChange={(e) => {
                                   const newEditData = { ...editData };
-                                  if (newEditData.registererPartnerInformations[0]?.initialInformations) {
-                                    newEditData.registererPartnerInformations[0].initialInformations.firstName = e.target.value;
+                                  if (
+                                    newEditData.registererPartnerInformations[0]
+                                      ?.initialInformations
+                                  ) {
+                                    newEditData.registererPartnerInformations[0].initialInformations.firstName =
+                                      e.target.value;
                                     setEditData(newEditData);
                                   }
                                 }}
@@ -1494,20 +1841,33 @@ const CustomerLotteryList = () => {
                               />
                             ) : (
                               <p className="text-sm sm:text-base font-bold text-[#0A1D37]">
-                                {selectedLottery.registererPartnerInformations[0].initialInformations.firstName}
+                                {
+                                  selectedLottery
+                                    .registererPartnerInformations[0]
+                                    .initialInformations.firstName
+                                }
                               </p>
                             )}
                           </div>
                           <div className="bg-white p-4 rounded-xl border border-pink-200">
-                            <p className="text-xs sm:text-sm text-gray-600 mb-2">نام خانوادگی</p>
+                            <p className="text-xs sm:text-sm text-gray-600 mb-2">
+                              نام خانوادگی
+                            </p>
                             {isEditMode && editData ? (
                               <input
                                 type="text"
-                                value={editData.registererPartnerInformations[0]?.initialInformations?.lastName || ''}
+                                value={
+                                  editData.registererPartnerInformations[0]
+                                    ?.initialInformations?.lastName || ""
+                                }
                                 onChange={(e) => {
                                   const newEditData = { ...editData };
-                                  if (newEditData.registererPartnerInformations[0]?.initialInformations) {
-                                    newEditData.registererPartnerInformations[0].initialInformations.lastName = e.target.value;
+                                  if (
+                                    newEditData.registererPartnerInformations[0]
+                                      ?.initialInformations
+                                  ) {
+                                    newEditData.registererPartnerInformations[0].initialInformations.lastName =
+                                      e.target.value;
                                     setEditData(newEditData);
                                   }
                                 }}
@@ -1515,19 +1875,32 @@ const CustomerLotteryList = () => {
                               />
                             ) : (
                               <p className="text-sm sm:text-base font-bold text-[#0A1D37]">
-                                {selectedLottery.registererPartnerInformations[0].initialInformations.lastName}
+                                {
+                                  selectedLottery
+                                    .registererPartnerInformations[0]
+                                    .initialInformations.lastName
+                                }
                               </p>
                             )}
                           </div>
                           <div className="bg-white p-4 rounded-xl border border-pink-200">
-                            <p className="text-xs sm:text-sm text-gray-600 mb-2">جنسیت</p>
+                            <p className="text-xs sm:text-sm text-gray-600 mb-2">
+                              جنسیت
+                            </p>
                             {isEditMode && editData ? (
                               <select
-                                value={editData.registererPartnerInformations[0]?.initialInformations?.gender || 'male'}
+                                value={
+                                  editData.registererPartnerInformations[0]
+                                    ?.initialInformations?.gender || "male"
+                                }
                                 onChange={(e) => {
                                   const newEditData = { ...editData };
-                                  if (newEditData.registererPartnerInformations[0]?.initialInformations) {
-                                    newEditData.registererPartnerInformations[0].initialInformations.gender = e.target.value;
+                                  if (
+                                    newEditData.registererPartnerInformations[0]
+                                      ?.initialInformations
+                                  ) {
+                                    newEditData.registererPartnerInformations[0].initialInformations.gender =
+                                      e.target.value;
                                     setEditData(newEditData);
                                   }
                                 }}
@@ -1538,22 +1911,37 @@ const CustomerLotteryList = () => {
                               </select>
                             ) : (
                               <p className="text-sm sm:text-base font-bold text-[#0A1D37]">
-                                {selectedLottery.registererPartnerInformations[0].initialInformations.gender === 'male' ? 'مرد' : 'زن'}
+                                {selectedLottery
+                                  .registererPartnerInformations[0]
+                                  .initialInformations.gender === "male"
+                                  ? "مرد"
+                                  : "زن"}
                               </p>
                             )}
                           </div>
                           <div className="bg-white p-4 rounded-xl border border-pink-200">
-                            <p className="text-xs sm:text-sm text-gray-600 mb-2">تاریخ تولد</p>
+                            <p className="text-xs sm:text-sm text-gray-600 mb-2">
+                              تاریخ تولد
+                            </p>
                             {isEditMode && editData ? (
                               <div className="flex gap-2">
                                 <input
                                   type="text"
                                   placeholder="سال"
-                                  value={editData.registererPartnerInformations[0]?.initialInformations?.birthDate?.year || ''}
+                                  value={
+                                    editData.registererPartnerInformations[0]
+                                      ?.initialInformations?.birthDate?.year ||
+                                    ""
+                                  }
                                   onChange={(e) => {
                                     const newEditData = { ...editData };
-                                    if (newEditData.registererPartnerInformations[0]?.initialInformations?.birthDate) {
-                                      newEditData.registererPartnerInformations[0].initialInformations.birthDate.year = e.target.value;
+                                    if (
+                                      newEditData
+                                        .registererPartnerInformations[0]
+                                        ?.initialInformations?.birthDate
+                                    ) {
+                                      newEditData.registererPartnerInformations[0].initialInformations.birthDate.year =
+                                        e.target.value;
                                       setEditData(newEditData);
                                     }
                                   }}
@@ -1562,11 +1950,20 @@ const CustomerLotteryList = () => {
                                 <input
                                   type="text"
                                   placeholder="ماه"
-                                  value={editData.registererPartnerInformations[0]?.initialInformations?.birthDate?.month || ''}
+                                  value={
+                                    editData.registererPartnerInformations[0]
+                                      ?.initialInformations?.birthDate?.month ||
+                                    ""
+                                  }
                                   onChange={(e) => {
                                     const newEditData = { ...editData };
-                                    if (newEditData.registererPartnerInformations[0]?.initialInformations?.birthDate) {
-                                      newEditData.registererPartnerInformations[0].initialInformations.birthDate.month = e.target.value;
+                                    if (
+                                      newEditData
+                                        .registererPartnerInformations[0]
+                                        ?.initialInformations?.birthDate
+                                    ) {
+                                      newEditData.registererPartnerInformations[0].initialInformations.birthDate.month =
+                                        e.target.value;
                                       setEditData(newEditData);
                                     }
                                   }}
@@ -1575,11 +1972,20 @@ const CustomerLotteryList = () => {
                                 <input
                                   type="text"
                                   placeholder="روز"
-                                  value={editData.registererPartnerInformations[0]?.initialInformations?.birthDate?.day || ''}
+                                  value={
+                                    editData.registererPartnerInformations[0]
+                                      ?.initialInformations?.birthDate?.day ||
+                                    ""
+                                  }
                                   onChange={(e) => {
                                     const newEditData = { ...editData };
-                                    if (newEditData.registererPartnerInformations[0]?.initialInformations?.birthDate) {
-                                      newEditData.registererPartnerInformations[0].initialInformations.birthDate.day = e.target.value;
+                                    if (
+                                      newEditData
+                                        .registererPartnerInformations[0]
+                                        ?.initialInformations?.birthDate
+                                    ) {
+                                      newEditData.registererPartnerInformations[0].initialInformations.birthDate.day =
+                                        e.target.value;
                                       setEditData(newEditData);
                                     }
                                   }}
@@ -1588,22 +1994,45 @@ const CustomerLotteryList = () => {
                               </div>
                             ) : (
                               <p className="text-sm sm:text-base font-bold text-[#0A1D37]">
-                                {selectedLottery.registererPartnerInformations[0].initialInformations.birthDate.year}/
-                                {selectedLottery.registererPartnerInformations[0].initialInformations.birthDate.month}/
-                                {selectedLottery.registererPartnerInformations[0].initialInformations.birthDate.day}
+                                {
+                                  selectedLottery
+                                    .registererPartnerInformations[0]
+                                    .initialInformations.birthDate.year
+                                }
+                                /
+                                {
+                                  selectedLottery
+                                    .registererPartnerInformations[0]
+                                    .initialInformations.birthDate.month
+                                }
+                                /
+                                {
+                                  selectedLottery
+                                    .registererPartnerInformations[0]
+                                    .initialInformations.birthDate.day
+                                }
                               </p>
                             )}
                           </div>
                           <div className="bg-white p-4 rounded-xl border border-pink-200">
-                            <p className="text-xs sm:text-sm text-gray-600 mb-2">کشور</p>
+                            <p className="text-xs sm:text-sm text-gray-600 mb-2">
+                              کشور
+                            </p>
                             {isEditMode && editData ? (
                               <input
                                 type="text"
-                                value={editData.registererPartnerInformations[0]?.initialInformations?.country || ''}
+                                value={
+                                  editData.registererPartnerInformations[0]
+                                    ?.initialInformations?.country || ""
+                                }
                                 onChange={(e) => {
                                   const newEditData = { ...editData };
-                                  if (newEditData.registererPartnerInformations[0]?.initialInformations) {
-                                    newEditData.registererPartnerInformations[0].initialInformations.country = e.target.value;
+                                  if (
+                                    newEditData.registererPartnerInformations[0]
+                                      ?.initialInformations
+                                  ) {
+                                    newEditData.registererPartnerInformations[0].initialInformations.country =
+                                      e.target.value;
                                     setEditData(newEditData);
                                   }
                                 }}
@@ -1611,20 +2040,33 @@ const CustomerLotteryList = () => {
                               />
                             ) : (
                               <p className="text-sm sm:text-base font-bold text-[#0A1D37]">
-                                {selectedLottery.registererPartnerInformations[0].initialInformations.country}
+                                {
+                                  selectedLottery
+                                    .registererPartnerInformations[0]
+                                    .initialInformations.country
+                                }
                               </p>
                             )}
                           </div>
                           <div className="bg-white p-4 rounded-xl border border-pink-200">
-                            <p className="text-xs sm:text-sm text-gray-600 mb-2">شهر</p>
+                            <p className="text-xs sm:text-sm text-gray-600 mb-2">
+                              شهر
+                            </p>
                             {isEditMode && editData ? (
                               <input
                                 type="text"
-                                value={editData.registererPartnerInformations[0]?.initialInformations?.city || ''}
+                                value={
+                                  editData.registererPartnerInformations[0]
+                                    ?.initialInformations?.city || ""
+                                }
                                 onChange={(e) => {
                                   const newEditData = { ...editData };
-                                  if (newEditData.registererPartnerInformations[0]?.initialInformations) {
-                                    newEditData.registererPartnerInformations[0].initialInformations.city = e.target.value;
+                                  if (
+                                    newEditData.registererPartnerInformations[0]
+                                      ?.initialInformations
+                                  ) {
+                                    newEditData.registererPartnerInformations[0].initialInformations.city =
+                                      e.target.value;
                                     setEditData(newEditData);
                                   }
                                 }}
@@ -1632,20 +2074,34 @@ const CustomerLotteryList = () => {
                               />
                             ) : (
                               <p className="text-sm sm:text-base font-bold text-[#0A1D37]">
-                                {selectedLottery.registererPartnerInformations[0].initialInformations.city}
+                                {
+                                  selectedLottery
+                                    .registererPartnerInformations[0]
+                                    .initialInformations.city
+                                }
                               </p>
                             )}
                           </div>
                           <div className="bg-white p-4 rounded-xl border border-pink-200">
-                            <p className="text-xs sm:text-sm text-gray-600 mb-2">کشور شهروندی</p>
+                            <p className="text-xs sm:text-sm text-gray-600 mb-2">
+                              کشور شهروندی
+                            </p>
                             {isEditMode && editData ? (
                               <input
                                 type="text"
-                                value={editData.registererPartnerInformations[0]?.initialInformations?.citizenshipCountry || ''}
+                                value={
+                                  editData.registererPartnerInformations[0]
+                                    ?.initialInformations?.citizenshipCountry ||
+                                  ""
+                                }
                                 onChange={(e) => {
                                   const newEditData = { ...editData };
-                                  if (newEditData.registererPartnerInformations[0]?.initialInformations) {
-                                    newEditData.registererPartnerInformations[0].initialInformations.citizenshipCountry = e.target.value;
+                                  if (
+                                    newEditData.registererPartnerInformations[0]
+                                      ?.initialInformations
+                                  ) {
+                                    newEditData.registererPartnerInformations[0].initialInformations.citizenshipCountry =
+                                      e.target.value;
                                     setEditData(newEditData);
                                   }
                                 }}
@@ -1653,7 +2109,11 @@ const CustomerLotteryList = () => {
                               />
                             ) : (
                               <p className="text-sm sm:text-base font-bold text-[#0A1D37]">
-                                {selectedLottery.registererPartnerInformations[0].initialInformations.citizenshipCountry}
+                                {
+                                  selectedLottery
+                                    .registererPartnerInformations[0]
+                                    .initialInformations.citizenshipCountry
+                                }
                               </p>
                             )}
                           </div>
@@ -1661,20 +2121,34 @@ const CustomerLotteryList = () => {
                       </div>
 
                       {/* Other Information */}
-                      {selectedLottery.registererPartnerInformations[0].otherInformations?.[0] && (
+                      {selectedLottery.registererPartnerInformations[0]
+                        .otherInformations?.[0] && (
                         <div>
-                          <h4 className="text-sm font-semibold text-gray-700 mb-3">سایر اطلاعات</h4>
+                          <h4 className="text-sm font-semibold text-gray-700 mb-3">
+                            سایر اطلاعات
+                          </h4>
                           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                             <div className="bg-white p-4 rounded-xl border border-pink-200">
-                              <p className="text-xs sm:text-sm text-gray-600 mb-2">نام فارسی</p>
+                              <p className="text-xs sm:text-sm text-gray-600 mb-2">
+                                نام فارسی
+                              </p>
                               {isEditMode && editData ? (
                                 <input
                                   type="text"
-                                  value={editData.registererPartnerInformations[0]?.otherInformations?.[0]?.persianName || ''}
+                                  value={
+                                    editData.registererPartnerInformations[0]
+                                      ?.otherInformations?.[0]?.persianName ||
+                                    ""
+                                  }
                                   onChange={(e) => {
                                     const newEditData = { ...editData };
-                                    if (newEditData.registererPartnerInformations[0]?.otherInformations?.[0]) {
-                                      newEditData.registererPartnerInformations[0].otherInformations[0].persianName = e.target.value;
+                                    if (
+                                      newEditData
+                                        .registererPartnerInformations[0]
+                                        ?.otherInformations?.[0]
+                                    ) {
+                                      newEditData.registererPartnerInformations[0].otherInformations[0].persianName =
+                                        e.target.value;
                                       setEditData(newEditData);
                                     }
                                   }}
@@ -1682,20 +2156,35 @@ const CustomerLotteryList = () => {
                                 />
                               ) : (
                                 <p className="text-sm sm:text-base font-bold text-[#0A1D37]">
-                                  {selectedLottery.registererPartnerInformations[0].otherInformations[0].persianName}
+                                  {
+                                    selectedLottery
+                                      .registererPartnerInformations[0]
+                                      .otherInformations[0].persianName
+                                  }
                                 </p>
                               )}
                             </div>
                             <div className="bg-white p-4 rounded-xl border border-pink-200">
-                              <p className="text-xs sm:text-sm text-gray-600 mb-2">نام خانوادگی فارسی</p>
+                              <p className="text-xs sm:text-sm text-gray-600 mb-2">
+                                نام خانوادگی فارسی
+                              </p>
                               {isEditMode && editData ? (
                                 <input
                                   type="text"
-                                  value={editData.registererPartnerInformations[0]?.otherInformations?.[0]?.persianLastName || ''}
+                                  value={
+                                    editData.registererPartnerInformations[0]
+                                      ?.otherInformations?.[0]
+                                      ?.persianLastName || ""
+                                  }
                                   onChange={(e) => {
                                     const newEditData = { ...editData };
-                                    if (newEditData.registererPartnerInformations[0]?.otherInformations?.[0]) {
-                                      newEditData.registererPartnerInformations[0].otherInformations[0].persianLastName = e.target.value;
+                                    if (
+                                      newEditData
+                                        .registererPartnerInformations[0]
+                                        ?.otherInformations?.[0]
+                                    ) {
+                                      newEditData.registererPartnerInformations[0].otherInformations[0].persianLastName =
+                                        e.target.value;
                                       setEditData(newEditData);
                                     }
                                   }}
@@ -1703,30 +2192,53 @@ const CustomerLotteryList = () => {
                                 />
                               ) : (
                                 <p className="text-sm sm:text-base font-bold text-[#0A1D37]">
-                                  {selectedLottery.registererPartnerInformations[0].otherInformations[0].persianLastName}
+                                  {
+                                    selectedLottery
+                                      .registererPartnerInformations[0]
+                                      .otherInformations[0].persianLastName
+                                  }
                                 </p>
                               )}
                             </div>
                             <div className="bg-white p-4 rounded-xl border border-pink-200">
-                              <p className="text-xs sm:text-sm text-gray-600 mb-2">آخرین مدرک تحصیلی</p>
+                              <p className="text-xs sm:text-sm text-gray-600 mb-2">
+                                آخرین مدرک تحصیلی
+                              </p>
                               {isEditMode && editData ? (
                                 <select
-                                  value={editData.registererPartnerInformations[0]?.otherInformations?.[0]?.lastDegree || ''}
+                                  value={
+                                    editData.registererPartnerInformations[0]
+                                      ?.otherInformations?.[0]?.lastDegree || ""
+                                  }
                                   onChange={(e) => {
                                     const newEditData = { ...editData };
-                                    if (newEditData.registererPartnerInformations[0]?.otherInformations?.[0]) {
-                                      newEditData.registererPartnerInformations[0].otherInformations[0].lastDegree = e.target.value;
+                                    if (
+                                      newEditData
+                                        .registererPartnerInformations[0]
+                                        ?.otherInformations?.[0]
+                                    ) {
+                                      newEditData.registererPartnerInformations[0].otherInformations[0].lastDegree =
+                                        e.target.value;
                                       setEditData(newEditData);
                                     }
                                   }}
                                   className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] text-sm"
                                 >
                                   <option value="">انتخاب کنید</option>
-                                  {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((grade) => (
-                                    <option key={grade} value={grade.toString()}>
-                                      {grade === 12 ? 'دیپلم' : grade === 11 ? 'یازدهم' : `${grade}`}
-                                    </option>
-                                  ))}
+                                  {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map(
+                                    (grade) => (
+                                      <option
+                                        key={grade}
+                                        value={grade.toString()}
+                                      >
+                                        {grade === 12
+                                          ? "دیپلم"
+                                          : grade === 11
+                                          ? "یازدهم"
+                                          : `${grade}`}
+                                      </option>
+                                    )
+                                  )}
                                   <option value="فوق دیپلم">فوق دیپلم</option>
                                   <option value="لیسانس">لیسانس</option>
                                   <option value="فوق لیسانس">فوق لیسانس</option>
@@ -1734,26 +2246,41 @@ const CustomerLotteryList = () => {
                                 </select>
                               ) : (
                                 <p className="text-sm sm:text-base font-bold text-[#0A1D37]">
-                                  {selectedLottery.registererPartnerInformations[0].otherInformations[0].lastDegree}
+                                  {
+                                    selectedLottery
+                                      .registererPartnerInformations[0]
+                                      .otherInformations[0].lastDegree
+                                  }
                                 </p>
                               )}
                             </div>
                             <div className="bg-white p-4 rounded-xl border border-pink-200">
-                              <p className="text-xs sm:text-sm text-gray-600 mb-2">تصویر</p>
-                              {selectedLottery.registererPartnerInformations[0].otherInformations[0]?.imageUrl ? (
+                              <p className="text-xs sm:text-sm text-gray-600 mb-2">
+                                تصویر
+                              </p>
+                              {selectedLottery.registererPartnerInformations[0]
+                                .otherInformations[0]?.imageUrl ? (
                                 <img
-                                  src={selectedLottery.registererPartnerInformations[0].otherInformations[0].imageUrl}
+                                  src={
+                                    selectedLottery
+                                      .registererPartnerInformations[0]
+                                      .otherInformations[0].imageUrl
+                                  }
                                   alt="تصویر همسر"
                                   className="w-16 h-16 object-cover rounded-lg border cursor-pointer"
                                   onClick={() =>
                                     window.open(
-                                      selectedLottery.registererPartnerInformations[0].otherInformations[0].imageUrl,
+                                      selectedLottery
+                                        .registererPartnerInformations[0]
+                                        .otherInformations[0].imageUrl,
                                       "_blank"
                                     )
                                   }
                                 />
                               ) : (
-                                <p className="text-sm text-gray-400">بدون تصویر</p>
+                                <p className="text-sm text-gray-400">
+                                  بدون تصویر
+                                </p>
                               )}
                             </div>
                           </div>
@@ -1783,18 +2310,33 @@ const CustomerLotteryList = () => {
                           <div className="space-y-4">
                             {/* Basic Information */}
                             <div>
-                              <h5 className="text-xs font-semibold text-gray-600 mb-2">اطلاعات اولیه</h5>
+                              <h5 className="text-xs font-semibold text-gray-600 mb-2">
+                                اطلاعات اولیه
+                              </h5>
                               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                                 <div className="bg-white p-4 rounded-xl border border-yellow-200">
-                                  <p className="text-xs sm:text-sm text-gray-600 mb-2">نام</p>
+                                  <p className="text-xs sm:text-sm text-gray-600 mb-2">
+                                    نام
+                                  </p>
                                   {isEditMode && editData ? (
                                     <input
                                       type="text"
-                                      value={editData.registererChildformations[index]?.initialInformations?.firstName || ''}
+                                      value={
+                                        editData.registererChildformations[
+                                          index
+                                        ]?.initialInformations?.firstName || ""
+                                      }
                                       onChange={(e) => {
                                         const newEditData = { ...editData };
-                                        if (newEditData.registererChildformations[index]?.initialInformations) {
-                                          newEditData.registererChildformations[index].initialInformations.firstName = e.target.value;
+                                        if (
+                                          newEditData.registererChildformations[
+                                            index
+                                          ]?.initialInformations
+                                        ) {
+                                          newEditData.registererChildformations[
+                                            index
+                                          ].initialInformations.firstName =
+                                            e.target.value;
                                           setEditData(newEditData);
                                         }
                                       }}
@@ -1807,15 +2349,28 @@ const CustomerLotteryList = () => {
                                   )}
                                 </div>
                                 <div className="bg-white p-4 rounded-xl border border-yellow-200">
-                                  <p className="text-xs sm:text-sm text-gray-600 mb-2">نام خانوادگی</p>
+                                  <p className="text-xs sm:text-sm text-gray-600 mb-2">
+                                    نام خانوادگی
+                                  </p>
                                   {isEditMode && editData ? (
                                     <input
                                       type="text"
-                                      value={editData.registererChildformations[index]?.initialInformations?.lastName || ''}
+                                      value={
+                                        editData.registererChildformations[
+                                          index
+                                        ]?.initialInformations?.lastName || ""
+                                      }
                                       onChange={(e) => {
                                         const newEditData = { ...editData };
-                                        if (newEditData.registererChildformations[index]?.initialInformations) {
-                                          newEditData.registererChildformations[index].initialInformations.lastName = e.target.value;
+                                        if (
+                                          newEditData.registererChildformations[
+                                            index
+                                          ]?.initialInformations
+                                        ) {
+                                          newEditData.registererChildformations[
+                                            index
+                                          ].initialInformations.lastName =
+                                            e.target.value;
                                           setEditData(newEditData);
                                         }
                                       }}
@@ -1828,14 +2383,27 @@ const CustomerLotteryList = () => {
                                   )}
                                 </div>
                                 <div className="bg-white p-4 rounded-xl border border-yellow-200">
-                                  <p className="text-xs sm:text-sm text-gray-600 mb-2">جنسیت</p>
+                                  <p className="text-xs sm:text-sm text-gray-600 mb-2">
+                                    جنسیت
+                                  </p>
                                   {isEditMode && editData ? (
                                     <select
-                                      value={editData.registererChildformations[index]?.initialInformations?.gender || 'male'}
+                                      value={
+                                        editData.registererChildformations[
+                                          index
+                                        ]?.initialInformations?.gender || "male"
+                                      }
                                       onChange={(e) => {
                                         const newEditData = { ...editData };
-                                        if (newEditData.registererChildformations[index]?.initialInformations) {
-                                          newEditData.registererChildformations[index].initialInformations.gender = e.target.value;
+                                        if (
+                                          newEditData.registererChildformations[
+                                            index
+                                          ]?.initialInformations
+                                        ) {
+                                          newEditData.registererChildformations[
+                                            index
+                                          ].initialInformations.gender =
+                                            e.target.value;
                                           setEditData(newEditData);
                                         }
                                       }}
@@ -1846,22 +2414,39 @@ const CustomerLotteryList = () => {
                                     </select>
                                   ) : (
                                     <p className="text-sm sm:text-base font-bold text-[#0A1D37]">
-                                      {child.initialInformations.gender === 'male' ? 'پسر' : 'دختر'}
+                                      {child.initialInformations.gender ===
+                                      "male"
+                                        ? "پسر"
+                                        : "دختر"}
                                     </p>
                                   )}
                                 </div>
                                 <div className="bg-white p-4 rounded-xl border border-yellow-200">
-                                  <p className="text-xs sm:text-sm text-gray-600 mb-2">تاریخ تولد</p>
+                                  <p className="text-xs sm:text-sm text-gray-600 mb-2">
+                                    تاریخ تولد
+                                  </p>
                                   {isEditMode && editData ? (
                                     <div className="flex gap-2">
                                       <input
                                         type="text"
                                         placeholder="سال"
-                                        value={editData.registererChildformations[index]?.initialInformations?.birthDate?.year || ''}
+                                        value={
+                                          editData.registererChildformations[
+                                            index
+                                          ]?.initialInformations?.birthDate
+                                            ?.year || ""
+                                        }
                                         onChange={(e) => {
                                           const newEditData = { ...editData };
-                                          if (newEditData.registererChildformations[index]?.initialInformations?.birthDate) {
-                                            newEditData.registererChildformations[index].initialInformations.birthDate.year = e.target.value;
+                                          if (
+                                            newEditData
+                                              .registererChildformations[index]
+                                              ?.initialInformations?.birthDate
+                                          ) {
+                                            newEditData.registererChildformations[
+                                              index
+                                            ].initialInformations.birthDate.year =
+                                              e.target.value;
                                             setEditData(newEditData);
                                           }
                                         }}
@@ -1870,11 +2455,23 @@ const CustomerLotteryList = () => {
                                       <input
                                         type="text"
                                         placeholder="ماه"
-                                        value={editData.registererChildformations[index]?.initialInformations?.birthDate?.month || ''}
+                                        value={
+                                          editData.registererChildformations[
+                                            index
+                                          ]?.initialInformations?.birthDate
+                                            ?.month || ""
+                                        }
                                         onChange={(e) => {
                                           const newEditData = { ...editData };
-                                          if (newEditData.registererChildformations[index]?.initialInformations?.birthDate) {
-                                            newEditData.registererChildformations[index].initialInformations.birthDate.month = e.target.value;
+                                          if (
+                                            newEditData
+                                              .registererChildformations[index]
+                                              ?.initialInformations?.birthDate
+                                          ) {
+                                            newEditData.registererChildformations[
+                                              index
+                                            ].initialInformations.birthDate.month =
+                                              e.target.value;
                                             setEditData(newEditData);
                                           }
                                         }}
@@ -1883,11 +2480,23 @@ const CustomerLotteryList = () => {
                                       <input
                                         type="text"
                                         placeholder="روز"
-                                        value={editData.registererChildformations[index]?.initialInformations?.birthDate?.day || ''}
+                                        value={
+                                          editData.registererChildformations[
+                                            index
+                                          ]?.initialInformations?.birthDate
+                                            ?.day || ""
+                                        }
                                         onChange={(e) => {
                                           const newEditData = { ...editData };
-                                          if (newEditData.registererChildformations[index]?.initialInformations?.birthDate) {
-                                            newEditData.registererChildformations[index].initialInformations.birthDate.day = e.target.value;
+                                          if (
+                                            newEditData
+                                              .registererChildformations[index]
+                                              ?.initialInformations?.birthDate
+                                          ) {
+                                            newEditData.registererChildformations[
+                                              index
+                                            ].initialInformations.birthDate.day =
+                                              e.target.value;
                                             setEditData(newEditData);
                                           }
                                         }}
@@ -1896,22 +2505,39 @@ const CustomerLotteryList = () => {
                                     </div>
                                   ) : (
                                     <p className="text-sm sm:text-base font-bold text-[#0A1D37]">
-                                      {child.initialInformations.birthDate.year}/
-                                      {child.initialInformations.birthDate.month}/
-                                      {child.initialInformations.birthDate.day}
+                                      {child.initialInformations.birthDate.year}
+                                      /
+                                      {
+                                        child.initialInformations.birthDate
+                                          .month
+                                      }
+                                      /{child.initialInformations.birthDate.day}
                                     </p>
                                   )}
                                 </div>
                                 <div className="bg-white p-4 rounded-xl border border-yellow-200">
-                                  <p className="text-xs sm:text-sm text-gray-600 mb-2">کشور</p>
+                                  <p className="text-xs sm:text-sm text-gray-600 mb-2">
+                                    کشور
+                                  </p>
                                   {isEditMode && editData ? (
                                     <input
                                       type="text"
-                                      value={editData.registererChildformations[index]?.initialInformations?.country || ''}
+                                      value={
+                                        editData.registererChildformations[
+                                          index
+                                        ]?.initialInformations?.country || ""
+                                      }
                                       onChange={(e) => {
                                         const newEditData = { ...editData };
-                                        if (newEditData.registererChildformations[index]?.initialInformations) {
-                                          newEditData.registererChildformations[index].initialInformations.country = e.target.value;
+                                        if (
+                                          newEditData.registererChildformations[
+                                            index
+                                          ]?.initialInformations
+                                        ) {
+                                          newEditData.registererChildformations[
+                                            index
+                                          ].initialInformations.country =
+                                            e.target.value;
                                           setEditData(newEditData);
                                         }
                                       }}
@@ -1924,15 +2550,28 @@ const CustomerLotteryList = () => {
                                   )}
                                 </div>
                                 <div className="bg-white p-4 rounded-xl border border-yellow-200">
-                                  <p className="text-xs sm:text-sm text-gray-600 mb-2">شهر</p>
+                                  <p className="text-xs sm:text-sm text-gray-600 mb-2">
+                                    شهر
+                                  </p>
                                   {isEditMode && editData ? (
                                     <input
                                       type="text"
-                                      value={editData.registererChildformations[index]?.initialInformations?.city || ''}
+                                      value={
+                                        editData.registererChildformations[
+                                          index
+                                        ]?.initialInformations?.city || ""
+                                      }
                                       onChange={(e) => {
                                         const newEditData = { ...editData };
-                                        if (newEditData.registererChildformations[index]?.initialInformations) {
-                                          newEditData.registererChildformations[index].initialInformations.city = e.target.value;
+                                        if (
+                                          newEditData.registererChildformations[
+                                            index
+                                          ]?.initialInformations
+                                        ) {
+                                          newEditData.registererChildformations[
+                                            index
+                                          ].initialInformations.city =
+                                            e.target.value;
                                           setEditData(newEditData);
                                         }
                                       }}
@@ -1945,32 +2584,56 @@ const CustomerLotteryList = () => {
                                   )}
                                 </div>
                                 <div className="bg-white p-4 rounded-xl border border-yellow-200">
-                                  <p className="text-xs sm:text-sm text-gray-600 mb-2">وضعیت شهروندی</p>
+                                  <p className="text-xs sm:text-sm text-gray-600 mb-2">
+                                    وضعیت شهروندی
+                                  </p>
                                   {isEditMode && editData ? (
                                     <select
-                                      value={editData.registererChildformations[index]?.initialInformations?.citizenshipCountry || 'child_not_american'}
+                                      value={
+                                        editData.registererChildformations[
+                                          index
+                                        ]?.initialInformations
+                                          ?.citizenshipCountry ||
+                                        "child_not_american"
+                                      }
                                       onChange={(e) => {
                                         const newEditData = { ...editData };
-                                        if (newEditData.registererChildformations[index]?.initialInformations) {
-                                          newEditData.registererChildformations[index].initialInformations.citizenshipCountry = e.target.value;
+                                        if (
+                                          newEditData.registererChildformations[
+                                            index
+                                          ]?.initialInformations
+                                        ) {
+                                          newEditData.registererChildformations[
+                                            index
+                                          ].initialInformations.citizenshipCountry =
+                                            e.target.value;
                                           setEditData(newEditData);
                                         }
                                       }}
                                       className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] text-sm"
                                     >
-                                      <option value="child_not_american">فرزند آمریکایی نیست</option>
-                                      <option value="child_american">فرزند آمریکایی است</option>
+                                      <option value="child_not_american">
+                                        فرزند آمریکایی نیست
+                                      </option>
+                                      <option value="child_american">
+                                        فرزند آمریکایی است
+                                      </option>
                                     </select>
                                   ) : (
                                     <p className="text-sm sm:text-base font-bold text-[#0A1D37]">
-                                      {child.initialInformations.citizenshipCountry === 'child_not_american' 
-                                        ? 'فرزند آمریکایی نیست' 
-                                        : child.initialInformations.citizenshipCountry}
+                                      {child.initialInformations
+                                        .citizenshipCountry ===
+                                      "child_not_american"
+                                        ? "فرزند آمریکایی نیست"
+                                        : child.initialInformations
+                                            .citizenshipCountry}
                                     </p>
                                   )}
                                 </div>
                                 <div className="bg-white p-4 rounded-xl border border-yellow-200">
-                                  <p className="text-xs sm:text-sm text-gray-600 mb-2">تصویر</p>
+                                  <p className="text-xs sm:text-sm text-gray-600 mb-2">
+                                    تصویر
+                                  </p>
                                   {child.otherInformations[0]?.imageUrl ? (
                                     <img
                                       src={child.otherInformations[0].imageUrl}
@@ -1984,7 +2647,9 @@ const CustomerLotteryList = () => {
                                       }
                                     />
                                   ) : (
-                                    <p className="text-sm text-gray-400">بدون تصویر</p>
+                                    <p className="text-sm text-gray-400">
+                                      بدون تصویر
+                                    </p>
                                   )}
                                 </div>
                               </div>

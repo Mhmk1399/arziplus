@@ -281,7 +281,11 @@ function SMSAuthContent() {
                 ? redirectUrl !== "/dashboard"
                   ? "برای ادامه، شماره تلفن خود را وارد کنید"
                   : "شماره تلفن خود را وارد کنید"
-                : `کد تایید ارسال شده به ${phone} را وارد کنید`}
+                : (
+                    <>
+                      کد تایید ارسال شده به <strong className="font-bold text-[#0A1D37]">{phone}</strong> را وارد کنید
+                    </>
+                  )}
             </p>
 
             {redirectUrl !== "/dashboard" && (

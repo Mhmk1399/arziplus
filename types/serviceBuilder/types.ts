@@ -40,6 +40,7 @@ export interface DynamicService {
   _id?: string;
   title: string;
   slug: string;
+  category: string;
   fee: number;
   wallet: boolean;
   description?: string;
@@ -49,6 +50,7 @@ export interface DynamicService {
   fields: ServiceField[];
   createdAt?: string;
   updatedAt?: string;
+  
 }
 
 export interface ServiceBuilderFormData {

@@ -8,7 +8,7 @@ import {
   FaArrowRight,
   FaSpinner,
   FaSearch,
-   FaCheckCircle,
+  FaCheckCircle,
 } from "react-icons/fa";
 import { estedadBold } from "@/next-persian-fonts/estedad/index";
 
@@ -69,42 +69,28 @@ const groupServicesByCategory = (services: Service[]) => {
 };
 
 // Service Card Component
-const ServiceCard = ({ service }: { service: Service }) => {  
+const ServiceCard = ({ service }: { service: Service }) => {
   const [imageError, setImageError] = useState(false);
 
-  console.log("Service data:", service);
-  console.log("Service image URL:", service.image);
-
   return (
-    <div className="group relative overflow-hidden  w-54 md:w-54 md:h-[280px] rounded-2xl sm:rounded-3xl  hover:shadow-lg transition-all duration-500  border border-[#0A1D37]/20 ">
+    <div className="group relative overflow-hidden w-[230px] h-[280px] md:h-[280px] rounded-2xl sm:rounded-3xl hover:scale-95 hover:shadow-sm transition-all duration-500 border border-[#0A1D37]/20">
       {/* Service Image */}
-      <div className="relative h-36   lg:h-40 w-full overflow-hidden">
+      <div className="relative h-36 lg:h-40 w-full overflow-hidden">
         {!imageError && service.image ? (
           <Image
             src={service.image}
             alt={service.title}
             fill
-            className="object-contain transition-transform duration-500 group-hover:scale-110"
-             unoptimized={true}
-            onError={() => {
-              console.log(
-                "Failed to load service image with Next.js Image:",
-                service.image
-              );
-              console.log("Falling back to regular img tag");
-              setImageError(true);
-            }}
+            className="object-contain transition-transform duration-500 hover:scale-95 "
+            unoptimized={true}
+            onError={() => setImageError(true)}
           />
         ) : service.image ? (
           <img
             src={service.image}
             alt={service.title}
-            className="w-1/2 h-1/2 object-cover transition-transform duration-500 group-hover:scale-110"
+            className="w-1/2 h-1/2 object-cover transition-transform duration-500  hover:scale-95"
             onError={(e) => {
-              console.log(
-                "Failed to load service image with img tag:",
-                service.image
-              );
               const img = e.target as HTMLImageElement;
               img.style.display = "none";
             }}
@@ -114,12 +100,11 @@ const ServiceCard = ({ service }: { service: Service }) => {
             src="/assets/images/logoArzi.webp"
             alt={service.title}
             fill
-            className="object-cover transition-transform duration-500 group-hover:scale-110"
+            className="object-cover transition-transform duration-500  hover:scale-95"
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           />
         )}
 
-        {/* Fallback Text */}
         {!service.image && (
           <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-[#0A1D37]/20 to-[#4DBFF0]/20">
             <div className="text-4xl sm:text-5xl lg:text-6xl text-[#0A1D37]/10 font-bold">
@@ -128,8 +113,6 @@ const ServiceCard = ({ service }: { service: Service }) => {
           </div>
         )}
 
-  
-        {/* Badge - if wallet is enabled */}
         {service.wallet && (
           <div className="absolute top-3 left-3 sm:top-4 sm:left-4 bg-green-500 text-white px-3 py-1.5 rounded-lg text-xs sm:text-sm font-bold flex items-center gap-1.5 shadow-lg">
             <FaCheckCircle className="text-xs" />
@@ -138,27 +121,17 @@ const ServiceCard = ({ service }: { service: Service }) => {
         )}
       </div>
 
-      {/* Service Title Below Image */}
-      <div className=" mt-2  ">
+      <div className="mt-2">
         <h3
-          className={`text-[#0A1D37] font-bold text-center text-sm   lg:text-base   leading-relaxed ${estedadBold.className}`}
+          className={`text-[#0A1D37] font-bold text-center text-sm lg:text-base leading-relaxed ${estedadBold.className}`}
         >
           {service.title}
         </h3>
-        {/* {service.fee > 0 && (
-          <div className="flex items-center gap-2 text-[#0A1D37]/70">
-            <span className="text-sm sm:text-base">هزینه:</span>
-            <span className="text-base sm:text-lg font-bold text-[#0A1D37]">
-              {service.fee.toLocaleString()} تومان
-            </span>
-          </div>
-        )} */}
       </div>
 
-      {/* CTA Button */}
-      <div className="p-4 lg:p-5   ">
+      <div className="p-4 lg:p-5">
         <Link href={`/services/${service.slug}`}>
-          <button className="w-full flex items-center cursor-pointer shadow-[10px_8px_30px_rgb(0,0,0,0.4)] hover:shadow-[0_20px_60px_rgb(0,0,0,0.3)]  justify-center gap-2 bg-gradient-to-r from-[#0A1D37] to-[#0A1D37]/90 hover:from-[#0A1D37]/90 hover:to-[#0A1D37] text-white font-bold py-3   lg:py-3 px-4 sm:px-5 lg:px-6 rounded-xl sm:rounded-2xl transition-all duration-300   active:scale-95">
+          <button className="w-full flex items-center cursor-pointer shadow-[10px_8px_30px_rgb(0,0,0,0.4)] hover:shadow-[0_20px_60px_rgb(0,0,0,0.3)] justify-center gap-2 bg-gradient-to-r from-[#0A1D37] to-[#0A1D37]/90 hover:from-[#0A1D37]/90 hover:to-[#0A1D37] text-white font-bold py-3 lg:py-3 px-4 sm:px-5 lg:px-6 rounded-xl sm:rounded-2xl transition-all duration-300 active:scale-95">
             <span className="text-sm sm:text-sm">ثبت درخواست</span>
             <FaArrowLeft className="text-xs sm:text-sm" />
           </button>
@@ -179,9 +152,6 @@ const CategorySection = ({
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
-  const [isDragging, setIsDragging] = useState(false);
-  const [startX, setStartX] = useState(0);
-  const [scrollLeft, setScrollLeft] = useState(0);
 
   // Check scroll position and update arrow visibility
   const checkScrollPosition = () => {
@@ -193,12 +163,11 @@ const CategorySection = ({
     }
   };
 
-  // Scroll functions
+  // Scroll functions (RTL: right arrow scrolls right, left arrow scrolls left)
   const scrollToLeft = () => {
     if (scrollContainerRef.current) {
-      const cardWidth = 296; // 280px + 16px gap
       scrollContainerRef.current.scrollBy({
-        left: -cardWidth,
+        left: 300,
         behavior: "smooth",
       });
     }
@@ -206,64 +175,11 @@ const CategorySection = ({
 
   const scrollToRight = () => {
     if (scrollContainerRef.current) {
-      const cardWidth = 296; // 280px + 16px gap
       scrollContainerRef.current.scrollBy({
-        left: cardWidth,
+        left: -300,
         behavior: "smooth",
       });
     }
-  };
-
-  // Pan/drag functionality
-  const handleMouseDown = (e: React.MouseEvent) => {
-    if (scrollContainerRef.current) {
-      setIsDragging(true);
-      setStartX(e.pageX - scrollContainerRef.current.offsetLeft);
-      setScrollLeft(scrollContainerRef.current.scrollLeft);
-      scrollContainerRef.current.style.cursor = "grabbing";
-    }
-  };
-
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (!isDragging || !scrollContainerRef.current) return;
-    e.preventDefault();
-    const x = e.pageX - scrollContainerRef.current.offsetLeft;
-    const walk = (x - startX) * 2; // Scroll speed multiplier
-    scrollContainerRef.current.scrollLeft = scrollLeft - walk;
-  };
-
-  const handleMouseUp = () => {
-    setIsDragging(false);
-    if (scrollContainerRef.current) {
-      scrollContainerRef.current.style.cursor = "grab";
-    }
-  };
-
-  const handleMouseLeave = () => {
-    setIsDragging(false);
-    if (scrollContainerRef.current) {
-      scrollContainerRef.current.style.cursor = "grab";
-    }
-  };
-
-  // Touch events for mobile pan
-  const handleTouchStart = (e: React.TouchEvent) => {
-    if (scrollContainerRef.current) {
-      setIsDragging(true);
-      setStartX(e.touches[0].pageX - scrollContainerRef.current.offsetLeft);
-      setScrollLeft(scrollContainerRef.current.scrollLeft);
-    }
-  };
-
-  const handleTouchMove = (e: React.TouchEvent) => {
-    if (!isDragging || !scrollContainerRef.current) return;
-    const x = e.touches[0].pageX - scrollContainerRef.current.offsetLeft;
-    const walk = (x - startX) * 2;
-    scrollContainerRef.current.scrollLeft = scrollLeft - walk;
-  };
-
-  const handleTouchEnd = () => {
-    setIsDragging(false);
   };
 
   // Initialize scroll position check
@@ -275,7 +191,7 @@ const CategorySection = ({
   }, [services.length]);
 
   return (
-    <section className="mb-8 sm:mb-12 lg:mb-16">
+    <section className="mb-8 sm:mb-12 lg:mb-16 mx-2 lg:mx-0">
       {/* Category Header */}
       <div className="mb-6 sm:mb-8 lg:mb-10 px-2">
         <div className="flex items-center justify-between flex-wrap gap-3">
@@ -288,7 +204,7 @@ const CategorySection = ({
             <div className="w-16 sm:w-20 lg:w-24 h-1 bg-gradient-to-l from-[#0A1D37] to-[#4DBFF0] rounded-full" />
           </div>
           <div className="flex items-center gap-2 bg-gradient-to-r from-[#0A1D37]/10 to-[#4DBFF0]/10 px-3 sm:px-4 py-2 rounded-xl">
-             <span className="text-xs sm:text-sm font-bold text-[#0A1D37]">
+            <span className="text-xs sm:text-sm font-bold text-[#0A1D37]">
               {services.length} خدمت
             </span>
           </div>
@@ -297,63 +213,48 @@ const CategorySection = ({
 
       {/* Services Horizontal Scroll Container */}
       <div className="relative group">
-        {/* Left Arrow */}
-        {services.length > 4 && canScrollLeft && (
-          <button
-            onClick={scrollToLeft}
-            aria-label="اسکرول به چپ"
-            className="hidden lg:flex absolute right-0 top-1/2 transform -translate-y-1/2 z-10 bg-white/95 backdrop-blur-sm rounded-full p-3 lg:p-4 shadow-xl hover:bg-white hover:scale-110 transition-all duration-300 group-hover:opacity-100 opacity-0 border border-gray-200"
-            style={{ marginRight: "-24px" }}
-          >
-            <FaArrowRight className="text-[#0A1D37] text-base lg:text-lg" />
-          </button>
-        )}
-
-        {/* Right Arrow */}
+        {/* Right Arrow (scrolls to right/start in RTL) */}
         {services.length > 4 && canScrollRight && (
           <button
             onClick={scrollToRight}
             aria-label="اسکرول به راست"
-            className="hidden lg:flex absolute left-0 top-1/2 transform -translate-y-1/2 z-10 bg-white/95 backdrop-blur-sm rounded-full p-3 lg:p-4 shadow-xl hover:bg-white hover:scale-110 transition-all duration-300 group-hover:opacity-100 opacity-0 border border-gray-200"
-            style={{ marginLeft: "-24px" }}
+            className="hidden lg:flex absolute right-2 top-1/2 transform -translate-y-1/2 z-10 bg-white/95 backdrop-blur-sm rounded-full p-3 shadow-xl hover:bg-white hover:scale-110 transition-all duration-300 border border-gray-200"
           >
-            <FaArrowLeft className="text-[#0A1D37] text-base lg:text-lg" />
+            <FaArrowRight className="text-[#0A1D37] text-lg" />
+          </button>
+        )}
+
+        {/* Left Arrow (scrolls to left/end in RTL) */}
+        {services.length > 4 && canScrollLeft && (
+          <button
+            onClick={scrollToLeft}
+            aria-label="اسکرول به چپ"
+            className="hidden lg:flex absolute left-2 top-1/2 transform -translate-y-1/2 z-10 bg-white/95 backdrop-blur-sm rounded-full p-3 shadow-xl hover:bg-white hover:scale-110 transition-all duration-300 border border-gray-200"
+          >
+            <FaArrowLeft className="text-[#0A1D37] text-lg" />
           </button>
         )}
 
         {/* Scrollable Services Grid */}
         <div
           ref={scrollContainerRef}
-          className="flex  sm:gap-5 lg:gap-1 overflow-x-auto scrollbar-hide   cursor-grab active:cursor-grabbing"
+          className="flex gap-4 overflow-x-auto scrollbar-hide scroll-smooth snap-x snap-mandatory"
           style={{
             scrollbarWidth: "none",
             msOverflowStyle: "none",
+            WebkitOverflowScrolling: "touch",
           }}
           onScroll={checkScrollPosition}
-          onMouseDown={handleMouseDown}
-          onMouseMove={handleMouseMove}
-          onMouseUp={handleMouseUp}
-          onMouseLeave={handleMouseLeave}
-          onTouchStart={handleTouchStart}
-          onTouchMove={handleTouchMove}
-          onTouchEnd={handleTouchEnd}
         >
           {services.map((service) => (
             <div
               key={service._id}
-              className="flex-shrink-0 w-full   lg:w-[calc(25%-18px)]"
-              style={{
-                minWidth: "220px",
-                maxWidth: "200px",
-                userSelect: isDragging ? "none" : "auto",
-              }}
+              className="flex-shrink-0 w-[220px] sm:w-[300px] lg:w-[calc(25%-70px)] snap-start"
             >
               <ServiceCard service={service} />
             </div>
           ))}
         </div>
-
-      
       </div>
 
       {/* Custom Scrollbar Styles */}
@@ -378,7 +279,7 @@ export default function ServicesPage() {
   // Categories array for filtering
   const categories = [
     "وریفای حساب های خارجی",
-    "ثبت نام سایت های فریلنسری", 
+    "ثبت نام سایت های فریلنسری",
     "سیم کارت های فیزیکی",
     "هاستینگ و دامنه",
     "پرداخت‌های دانشجویی",
@@ -386,7 +287,7 @@ export default function ServicesPage() {
     "آزمون بین‌المللی",
     "اکانت هوش مصنوعی",
     "خدمات حساب وایز",
-    "خدمات پی پال"
+    "خدمات پی پال",
   ];
 
   // Fetch services using SWR
@@ -401,19 +302,18 @@ export default function ServicesPage() {
 
   // Filter services based on search and category
   const filteredServices =
-    services?.filter(
-      (service) => {
-        const matchesSearch = service.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          service.description?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          service.category?.toLowerCase().includes(searchTerm.toLowerCase());
-        
-        const matchesCategory = selectedCategory 
-          ? service.category === selectedCategory 
-          : true;
+    services?.filter((service) => {
+      const matchesSearch =
+        service.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        service.description?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        service.category?.toLowerCase().includes(searchTerm.toLowerCase());
 
-        return matchesSearch && matchesCategory;
-      }
-    ) || [];
+      const matchesCategory = selectedCategory
+        ? service.category === selectedCategory
+        : true;
+
+      return matchesSearch && matchesCategory;
+    }) || [];
 
   // Group filtered services by category
   const servicesByCategory = groupServicesByCategory(filteredServices);
@@ -443,12 +343,9 @@ export default function ServicesPage() {
   }
 
   return (
-    <div
-      className="min-h-screen  py-8"
-      dir="rtl"
-    >
-      <div className="max-w-7xl mx-auto   sm:px-6 lg:px-8">
-        {/* Header */}
+    <div className="min-h-screen bg-white   py-8" dir="rtl">
+      <div className="max-w-7xl mx-auto   sm:px-2 lg:px-4">
+        {/* Header */}  
         <div className="text-center mb-12 sm:mb-16 lg:mb-20">
           <div className="inline-block mb-4 sm:mb-6 px-4 sm:px-6 py-2 sm:py-3 bg-gradient-to-r from-[#0A1D37]/10 to-[#4DBFF0]/10 rounded-full">
             <span className="text-sm sm:text-base font-bold text-[#0A1D37]">
@@ -518,7 +415,9 @@ export default function ServicesPage() {
           <div className="mb-8 sm:mb-12 lg:mb-16 px-4">
             {/* Header with Clear Filter */}
             <div className="flex py-2 items-center justify-between mb-4 sm:mb-6">
-              <h3 className={`text-lg sm:text-xl lg:text-2xl font-bold text-[#0A1D37] ${estedadBold.className}`}>
+              <h3
+                className={`text-lg sm:text-xl lg:text-2xl font-bold text-[#0A1D37] ${estedadBold.className}`}
+              >
                 دسته‌بندی خدمات
               </h3>
               {selectedCategory && (
@@ -527,68 +426,102 @@ export default function ServicesPage() {
                   className="flex items-center gap-2 px-3 sm:px-4 py-2 text-sm font-medium text-red-600 bg-red-50 hover:bg-red-100 rounded-xl transition-all duration-300 hover:scale-105"
                 >
                   <span>پاک کردن فیلتر</span>
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  <svg
+                    className="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M6 18L18 6M6 6l12 12"
+                    />
                   </svg>
                 </button>
               )}
             </div>
 
-            {/* Horizontal Scrollable Filter Pills */}
-            <div className="relative overflow-hidden">
-              <div className="flex gap-3 mx-6 sm:gap-4 overflow-x-auto scrollbar-hide pb-2 scroll-smooth" 
-                   style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}>
-                {/* All Categories Button */}
+            {/* Desktop: Grid Layout */}
+            <div className="hidden md:grid md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2.5">
+              <button
+                onClick={() => setSelectedCategory(null)}
+                className={`px-4 py-2.5 rounded-xl font-medium text-sm transition-all ${
+                  selectedCategory === null
+                    ? "bg-gradient-to-r from-[#0A1D37] to-[#0A1D37]/90 text-white shadow-md"
+                    : "bg-white hover:bg-gray-50 text-[#0A1D37] border border-gray-200 hover:border-[#0A1D37]/30"
+                }`}
+              >
+                همه ({services?.length || 0})
+              </button>
+
+              {categories.map((category) => {
+                const categoryCount =
+                  services?.filter((service) => service.category === category)
+                    .length || 0;
+                if (categoryCount === 0) return null;
+
+                return (
+                  <button
+                    key={category}
+                    onClick={() => setSelectedCategory(category)}
+                    className={`px-4 py-2.5 rounded-xl font-medium text-xs transition-all ${
+                      selectedCategory === category
+                        ? "bg-gradient-to-r from-[#0A1D37] to-[#0A1D37]/90 text-white shadow-md"
+                        : "bg-white hover:bg-gray-50 text-[#0A1D37] border border-gray-200 hover:border-[#0A1D37]/30"
+                    }`}
+                  >
+                    {category} ({categoryCount})
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Mobile: Horizontal Scroll */}
+            <div className="md:hidden">
+              <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide snap-x snap-mandatory">
                 <button
                   onClick={() => setSelectedCategory(null)}
-                  className={`flex-shrink-0 px-4 sm:px-5 lg:px-6 py-2 sm:py-3 rounded-xl sm:rounded-2xl font-medium text-sm sm:text-base transition-all duration-300  whitespace-nowrap ${
+                  className={`flex-shrink-0 snap-start px-4 py-2 rounded-lg font-medium text-sm transition-all ${
                     selectedCategory === null
-                      ? "bg-gradient-to-r from-[#0A1D37] to-[#0A1D37]/90 text-white shadow-lg"
-                      : "bg-white hover:bg-gray-50 text-[#0A1D37] border border-gray-200 hover:border-[#0A1D37]/30"
+                      ? "bg-gradient-to-r from-[#0A1D37] to-[#0A1D37]/90 text-white shadow-md"
+                      : "bg-white text-[#0A1D37] border border-gray-200"
                   }`}
                 >
-                  همه خدمات
-                  <span className="mr-2 text-xs opacity-75">
-                    ({services?.length || 0})
-                  </span>
+                  همه ({services?.length || 0})
                 </button>
 
-                {/* Category Filter Buttons */}
                 {categories.map((category) => {
-                  const categoryCount = services?.filter(service => service.category === category).length || 0;
-                  
-                  // Only show categories that have services
+                  const categoryCount =
+                    services?.filter((service) => service.category === category)
+                      .length || 0;
                   if (categoryCount === 0) return null;
-                  
+
                   return (
                     <button
                       key={category}
                       onClick={() => setSelectedCategory(category)}
-                      className={`flex-shrink-0 px-4 sm:px-5 lg:px-6 py-2 sm:py-3 rounded-xl sm:rounded-2xl font-medium text-sm sm:text-base transition-all duration-300 whitespace-nowrap ${
+                      className={`flex-shrink-0 snap-start px-4 py-2 rounded-lg font-medium text-sm transition-all ${
                         selectedCategory === category
-                          ? "bg-gradient-to-r from-[#0A1D37] to-[#0A1D37]/90 text-white shadow-lg"
-                          : "bg-white hover:bg-gray-50 text-[#0A1D37] border border-gray-200 hover:border-[#0A1D37]/30"
+                          ? "bg-gradient-to-r from-[#0A1D37] to-[#0A1D37]/90 text-white shadow-md"
+                          : "bg-white text-[#0A1D37] border border-gray-200"
                       }`}
                     >
-                      {category}
-                      <span className="mr-2 text-xs opacity-75">
-                        ({categoryCount})
-                      </span>
+                      {category} ({categoryCount})
                     </button>
                   );
                 })}
               </div>
-              
-              {/* Gradient Fade Effects */}
-              <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-white to-transparent pointer-events-none" />
-              <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-white to-transparent pointer-events-none" />
             </div>
 
             {/* Active Filter Display */}
             {selectedCategory && (
               <div className="mt-4 sm:mt-6 flex items-center gap-2 text-sm sm:text-base text-gray-600">
                 <span>در حال نمایش:</span>
-                <span className="font-bold text-[#0A1D37]">{selectedCategory}</span>
+                <span className="font-bold text-[#0A1D37]">
+                  {selectedCategory}
+                </span>
                 <span>({filteredServices.length} خدمت)</span>
               </div>
             )}

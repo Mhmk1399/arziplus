@@ -3,7 +3,72 @@
 import React, { useState, useEffect } from "react";
 import { showToast } from "@/utilities/toast";
 import { FiSearch, FiDownload, FiEye, FiEdit3 } from "react-icons/fi";
+import { FaWallet, FaArrowUp, FaEquals, FaArrowDown } from "react-icons/fa";
 
+// Configuration
+ 
+
+const walletStatsConfig = [
+  {
+    id: "total",
+    label: "کل کیف پول‌ها",
+    getValue: (wallets: Wallet[]) => wallets.length,
+    icon: FaWallet,
+    colors: {
+      gradient: "from-blue-50 to-blue-100",
+      border: "border-blue-200",
+      text: "text-gray-600",
+      number: "text-[#0A1D37]",
+      iconBg: "bg-gradient-to-br from-blue-500 to-blue-600",
+      icon: "text-white",
+    },
+  },
+  {
+    id: "positive",
+    label: "موجودی مثبت",
+    getValue: (wallets: Wallet[], getWalletBalance: (w: Wallet) => number) =>
+      wallets.filter((w) => getWalletBalance(w) > 0).length,
+    icon: FaArrowUp,
+    colors: {
+      gradient: "from-green-50 to-green-100",
+      border: "border-green-200",
+      text: "text-gray-600",
+      number: "text-green-600",
+      iconBg: "bg-gradient-to-br from-green-500 to-green-600",
+      icon: "text-white",
+    },
+  },
+  {
+    id: "zero",
+    label: "موجودی صفر",
+    getValue: (wallets: Wallet[], getWalletBalance: (w: Wallet) => number) =>
+      wallets.filter((w) => getWalletBalance(w) === 0).length,
+    icon: FaEquals,
+    colors: {
+      gradient: "from-gray-50 to-gray-100",
+      border: "border-gray-200",
+      text: "text-gray-600",
+      number: "text-gray-600",
+      iconBg: "bg-gradient-to-br from-gray-500 to-gray-600",
+      icon: "text-white",
+    },
+  },
+  {
+    id: "negative",
+    label: "موجودی منفی",
+    getValue: (wallets: Wallet[], getWalletBalance: (w: Wallet) => number) =>
+      wallets.filter((w) => getWalletBalance(w) < 0).length,
+    icon: FaArrowDown,
+    colors: {
+      gradient: "from-red-50 to-red-100",
+      border: "border-red-200",
+      text: "text-gray-600",
+      number: "text-red-600",
+      iconBg: "bg-gradient-to-br from-red-500 to-red-600",
+      icon: "text-white",
+    },
+  },
+];
 interface WalletTransaction {
   _id?: string;
   amount: number;
@@ -330,18 +395,9 @@ const WalletsList: React.FC = () => {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="  mt-2 px-2">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-        <div>
-          <h1 className="text-2xl font-bold text-[#0A1D37] flex items-center gap-3">
-            <span className="w-3 h-3 bg-[#0A1D37] rounded-full"></span>
-            مدیریت کیف پول‌ها
-          </h1>
-          <p className="text-gray-600 mt-1">
-            مشاهده و مدیریت تمام کیف پول‌های کاربران
-          </p>
-        </div>
+      <div className="flex my-3 flex-row justify-end items-center  gap-4">
         <button
           onClick={exportWallets}
           className="flex items-center gap-2 px-4 py-2 bg-[#0A1D37] text-white rounded-lg hover:bg-[#0A1D37]/90 transition-colors"
@@ -352,82 +408,89 @@ const WalletsList: React.FC = () => {
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-white p-4 rounded-xl border border-[#0A1D37]/10">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-gray-600">کل کیف پول‌ها</p>
-              <p className="text-2xl font-bold text-[#0A1D37]">
-                {wallets.length.toLocaleString("fa-IR")}
-              </p>
-            </div>
-          </div>
-        </div>
-        <div className="bg-white p-4 rounded-xl border border-[#0A1D37]/10">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-gray-600">موجودی مثبت</p>
-              <p className="text-2xl font-bold text-green-600">
-                {wallets
-                  .filter((w) => getWalletBalance(w) > 0)
-                  .length.toLocaleString("fa-IR")}
-              </p>
-            </div>
-          </div>
-        </div>
-        <div className="bg-white p-4 rounded-xl border border-[#0A1D37]/10">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-gray-600">موجودی صفر</p>
-              <p className="text-2xl font-bold text-gray-600">
-                {wallets
-                  .filter((w) => getWalletBalance(w) === 0)
-                  .length.toLocaleString("fa-IR")}
-              </p>
-            </div>
-          </div>
-        </div>
-        <div className="bg-white p-4 rounded-xl border border-[#0A1D37]/10">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-gray-600">موجودی منفی</p>
-              <p className="text-2xl font-bold text-red-600">
-                {wallets
-                  .filter((w) => getWalletBalance(w) < 0)
-                  .length.toLocaleString("fa-IR")}
-              </p>
-            </div>
-          </div>
-        </div>
+      <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-5 mb-4">
+        {walletStatsConfig.map(
+          ({ id, label, getValue, icon: Icon, colors }) => {
+            const value = getValue(wallets, getWalletBalance);
+
+            return (
+              <div
+                key={id}
+                className={`group relative bg-gradient-to-br ${colors.gradient} p-4 sm:p-5 lg:p-6 rounded-xl sm:rounded-2xl border-2 ${colors.border} hover:shadow-2xl transition-all duration-300 hover:scale-[1.03] hover:-translate-y-1 cursor-pointer overflow-hidden`}
+              >
+                {/* Decorative Background */}
+                <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-white/40 to-transparent rounded-full blur-2xl -mr-12 -mt-12 group-hover:scale-150 transition-transform duration-500" />
+
+                {/* Background Pattern */}
+                <div className="absolute inset-0 opacity-5">
+                  <div
+                    className="absolute inset-0"
+                    style={{
+                      backgroundImage:
+                        "radial-gradient(circle at 2px 2px, currentColor 1px, transparent 0)",
+                      backgroundSize: "16px 16px",
+                    }}
+                  />
+                </div>
+
+                <div className="relative flex flex-col gap-3 sm:gap-4">
+                  {/* Header with Icon */}
+                  <div className="flex items-center justify-between">
+                    <p
+                      className={`text-xs sm:text-sm ${colors.text} font-semibold tracking-wide`}
+                    >
+                      {label}
+                    </p>
+                    <div
+                      className={`w-10 h-10 sm:w-12 sm:h-12 ${colors.iconBg} rounded-xl sm:rounded-2xl flex items-center justify-center shadow-lg transition-all duration-300 group-hover:scale-110 group-hover:rotate-6`}
+                    >
+                      <Icon className={`${colors.icon} text-base sm:text-lg`} />
+                    </div>
+                  </div>
+
+                  {/* Value */}
+                  <div>
+                    <p
+                      className={`text-2xl sm:text-3xl lg:text-4xl font-bold ${colors.number} transition-all duration-300 group-hover:scale-105 leading-tight`}
+                    >
+                      {value.toLocaleString("fa-IR")}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Bottom Accent Line */}
+                <div
+                  className={`absolute bottom-0 left-0 right-0 h-1.5 bg-gradient-to-r ${colors.gradient} opacity-50 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300`}
+                />
+              </div>
+            );
+          }
+        )}
       </div>
 
       {/* Filters */}
-      <div className="bg-white p-4 rounded-xl border border-[#0A1D37]/10">
-        <div className="flex flex-col sm:flex-row gap-4">
-          <div className="flex-1">
-            <div className="relative">
-              <FiSearch className="absolute right-3 top-3 h-4 w-4 text-gray-400" />
-              <input
-                type="text"
-                placeholder="جستجو بر اساس نام کاربری، نام، یا شماره تلفن..."
-                className="w-full pr-10 pl-3 py-2 border border-[#0A1D37]/20 rounded-lg focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] transition-colors"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
-            </div>
+      <div className="bg-white px-2 mb-4">
+        <div className="flex flex-row items-center gap-4">
+          <div className="relative">
+            <FiSearch className="absolute right-3 top-3 h-4 w-4 text-gray-400" />
+            <input
+              type="text"
+              placeholder="جستجو بر اساس نام کاربری، نام، یا شماره تلفن..."
+              className="w-full pr-10 pl-3 py-2 border border-[#0A1D37]/20 rounded-lg focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] transition-colors"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
           </div>
-          <div className="flex flex-col sm:flex-row gap-2">
-            <select
-              value={balanceFilter}
-              onChange={(e) => setBalanceFilter(e.target.value)}
-              className="px-3 py-2 border border-[#0A1D37]/20 rounded-lg focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] transition-colors"
-            >
-              <option value="">همه موجودی‌ها</option>
-              <option value="positive">موجودی مثبت</option>
-              <option value="zero">موجودی صفر</option>
-              <option value="negative">موجودی منفی</option>
-            </select>
-          </div>
+          <select
+            value={balanceFilter}
+            onChange={(e) => setBalanceFilter(e.target.value)}
+            className="px-3 py-1.5 border border-[#0A1D37]/20 rounded-lg focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] transition-colors"
+          >
+            <option value="">همه موجودی‌ها</option>
+            <option value="positive">موجودی مثبت</option>
+            <option value="zero">موجودی صفر</option>
+            <option value="negative">موجودی منفی</option>
+          </select>
         </div>
       </div>
 

@@ -618,7 +618,7 @@ npm test integration/zarinpal
 ### Manual Testing Checklist
 
 #### Payment Request
-- [ ] Valid amount submission
+- [ ] Valid amount submission 
 - [ ] Invalid amount handling
 - [ ] Currency conversion display
 - [ ] Form validation errors

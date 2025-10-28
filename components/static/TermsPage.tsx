@@ -5,14 +5,7 @@ const TermsPage = () => {
     <div className=" min-h-screen text-white text-justify" dir="rtl">
       <div className="max-w-6xl mx-auto py-8 space-y-12">
         {/* Header */}
-        <div className="text-center mt-20 mb-12">
-          <div className="inline-flex items-center bg-green-600 text-white px-6 py-3 rounded-lg mb-6">
-            <FaShieldAlt className="ml-2" />
-            <span className="font-bold">
-              شرایط و قوانین استفاده از خدمات ارزی پلاس
-            </span>
-          </div>
-        </div>
+       
 
         {/* Section 1 */}
         <section className="bg-[#FFFFFF] text-[#0A1D37] p-8 rounded-lg shadow-lg">
@@ -91,7 +84,7 @@ const TermsPage = () => {
 
             <div className="bg-[#4DBFF0] bg-opacity-10 p-4 rounded-lg text-justify">
               <strong className="text-[#0A1D37]">حساب کاربری:</strong> صفحه
-              اختصاصی هر کاربر (حقیقی یا حقوقی) برای مدیریت سفارشها، پرداختها و
+              اختصاصی هر کاربر (حقیقی یا حقوقی) برای مدیریت سفارشها، پرداخت ها و
               تراکنش ها در چارچوب قوانین رسمی کشور.
             </div>
 
@@ -244,7 +237,7 @@ const TermsPage = () => {
             </p>
             <p className="text-justify">
               <strong>۳.</strong> به منظور حفظ امنیت تراکنشها، ممکن است برخی
-              پرداختها یا برداشتها با تأخیر ۷۲ ساعته انجام شود.
+              پرداخت ها یا برداشتها با تأخیر ۷۲ ساعته انجام شود.
             </p>
             <p className="text-justify">
               <strong>۴.</strong> ارزی پلاس مسئولیتی در قبال نوسانات نرخ ارز یا
@@ -296,7 +289,7 @@ const TermsPage = () => {
               تمامی شرایط فوق را مطالعه و با آن موافقت میکنید.
             </p>
             <p className="text-justify">
-              هدف ما در ارزی پلاس، ایجاد بستری شفاف، امن و سریع برای پرداختهای
+              هدف ما در ارزی پلاس، ایجاد بستری شفاف، امن و سریع برای پرداخت های
               بین المللی است تا کاربران ایرانی بتوانند بدون دغدغه در سطح جهانی
               فعالیت کنند.
             </p>

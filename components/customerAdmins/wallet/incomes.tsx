@@ -221,15 +221,13 @@ const IncomesHistory: React.FC = () => {
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="bg-white/80 backdrop-blur-sm rounded-2xl sm:rounded-3xl p-4 sm:p-6 lg:p-8 mb-6 sm:mb-8 border border-gray-100 shadow-sm">
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+          <div className="flex  flex-row justify-between  items-center gap-4">
             <div>
-              <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-[#0A1D37] flex items-center gap-2 sm:gap-3 mb-2">
-                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-r from-[#0A1D37]/20 to-[#4DBFF0]/20 rounded-xl flex items-center justify-center">
-                  <FaHistory className="text-[#0A1D37] text-lg sm:text-xl" />
-                </div>
+              <h2 className="text-lg  lg:text-3xl font-bold text-[#0A1D37] flex items-center gap-2 sm:gap-3 mb-2">
+               
                 <span>تاریخچه تراکنش‌ها</span>
               </h2>
-              <p className="text-xs sm:text-sm lg:text-base text-gray-600 mr-12 sm:mr-14">
+              <p className="text-xs sm:text-sm lg:text-base text-gray-600  ">
                 مشاهده کامل واریزها و برداشت‌های کیف پول
               </p>
             </div>

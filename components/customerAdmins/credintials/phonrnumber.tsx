@@ -13,8 +13,7 @@ import {
   FaTimesCircle,
    FaSpinner,
 } from "react-icons/fa";
-import { estedadBold } from "@/next-persian-fonts/estedad/index";
-import { showToast } from "@/utilities/toast";
+ import { showToast } from "@/utilities/toast";
 
 interface ContactInfoData {
   homePhone: string;
@@ -203,25 +202,8 @@ const ContactInfo = ({
       className="w-full min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50/30 p-3 sm:p-4 lg:p-6"
       dir="rtl"
     >
-      <div className="max-w-5xl mx-auto">
-        {/* Header */}
-        <div className="bg-white/80 backdrop-blur-sm rounded-2xl sm:rounded-3xl p-4 sm:p-6 lg:p-8 mb-6 sm:mb-8 border border-gray-100 shadow-sm">
-          <div className="flex items-center gap-3 sm:gap-4">
-            <div className="w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 bg-gradient-to-r from-blue-100 to-blue-200 rounded-2xl sm:rounded-3xl flex items-center justify-center border-2 border-blue-300 shadow-md">
-              <FaPhone className="text-blue-700 text-lg sm:text-xl lg:text-2xl" />
-            </div>
-            <div className="flex-1">
-              <h2
-                className={`text-xl   lg:text-2xl font-bold text-[#0A1D37] mb-1 ${estedadBold.className}`}
-              >
-                اطلاعات تماس
-              </h2>
-              <p className="text-xs sm:text-sm lg:text-base text-gray-600">
-                شماره تماس، ایمیل و آدرس خود را وارد کنید
-              </p>
-            </div>
-          </div>
-        </div>
+      <div className="max-w-7xl mx-auto">
+     
 
         {/* Status Display */}
         {formData.status && (

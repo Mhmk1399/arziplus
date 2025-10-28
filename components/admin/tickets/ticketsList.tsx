@@ -1,10 +1,10 @@
 "use client";
 import { useState, useEffect } from "react";
-import { 
-  FaTicketAlt, 
-  FaEye, 
-  FaTimes, 
-  FaClock, 
+import {
+  FaTicketAlt,
+  FaEye,
+  FaTimes,
+  FaClock,
   FaCheckCircle,
   FaExclamationTriangle,
   FaReply,
@@ -13,7 +13,7 @@ import {
   FaUser,
   FaCalendar,
   FaSearch,
-  FaFilter
+  FaFilter,
 } from "react-icons/fa";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
 import { showToast } from "@/utilities/toast";
@@ -40,20 +40,77 @@ interface Ticket {
   };
 }
 
+const ticketStatsConfig = [
+  {
+    id: "total",
+    label: "کل تیکت‌ها",
+    key: "total",
+    icon: FaTicketAlt,
+    colors: {
+      gradient: "from-blue-50 to-blue-100",
+      border: "border-blue-200",
+      text: "text-blue-600",
+      number: "text-blue-900",
+      icon: "text-blue-500",
+    },
+  },
+  {
+    id: "open",
+    label: "باز",
+    key: "open",
+    icon: FaClock,
+    colors: {
+      gradient: "from-orange-50 to-orange-100",
+      border: "border-orange-200",
+      text: "text-orange-600",
+      number: "text-orange-900",
+      icon: "text-orange-500",
+    },
+  },
+  {
+    id: "in_progress",
+    label: "در حال بررسی",
+    key: "in_progress",
+    icon: FaSpinner,
+    colors: {
+      gradient: "from-yellow-50 to-yellow-100",
+      border: "border-yellow-200",
+      text: "text-yellow-600",
+      number: "text-yellow-900",
+      icon: "text-yellow-500",
+    },
+  },
+  {
+    id: "closed",
+    label: "بسته شده",
+    key: "closed",
+    icon: FaCheckCircle,
+    colors: {
+      gradient: "from-green-50 to-green-100",
+      border: "border-green-200",
+      text: "text-green-600",
+      number: "text-green-900",
+      icon: "text-green-500",
+    },
+  },
+] as const;
+
 const AdminTicketsList = () => {
   const { user: currentUser, isLoggedIn } = useCurrentUser();
   const [tickets, setTickets] = useState<Ticket[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  
+
   // Modal states
   const [showDetailsModal, setShowDetailsModal] = useState(false);
   const [selectedTicket, setSelectedTicket] = useState<Ticket | null>(null);
-  
+
   // Form states
   const [adminResponse, setAdminResponse] = useState("");
   const [isResponding, setIsResponding] = useState(false);
   const [isDeleting, setIsDeleting] = useState<string | null>(null);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [ticketToDelete, setTicketToDelete] = useState<string | null>(null);
 
   // Filter states
   const [statusFilter, setStatusFilter] = useState<string>("all");
@@ -65,28 +122,28 @@ const AdminTicketsList = () => {
     total: 0,
     open: 0,
     in_progress: 0,
-    closed: 0
+    closed: 0,
   });
 
   // Ticket categories
   const ticketCategories = [
     "مشکل فنی",
-    "سوال عمومی", 
+    "سوال عمومی",
     "مشکل پرداخت",
     "درخواست بازپرداخت",
     "مشکل احراز هویت",
     "مشکل خدمات",
     "پیشنهاد",
     "شکایت",
-    "سایر موارد"
+    "سایر موارد",
   ];
 
   // Check if user is admin
   useEffect(() => {
-    const isAdmin = currentUser?.roles && (
-      currentUser.roles.includes("admin") || 
-      currentUser.roles.includes("super_admin")
-    );
+    const isAdmin =
+      currentUser?.roles &&
+      (currentUser.roles.includes("admin") ||
+        currentUser.roles.includes("super_admin"));
     if (isLoggedIn && !isAdmin) {
       setError("شما دسترسی ادمین ندارید");
       return;
@@ -95,10 +152,10 @@ const AdminTicketsList = () => {
 
   // Fetch tickets
   const fetchTickets = async () => {
-    const isAdmin = currentUser?.roles && (
-      currentUser.roles.includes("admin") || 
-      currentUser.roles.includes("super_admin")
-    );
+    const isAdmin =
+      currentUser?.roles &&
+      (currentUser.roles.includes("admin") ||
+        currentUser.roles.includes("super_admin"));
     if (!isLoggedIn || !currentUser || !isAdmin) return;
 
     setLoading(true);
@@ -107,14 +164,14 @@ const AdminTicketsList = () => {
     try {
       const token = localStorage.getItem("authToken");
       let url = "/api/tickets?";
-      
+
       if (statusFilter !== "all") {
         url += `status=${statusFilter}&`;
       }
       if (categoryFilter !== "all") {
         url += `category=${encodeURIComponent(categoryFilter)}&`;
       }
-      
+
       const response = await fetch(url, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -128,23 +185,32 @@ const AdminTicketsList = () => {
 
       const data = await response.json();
       const ticketList = data.success ? data.data : [];
-      
+
       // Filter by search term on frontend
       const filteredTickets = searchTerm
-        ? ticketList.filter((ticket: Ticket) =>
-            ticket.category.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            ticket.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            getUserName(ticket.user).toLowerCase().includes(searchTerm.toLowerCase())
+        ? ticketList.filter(
+            (ticket: Ticket) =>
+              ticket.category
+                .toLowerCase()
+                .includes(searchTerm.toLowerCase()) ||
+              ticket.description
+                .toLowerCase()
+                .includes(searchTerm.toLowerCase()) ||
+              getUserName(ticket.user)
+                .toLowerCase()
+                .includes(searchTerm.toLowerCase())
           )
         : ticketList;
-      
+
       setTickets(filteredTickets);
-      
+
       // Calculate stats
       setStats({
         total: ticketList.length,
         open: ticketList.filter((t: Ticket) => t.status === "open").length,
-        in_progress: ticketList.filter((t: Ticket) => t.status === "in_progress").length,
+        in_progress: ticketList.filter(
+          (t: Ticket) => t.status === "in_progress"
+        ).length,
         closed: ticketList.filter((t: Ticket) => t.status === "closed").length,
       });
     } catch (err) {
@@ -155,10 +221,10 @@ const AdminTicketsList = () => {
   };
 
   useEffect(() => {
-    const isAdmin = currentUser?.roles && (
-      currentUser.roles.includes("admin") || 
-      currentUser.roles.includes("super_admin")
-    );
+    const isAdmin =
+      currentUser?.roles &&
+      (currentUser.roles.includes("admin") ||
+        currentUser.roles.includes("super_admin"));
     if (isLoggedIn && isAdmin) {
       fetchTickets();
     }
@@ -166,10 +232,10 @@ const AdminTicketsList = () => {
 
   // Apply search filter when search term changes
   useEffect(() => {
-    const isAdmin = currentUser?.roles && (
-      currentUser.roles.includes("admin") || 
-      currentUser.roles.includes("super_admin")
-    );
+    const isAdmin =
+      currentUser?.roles &&
+      (currentUser.roles.includes("admin") ||
+        currentUser.roles.includes("super_admin"));
     if (isLoggedIn && isAdmin) {
       fetchTickets();
     }
@@ -194,7 +260,7 @@ const AdminTicketsList = () => {
         body: JSON.stringify({
           ticketId: selectedTicket._id,
           adminAnswer: adminResponse,
-          status: "in_progress"
+          status: "in_progress",
         }),
       });
 
@@ -218,7 +284,10 @@ const AdminTicketsList = () => {
   };
 
   // Update ticket status
-  const updateTicketStatus = async (ticketId: string, status: "open" | "in_progress" | "closed") => {
+  const updateTicketStatus = async (
+    ticketId: string,
+    status: "open" | "in_progress" | "closed"
+  ) => {
     try {
       const token = localStorage.getItem("authToken");
       const response = await fetch("/api/tickets", {
@@ -229,7 +298,7 @@ const AdminTicketsList = () => {
         },
         body: JSON.stringify({
           ticketId,
-          status
+          status,
         }),
       });
 
@@ -250,9 +319,8 @@ const AdminTicketsList = () => {
 
   // Delete ticket
   const deleteTicket = async (ticketId: string) => {
-    if (!confirm("آیا از حذف این تیکت اطمینان دارید؟")) return;
-    
     setIsDeleting(ticketId);
+    setShowDeleteModal(false);
     try {
       const token = localStorage.getItem("authToken");
       const response = await fetch(`/api/tickets?ticketId=${ticketId}`, {
@@ -269,21 +337,34 @@ const AdminTicketsList = () => {
       }
 
       showToast.success("تیکت با موفقیت حذف شد");
-      fetchTickets(); // Refresh the list
+      fetchTickets();
     } catch (error) {
       showToast.error(
         error instanceof Error ? error.message : "خطا در حذف تیکت"
       );
     } finally {
       setIsDeleting(null);
+      setTicketToDelete(null);
+    }
+  };
+
+  const formatDate = (dateString: string) => {
+    try {
+      const date = new Date(dateString);
+      if (isNaN(date.getTime())) return "تاریخ نامعتبر";
+      return date.toLocaleDateString("fa-IR");
+    } catch {
+      return "تاریخ نامعتبر";
     }
   };
 
   // Utility functions
-  const getUserName = (user: Ticket['user']) => {
-    return user.nationalCredentials?.firstName && user.nationalCredentials?.lastName
+  const getUserName = (user: Ticket["user"]) => {
+    return user.nationalCredentials?.firstName &&
+      user.nationalCredentials?.lastName
       ? `${user.nationalCredentials.firstName} ${user.nationalCredentials.lastName}`
-      : user.personalInformations?.firstName && user.personalInformations?.lastName
+      : user.personalInformations?.firstName &&
+        user.personalInformations?.lastName
       ? `${user.personalInformations.firstName} ${user.personalInformations.lastName}`
       : "کاربر ناشناس";
   };
@@ -334,7 +415,7 @@ const AdminTicketsList = () => {
   };
 
   // const isCurrentUserAdmin = currentUser?.roles && (
-  //   currentUser.roles.includes("admin") || 
+  //   currentUser.roles.includes("admin") ||
   //   currentUser.roles.includes("super_admin")
   // );
 
@@ -358,65 +439,34 @@ const AdminTicketsList = () => {
 
   return (
     <div className="space-y-6 sm:space-y-8" dir="rtl">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 sm:gap-6">
-        <div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-[#0A1D37] mb-2">
-            مدیریت تیکت‌های پشتیبانی
-          </h1>
-          <p className="text-gray-600 text-sm sm:text-base">
-            مشاهده و پاسخ به درخواست‌های کاربران
-          </p>
-        </div>
-      </div>
-
       {/* Stats Cards */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-4 sm:p-6 rounded-xl border border-blue-200">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-blue-600 text-sm font-medium">کل تیکت‌ها</p>
-              <p className="text-2xl font-bold text-blue-900">{stats.total}</p>
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+        {ticketStatsConfig.map(({ id, label, key, icon: Icon, colors }) => (
+          <div
+            key={id}
+            className={`bg-gradient-to-br ${colors.gradient} p-4 sm:p-6 rounded-xl sm:rounded-2xl border ${colors.border} hover:shadow-lg transition-all duration-300 hover:scale-[1.02]`}
+          >
+            <div className="flex items-center justify-between">
+              <div className="space-y-1">
+                <p className={`${colors.text} text-xs sm:text-sm font-medium`}>
+                  {label}
+                </p>
+                <p
+                  className={`text-2xl sm:text-3xl font-bold ${colors.number}`}
+                >
+                  {stats[key].toLocaleString("fa-IR")}
+                </p>
+              </div>
+              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-white/50 backdrop-blur-sm rounded-xl flex items-center justify-center">
+                <Icon className={`${colors.icon} text-xl sm:text-2xl`} />
+              </div>
             </div>
-            <FaTicketAlt className="text-blue-500 text-2xl" />
           </div>
-        </div>
-        <div className="bg-gradient-to-br from-orange-50 to-orange-100 p-4 sm:p-6 rounded-xl border border-orange-200">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-orange-600 text-sm font-medium">باز</p>
-              <p className="text-2xl font-bold text-orange-900">{stats.open}</p>
-            </div>
-            <FaClock className="text-orange-500 text-2xl" />
-          </div>
-        </div>
-        <div className="bg-gradient-to-br from-yellow-50 to-yellow-100 p-4 sm:p-6 rounded-xl border border-yellow-200">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-yellow-600 text-sm font-medium">در حال بررسی</p>
-              <p className="text-2xl font-bold text-yellow-900">{stats.in_progress}</p>
-            </div>
-            <FaSpinner className="text-yellow-500 text-2xl" />
-          </div>
-        </div>
-        <div className="bg-gradient-to-br from-green-50 to-green-100 p-4 sm:p-6 rounded-xl border border-green-200">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-green-600 text-sm font-medium">بسته شده</p>
-              <p className="text-2xl font-bold text-green-900">{stats.closed}</p>
-            </div>
-            <FaCheckCircle className="text-green-500 text-2xl" />
-          </div>
-        </div>
+        ))}
       </div>
 
       {/* Filters */}
-      <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm space-y-4">
-        <h3 className="text-lg font-bold text-[#0A1D37] flex items-center gap-2">
-          <FaFilter className="text-sm" />
-          فیلترها
-        </h3>
-        
+      <div className="bg-white rounded-2xl grid grid-cols-2 gap-2  space-y-4">
         {/* Search */}
         <div className="relative">
           <input
@@ -432,7 +482,6 @@ const AdminTicketsList = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {/* Status Filter */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">وضعیت</label>
             <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
@@ -447,7 +496,6 @@ const AdminTicketsList = () => {
 
           {/* Category Filter */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">دسته‌بندی</label>
             <select
               value={categoryFilter}
               onChange={(e) => setCategoryFilter(e.target.value)}
@@ -468,7 +516,9 @@ const AdminTicketsList = () => {
       {loading ? (
         <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-8 sm:p-12 text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-4 border-[#0A1D37]/20 border-t-[#0A1D37] mx-auto mb-4"></div>
-          <p className="text-gray-600 font-medium">در حال بارگذاری تیکت‌ها...</p>
+          <p className="text-gray-600 font-medium">
+            در حال بارگذاری تیکت‌ها...
+          </p>
         </div>
       ) : error ? (
         <div className="bg-white rounded-2xl shadow-lg border border-red-200 p-8 sm:p-12 text-center space-y-4">
@@ -520,7 +570,7 @@ const AdminTicketsList = () => {
                         <span>{getUserName(ticket.user)}</span>
                         <span>•</span>
                         <FaCalendar className="text-xs" />
-                        <span>{new Date(ticket.createdAt).toLocaleDateString("fa-IR")}</span>
+                        <span>{formatDate(ticket.createdAt)}</span>
                       </div>
                     </div>
                   </div>
@@ -537,7 +587,9 @@ const AdminTicketsList = () => {
 
               <div className="p-5 sm:p-6">
                 <div className="mb-4">
-                  <h4 className="text-sm font-semibold text-gray-700 mb-2">شرح درخواست:</h4>
+                  <h4 className="text-sm font-semibold text-gray-700 mb-2">
+                    شرح درخواست:
+                  </h4>
                   <p className="text-gray-600 text-sm leading-relaxed line-clamp-2">
                     {ticket.description}
                   </p>
@@ -545,7 +597,9 @@ const AdminTicketsList = () => {
 
                 {ticket.adminAnswer && (
                   <div className="mb-4 p-4 bg-green-50 border-r-4 border-green-500 rounded-lg">
-                    <h4 className="text-sm font-semibold text-green-900 mb-2">پاسخ داده شده:</h4>
+                    <h4 className="text-sm font-semibold text-green-900 mb-2">
+                      پاسخ داده شده:
+                    </h4>
                     <p className="text-green-700 text-sm leading-relaxed line-clamp-2">
                       {ticket.adminAnswer}
                     </p>
@@ -573,7 +627,10 @@ const AdminTicketsList = () => {
                   )}
 
                   <button
-                    onClick={() => deleteTicket(ticket._id)}
+                    onClick={() => {
+                      setTicketToDelete(ticket._id);
+                      setShowDeleteModal(true);
+                    }}
                     disabled={isDeleting === ticket._id}
                     className="flex items-center gap-2 px-4 py-2 bg-red-600 hover:bg-red-700 text-white font-medium rounded-xl hover:scale-[1.02] transition-all duration-300 text-sm disabled:opacity-50"
                   >
@@ -601,8 +658,12 @@ const AdminTicketsList = () => {
                   <FaTicketAlt className="text-white text-lg" />
                 </div>
                 <div>
-                  <h2 className="text-xl font-bold text-[#0A1D37]">جزئیات و پاسخ تیکت</h2>
-                  <p className="text-sm text-gray-600">کد پیگیری: {selectedTicket._id.slice(-8)}</p>
+                  <h2 className="text-xl font-bold text-[#0A1D37]">
+                    جزئیات و پاسخ تیکت
+                  </h2>
+                  <p className="text-sm text-gray-600">
+                    کد پیگیری: {selectedTicket._id.slice(-8)}
+                  </p>
                 </div>
               </div>
               <button
@@ -618,11 +679,15 @@ const AdminTicketsList = () => {
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 <div className="bg-gray-50 p-4 rounded-xl">
                   <p className="text-sm text-gray-600 mb-1">کاربر</p>
-                  <p className="font-semibold text-[#0A1D37]">{getUserName(selectedTicket.user)}</p>
+                  <p className="font-semibold text-[#0A1D37]">
+                    {getUserName(selectedTicket.user)}
+                  </p>
                 </div>
                 <div className="bg-gray-50 p-4 rounded-xl">
                   <p className="text-sm text-gray-600 mb-1">دسته‌بندی</p>
-                  <p className="font-semibold text-[#0A1D37]">{selectedTicket.category}</p>
+                  <p className="font-semibold text-[#0A1D37]">
+                    {selectedTicket.category}
+                  </p>
                 </div>
                 <div className="bg-gray-50 p-4 rounded-xl">
                   <p className="text-sm text-gray-600 mb-1">وضعیت</p>
@@ -638,14 +703,16 @@ const AdminTicketsList = () => {
                 <div className="bg-gray-50 p-4 rounded-xl">
                   <p className="text-sm text-gray-600 mb-1">تاریخ ایجاد</p>
                   <p className="font-semibold text-[#0A1D37]">
-                    {new Date(selectedTicket.createdAt).toLocaleDateString("fa-IR")}
+                    {formatDate(selectedTicket.createdAt)}
                   </p>
                 </div>
               </div>
 
               {/* User's Request */}
               <div className="bg-gray-50 p-6 rounded-xl">
-                <h3 className="text-lg font-bold text-[#0A1D37] mb-4">درخواست کاربر</h3>
+                <h3 className="text-lg font-bold text-[#0A1D37] mb-4">
+                  درخواست کاربر
+                </h3>
                 <p className="text-gray-700 leading-relaxed whitespace-pre-wrap">
                   {selectedTicket.description}
                 </p>
@@ -664,7 +731,7 @@ const AdminTicketsList = () => {
                   rows={6}
                   className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] transition-colors resize-none"
                 />
-                
+
                 <div className="flex gap-3 mt-4">
                   <button
                     onClick={respondToTicket}
@@ -686,7 +753,12 @@ const AdminTicketsList = () => {
 
                   <div className="flex gap-2">
                     <select
-                      onChange={(e) => updateTicketStatus(selectedTicket._id, e.target.value as "open" | "in_progress" | "closed")}
+                      onChange={(e) =>
+                        updateTicketStatus(
+                          selectedTicket._id,
+                          e.target.value as "open" | "in_progress" | "closed"
+                        )
+                      }
                       className="px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37]"
                     >
                       <option value="">تغییر وضعیت</option>
@@ -701,12 +773,51 @@ const AdminTicketsList = () => {
               {/* Previous Response */}
               {selectedTicket.adminAnswer && (
                 <div className="bg-green-50 border-r-4 border-green-500 p-6 rounded-xl">
-                  <h3 className="text-lg font-bold text-green-900 mb-4">پاسخ قبلی</h3>
+                  <h3 className="text-lg font-bold text-green-900 mb-4">
+                    پاسخ قبلی
+                  </h3>
                   <p className="text-green-700 leading-relaxed whitespace-pre-wrap">
                     {selectedTicket.adminAnswer}
                   </p>
                 </div>
               )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Delete Confirmation Modal */}
+      {showDeleteModal && ticketToDelete && (
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-2xl w-full max-w-md shadow-2xl animate-in zoom-in duration-300">
+            <div className="p-6 space-y-4">
+              <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto">
+                <FaExclamationTriangle className="text-3xl text-red-500" />
+              </div>
+              <h3 className="text-xl font-bold text-center text-[#0A1D37]">
+                حذف تیکت
+              </h3>
+              <p className="text-center text-gray-600">
+                این عمل غیرقابل برگشت است. آیا از حذف این تیکت اطمینان دارید؟
+              </p>
+              <div className="flex gap-3">
+                <button
+                  onClick={() => {
+                    setShowDeleteModal(false);
+                    setTicketToDelete(null);
+                  }}
+                  className="flex-1 px-4 py-3 bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold rounded-xl transition-all duration-300"
+                >
+                  انصراف
+                </button>
+                <button
+                  onClick={() => deleteTicket(ticketToDelete)}
+                  disabled={isDeleting === ticketToDelete}
+                  className="flex-1 px-4 py-3 bg-red-600 hover:bg-red-700 text-white font-bold rounded-xl transition-all duration-300 disabled:opacity-50"
+                >
+                  {isDeleting === ticketToDelete ? "در حال حذف..." : "حذف تیکت"}
+                </button>
+              </div>
             </div>
           </div>
         </div>
