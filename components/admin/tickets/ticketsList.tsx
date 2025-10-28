@@ -14,7 +14,11 @@ import {
   FaCalendar,
   FaSearch,
   FaFilter,
+  FaPaperclip,
+  FaImage,
 } from "react-icons/fa";
+import FileUploaderModal from "@/components/FileUploaderModal";
+import Image from "next/image";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
 import { showToast } from "@/utilities/toast";
 
@@ -23,7 +27,9 @@ interface Ticket {
   _id: string;
   category: string;
   description: string;
+  attachments?: string[];
   adminAnswer?: string;
+  adminAttachments?: string[];
   status: "open" | "in_progress" | "closed";
   createdAt: string;
   updatedAt: string;
@@ -107,10 +113,12 @@ const AdminTicketsList = () => {
 
   // Form states
   const [adminResponse, setAdminResponse] = useState("");
+  const [adminAttachments, setAdminAttachments] = useState<string[]>([]);
   const [isResponding, setIsResponding] = useState(false);
   const [isDeleting, setIsDeleting] = useState<string | null>(null);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [ticketToDelete, setTicketToDelete] = useState<string | null>(null);
+  const [showUploadModal, setShowUploadModal] = useState(false);
 
   // Filter states
   const [statusFilter, setStatusFilter] = useState<string>("all");
@@ -260,6 +268,7 @@ const AdminTicketsList = () => {
         body: JSON.stringify({
           ticketId: selectedTicket._id,
           adminAnswer: adminResponse,
+          adminAttachments,
           status: "in_progress",
         }),
       });
@@ -272,6 +281,7 @@ const AdminTicketsList = () => {
 
       showToast.success("پاسخ با موفقیت ارسال شد");
       setAdminResponse("");
+      setAdminAttachments([]);
       setShowDetailsModal(false);
       fetchTickets(); // Refresh the list
     } catch (error) {
@@ -411,6 +421,7 @@ const AdminTicketsList = () => {
   const openTicketDetails = (ticket: Ticket) => {
     setSelectedTicket(ticket);
     setAdminResponse(ticket.adminAnswer || "");
+    setAdminAttachments(ticket.adminAttachments || []);
     setShowDetailsModal(true);
   };
 
@@ -466,7 +477,7 @@ const AdminTicketsList = () => {
       </div>
 
       {/* Filters */}
-      <div className="bg-white rounded-2xl grid grid-cols-2 gap-2  space-y-4">
+      <div className="bg-white rounded-2xl grid grid-cols-3 gap-2  space-y-4">
         {/* Search */}
         <div className="relative">
           <input
@@ -479,36 +490,34 @@ const AdminTicketsList = () => {
           <FaSearch className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400" />
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          {/* Status Filter */}
-          <div>
-            <select
-              value={statusFilter}
-              onChange={(e) => setStatusFilter(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37]"
-            >
-              <option value="all">همه وضعیت‌ها</option>
-              <option value="open">باز</option>
-              <option value="in_progress">در حال بررسی</option>
-              <option value="closed">بسته شده</option>
-            </select>
-          </div>
+        {/* Status Filter */}
+        <div>
+          <select
+            value={statusFilter}
+            onChange={(e) => setStatusFilter(e.target.value)}
+            className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37]"
+          >
+            <option value="all">همه وضعیت‌ها</option>
+            <option value="open">باز</option>
+            <option value="in_progress">در حال بررسی</option>
+            <option value="closed">بسته شده</option>
+          </select>
+        </div>
 
-          {/* Category Filter */}
-          <div>
-            <select
-              value={categoryFilter}
-              onChange={(e) => setCategoryFilter(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37]"
-            >
-              <option value="all">همه دسته‌ها</option>
-              {ticketCategories.map((category) => (
-                <option key={category} value={category}>
-                  {category}
-                </option>
-              ))}
-            </select>
-          </div>
+        {/* Category Filter */}
+        <div>
+          <select
+            value={categoryFilter}
+            onChange={(e) => setCategoryFilter(e.target.value)}
+            className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37]"
+          >
+            <option value="all">همه دسته‌ها</option>
+            {ticketCategories.map((category) => (
+              <option key={category} value={category}>
+                {category}
+              </option>
+            ))}
+          </select>
         </div>
       </div>
 
@@ -606,10 +615,10 @@ const AdminTicketsList = () => {
                   </div>
                 )}
 
-                <div className="flex gap-2 flex-wrap">
+                <div className="flex gap-1">
                   <button
                     onClick={() => openTicketDetails(ticket)}
-                    className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-[#0A1D37] to-[#4DBFF0] text-white font-medium rounded-xl hover:shadow-lg hover:scale-[1.02] transition-all duration-300 text-sm"
+                    className="flex items-center md:gap-2 gap-1 px-2 py-1 md:px-4 md:py-2 bg-gradient-to-r from-[#0A1D37] to-[#4DBFF0] text-white font-medium rounded-xl hover:shadow-lg hover:scale-[1.02] transition-all duration-300 text-sm"
                   >
                     <FaEye className="text-sm" />
                     مشاهده و پاسخ
@@ -619,7 +628,7 @@ const AdminTicketsList = () => {
                   {ticket.status !== "closed" && (
                     <button
                       onClick={() => updateTicketStatus(ticket._id, "closed")}
-                      className="flex items-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-700 text-white font-medium rounded-xl hover:scale-[1.02] transition-all duration-300 text-sm"
+                      className="flex items-center md:gap-2 gap-1 px-2 py-1 md:px-4 md:py-2 bg-green-600 hover:bg-green-700 text-white font-medium rounded-xl hover:scale-[1.02] transition-all duration-300 text-sm"
                     >
                       <FaCheckCircle className="text-sm" />
                       بستن
@@ -632,7 +641,7 @@ const AdminTicketsList = () => {
                       setShowDeleteModal(true);
                     }}
                     disabled={isDeleting === ticket._id}
-                    className="flex items-center gap-2 px-4 py-2 bg-red-600 hover:bg-red-700 text-white font-medium rounded-xl hover:scale-[1.02] transition-all duration-300 text-sm disabled:opacity-50"
+                    className="flex items-center md:gap-2 gap-1 px-2 py-1 md:px-4 md:py-2 bg-red-600 hover:bg-red-700 text-white font-medium rounded-xl hover:scale-[1.02] transition-all duration-300 text-sm disabled:opacity-50"
                   >
                     {isDeleting === ticket._id ? (
                       <FaSpinner className="animate-spin text-sm" />
@@ -651,7 +660,7 @@ const AdminTicketsList = () => {
       {/* Ticket Details Modal */}
       {showDetailsModal && selectedTicket && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-3 sm:p-4 animate-in fade-in duration-300">
-          <div className="bg-white rounded-2xl sm:rounded-3xl w-full max-w-4xl max-h-[90vh] overflow-hidden shadow-2xl border-2 border-[#0A1D37]/20 animate-in zoom-in duration-300">
+          <div className="bg-white rounded-2xl sm:rounded-3xl w-full max-w-4xl max-h-[95vh] overflow-hidden shadow-2xl border-2 border-[#0A1D37]/20 animate-in zoom-in duration-300">
             <div className="flex items-center justify-between p-6 border-b bg-gradient-to-r from-gray-50 to-blue-50">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 bg-gradient-to-r from-[#0A1D37] to-[#4DBFF0] rounded-xl flex items-center justify-center">
@@ -661,7 +670,7 @@ const AdminTicketsList = () => {
                   <h2 className="text-xl font-bold text-[#0A1D37]">
                     جزئیات و پاسخ تیکت
                   </h2>
-                  <p className="text-sm text-gray-600">
+                  <p className="text-xs text-gray-600">
                     کد پیگیری: {selectedTicket._id.slice(-8)}
                   </p>
                 </div>
@@ -716,6 +725,29 @@ const AdminTicketsList = () => {
                 <p className="text-gray-700 leading-relaxed whitespace-pre-wrap">
                   {selectedTicket.description}
                 </p>
+                {selectedTicket.attachments &&
+                  selectedTicket.attachments.length > 0 && (
+                    <div className="mt-4 grid grid-cols-2 sm:grid-cols-3 gap-3">
+                      {selectedTicket.attachments.map((url, index) => (
+                        <a
+                          key={index}
+                          href={url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="relative group"
+                        >
+                          <Image
+                            src={url}
+                            alt={`ضمیمه ${index + 1}`}
+                            width={200}
+                            height={150}
+                            className="w-full h-32 object-cover rounded-lg border-2 border-gray-200 hover:border-[#0A1D37] transition-colors"
+                            unoptimized
+                          />
+                        </a>
+                      ))}
+                    </div>
+                  )}
               </div>
 
               {/* Admin Response Section */}
@@ -731,12 +763,45 @@ const AdminTicketsList = () => {
                   rows={6}
                   className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37] transition-colors resize-none"
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowUploadModal(true)}
+                  className="mt-3 flex items-center gap-2 px-4 py-2 border-2 border-dashed border-gray-300 rounded-xl hover:border-[#0A1D37] hover:bg-white transition-colors"
+                >
+                  <FaPaperclip className="text-gray-400" />
+                  <span className="text-gray-600">ضمیمه فایل</span>
+                </button>
+                {adminAttachments.length > 0 && (
+                  <div className="mt-3 space-y-2">
+                    {adminAttachments.map((url, index) => (
+                      <div
+                        key={index}
+                        className="flex items-center gap-2 p-2 bg-white rounded-lg"
+                      >
+                        <FaImage className="text-blue-600" />
+                        <span className="text-sm text-blue-700 flex-1 truncate">
+                          فایل {index + 1}
+                        </span>
+                        <button
+                          onClick={() =>
+                            setAdminAttachments(
+                              adminAttachments.filter((_, i) => i !== index)
+                            )
+                          }
+                          className="text-red-500 hover:text-red-700"
+                        >
+                          <FaTimes />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
 
                 <div className="flex gap-3 mt-4">
                   <button
                     onClick={respondToTicket}
                     disabled={isResponding || !adminResponse.trim()}
-                    className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-[#0A1D37] to-[#4DBFF0] text-white font-bold rounded-xl hover:shadow-xl hover:scale-[1.02] active:scale-95 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="flex items-center md:gap-2 gap-1 px-2 py-1 md:px-4 md:py-2 bg-gradient-to-r from-[#0A1D37] to-[#4DBFF0] text-white font-bold rounded-xl hover:shadow-xl hover:scale-[1.02] active:scale-95 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {isResponding ? (
                       <>
@@ -759,7 +824,7 @@ const AdminTicketsList = () => {
                           e.target.value as "open" | "in_progress" | "closed"
                         )
                       }
-                      className="px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37]"
+                      className=" px-2 py-1 md:px-4 md:py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#0A1D37] focus:border-[#0A1D37]"
                     >
                       <option value="">تغییر وضعیت</option>
                       <option value="open">باز</option>
@@ -779,6 +844,29 @@ const AdminTicketsList = () => {
                   <p className="text-green-700 leading-relaxed whitespace-pre-wrap">
                     {selectedTicket.adminAnswer}
                   </p>
+                  {selectedTicket.adminAttachments &&
+                    selectedTicket.adminAttachments.length > 0 && (
+                      <div className="mt-4 grid grid-cols-2 sm:grid-cols-3 gap-3">
+                        {selectedTicket.adminAttachments.map((url, index) => (
+                          <a
+                            key={index}
+                            href={url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="relative group"
+                          >
+                            <Image
+                              src={url}
+                              alt={`پاسخ ${index + 1}`}
+                              width={200}
+                              height={150}
+                              className="w-full h-32 object-cover rounded-lg border-2 border-green-200 hover:border-green-500 transition-colors"
+                              unoptimized
+                            />
+                          </a>
+                        ))}
+                      </div>
+                    )}
                 </div>
               )}
             </div>
@@ -822,6 +910,17 @@ const AdminTicketsList = () => {
           </div>
         </div>
       )}
+
+      {/* File Upload Modal */}
+      <FileUploaderModal
+        isOpen={showUploadModal}
+        onClose={() => setShowUploadModal(false)}
+        onFileUploaded={(url) => {
+          setAdminAttachments([...adminAttachments, url]);
+          setShowUploadModal(false);
+        }}
+        title="آپلود فایل پاسخ"
+      />
     </div>
   );
 };

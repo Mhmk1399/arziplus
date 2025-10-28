@@ -16,8 +16,6 @@ import {
 } from "react-icons/fa";
 import { showToast } from "@/utilities/toast";
 
- 
-
 interface ordercreation {
   type: string;
   requestNumber: number;
@@ -196,9 +194,10 @@ const PaymentSuccessPage: React.FC = () => {
   const sendOrderSMS = async (authority: string, orderId: string) => {
     try {
       const token = localStorage.getItem("authToken");
-      const customerName = currentUser?.firstName && currentUser?.lastName
-        ? `${currentUser.firstName} ${currentUser.lastName}`
-        : currentUser?.firstName || "کاربر";
+      const customerName =
+        currentUser?.firstName && currentUser?.lastName
+          ? `${currentUser.firstName} ${currentUser.lastName}`
+          : currentUser?.firstName || "کاربر";
 
       await fetch("/api/sms/order-confirmation", {
         method: "POST",
@@ -219,7 +218,16 @@ const PaymentSuccessPage: React.FC = () => {
 
   const processOrder = async (authority: PaymentDetails | string) => {
     if (orderCreated) return; // Prevent duplicate processing
-
+    if (!authority) return;
+    const authorityValue =
+      typeof authority === "string" ? authority : authority.authority;
+    const processedKey = `processed_${authorityValue}`;
+    if (localStorage.getItem(processedKey)) {
+      console.log(
+        "This payment was already processed. Skipping duplicate order creation."
+      );
+      return;
+    }
     setProcessingOrder(true);
     try {
       const token = localStorage.getItem("authToken");
@@ -249,7 +257,7 @@ const PaymentSuccessPage: React.FC = () => {
           );
           requestBody.hozoriData = hozoriData;
           localStorage.removeItem(hozoriKey);
-        } catch   {
+        } catch {
           console.log("Failed to parse hozori data from localStorage");
         }
       }
@@ -264,9 +272,18 @@ const PaymentSuccessPage: React.FC = () => {
           );
           requestBody.lotteryData = lotteryData;
           localStorage.removeItem(lotteryKey);
-        } catch   {
+        } catch {
           console.log("Failed to parse lottery data from localStorage");
         }
+      }
+
+      // جلوگیری از پردازش تکراری: اگر داده‌ای در localStorage نبود، سفارش قبلاً پردازش شده
+      if (!requestBody.hozoriData && !requestBody.lotteryData) {
+        console.log(
+          "No pending data in localStorage, skipping order processing"
+        );
+        setProcessingOrder(false); // برای جلوگیری از stuck loading در UI
+        return;
       }
 
       const response = await fetch("/api/payment/process-order", {
@@ -281,10 +298,14 @@ const PaymentSuccessPage: React.FC = () => {
       const data = await response.json();
 
       if (response.ok && data.success) {
+        localStorage.setItem(processedKey, "true");
         setOrderCreated(data.data);
 
         // Send SMS notification
-        await sendOrderSMS(authorityValue, data.data.requestNumber || authorityValue);
+        await sendOrderSMS(
+          authorityValue,
+          data.data.requestNumber || authorityValue
+        );
 
         // Show success message based on order type
         if (data.data.type === "service") {
@@ -686,7 +707,7 @@ ${
           {/* Actions */}
           <div className="bg-white/80 backdrop-blur-sm border border-gray-200/50 rounded-2xl p-6">
             <h3 className="font-semibold text-[#0A1D37] mb-4">عملیات</h3>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid lg:grid-cols-3 grid-cols-1 lg:gap-3 gap-1">
               <button
                 onClick={printReceipt}
                 className="flex items-center justify-center gap-2 px-4 py-3 bg-blue-500 text-white rounded-xl hover:bg-blue-600 transition-colors"
@@ -704,7 +725,7 @@ ${
               </button>
 
               {/* Dynamic action based on order type */}
-              {orderCreated?.type === "service" && (
+              {/* {orderCreated?.type === "service" && (
                 <button
                   onClick={() => router.push("/dashboard/requests")}
                   className="flex items-center justify-center gap-2 px-4 py-3 border border-blue-300 text-blue-700 rounded-xl hover:bg-blue-50 transition-colors"
@@ -712,9 +733,9 @@ ${
                   <FaReceipt />
                   مشاهده درخواست
                 </button>
-              )}
+              )} */}
 
-              {orderCreated?.type === "lottery" && (
+              {/* {orderCreated?.type === "lottery" && (
                 <button
                   onClick={() => router.push("/dashboard/lottery")}
                   className="flex items-center justify-center gap-2 px-4 py-3 border border-purple-300 text-purple-700 rounded-xl hover:bg-purple-50 transition-colors"
@@ -722,9 +743,9 @@ ${
                   <FaReceipt />
                   وضعیت قرعه‌کشی
                 </button>
-              )}
+              )} */}
 
-              {orderCreated?.type === "wallet" && (
+              {/* {orderCreated?.type === "wallet" && (
                 <button
                   onClick={() => router.push("/dashboard/wallet")}
                   className="flex items-center justify-center gap-2 px-4 py-3 border border-green-300 text-green-700 rounded-xl hover:bg-green-50 transition-colors"
@@ -732,9 +753,9 @@ ${
                   <FaReceipt />
                   مشاهده کیف پول
                 </button>
-              )}
+              )} */}
 
-              {orderCreated?.type === "hozori" && (
+              {/* {orderCreated?.type === "hozori" && (
                 <button
                   onClick={() => router.push("/dashboard")}
                   className="flex items-center justify-center gap-2 px-4 py-3 border border-blue-300 text-blue-700 rounded-xl hover:bg-blue-50 transition-colors"
@@ -742,15 +763,15 @@ ${
                   <FaReceipt />
                   مشاهده رزروها
                 </button>
-              )}
-
+              )} */}
+{/* 
               <button
                 onClick={() => router.push("/payment/history")}
                 className="flex items-center justify-center gap-2 px-4 py-3 border border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition-colors"
               >
                 <FaReceipt />
                 تاریخچه پرداخت
-              </button>
+              </button> */}
 
               <button
                 onClick={() => router.push("/")}

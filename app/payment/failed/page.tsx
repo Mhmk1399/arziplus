@@ -193,7 +193,7 @@ const PaymentFailedPage: React.FC = () => {
                 {authority && (
                   <div className="flex items-center justify-between py-3 border-b border-gray-100">
                     <span className="text-gray-600">کد پیگیری:</span>
-                    <span className="font-mono font-medium">{authority}</span>
+                    <span className="font-mono font-medium text-xs">{authority}</span>
                   </div>
                 )}
 

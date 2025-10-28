@@ -9,17 +9,23 @@ import {
   FaCheckCircle,
   FaExclamationTriangle,
   FaPaperPlane,
-  FaSpinner
+  FaSpinner,
+  FaPaperclip,
+  FaImage
 } from "react-icons/fa";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
 import { showToast } from "@/utilities/toast";
+import FileUploaderModal from "@/components/FileUploaderModal";
+import Image from "next/image";
 
 // Interfaces
 interface Ticket {
   _id: string;
   category: string;
   description: string;
+  attachments?: string[];
   adminAnswer?: string;
+  adminAttachments?: string[];
   status: "open" | "in_progress" | "closed";
   createdAt: string;
   updatedAt: string;
@@ -52,9 +58,11 @@ const CustomerTicketsList = () => {
   // Form states
   const [newTicket, setNewTicket] = useState({
     category: "",
-    description: ""
+    description: "",
+    attachments: [] as string[]
   });
   const [isCreating, setIsCreating] = useState(false);
+  const [showUploadModal, setShowUploadModal] = useState(false);
 
   // Filter states
   const [statusFilter, setStatusFilter] = useState<string>("all");
@@ -123,7 +131,7 @@ const CustomerTicketsList = () => {
 
       showToast.success("تیکت با موفقیت ایجاد شد");
       setShowCreateModal(false);
-      setNewTicket({ category: "", description: "" });
+      setNewTicket({ category: "", description: "", attachments: [] });
       fetchTickets(); // Refresh the list
     } catch (error) {
       showToast.error(
@@ -334,7 +342,7 @@ const CustomerTicketsList = () => {
       {/* Create Ticket Modal */}
       {showCreateModal && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-3 sm:p-4 animate-in fade-in duration-300">
-          <div className="bg-white rounded-2xl sm:rounded-3xl w-full max-w-2xl max-h-[90vh] overflow-hidden shadow-2xl border-2 border-[#0A1D37]/20 animate-in zoom-in duration-300">
+          <div className="bg-white rounded-2xl sm:rounded-3xl w-full max-w-2xl max-h-full overflow-hidden shadow-2xl border-2 border-[#0A1D37]/20 animate-in zoom-in duration-300">
             <div className="flex items-center justify-between p-6 border-b bg-gradient-to-r from-gray-50 to-blue-50">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 bg-gradient-to-r from-[#0A1D37] to-[#4DBFF0] rounded-xl flex items-center justify-center">
@@ -383,6 +391,36 @@ const CustomerTicketsList = () => {
                 <p className="text-xs text-gray-500 mt-2">
                   حداقل 10 کاراکتر وارد کنید
                 </p>
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  ضمیمه فایل (اختیاری)
+                </label>
+                <button
+                  type="button"
+                  onClick={() => setShowUploadModal(true)}
+                  className="w-full flex items-center justify-center gap-2 px-4 py-3 border-2 border-dashed border-gray-300 rounded-xl hover:border-[#0A1D37] hover:bg-gray-50 transition-colors"
+                >
+                  <FaPaperclip className="text-gray-400" />
+                  <span className="text-gray-600">آپلود فایل</span>
+                </button>
+                {newTicket.attachments.length > 0 && (
+                  <div className="mt-3 space-y-2">
+                    {newTicket.attachments.map((url, index) => (
+                      <div key={index} className="flex items-center gap-2 p-2 bg-green-50 rounded-lg">
+                        <FaImage className="text-green-600" />
+                        <span className="text-sm text-green-700 flex-1 truncate">فایل {index + 1}</span>
+                        <button
+                          onClick={() => setNewTicket({ ...newTicket, attachments: newTicket.attachments.filter((_, i) => i !== index) })}
+                          className="text-red-500 hover:text-red-700"
+                        >
+                          <FaTimes />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
 
               <div className="flex gap-3 pt-4">
@@ -465,6 +503,15 @@ const CustomerTicketsList = () => {
                 <p className="text-gray-700 leading-relaxed whitespace-pre-wrap">
                   {selectedTicket.description}
                 </p>
+                {selectedTicket.attachments && selectedTicket.attachments.length > 0 && (
+                  <div className="mt-4 grid grid-cols-2 sm:grid-cols-3 gap-3">
+                    {selectedTicket.attachments.map((url, index) => (
+                      <a key={index} href={url} target="_blank" rel="noopener noreferrer" className="relative group">
+                        <Image src={url} alt={`ضمیمه ${index + 1}`} width={200} height={150} className="w-full h-32 object-cover rounded-lg border-2 border-gray-200 hover:border-[#0A1D37] transition-colors" unoptimized />
+                      </a>
+                    ))}
+                  </div>
+                )}
               </div>
 
               {/* Admin Answer */}
@@ -474,6 +521,15 @@ const CustomerTicketsList = () => {
                   <p className="text-blue-700 leading-relaxed whitespace-pre-wrap">
                     {selectedTicket.adminAnswer}
                   </p>
+                  {selectedTicket.adminAttachments && selectedTicket.adminAttachments.length > 0 && (
+                    <div className="mt-4 grid grid-cols-2 sm:grid-cols-3 gap-3">
+                      {selectedTicket.adminAttachments.map((url, index) => (
+                        <a key={index} href={url} target="_blank" rel="noopener noreferrer" className="relative group">
+                          <Image src={url} alt={`پاسخ ${index + 1}`} width={200} height={150} className="w-full h-32 object-cover rounded-lg border-2 border-blue-200 hover:border-blue-500 transition-colors" unoptimized />
+                        </a>
+                      ))}
+                    </div>
+                  )}
                 </div>
               )}
 
@@ -491,6 +547,17 @@ const CustomerTicketsList = () => {
           </div>
         </div>
       )}
+
+      {/* File Upload Modal */}
+      <FileUploaderModal
+        isOpen={showUploadModal}
+        onClose={() => setShowUploadModal(false)}
+        onFileUploaded={(url) => {
+          setNewTicket({ ...newTicket, attachments: [...newTicket.attachments, url] });
+          setShowUploadModal(false);
+        }}
+        title="آپلود فایل تیکت"
+      />
     </div>
   );
 };

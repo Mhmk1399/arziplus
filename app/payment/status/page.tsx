@@ -320,7 +320,7 @@ const PaymentStatusPage: React.FC = () => {
                 <div className="flex items-center justify-between py-3 border-b border-gray-100">
                   <span className="text-gray-600">کد پیگیری:</span>
                   <div className="flex items-center gap-2">
-                    <span className="font-mono font-medium">{paymentStatus.authority}</span>
+                    <span className="font-mono font-medium text-xs">{paymentStatus.authority}</span>
                     <button
                       onClick={() => copyToClipboard(paymentStatus.authority, 'کد پیگیری')}
                       className="text-[#0A1D37] hover:text-[#e56a00] transition-colors"

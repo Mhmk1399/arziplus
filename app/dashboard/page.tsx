@@ -51,6 +51,7 @@ import NationalCredentials from "@/components/customerAdmins/credintials/natinal
 import ContactInfo from "@/components/customerAdmins/credintials/phonrnumber";
 import Security from "@/components/customerAdmins/credintials/security";
 import { FaShieldAlt, FaPhone } from "react-icons/fa";
+import CredentialsWithProgress from "@/components/customerAdmins/credintials/CredentialsWithProgress";
 import CustomerHozoriList from "@/components/customerAdmins/hozori/hozoriList";
 import CustomerLotteryList from "@/components/customerAdmins/lottery/lotteryList";
 import CustomerRequestsTable from "@/components/customerAdmins/ordersandservices/orderHistory";
@@ -319,28 +320,28 @@ const Dashboard: React.FC = () => {
             id: "securities",
             label: "امنیت و دسترسی",
             icon: <FaShieldAlt className="text-lg sm:text-xl" />,
-            component: Security,
+            component: () => <CredentialsWithProgress currentStep="security"><Security /></CredentialsWithProgress>,
             description: "نام کاربری، رمز عبور و تنظیمات امنیتی",
           },
           {
             id: "nationalCredentials",
             label: "مدارک هویتی",
             icon: <FaIdCard className="text-lg sm:text-xl" />,
-            component: NationalCredentials,
+            component: () => <CredentialsWithProgress currentStep="national"><NationalCredentials /></CredentialsWithProgress>,
             description: "کارت ملی، احراز هویت و مدارک شخصی",
           },
           {
             id: "contactInfo",
             label: "اطلاعات تماس",
             icon: <FaPhone className="text-lg sm:text-xl" />,
-            component: ContactInfo,
+            component: () => <CredentialsWithProgress currentStep="contact"><ContactInfo /></CredentialsWithProgress>,
             description: "شماره تماس، ایمیل و آدرس",
           },
           {
             id: "bankingInfo",
             label: "اطلاعات بانکی",
             icon: <FaUniversity className="text-lg sm:text-xl" />,
-            component: BankingInfo,
+            component: () => <CredentialsWithProgress currentStep="banking"><BankingInfo /></CredentialsWithProgress>,
             description: "حساب بانکی برای دریافت درآمد",
           },
         ],
@@ -728,18 +729,7 @@ const Dashboard: React.FC = () => {
     },
   ];
 
-  // Get menu items based on user role
-  const getMenuItems = (): MenuItem[] => {
-    if (!currentUser) return [];
-
-    if (
-      currentUser.roles.includes("admin") ||
-      currentUser.roles.includes("super_admin")
-    ) {
-      return adminMenuItems;
-    }
-    return customerMenuItems;
-  };
+ 
 
   const findMenuItem = (id: string): MenuItem | undefined => {
     for (const item of menuItems) {

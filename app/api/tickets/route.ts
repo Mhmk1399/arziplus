@@ -6,9 +6,10 @@ import { getAuthUser } from "@/lib/auth";
 
 // GET - Fetch tickets
 
-interface data {
-  adminAnswer: string;
-  status: string;
+interface UpdateData {
+  adminAnswer?: string;
+  adminAttachments?: string[];
+  status?: string;
 }
 export async function GET(request: NextRequest) {
   try {
@@ -91,7 +92,7 @@ export async function POST(request: NextRequest) {
     await connect();
 
     const body = await request.json();
-    const { category, description } = body;
+    const { category, description, attachments } = body;
 
     // Validation
     if (!category || !description) {
@@ -126,6 +127,7 @@ export async function POST(request: NextRequest) {
       user: currentUser._id,
       category,
       description,
+      attachments: attachments || [],
       status: "open",
     });
 
@@ -159,7 +161,7 @@ export async function PUT(request: NextRequest) {
     await connect();
 
     const body = await request.json();
-    const { ticketId, adminAnswer, status } = body;
+    const { ticketId, adminAnswer, adminAttachments, status } = body;
 
     if (!ticketId) {
       return NextResponse.json(
@@ -209,14 +211,12 @@ export async function PUT(request: NextRequest) {
     }
 
     // Update ticket
-    const updateData: data = {
-      adminAnswer: "",
-      status: "",
-    };
+    const updateData: UpdateData = {};
 
     if (adminAnswer && isAdmin) {
       updateData.adminAnswer = adminAnswer;
-      updateData.status = "in_progress"; // Auto-set to in_progress when admin responds
+      updateData.adminAttachments = adminAttachments || [];
+      updateData.status = "in_progress";
     }
 
     if (status && isAdmin) {

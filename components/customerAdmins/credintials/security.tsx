@@ -334,34 +334,14 @@ const Security = ({
   const passwordStrength = getPasswordStrength(formData.password);
 
   return (
-    <div
-      className="w-full min-h-screen   p-3 sm:p-6 lg:p-8"
-      dir="rtl"
-    >
+    <div className="w-full min-h-screen  " dir="rtl">
       <div className="max-w-7xl mx-auto">
-        
-
         {/* Main Form */}
         <div className="bg-white rounded-2xl sm:rounded-3xl   overflow-hidden">
           <div className="p-4 sm:p-6 lg:p-8 space-y-6 sm:space-y-8">
             {/* Profile Section */}
             <div className="relative">
-              {/* Section Header */}
-              <div className="flex items-start sm:items-center justify-between mb-5 sm:mb-6 pb-4 sm:pb-5 border-b-2 border-gray-100">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-blue-500/10 to-indigo-500/10 rounded-xl flex items-center justify-center">
-                    <FaUserCircle className="text-blue-600 text-lg sm:text-xl" />
-                  </div>
-                  <div>
-                    <h3 className="text-lg sm:text-xl font-bold text-gray-900">
-                      پروفایل کاربری
-                    </h3>
-                    <p className="text-xs sm:text-sm text-gray-500 mt-0.5">
-                      تصویر و اطلاعات شخصی
-                    </p>
-                  </div>
-                </div>
-              </div>
+            
 
               {/* Avatar & Bio Grid */}
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 sm:gap-6 lg:gap-8">
@@ -658,7 +638,7 @@ const Security = ({
                       }
                       placeholder="تکرار رمز عبور جدید"
                       disabled={!formData.password}
-                      className={`w-full px-5 py-3.5 pr-12 rounded-xl border-2 transition-all duration-300 text-sm focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-gray-50 ${
+                      className={`w-full px-5 py-3.5 pl-12 rounded-xl border-2 transition-all duration-300 text-sm focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-gray-50 ${
                         errors.confirmPassword
                           ? "border-red-300 bg-red-50/50 focus:ring-2 focus:ring-red-500/20 focus:border-red-500"
                           : formData.confirmPassword &&

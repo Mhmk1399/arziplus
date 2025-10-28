@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
 import {
@@ -32,34 +32,25 @@ const WalletPaymentSuccessPage: React.FC = () => {
     type: string;
     timestamp: string;
   } | null>(null);
+  const [initialized, setInitialized] = useState(false);
 
   const orderId = searchParams.get("orderId");
   const amount = searchParams.get("amount");
   const type = searchParams.get("type");
 
   useEffect(() => {
-    // Wait for user loading to complete before checking authentication
-    if (userLoading) return;
+    if (userLoading || initialized) return;
 
     if (!isLoggedIn) {
       router.push("/auth/sms");
       return;
     }
 
-    // Debug logging
-    console.log("Wallet Success page params:", {
-      orderId,
-      amount,
-      type,
-    });
-
     if (!orderId || !amount) {
-      console.log("Missing payment data, redirecting to dashboard");
       router.push("/dashboard");
       return;
     }
 
-    // Set payment data
     setPaymentData({
       orderId,
       amount: parseInt(amount),
@@ -69,13 +60,11 @@ const WalletPaymentSuccessPage: React.FC = () => {
     });
 
     setLoading(false);
-
-    // Send SMS notification
     sendOrderSMS(orderId);
-
-    // Show success message
     showToast.success("پرداخت از کیف پول با موفقیت انجام شد");
-  }, [orderId, amount, type, isLoggedIn, userLoading, router]);
+
+    setInitialized(true); // ✅ فقط یک‌بار اجرا شود
+  }, [userLoading, isLoggedIn, orderId, amount, type, router, initialized]);
 
   const getDescriptionByType = (type: string): string => {
     switch (type) {
@@ -103,29 +92,33 @@ const WalletPaymentSuccessPage: React.FC = () => {
     }
   };
 
-  const sendOrderSMS = async (orderId: string) => {
-    try {
-      const token = localStorage.getItem("authToken");
-      const customerName = currentUser?.firstName && currentUser?.lastName
-        ? `${currentUser.firstName} ${currentUser.lastName}`
-        : currentUser?.firstName || "کاربر";
+  const sendOrderSMS = useCallback(
+    async (orderId: string) => {
+      try {
+        const token = localStorage.getItem("authToken");
+        const customerName =
+          currentUser?.firstName && currentUser?.lastName
+            ? `${currentUser.firstName} ${currentUser.lastName}`
+            : currentUser?.firstName || "کاربر";
 
-      await fetch("/api/sms/order-confirmation", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          orderId,
-          customerName,
-        }),
-      });
-    } catch (error) {
-      console.log("Failed to send SMS notification:", error);
-      // Don't show error to user, SMS is not critical
-    }
-  };
+        await fetch("/api/sms/order-confirmation", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            orderId,
+            customerName,
+          }),
+        });
+      } catch (error) {
+        console.log("Failed to send SMS notification:", error);
+        // Don't show error to user, SMS is not critical
+      }
+    },
+    [currentUser]
+  );
 
   const copyToClipboard = (text: string, label: string) => {
     navigator.clipboard.writeText(text);
@@ -292,7 +285,9 @@ const WalletPaymentSuccessPage: React.FC = () => {
                 </div>
               </div>
               <button
-                onClick={() => copyToClipboard(paymentData.orderId, "شماره سفارش")}
+                onClick={() =>
+                  copyToClipboard(paymentData.orderId, "شماره سفارش")
+                }
                 className="p-2 hover:bg-gray-200 rounded-lg transition-colors"
               >
                 <FaCopy className="text-gray-500" />
@@ -408,9 +403,7 @@ const WalletPaymentSuccessPage: React.FC = () => {
               <ul className="text-sm text-blue-800 space-y-1">
                 <li>• رسید پرداخت به ایمیل شما ارسال خواهد شد</li>
                 <li>• می‌توانید تاریخچه تراکنش‌ها را در داشبورد مشاهده کنید</li>
-                <li>
-                  • در صورت بروز هرگونه مشکل با پشتیبانی تماس بگیرید
-                </li>
+                <li>• در صورت بروز هرگونه مشکل با پشتیبانی تماس بگیرید</li>
               </ul>
             </div>
           </div>

@@ -139,8 +139,8 @@ function SMSAuthContent() {
         }
 
         // Trigger navbar refresh
-        window.dispatchEvent(new CustomEvent('userLoggedIn'));
-        
+        window.dispatchEvent(new CustomEvent("userLoggedIn"));
+
         // Redirect to previous page or dashboard
         setTimeout(() => {
           router.push(finalRedirect);
@@ -277,15 +277,19 @@ function SMSAuthContent() {
             </h1>
 
             <p className="text-[#A0A0A0] text-base leading-relaxed relative z-10 max-w-md mx-auto">
-              {step === "phone"
-                ? redirectUrl !== "/dashboard"
-                  ? "برای ادامه، شماره تلفن خود را وارد کنید"
-                  : "شماره تلفن خود را وارد کنید"
-                : (
-                    <>
-                      کد تایید ارسال شده به <strong className="font-bold text-[#0A1D37]">{phone}</strong> را وارد کنید
-                    </>
-                  )}
+              {step === "phone" ? (
+                redirectUrl !== "/dashboard" ? (
+                  "برای ادامه، شماره تلفن خود را وارد کنید"
+                ) : (
+                  "شماره تلفن خود را وارد کنید"
+                )
+              ) : (
+                <>
+                  کد تایید ارسال شده به{" "}
+                  <strong className="font-bold text-[#0A1D37]">{phone}</strong>{" "}
+                  را وارد کنید
+                </>
+              )}
             </p>
 
             {redirectUrl !== "/dashboard" && (
@@ -374,7 +378,11 @@ function SMSAuthContent() {
                 <FaKey className="absolute right-4 top-1/2 transform -translate-y-1/2 text-[#0A1D37]" />
                 <input
                   type="text"
-                  placeholder="123456"
+                  name="otp"
+                  autoComplete="one-time-code"
+                  placeholder="کد تایید"
+                  inputMode="numeric"
+                  pattern="[0-9]*"
                   value={verificationCode}
                   onChange={(e) =>
                     setVerificationCode(e.target.value.replace(/\D/g, ""))
