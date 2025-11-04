@@ -13,8 +13,7 @@ import {
   FaUser,
   FaCalendar,
   FaSearch,
-  FaFilter,
-  FaPaperclip,
+   FaPaperclip,
   FaImage,
 } from "react-icons/fa";
 import FileUploaderModal from "@/components/FileUploaderModal";
@@ -370,6 +369,7 @@ const AdminTicketsList = () => {
 
   // Utility functions
   const getUserName = (user: Ticket["user"]) => {
+    if (!user) return "کاربر ناشناس";
     return user.nationalCredentials?.firstName &&
       user.nationalCredentials?.lastName
       ? `${user.nationalCredentials.firstName} ${user.nationalCredentials.lastName}`

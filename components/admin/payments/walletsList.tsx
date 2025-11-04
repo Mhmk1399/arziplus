@@ -6,7 +6,6 @@ import { FiSearch, FiDownload, FiEye, FiEdit3 } from "react-icons/fi";
 import { FaWallet, FaArrowUp, FaEquals, FaArrowDown } from "react-icons/fa";
 
 // Configuration
- 
 
 const walletStatsConfig = [
   {
@@ -147,6 +146,7 @@ const WalletsList: React.FC = () => {
 
   // Helper functions to get user data
   const getUserName = (userId: Wallet["userId"]) => {
+    if (!userId) return "نام تعریف نشده";
     const { firstName, lastName } = userId.nationalCredentials || {};
     if (firstName && lastName) return `${firstName} ${lastName}`;
     if (firstName) return firstName;
@@ -154,6 +154,7 @@ const WalletsList: React.FC = () => {
   };
 
   const getUserPhone = (userId: Wallet["userId"]) => {
+    if (!userId) return "تلفن تعریف نشده";
     return userId.contactInfo?.mobilePhone || "تلفن تعریف نشده";
   };
 
@@ -395,7 +396,7 @@ const WalletsList: React.FC = () => {
   }
 
   return (
-    <div className="  mt-2 px-2">
+    <div className="  mt-2 px-2 max-w-7xl mx-auto">
       {/* Header */}
       <div className="flex my-3 flex-row justify-end items-center  gap-4">
         <button
