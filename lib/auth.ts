@@ -73,12 +73,42 @@ export function decodeClientToken(token: string): AuthUser | null {
   }
 }
 
+// Check if token is expired
+export function isTokenExpired(token: string): boolean {
+  try {
+    const base64Url = token.split(".")[1];
+    const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+    const jsonPayload = decodeURIComponent(
+      atob(base64)
+        .split("")
+        .map((c) => "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2))
+        .join("")
+    );
+    const decoded = JSON.parse(jsonPayload);
+    
+    // JWT exp is in seconds, Date.now() is in milliseconds
+    if (decoded.exp) {
+      return decoded.exp * 1000 < Date.now();
+    }
+    
+    return false;
+  } catch {
+    return true; // If we can't decode, consider it expired
+  }
+}
+
 // Get current authenticated user from localStorage
 export function getCurrentUser(): AuthUser | null {
   if (typeof window === "undefined") return null;
 
   const token = localStorage.getItem("authToken");
   if (!token) return null;
+
+  // Check if token is expired
+  if (isTokenExpired(token)) {
+    localStorage.removeItem("authToken");
+    return null;
+  }
 
   return decodeClientToken(token);
 }

@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
 import { useRouter, useSearchParams } from "next/navigation";
+import { isTokenExpired } from "@/lib/auth";
 import {
   FaUsers,
   FaServicestack,
@@ -174,6 +175,34 @@ const Dashboard: React.FC = () => {
   } = useCurrentUser();
   const router = useRouter();
   const searchParams = useSearchParams();
+
+  // Verify token on mount and periodically
+  useEffect(() => {
+    const verifyToken = () => {
+      const token = localStorage.getItem("authToken");
+      
+      if (!token) {
+        showToast.error("لطفا وارد شوید");
+        router.push("/auth/sms");
+        return;
+      }
+
+      if (isTokenExpired(token)) {
+        localStorage.removeItem("authToken");
+        showToast.error("جلسه شما منقضی شده است. لطفا دوباره وارد شوید");
+        router.push("/auth/sms");
+        return;
+      }
+    };
+
+    // Verify immediately
+    verifyToken();
+
+    // Check token every 5 minutes
+    const interval = setInterval(verifyToken, 5 * 60 * 1000);
+
+    return () => clearInterval(interval);
+  }, [router]);
 
   // Load user data from API
   const loadUserData = async (): Promise<void> => {

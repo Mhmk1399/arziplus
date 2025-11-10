@@ -38,7 +38,7 @@ export function startCurrencySyncWorker() {
         console.log("❌ Scheduled currency sync failed:", error);
       });
     },
-    10 * 60 * 1000
+    10 * 60 * 1000 * 24
   ); // 10 minutes in milliseconds
 
   console.log("✅ Currency sync worker started (runs every 10 minutes)");
