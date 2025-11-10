@@ -58,6 +58,30 @@ export function generateShortOrderId(fullOrderId: string): string {
   return fullOrderId.slice(-15);
 }
 
+export async function sendStatusUpdateSMS(phone: string, customerName: string, orderName: string) {
+  try {
+    const smsir = new Smsir(process.env.SMS_IR_API_KEY!, parseInt(process.env.SMS_IR_LINE_NUMBER!));
+    const templateId = parseInt(process.env.TICKET_SMS_TEMPLATE!);
+    
+    // Truncate customer name to max 20 characters
+    const truncatedName = customerName.length > 20 ? customerName.substring(0, 20) : customerName;
+    
+    // Truncate order name to max 30 characters
+    const truncatedOrderName = orderName.length > 30 ? orderName.substring(0, 30) : orderName;
+    
+    const result = await smsir.SendVerifyCode(phone, templateId, [
+      { name: 'CUSTOMERNAME', value: truncatedName },
+      { name: 'ORDERNAME', value: truncatedOrderName }
+    ]);
+    
+    console.log('Status update SMS send result:', result);
+    return result.data?.status === 1;
+  } catch (error: unknown) {
+    console.log('Status update SMS send error:', error instanceof Error ? error.message : 'Unknown error');
+    return false;
+  }
+}
+
 export function generateVerificationCode(): string {
   return Math.floor(100000 + Math.random() * 900000).toString();
 }

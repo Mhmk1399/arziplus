@@ -3,6 +3,7 @@ import connect from "@/lib/data";
 import Tickets from "@/models/tickets";
 import User from "@/models/users";
 import { getAuthUser } from "@/lib/auth";
+import { sendStatusUpdateSMS } from "@/lib/sms";
 
 // GET - Fetch tickets
 
@@ -227,7 +228,30 @@ export async function PUT(request: NextRequest) {
       ticketId,
       updateData,
       { new: true }
-    ).populate("user", "nationalCredentials personalInformations");
+    ).populate("user", "nationalCredentials personalInformations contactInfo");
+
+    // Send SMS notification when admin responds to ticket
+    if (isAdmin && (adminAnswer || status)) {
+      try {
+        const user = updatedTicket.user as any;
+        
+        if (user) {
+          const customerName = user.nationalCredentials?.firstName 
+            ? `${user.nationalCredentials.firstName} ${user.nationalCredentials.lastName || ''}`
+            : 'کاربر';
+          const orderName = `تیکت ${updatedTicket.category || 'پشتیبانی'}`;
+          const phone = user.contactInfo?.mobilePhone;
+
+          if (phone) {
+            await sendStatusUpdateSMS(phone, customerName, orderName);
+            console.log(`SMS sent to ${phone} for ticket ${ticketId}`);
+          }
+        }
+      } catch (error) {
+        console.log('Failed to send SMS:', error);
+        // Don't fail the request if SMS fails
+      }
+    }
 
     return NextResponse.json({
       success: true,

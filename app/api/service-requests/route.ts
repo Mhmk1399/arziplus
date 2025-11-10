@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import connect from "@/lib/data";
 import Request from "@/models/request";
 import DynamicService from "@/models/services";
+import { sendStatusUpdateSMS } from "@/lib/sms";
 import "@/models/users"; // Import User model for populate to work
 
 // Type for MongoDB query filters
@@ -219,7 +220,7 @@ export async function PUT(request: NextRequest) {
       { ...updateData },
       { new: true, runValidators: true }
     ).populate('service', 'title icon slug')
-     .populate('customer', 'name email')
+     .populate('customer', 'nationalCredentials.firstName nationalCredentials.lastName contactInfo.mobilePhone')
      .populate('assignedTo', 'name');
 
     if (!updatedRequest) {
@@ -227,6 +228,28 @@ export async function PUT(request: NextRequest) {
         { success: false, message: "Service request not found" },
         { status: 404 }
       );
+    }
+
+    // Send SMS notification when status is updated
+    if (updateData.status && updatedRequest.customer) {
+      const customer = updatedRequest.customer as any;
+      const service = updatedRequest.service as any;
+      
+      const customerName = customer?.nationalCredentials?.firstName 
+        ? `${customer.nationalCredentials.firstName} ${customer.nationalCredentials.lastName || ''}`
+        : 'کاربر';
+      const orderName = service?.title || 'سفارش شما';
+      const phone = customer?.contactInfo?.mobilePhone;
+
+      if (phone) {
+        try {
+          await sendStatusUpdateSMS(phone, customerName, orderName);
+          console.log(`SMS sent to ${phone} for service request ${id}`);
+        } catch (error) {
+          console.log('Failed to send SMS:', error);
+          // Don't fail the request if SMS fails
+        }
+      }
     }
 
     return NextResponse.json({

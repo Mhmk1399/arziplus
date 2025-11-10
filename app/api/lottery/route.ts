@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import connect from "@/lib/data";
 import Lottery from "@/models/lottery";
 import { getAuthUser } from "@/lib/auth";
+import { sendStatusUpdateSMS } from "@/lib/sms";
 
 // Type for MongoDB query filters
 interface LotteryQueryFilter {
@@ -411,6 +412,31 @@ export async function PUT(request: NextRequest) {
         { success: false, message: "Lottery registration not found" },
         { status: 404 }
       );
+    }
+
+    // Send SMS notification when status is updated
+    if (updateData.status && updatedLottery.userId) {
+      try {
+        // Get user info from User model
+        const User = mongoose.model('User');
+        const user = await User.findById(updatedLottery.userId).select('nationalCredentials.firstName nationalCredentials.lastName contactInfo.mobilePhone');
+        
+        if (user) {
+          const customerName = user.nationalCredentials?.firstName 
+            ? `${user.nationalCredentials.firstName} ${user.nationalCredentials.lastName || ''}`
+            : 'کاربر';
+          const orderName = 'ثبت نام لاتاری گرین کارت';
+          const phone = user.contactInfo?.mobilePhone;
+
+          if (phone) {
+            await sendStatusUpdateSMS(phone, customerName, orderName);
+            console.log(`SMS sent to ${phone} for lottery ${id}`);
+          }
+        }
+      } catch (error) {
+        console.log('Failed to send SMS:', error);
+        // Don't fail the request if SMS fails
+      }
     }
 
     return NextResponse.json({

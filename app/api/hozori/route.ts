@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import connect from "@/lib/data";
 import Hozori from "@/models/hozori";
 import { getAuthUser } from "@/lib/auth";
+import { sendStatusUpdateSMS } from "@/lib/sms";
 
 // Type for POST request body
 interface CreateHozoriBody {
@@ -484,6 +485,31 @@ export async function PUT(request: NextRequest) {
       { ...updateData, updatedAt: new Date() },
       { new: true, runValidators: true }
     );
+
+    // Send SMS notification when status is updated (only by admin)
+    if (admin && updateData.status && updatedHozori) {
+      try {
+        // Get user info from User model
+        const User = mongoose.model('User');
+        const user = await User.findById(updatedHozori.userId).select('nationalCredentials.firstName nationalCredentials.lastName contactInfo.mobilePhone');
+        
+        if (user) {
+          const customerName = user.nationalCredentials?.firstName 
+            ? `${user.nationalCredentials.firstName} ${user.nationalCredentials.lastName || ''}`
+            : updatedHozori.name || 'کاربر';
+          const orderName = 'رزرو حضوری لاتاری';
+          const phone = user.contactInfo?.mobilePhone || updatedHozori.phoneNumber;
+
+          if (phone) {
+            await sendStatusUpdateSMS(phone, customerName, orderName);
+            console.log(`SMS sent to ${phone} for hozori ${id}`);
+          }
+        }
+      } catch (error) {
+        console.log('Failed to send SMS:', error);
+        // Don't fail the request if SMS fails
+      }
+    }
 
     return NextResponse.json({
       success: true,
