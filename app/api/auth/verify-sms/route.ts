@@ -1,11 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import connect from "@/lib/data";
 import User from "@/models/users";
+import Referral from "@/models/Referral";
 import { generateToken } from "@/lib/auth";
 
 export async function POST(request: NextRequest) {
   try {
-    const { phone, code, userId } = await request.json();
+    const { phone, code, userId, referralCode } = await request.json();
 
     if (!phone || !code || !userId) {
       return NextResponse.json(
@@ -65,6 +66,40 @@ export async function POST(request: NextRequest) {
     user.status = "active";
 
     await user.save();
+
+    // Handle referral code if provided and user is new
+    if (referralCode) {
+      try {
+        // Find the referrer by referral code
+        const referrer = await User.findOne({ referralCode });
+        
+        if (referrer && referrer._id.toString() !== userId) {
+          // Check if this user hasn't been referred before
+          const existingReferral = await Referral.findOne({ referee: userId });
+          
+          if (!existingReferral) {
+            // Create new referral
+            const newReferral = new Referral({
+              referrer: referrer._id,
+              referee: userId,
+              referralCode: referralCode,
+              status: "pending",
+              rewardAmount: 0,
+            });
+            
+            await newReferral.save();
+            
+            // Update user's referredBy field
+            await User.findByIdAndUpdate(userId, { referredBy: referrer._id });
+            
+            console.log(`Referral created: ${referrer._id} -> ${userId}`);
+          }
+        }
+      } catch (error) {
+        console.log("Error creating referral:", error);
+        // Don't fail the auth process if referral creation fails
+      }
+    }
 
     // Generate JWT token
     const token = generateToken({

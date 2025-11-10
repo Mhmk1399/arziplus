@@ -33,11 +33,19 @@ function SMSAuthContent() {
   const [loading, setLoading] = useState(false);
   const [countdown, setCountdown] = useState(0);
   const [redirectUrl, setRedirectUrl] = useState<string>("/dashboard");
+  const [referralCode, setReferralCode] = useState<string | null>(null);
 
-  // Capture redirect URL from query params or referrer
+  // Capture redirect URL and referral code from query params
   useEffect(() => {
     const redirect = searchParams.get("redirect");
+    const ref = searchParams.get("ref");
     const referrer = document.referrer;
+
+    // Store referral code if present
+    if (ref) {
+      setReferralCode(ref);
+      showToast.info("شما از طریق لینک دعوت وارد شده‌اید");
+    }
 
     if (redirect) {
       setRedirectUrl(decodeURIComponent(redirect));
@@ -115,7 +123,12 @@ function SMSAuthContent() {
       const response = await fetch("/api/auth/verify-sms", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ phone, code: verificationCode, userId }),
+        body: JSON.stringify({ 
+          phone, 
+          code: verificationCode, 
+          userId,
+          referralCode: referralCode // Send referral code if present
+        }),
       });
 
       const data = await response.json();
@@ -130,7 +143,9 @@ function SMSAuthContent() {
         console.log("Token stored, redirecting to:", finalRedirect);
 
         // Show success message with redirect info
-        if (redirectUrl !== "/dashboard") {
+        if (referralCode && !isExistingUser) {
+          showToast.success("ثبت نام موفق! شما از طریق لینک دعوت وارد شدید");
+        } else if (redirectUrl !== "/dashboard") {
           showToast.success(` ... در حال انتقال به صفحه قبلی`, {
             duration: 3000,
           });

@@ -124,6 +124,17 @@ const userSchema = new mongoose.Schema(
       type: String,
       minlength: 6,
     },
+    referralCode: {
+      type: String,
+      unique: true,
+      index: true,
+    },
+
+    referredBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      default: null,
+    },
 
     // Banking Information (Array for multiple bank accounts)
     bankingInfo: {

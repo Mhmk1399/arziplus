@@ -467,6 +467,13 @@ const Dashboard: React.FC = () => {
             component: () => <WalletWrapper initialTab="withdraws" />,
             description: "تاریخچه برداشتها",
           },
+          {
+            id: "wallet-referrals",
+            label: "با ما همکاری کنید",
+            icon: <FaUsers className="text-lg" />,
+            component: () => <WalletWrapper initialTab="referrals" />,
+            description: "معرفی دوستان و دریافت پاداش",
+          },
         ],
       },
       {

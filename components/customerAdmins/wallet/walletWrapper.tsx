@@ -15,9 +15,10 @@ import { showToast } from "@/utilities/toast";
 import IncomesHistory from "./incomes";
 import AddAmountComponent from "./addamount";
 import WithdrawComponent from "./withdraw";
+import CustomerReferralComponent from "./referralSection";
 
 interface WalletWrapperProps {
-  initialTab?: "dashboard" | "incomes" | "withdraws" | "add-funds";
+  initialTab?: "dashboard" | "incomes" | "withdraws" | "add-funds" | "referrals";
   className?: string;
 }
 
@@ -58,7 +59,7 @@ const WalletWrapper: React.FC<WalletWrapperProps> = ({
   className = "",
 }) => {
   const [activeTab, setActiveTab] = useState<
-    "dashboard" | "incomes" | "withdraws" | "add-funds"
+    "dashboard" | "incomes" | "withdraws" | "add-funds" | "referrals"
   >(initialTab);
 
   const [walletStats, setWalletStats] = useState<WalletStats>({
@@ -283,6 +284,8 @@ const WalletWrapper: React.FC<WalletWrapperProps> = ({
             walletStats={walletStats}
           />
         );
+      case "referrals":
+        return <CustomerReferralComponent />;
     }
   };
 
