@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import connect from "@/lib/data";
 import User from "@/models/users";
 import { sendVerificationCode, generateVerificationCode } from "@/lib/sms";
+import { generateUniqueReferralCode } from "@/lib/referralCodeGenerator";
 
 export async function POST(request: NextRequest) {
   try {
@@ -37,14 +38,26 @@ export async function POST(request: NextRequest) {
       user.verifications.phone.verificationCode = verificationCode;
       user.verifications.phone.verificationCodeExpires = expiresAt;
       user.verifications.phone.isVerified = false;
+      
+      // Ensure existing user has a referral code
+      if (!user.referralCode) {
+        const referralCode = await generateUniqueReferralCode();
+        user.referralCode = referralCode;
+        console.log(`Generated referral code for existing user: ${referralCode}`);
+      }
+      
       await user.save();
     } else {
+      // Generate referral code for new user
+      const referralCode = await generateUniqueReferralCode();
+      
       // Create new user with phone number only
       const username = `user_${phone.slice(-8)}`;
       const tempEmail = `${phone}@temp.arziPlus.com`;
 
       user = await User.create({
         username,
+        referralCode,
         contactInfo: {
           mobilePhone: phone,
           email: tempEmail,
@@ -61,6 +74,8 @@ export async function POST(request: NextRequest) {
         },
         status: "pending_verification",
       });
+      
+      console.log(`Created new user with referral code: ${referralCode}`);
     }
 
     // Send SMS

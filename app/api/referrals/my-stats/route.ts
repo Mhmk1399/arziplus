@@ -97,7 +97,7 @@ export async function GET(request: NextRequest) {
       .lean();
 
     // 6. Referral link
-    const referralLink = `${process.env.NEXT_PUBLIC_APP_URL}/auth/sms?ref=${user.referralCode}`;
+    const referralLink = `${process.env.NEXT_PUBLIC_APP_URL_refral}/auth/sms?ref=${user.referralCode}`;
 
     // 7. Check if user was referred by someone
     const wasReferred = await Referral.findOne({ referee: authUser.id })

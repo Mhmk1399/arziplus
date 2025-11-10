@@ -86,6 +86,7 @@ const CustomerReferralComponent: React.FC = () => {
       if (response.ok) {
         const data = await response.json();
         setStats(data.data);
+        console.log(data,"sdasd")
       } else {
         showToast.error("خطا در دریافت اطلاعات");
       }

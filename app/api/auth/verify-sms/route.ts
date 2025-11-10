@@ -3,6 +3,7 @@ import connect from "@/lib/data";
 import User from "@/models/users";
 import Referral from "@/models/Referral";
 import { generateToken } from "@/lib/auth";
+import { ensureUserHasReferralCode } from "@/lib/referralCodeGenerator";
 
 export async function POST(request: NextRequest) {
   try {
@@ -64,6 +65,17 @@ export async function POST(request: NextRequest) {
     user.verifications.phone.verificationCode = undefined;
     user.verifications.phone.verificationCodeExpires = undefined;
     user.status = "active";
+
+    // Ensure user has a referral code (in case it was missed during signup)
+    if (!user.referralCode) {
+      try {
+        const newReferralCode = await ensureUserHasReferralCode(userId);
+        console.log(`Generated missing referral code during verification: ${newReferralCode}`);
+      } catch (error) {
+        console.log("Error generating referral code:", error);
+        // Don't fail the auth process if referral code generation fails
+      }
+    }
 
     await user.save();
 
