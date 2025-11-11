@@ -161,10 +161,27 @@ ReferralRewardRuleSchema.methods.calculateReward = function (
   } else if (this.rewardRecipient === "referee") {
     return { referrerReward: 0, refereeReward: baseReward };
   } else if (this.rewardRecipient === "both") {
-    return {
-      referrerReward: this.referrerRewardAmount || baseReward / 2,
-      refereeReward: this.refereeRewardAmount || baseReward / 2,
-    };
+    // Calculate rewards based on type
+    let referrerReward = 0;
+    let refereeReward = 0;
+    
+    if (this.rewardType === "percentage") {
+      // For percentage type, use referrerRewardAmount and refereeRewardAmount as percentages
+      referrerReward = (transactionAmount * (this.referrerRewardAmount || this.rewardAmount)) / 100;
+      refereeReward = (transactionAmount * (this.refereeRewardAmount || this.rewardAmount)) / 100;
+      
+      // Apply max reward cap if set
+      if (this.maxRewardAmount) {
+        if (referrerReward > this.maxRewardAmount) referrerReward = this.maxRewardAmount;
+        if (refereeReward > this.maxRewardAmount) refereeReward = this.maxRewardAmount;
+      }
+    } else {
+      // For fixed or wallet type, use the amounts directly
+      referrerReward = this.referrerRewardAmount || baseReward / 2;
+      refereeReward = this.refereeRewardAmount || baseReward / 2;
+    }
+    
+    return { referrerReward, refereeReward };
   }
   
   return { referrerReward: 0, refereeReward: 0 };

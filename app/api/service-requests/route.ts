@@ -24,6 +24,10 @@ interface CreateRequestBody {
   customerName?: string;
   priority?: string;
   assignedTo?: string;
+  isPaid?: boolean;
+  paymentMethod?: string;
+  paymentDate?: Date;
+  paymentAmount?: number;
 }
 
 // Type for PUT request body
@@ -153,8 +157,12 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Calculate payment amount
-    const paymentAmount = service.fee;
+    // Calculate payment amount - use provided amount or service fee
+    const paymentAmount = body.paymentAmount || service.fee;
+
+    // Generate request number
+    const timestamp = Date.now();
+    const requestNumber = `SERVICE-WALLET-${timestamp}`;
 
     const serviceRequest = new Request({
       service: body.service,
@@ -163,8 +171,12 @@ export async function POST(request: NextRequest) {
       customerEmail: body.customerEmail,
       customerName: body.customerName,
       paymentAmount: paymentAmount,
+      requestNumber: requestNumber,
       priority: body.priority || 'medium',
       assignedTo: body.assignedTo,
+      isPaid: body.isPaid !== undefined ? body.isPaid : false,
+      paymentMethod: body.paymentMethod || 'wallet',
+      paymentDate: body.isPaid ? (body.paymentDate || new Date()) : undefined,
     });
 
     await serviceRequest.save();
@@ -173,24 +185,47 @@ export async function POST(request: NextRequest) {
     await serviceRequest.populate('service', 'title icon slug fee');
 
     // Process referral rewards
+    console.log("\n========================================");
+    console.log("SERVICE REQUEST CREATED - CHECKING FOR REFERRAL REWARDS");
+    console.log("========================================");
+    console.log("Service Request ID:", serviceRequest._id);
+    console.log("Customer ID:", body.customer);
+    console.log("Service Slug:", service.slug);
+    console.log("Payment Amount:", paymentAmount);
+    console.log("Is Paid:", serviceRequest.isPaid);
+    
     if (paymentAmount && paymentAmount > 0) {
+      console.log("✓ Payment conditions met - processing referral rewards...");
       try {
-        const rewardResult = await processReferralReward({
+        const rewardParams = {
           userId: body.customer,
-          actionType: "dynamicServices",
+          actionType: "dynamicServices" as const,
           serviceSlug: service.slug,
           transactionAmount: paymentAmount,
           transactionId: serviceRequest._id.toString(),
-        });
+        };
+        
+        console.log("Calling processReferralReward with params:", JSON.stringify(rewardParams, null, 2));
+        
+        const rewardResult = await processReferralReward(rewardParams);
+        
+        console.log("Reward processing result:", JSON.stringify(rewardResult, null, 2));
         
         if (rewardResult.success && (rewardResult.referrerReward || rewardResult.refereeReward)) {
-          console.log(`Referral rewards processed for service request ${serviceRequest._id}:`, rewardResult);
+          console.log(`✓ Referral rewards processed for service request ${serviceRequest._id}:`);
+          console.log(`  - Referrer reward: ${rewardResult.referrerReward}`);
+          console.log(`  - Referee reward: ${rewardResult.refereeReward}`);
+        } else {
+          console.log("ℹ No referral rewards applied:", rewardResult.message);
         }
       } catch (error) {
-        console.error("Error processing referral reward:", error);
+        console.error("❌ Error processing referral reward:", error);
         // Don't fail the request if reward processing fails
       }
+    } else {
+      console.log("✗ Payment conditions not met - skipping referral rewards");
     }
+    console.log("========================================\n");
 
     return NextResponse.json(
       {

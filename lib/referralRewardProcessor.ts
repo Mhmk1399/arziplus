@@ -58,7 +58,7 @@ export async function processReferralReward(
     }
 
     // Build filter to find applicable reward rules
-    const ruleFilter: any = {
+    const ruleFilter: data = {
       actionType,
       isActive: true,
     };
@@ -138,7 +138,7 @@ export async function processReferralReward(
         status: "pending" as const,
       };
 
-      console.log("Creating reward records...");
+      console.log("Creating reward records...",rewardData);
 
       // Create reward for referrer if applicable
       if (referrerReward > 0) {
@@ -207,6 +207,13 @@ export async function processReferralReward(
  * Get applicable reward rules for an action
  * Useful for showing potential rewards to users before they complete an action
  */
+
+
+interface data{
+  actionType: string;
+  isActive: boolean;
+  serviceSlug?: string;
+}
 export async function getApplicableRewardRules(
   actionType: string,
   serviceSlug?: string
@@ -214,7 +221,7 @@ export async function getApplicableRewardRules(
   try {
     await connect();
 
-    const filter: any = {
+    const filter: data = {
       actionType,
       isActive: true,
     };

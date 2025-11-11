@@ -123,14 +123,6 @@ interface LotteryFormData {
 }
 
 // Helper function to generate unique request number
-async function generateRequestNumber(): Promise<string> {
-  const year = new Date().getFullYear();
-  const count = await Request.countDocuments({
-    createdAt: { $gte: new Date(year, 0, 1) },
-  });
-  return `REQ-${year}-${String(count + 1).padStart(3, "0")}`;
-}
-
 export async function POST(request: NextRequest) {
   try {
     await connect();
@@ -258,8 +250,8 @@ async function createServiceRequest(payment: payment, userId: string) {
       throw new Error("شناسه سرویس یافت نشد");
     }
 
-    // Generate unique request number
-    const requestNumber = await generateRequestNumber();
+    // Use the orderId as requestNumber (e.g., SERVICE-CARD-1234567890)
+    const requestNumber = payment.orderId;
 
     // Create service request
     const serviceRequest = new Request({
