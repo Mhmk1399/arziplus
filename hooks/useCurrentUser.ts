@@ -1,7 +1,25 @@
 import { useState, useEffect } from 'react';
 import { getCurrentUser, AuthUser } from '@/lib/auth';
 
-interface FullUser extends Omit<AuthUser, 'profile'> {
+export interface user{
+  _id: string;
+  personalInformations: {
+    email: string;
+    mobilePhone: string;
+  };
+  contactInfo: {
+    homePhone?: string;
+    mobilePhone: string;
+    email?: string;
+    address: string;
+    city: string;
+    state: string;
+    postalCode?: string;
+  };
+  
+}
+
+export interface FullUser extends Omit<AuthUser, 'profile' | 'personalInformations' | 'contactInfo'>, user {
   profile?: {
     avatar?: string;
     bio?: string;
@@ -34,12 +52,12 @@ export const useCurrentUser = () => {
           const data = await response.json();
           setUser({ ...currentUser, ...data.user });
         } else {
-          setUser(currentUser);
+          setUser(currentUser as FullUser);
         }
       } catch (error) {
         console.log('Error fetching current user:', error);
         const currentUser = getCurrentUser();
-        setUser(currentUser);
+        setUser(currentUser as FullUser);
       } finally {
         setLoading(false);
       }
@@ -72,7 +90,7 @@ export const useCurrentUser = () => {
     : user?.firstName || 'کاربر گرامی';
 
   return {
-    user: user as any,
+    user,
     loading,
     isLoggedIn,
     userDisplayName,

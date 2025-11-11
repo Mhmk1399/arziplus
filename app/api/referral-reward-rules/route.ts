@@ -42,8 +42,14 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ success: true, data: rule });
     }
 
-    // Build filter
-    const filter: any = {};
+   interface data{
+    actionType?: string;
+    isActive?: boolean;
+    serviceSlug?: string;
+   } 
+
+
+    const filter: data = {};
     if (actionType) filter.actionType = actionType;
     if (isActive !== null) filter.isActive = isActive === "true";
     if (serviceSlug) filter.serviceSlug = serviceSlug;
@@ -55,7 +61,7 @@ export async function GET(request: NextRequest) {
       data: rules,
       count: rules.length,
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Error fetching reward rules:", error);
     return NextResponse.json(
       { success: false, error: "خطا در دریافت قوانین پاداش" },
@@ -136,7 +142,7 @@ export async function POST(request: NextRequest) {
       },
       { status: 201 }
     );
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Error creating reward rule:", error);
     return NextResponse.json(
       { success: false, error: "خطا در ایجاد قانون پاداش" },
@@ -195,7 +201,7 @@ export async function PUT(request: NextRequest) {
       message: "قانون پاداش با موفقیت به‌روزرسانی شد",
       data: rewardRule,
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Error updating reward rule:", error);
     return NextResponse.json(
       { success: false, error: "خطا در به‌روزرسانی قانون پاداش" },
@@ -248,7 +254,7 @@ export async function DELETE(request: NextRequest) {
       success: true,
       message: "قانون پاداش با موفقیت حذف شد",
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Error deleting reward rule:", error);
     return NextResponse.json(
       { success: false, error: "خطا در حذف قانون پاداش" },

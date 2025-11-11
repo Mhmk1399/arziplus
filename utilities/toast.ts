@@ -105,7 +105,7 @@ export const showToast = {
   },
 
   promise: (
-    promise: Promise<any>,
+    promise: Promise<string>,
     messages: {
       loading: string;
       success: string;

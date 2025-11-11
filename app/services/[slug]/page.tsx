@@ -78,9 +78,6 @@ interface CurrencyMap {
   };
 }
 
-interface banckingInfo {
-  status: string;
-}
 // Fetcher function for SWR
 const fetcher = async (url: string): Promise<Service> => {
   const response = await fetch(url);
@@ -890,7 +887,7 @@ export default function ServiceDetailPage() {
     // bankingInfo is an array, check if at least one is accepted
     const hasBankingAccepted = Array.isArray(currentUser.bankingInfo)
       ? currentUser.bankingInfo.some(
-          (bank: banckingInfo) => bank.status === "accepted"
+          (bank) => bank.status === "accepted"
         )
       : currentUser.bankingInfo?.status === "accepted";
 
@@ -1285,7 +1282,7 @@ export default function ServiceDetailPage() {
                             currentUser.bankingInfo
                           )
                             ? currentUser.bankingInfo.some(
-                                (bank: banckingInfo) =>
+                                (bank) =>
                                   bank.status === "accepted"
                               )
                             : currentUser.bankingInfo?.status === "accepted";
@@ -1326,7 +1323,7 @@ export default function ServiceDetailPage() {
                             "accepted" ||
                           !(Array.isArray(currentUser?.bankingInfo)
                             ? currentUser.bankingInfo.some(
-                                (bank: banckingInfo) =>
+                                (bank) =>
                                   bank.status === "accepted"
                               )
                             : currentUser?.bankingInfo?.status === "accepted")
@@ -1339,7 +1336,7 @@ export default function ServiceDetailPage() {
                             "accepted" ||
                           !(Array.isArray(currentUser?.bankingInfo)
                             ? currentUser.bankingInfo.some(
-                                (bank: banckingInfo) =>
+                                (bank) =>
                                   bank.status === "accepted"
                               )
                             : currentUser?.bankingInfo?.status === "accepted")

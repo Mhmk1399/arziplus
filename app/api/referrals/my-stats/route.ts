@@ -6,6 +6,15 @@ import ReferralReward from "@/models/ReferralReward";
 import User from "@/models/users";
 import { getAuthUser } from "@/lib/auth";
 
+
+interface acc{
+  [key: string]: {
+    count: number;
+    totalValue: number;
+    claimed: number;
+    pending: number;
+  };
+}
 // GET - User's own referral statistics
 export async function GET(request: NextRequest) {
   try {
@@ -70,7 +79,7 @@ export async function GET(request: NextRequest) {
     const pendingRewardValue = pendingRewards.reduce((sum, r) => sum + r.value, 0);
 
     // 4. Rewards breakdown by type
-    const rewardsByType = myRewards.reduce((acc: any, reward) => {
+    const rewardsByType = myRewards.reduce((acc: acc, reward) => {
       if (!acc[reward.rewardType]) {
         acc[reward.rewardType] = {
           count: 0,

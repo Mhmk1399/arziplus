@@ -6,6 +6,14 @@ import ReferralReward from "@/models/ReferralReward";
 import User from "@/models/users";
 import { getAuthUser } from "@/lib/auth";
 
+
+interface data {
+  createdAt?: {
+    $gte?: Date;
+    $lte?: Date;
+  };
+  referrer?: string;
+}
 // GET - Admin analytics for referral system
 export async function GET(request: NextRequest) {
   try {
@@ -39,7 +47,7 @@ export async function GET(request: NextRequest) {
     const userId = searchParams.get("userId");
 
     // Build date filter if provided
-    const dateFilter: any = {};
+    const dateFilter: data = {};
     if (startDate || endDate) {
       dateFilter.createdAt = {};
       if (startDate) {
@@ -51,7 +59,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Build user filter if provided
-    const userFilter: any = {};
+    const userFilter: data = {};
     if (userId) {
       if (!mongoose.Types.ObjectId.isValid(userId)) {
         return NextResponse.json(

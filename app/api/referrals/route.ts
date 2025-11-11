@@ -238,6 +238,12 @@ export async function POST(request: NextRequest) {
   }
 }
 
+
+interface data{
+  status?: string;
+  completedAt?: Date;
+  rewardedAt?: Date;
+}
 // PUT - Update referral status
 export async function PUT(request: NextRequest) {
   try {
@@ -283,7 +289,7 @@ export async function PUT(request: NextRequest) {
     }
 
     // Add completion/reward timestamps based on status
-    const updateFields: any = { ...updateData };
+    const updateFields: data = { ...updateData };
     
     if (updateData.status === "completed" && !updateFields.completedAt) {
       updateFields.completedAt = new Date();

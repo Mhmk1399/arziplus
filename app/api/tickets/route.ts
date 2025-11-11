@@ -6,7 +6,23 @@ import { getAuthUser } from "@/lib/auth";
 import { sendStatusUpdateSMS } from "@/lib/sms";
 
 // GET - Fetch tickets
-
+interface user {
+  _id: string;
+  nationalCredentials: {
+    firstName: string;
+    lastName: string;
+  };
+  personalInformations: {
+    email: string;
+    mobilePhone: string;
+  };
+  contactInfo: {
+    address: string;
+    city: string;
+    state: string;
+    mobilePhone: string;
+  };
+}
 interface UpdateData {
   adminAnswer?: string;
   adminAttachments?: string[];
@@ -233,13 +249,15 @@ export async function PUT(request: NextRequest) {
     // Send SMS notification when admin responds to ticket
     if (isAdmin && (adminAnswer || status)) {
       try {
-        const user = updatedTicket.user as any;
-        
+        const user = updatedTicket.user as user;
+
         if (user) {
-          const customerName = user.nationalCredentials?.firstName 
-            ? `${user.nationalCredentials.firstName} ${user.nationalCredentials.lastName || ''}`
-            : 'کاربر';
-          const orderName = `تیکت ${updatedTicket.category || 'پشتیبانی'}`;
+          const customerName = user.nationalCredentials?.firstName
+            ? `${user.nationalCredentials.firstName} ${
+                user.nationalCredentials.lastName || ""
+              }`
+            : "کاربر";
+          const orderName = `تیکت ${updatedTicket.category || "پشتیبانی"}`;
           const phone = user.contactInfo?.mobilePhone;
 
           if (phone) {
@@ -248,7 +266,7 @@ export async function PUT(request: NextRequest) {
           }
         }
       } catch (error) {
-        console.log('Failed to send SMS:', error);
+        console.log("Failed to send SMS:", error);
         // Don't fail the request if SMS fails
       }
     }

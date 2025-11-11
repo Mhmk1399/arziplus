@@ -2,7 +2,6 @@ import connect from "@/lib/data";
 import ReferralRewardRule, { IReferralRewardRule } from "@/models/ReferralRewardRule";
 import Referral from "@/models/Referral";
 import ReferralReward from "@/models/ReferralReward";
-import User from "@/models/users";
 
 interface ProcessRewardParams {
   userId: string;

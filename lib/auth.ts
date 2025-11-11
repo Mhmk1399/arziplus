@@ -4,6 +4,7 @@ import { NextRequest } from "next/server";
 export interface AuthUser {
   id: string;
   roles: string[];
+  username?: string;
   firstName?: string;
   lastName?: string;
   phone?: string;

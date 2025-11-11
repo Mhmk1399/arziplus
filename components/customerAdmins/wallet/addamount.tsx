@@ -285,7 +285,7 @@ const AddAmountComponent: React.FC<AddAmountComponentProps> = ({
                   </p>
                   {currentUser.phone && (
                     <p className="text-xs sm:text-sm text-gray-600">
-                      {currentUser.phone.toLocaleString("fa-IR")}
+                      {currentUser.phone.toLocaleString()}
                     </p>
                   )}
                 </div>

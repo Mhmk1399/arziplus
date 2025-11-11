@@ -67,11 +67,22 @@ export async function GET(request: NextRequest) {
         .populate({
           path: "referral",
           populate: [
-            { path: "referrer", select: "nationalCredentials.firstName nationalCredentials.lastName" },
-            { path: "referee", select: "nationalCredentials.firstName nationalCredentials.lastName" }
-          ]
+            {
+              path: "referrer",
+              select:
+                "nationalCredentials.firstName nationalCredentials.lastName",
+            },
+            {
+              path: "referee",
+              select:
+                "nationalCredentials.firstName nationalCredentials.lastName",
+            },
+          ],
         })
-        .populate("user", "nationalCredentials.firstName nationalCredentials.lastName contactInfo.email");
+        .populate(
+          "user",
+          "nationalCredentials.firstName nationalCredentials.lastName contactInfo.email"
+        );
 
       if (!reward) {
         return NextResponse.json(
@@ -115,11 +126,22 @@ export async function GET(request: NextRequest) {
       .populate({
         path: "referral",
         populate: [
-          { path: "referrer", select: "nationalCredentials.firstName nationalCredentials.lastName" },
-          { path: "referee", select: "nationalCredentials.firstName nationalCredentials.lastName" }
-        ]
+          {
+            path: "referrer",
+            select:
+              "nationalCredentials.firstName nationalCredentials.lastName",
+          },
+          {
+            path: "referee",
+            select:
+              "nationalCredentials.firstName nationalCredentials.lastName",
+          },
+        ],
       })
-      .populate("user", "nationalCredentials.firstName nationalCredentials.lastName contactInfo.email")
+      .populate(
+        "user",
+        "nationalCredentials.firstName nationalCredentials.lastName contactInfo.email"
+      )
       .sort({ createdAt: -1 })
       .skip(skip)
       .limit(limit)
@@ -227,8 +249,6 @@ export async function POST(request: NextRequest) {
 
     await newReward.save();
 
-   
-
     return NextResponse.json(
       {
         success: true,
@@ -327,7 +347,7 @@ export async function PUT(request: NextRequest) {
       if (reward.rewardType === "wallet_credit") {
         // Get or create wallet for user
         let wallet = await Wallet.findOne({ userId: reward.user });
-        
+
         if (!wallet) {
           wallet = new Wallet({
             userId: reward.user,
@@ -349,12 +369,22 @@ export async function PUT(request: NextRequest) {
 
         // Calculate new balance
         const totalIncomes = wallet.inComes
-          .filter((income: any) => income.status === "verified")
-          .reduce((sum: number, income: any) => sum + income.amount, 0);
+          .filter((income: { status: string }) => income.status === "verified")
+          .reduce(
+            (sum: number, income: { status: string; amount: number }) =>
+              sum + income.amount,
+            0
+          );
 
         const totalOutcomes = wallet.outComes
-          .filter((outcome: any) => outcome.status === "verified")
-          .reduce((sum: number, outcome: any) => sum + outcome.amount, 0);
+          .filter(
+            (outcome: { status: string }) => outcome.status === "verified"
+          )
+          .reduce(
+            (sum: number, outcome: { status: string; amount: number }) =>
+              sum + outcome.amount,
+            0
+          );
 
         const newBalance = totalIncomes - totalOutcomes;
 
@@ -378,7 +408,10 @@ export async function PUT(request: NextRequest) {
       await reward.save();
 
       await reward.populate("referral");
-      await reward.populate("user", "nationalCredentials.firstName nationalCredentials.lastName");
+      await reward.populate(
+        "user",
+        "nationalCredentials.firstName nationalCredentials.lastName"
+      );
 
       return NextResponse.json({
         success: true,
@@ -387,10 +420,15 @@ export async function PUT(request: NextRequest) {
       });
     }
 
+    interface UpdateData {
+      claimedAt?: Date;
+      status?: string;
+    }
+
     // Admin can update any status
     if (isAdmin && status) {
-      const updateFields: any = { status };
-      
+      const updateFields: UpdateData = { status };
+
       if (status === "claimed" && !reward.claimedAt) {
         updateFields.claimedAt = new Date();
       }
@@ -401,7 +439,10 @@ export async function PUT(request: NextRequest) {
         { new: true, runValidators: true }
       )
         .populate("referral")
-        .populate("user", "nationalCredentials.firstName nationalCredentials.lastName");
+        .populate(
+          "user",
+          "nationalCredentials.firstName nationalCredentials.lastName"
+        );
 
       return NextResponse.json({
         success: true,

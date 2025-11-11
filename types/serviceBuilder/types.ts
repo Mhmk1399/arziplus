@@ -15,7 +15,7 @@ export interface ServiceField {
     | "tel";
   placeholder?: string;
   required?: boolean;
-  defaultValue?: any;
+  defaultValue?: string;
   pricecondition: string;
   validation?: {
     minLength?: number;
@@ -31,7 +31,7 @@ export interface ServiceField {
   }>;
   showIf?: {
     field: string;
-    value: any;
+    value: string;
   };
   description?: string;
 }
@@ -69,7 +69,7 @@ export interface ServiceBuilderFormData {
 export interface ServiceRequest {
   serviceId: string;
   serviceName: string;
-  userInputs: Record<string, any>;
+  userInputs: Record<string, string>;
   totalAmount: number;
   status: "pending" | "processing" | "completed" | "cancelled";
   createdAt?: string;

@@ -150,17 +150,9 @@ interface UserApiResponse {
   };
 }
 
-interface UserValidationWrapperProps {
-  initialData?: UserData;
-  onSave?: (
-    section: string,
-    data:
-      | BankingInfoData
-      | NationalCredentialsData
-      | ContactInfoData
-      | SecurityData
-  ) => void;
-}
+
+
+
 
 const Dashboard: React.FC = () => {
   const [selectedMenuItem, setSelectedMenuItem] = useState<string>("");
@@ -249,8 +241,8 @@ const Dashboard: React.FC = () => {
     if (!currentUser || !userData) return [];
 
     const isAdmin =
-      currentUser.roles.includes("admin") ||
-      currentUser.roles.includes("super_admin");
+      currentUser?.roles?.includes("admin") ||
+      currentUser?.roles?.includes("super_admin");
 
     if (isAdmin) {
       return [
@@ -631,8 +623,8 @@ const Dashboard: React.FC = () => {
       } else {
         // Invalid tab, set default
         const isAdmin =
-          currentUser.roles.includes("admin") ||
-          currentUser.roles.includes("super_admin");
+          currentUser?.roles?.includes("admin") ||
+          currentUser?.roles?.includes("super_admin");
         const defaultTab = isAdmin ? "users" : "services";
         setSelectedMenuItem(defaultTab);
         window.location.hash = defaultTab;
@@ -640,8 +632,8 @@ const Dashboard: React.FC = () => {
     } else {
       // No tab parameter, set default based on role
       const isAdmin =
-        currentUser.roles.includes("admin") ||
-        currentUser.roles.includes("super_admin");
+        currentUser?.roles?.includes("admin") ||
+        currentUser?.roles?.includes("super_admin");
       const defaultTab = isAdmin ? "users" : "services";
       setSelectedMenuItem(defaultTab);
       window.location.hash = defaultTab;
@@ -665,274 +657,6 @@ const Dashboard: React.FC = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // Admin menu items
-  // const adminMenuItems: MenuItem[] = [
-  //   {
-  //     id: "users",
-  //     label: "مدیریت کاربران",
-  //     icon: <FaUsers className="text-lg" />,
-  //     component: UsersList,
-  //     description: "مدیریت کاربران و احراز هویت",
-  //     children: [
-  //       {
-  //         id: "users",
-  //         label: "مدیریت کاربران",
-  //         icon: <FaUsers className="text-lg" />,
-  //         component: UsersList,
-  //         description: "مشاهده و مدیریت کاربران",
-  //       },
-  //       {
-  //         id: "credentials",
-  //         label: "احراز هویت",
-  //         icon: <FaIdCard className="text-lg" />,
-  //         component: NationalCredentialAdmin,
-  //         description: "بررسی مدارک هویتی",
-  //       },
-  //       {
-  //         id: "banking",
-  //         label: "اطلاعات بانکی",
-  //         icon: <FaUniversity className="text-lg" />,
-  //         component: BankingInfoAdmin,
-  //         description: "بررسی اطلاعات بانکی",
-  //       },
-  //     ],
-  //   },
-  //   {
-  //     id: "list",
-  //     label: "مدیریت لاتاری",
-  //     icon: <FaTicketAlt className="text-lg" />,
-  //     component: LotteryAdminList,
-  //     description: "مدیریت ثبت‌نام‌های قرعه‌کشی گرین کارت",
-  //     children: [
-  //       {
-  //         id: "list",
-  //         label: "لیست ثبت‌ نام‌ها",
-  //         icon: <FaList className="text-lg" />,
-  //         component: LotteryAdminList,
-  //         description: "مشاهده و مدیریت تمام ثبت‌نام‌های لاتاری",
-  //       },
-  //       {
-  //         id: "hozori",
-  //         label: "رزروهای حضوری",
-  //         icon: <FaCalendarCheck className="text-lg" />,
-  //         component: HozoriAdminList,
-  //         description: "مشاهده و مدیریت تمام رزروهای حضوری",
-  //       },
-  //     ],
-  //   },
-  //   {
-  //     id: "tickets",
-  //     label: "مدیریت تیکت‌ها",
-  //     icon: <FaHeadset className="text-lg" />,
-  //     component: AdminTicketsWrapper,
-  //     description: "مدیریت تیکت‌های پشتیبانی و پاسخ به کاربران",
-  //   },
-  //   {
-  //     id: "wallets",
-  //     label: "مدیریت پرداخت‌ها",
-  //     icon: <FaMoneyBillWave className="text-lg" />,
-  //     component: PaymentWrapper,
-  //     description: "مدیریت کیف پول‌ها و درخواست‌های برداشت",
-  //     children: [
-  //       {
-  //         id: "wallets" as const,
-  //         label: "مدیریت کیف پول‌ها",
-  //         icon: <FaWallet className="text-lg" />,
-  //         component: WalletsList,
-  //         description: "مدیریت تمام کیف پول ها",
-  //       },
-  //       {
-  //         id: "withdraws" as const,
-  //         label: "درخواست‌های برداشت",
-  //         icon: <FaMoneyBillWave className="text-lg" />,
-  //         component: WithdrawRequestsList,
-  //         description: "مدیریت تمام درخواست های برداشت",
-  //       },
-  //     ],
-  //   },
-  //   {
-  //     id: "requests",
-  //     label: "مدیریت سرویس‌ها",
-  //     icon: <FaServicestack className="text-lg" />,
-  //     component: AdminServiceWrapper,
-  //     description: "مدیریت سرویس‌ها و درخواست‌ها",
-  //     children: [
-  //       {
-  //         id: "requests" as const,
-  //         label: "مدیریت درخواست‌ها",
-  //         icon: <FaClipboardList className="text-lg" />,
-  //         description: "مشاهده و مدیریت درخواست‌های سرویس",
-  //         component: AdminRequestsTable,
-  //       },
-  //       {
-  //         id: "services" as const,
-  //         label: "مدیریت سرویس‌ها",
-  //         icon: <FaServicestack className="text-lg" />,
-  //         description: "مدیریت و ویرایش سرویس‌ها",
-  //         component: ServiceManager,
-  //       },
-  //       {
-  //         id: "analytics" as const,
-  //         label: "آنالیز و گزارشات",
-  //         icon: <FaChartBar className="text-lg" />,
-  //         description: "آمار و گزارشات سرویس‌ها",
-  //         component: () => (
-  //           <div className="p-8 text-center">
-  //             <FaChartBar className="text-6xl text-gray-400 mx-auto mb-4" />
-  //             <h3 className="text-xl font-bold text-gray-700 mb-2">
-  //               آنالیز و گزارشات
-  //             </h3>
-  //             <p className="text-gray-500">این بخش در حال توسعه است</p>
-  //           </div>
-  //         ),
-  //       },
-  //     ],
-  //   },
-  // ];
-
-  // Customer menu items
-  // const customerMenuItems: MenuItem[] = [
-  //   {
-  //     id: "security",
-  //     label: "خدمات و سفارشات",
-  //     icon: <FaClipboardList className="text-lg" />,
-  //     component: ServiceWrapper,
-  //     description: "مشاهده خدمات و سفارشات",
-  //     children: [
-  //       {
-  //         id: "services" as const,
-  //         label: "خدمات",
-  //         icon: <FaShoppingCart className="text-lg sm:text-xl" />,
-  //         description: "مشاهده و سفارش خدمات",
-  //         component: ServicesPage,
-  //       },
-  //       {
-  //         id: "orders" as const,
-  //         label: "سفارشات من",
-  //         icon: <FaHistory className="text-lg sm:text-xl" />,
-  //         description: "تاریخچه و وضعیت سفارشات",
-  //         component: CustomerRequestsTable,
-  //       },
-  //       {
-  //         id: "terms" as const,
-  //         label: "قوانین و شرایط",
-  //         icon: <FaFileContract className="text-lg sm:text-xl" />,
-  //         description: "شرایط استفاده از خدمات",
-  //         component: TermsPage,
-  //       },
-  //     ],
-  //   },
-  //   {
-  //     id: "lottery",
-  //     label: "ثبت‌نام‌های لاتاری",
-  //     icon: <FaTicketAlt className="text-lg" />,
-  //     component: CustomerLotteryWrapper,
-  //     description: "مدیریت ثبت‌نام‌های قرعه‌کشی گرین کارت",
-  //     children: [
-  //       {
-  //         id: "list",
-  //         label: "ثبت‌نام‌های من",
-  //         icon: <FaList className="text-lg" />,
-  //         component: CustomerLotteryList,
-  //         description: "مشاهده تمام ثبت‌نام‌های لاتاری  ",
-  //       },
-  //       {
-  //         id: "hozori",
-  //         label: "رزروهای حضوری",
-  //         icon: <FaCalendarCheck className="text-lg" />,
-  //         component: CustomerHozoriList,
-  //         description: "مشاهده تمام رزروهای حضوری شما",
-  //       },
-  //     ],
-  //   },
-  //   {
-  //     id: "tickets",
-  //     label: "پشتیبانی",
-  //     icon: <FaHeadset className="text-lg" />,
-  //     component: TicketsWrapper,
-  //     description: "ایجاد تیکت و دریافت پشتیبانی",
-  //   },
-  //   {
-  //     id: "wallet",
-  //     label: "کیف پول",
-  //     icon: <FaWallet className="text-lg" />,
-  //     component: WalletWrapper,
-  //     description: "مدیریت موجودی و تراکنش‌ها",
-  //     children: [
-  //       {
-  //         id: "wallet-dashboard",
-  //         label: "داشبورد کیف پول",
-  //         icon: <FaWallet className="text-lg" />,
-  //         component: () => <WalletWrapper initialTab="dashboard" />,
-  //         description: "نمای کلی و موجودی",
-  //       },
-  //       {
-  //         id: "wallet-incomes",
-  //         label: "تاریخچه واریزیها",
-  //         icon: <FaArrowUp className="text-lg" />,
-  //         component: () => <WalletWrapper initialTab="incomes" />,
-  //         description: "تاریخچه پرداخت ها",
-  //       },
-  //       {
-  //         id: "wallet-withdraws",
-  //         label: "درخواست برداشت",
-  //         icon: <FaArrowDown className="text-lg" />,
-  //         component: () => <WalletWrapper initialTab="withdraws" />,
-  //         description: "تاریخچه برداشتها",
-  //       },
-  //     ],
-  //   },
-  //   {
-  //     id: "credentials",
-  //     label: "احراز هویت",
-  //     icon: <FaIdCard className="text-lg" />,
-  //     component: CredentialWrapper,
-  //     description: "مدارک و احراز هویت",
-  //     children: [
-  //       {
-  //         id: "securities",
-  //         label: "امنیت و دسترسی",
-  //         icon: <FaShieldAlt className="text-lg sm:text-xl" />,
-  //         component: () => (
-  //           <Security
-  //             initialData={{
-  //               username: userData?.username,
-  //               status: userData?.status,
-  //               roles: userData?.roles,
-  //               profile: userData?.profile,
-  //             }}
-  //           />
-  //         ),
-  //         description: "نام کاربری، رمز عبور و تنظیمات امنیتی",
-  //       },
-  //       {
-  //         id: "nationalCredentials",
-  //         label: "مدارک هویتی",
-  //         icon: <FaIdCard className="text-lg sm:text-xl" />,
-  //         component: () => (
-  //           <NationalCredentials initialData={userData?.nationalCredentials} />
-  //         ),
-  //         description: "کارت ملی، احراز هویت و مدارک شخصی",
-  //       },
-  //       {
-  //         id: "contactInfo",
-  //         label: "اطلاعات تماس",
-  //         icon: <FaPhone className="text-lg sm:text-xl" />,
-  //         component: () => <ContactInfo initialData={userData?.contactInfo} />,
-  //         description: "شماره تماس، ایمیل و آدرس",
-  //       },
-  //       {
-  //         id: "bankingInfo",
-  //         label: "اطلاعات بانکی",
-  //         icon: <FaUniversity className="text-lg sm:text-xl" />,
-  //         component: () => (
-  //           <BankingInfo initialData={userData?.bankingInfo?.[0]} />
-  //         ),
-  //         description: "حساب بانکی برای دریافت درآمد",
-  //       },
-  //     ],
-  //   },
-  // ];
 
   const findMenuItem = (id: string): MenuItem | undefined => {
     for (const item of menuItems) {
@@ -957,8 +681,8 @@ const Dashboard: React.FC = () => {
 
   const getUserRole = () => {
     if (!currentUser) return "";
-    if (currentUser.roles.includes("super_admin")) return "مدیر ارشد";
-    if (currentUser.roles.includes("admin")) return "مدیر";
+    if (currentUser.roles?.includes("super_admin")) return "مدیر ارشد";
+    if (currentUser.roles?.includes("admin")) return "مدیر";
     return "کاربر";
   };
 

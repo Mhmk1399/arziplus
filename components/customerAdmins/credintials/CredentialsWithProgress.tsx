@@ -46,12 +46,20 @@ const CredentialsWithProgress = ({
       id: "banking",
       hash: "bankingInfo",
       label: "بانکی",
-      completed: !!(
-        user.bankingInfo &&
-        user.bankingInfo.length > 0 &&
-        user.bankingInfo[0]?.cardNumber &&
-        user.bankingInfo[0]?.shebaNumber
-      ),
+      completed: (() => {
+        if (!user.bankingInfo) return false;
+        if (Array.isArray(user.bankingInfo)) {
+          return !!(
+            user.bankingInfo.length > 0 &&
+            user.bankingInfo[0]?.cardNumber &&
+            user.bankingInfo[0]?.shebaNumber
+          );
+        }
+        return !!(
+          user.bankingInfo.cardNumber &&
+          user.bankingInfo.shebaNumber
+        );
+      })(),
     },
   ];
 

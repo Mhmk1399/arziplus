@@ -13,7 +13,17 @@ interface RequestQueryFilter {
   service?: string;
 }
 
-
+interface data{
+  nationalCredentials?: {
+    firstName?: string;
+    lastName?: string;
+  };
+  contactInfo?: {
+    mobilePhone?: string;
+    email?: string;
+  };
+  title?: string;
+}
 
 // Type for POST request body
 interface CreateRequestBody {
@@ -288,8 +298,8 @@ export async function PUT(request: NextRequest) {
 
     // Send SMS notification when status is updated
     if (updateData.status && updatedRequest.customer) {
-      const customer = updatedRequest.customer as any;
-      const service = updatedRequest.service as any;
+      const customer = updatedRequest.customer as data;
+      const service = updatedRequest.service as data;
       
       const customerName = customer?.nationalCredentials?.firstName 
         ? `${customer.nationalCredentials.firstName} ${customer.nationalCredentials.lastName || ''}`
