@@ -4,6 +4,7 @@ import connect from "@/lib/data";
 import Lottery from "@/models/lottery";
 import { getAuthUser } from "@/lib/auth";
 import { sendStatusUpdateSMS } from "@/lib/sms";
+import { processReferralReward } from "@/lib/referralRewardProcessor";
 
 // Type for MongoDB query filters
 interface LotteryQueryFilter {
@@ -349,6 +350,45 @@ export async function POST(request: NextRequest) {
     });
 
     await lottery.save();
+
+    console.log("\n========================================");
+    console.log("LOTTERY CREATED - CHECKING FOR REFERRAL REWARDS");
+    console.log("========================================");
+    console.log("Lottery ID:", lottery._id);
+    console.log("User ID:", authUser.id);
+    console.log("Is Paid:", body.isPaid);
+    console.log("Payment Amount:", body.paymentAmount);
+
+    // Process referral rewards if payment is completed
+    if (body.isPaid && body.paymentAmount && body.paymentAmount > 0) {
+      console.log("✓ Payment conditions met - processing referral rewards...");
+      try {
+        const rewardResult = await processReferralReward({
+          userId: authUser.id,
+          actionType: "lottery",
+          transactionAmount: body.paymentAmount,
+          transactionId: lottery._id.toString(),
+        });
+        
+        console.log("Reward processing result:", rewardResult);
+        
+        if (rewardResult.success && (rewardResult.referrerReward || rewardResult.refereeReward)) {
+          console.log(`✓ Referral rewards processed for lottery ${lottery._id}:`);
+          console.log(`  - Referrer reward: ${rewardResult.referrerReward}`);
+          console.log(`  - Referee reward: ${rewardResult.refereeReward}`);
+        } else {
+          console.log(`ℹ No rewards distributed: ${rewardResult.message}`);
+        }
+      } catch (error) {
+        console.error("✗ Error processing referral reward:", error);
+        // Don't fail the request if reward processing fails
+      }
+    } else {
+      console.log("✗ Payment conditions not met - skipping referral rewards");
+      console.log("  - isPaid:", body.isPaid);
+      console.log("  - paymentAmount:", body.paymentAmount);
+    }
+    console.log("========================================\n");
 
     return NextResponse.json(
       {

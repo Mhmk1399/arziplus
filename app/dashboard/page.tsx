@@ -322,6 +322,13 @@ const Dashboard: React.FC = () => {
           description: "مدیریت کیف پول ها و درخواست های برداشت",
           children: [
             {
+              id: "referrals" as const,
+              label: "سیستم ارجاع و پاداش",
+              icon: <FaChartBar className="text-lg" />,
+              component: PaymentWrapper,
+              description: "تحلیل ارجاعات و مدیریت قوانین پاداش",
+            },
+            {
               id: "walletss" as const,
               label: "مدیریت کیف پول‌ها",
               icon: <FaWallet className="text-lg" />,
@@ -331,7 +338,7 @@ const Dashboard: React.FC = () => {
             {
               id: "withdraws" as const,
               label: "درخواست‌های برداشت",
-              icon: <FaMoneyBillWave className="text-lg" />,
+              icon: <FaArrowDown className="text-lg" />,
               component: WithdrawRequestsList,
               description: "مدیریت تمام درخواست های برداشت",
             },

@@ -76,12 +76,23 @@ const RequestSchema = new mongoose.Schema(
     deliveryNotes: { type: String }, // Final notes when delivering to customer
 
     // Metadata
-    requestNumber: { type: String, unique: true }, // Human-readable request ID like "REQ-2024-001"
+    requestNumber: { type: String, unique: true, sparse: true }, // Human-readable request ID like "REQ-2024-001"
   },
   {
     timestamps: true, // This adds createdAt and updatedAt automatically
   }
 );
+
+// Pre-save hook to generate requestNumber
+RequestSchema.pre('save', async function(next) {
+  if (!this.requestNumber) {
+    const count = await mongoose.model('Request').countDocuments();
+    const year = new Date().getFullYear();
+    const paddedCount = String(count + 1).padStart(6, '0');
+    this.requestNumber = `REQ-${year}-${paddedCount}`;
+  }
+  next();
+});
 
 export default mongoose.models.Request ||
   mongoose.model("Request", RequestSchema);

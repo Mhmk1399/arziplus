@@ -4,6 +4,7 @@ import connect from "@/lib/data";
 import ReferralReward from "@/models/ReferralReward";
 import Referral from "@/models/Referral";
 import User from "@/models/users";
+import Wallet from "@/models/wallet";
 import { getAuthUser } from "@/lib/auth";
 
 // Type definitions
@@ -322,14 +323,59 @@ export async function PUT(request: NextRequest) {
         );
       }
 
+      // Apply reward based on type
+      if (reward.rewardType === "wallet_credit") {
+        // Get or create wallet for user
+        let wallet = await Wallet.findOne({ userId: reward.user });
+        
+        if (!wallet) {
+          wallet = new Wallet({
+            userId: reward.user,
+            inComes: [],
+            outComes: [],
+            balance: [{ amount: 0, updatedAt: new Date() }],
+          });
+        }
+
+        // Add income transaction with "verified" status
+        wallet.inComes.push({
+          amount: reward.value,
+          tag: "referral_reward",
+          description: "پاداش معرفی",
+          date: new Date(),
+          status: "verified",
+          verifiedAt: new Date(),
+        });
+
+        // Calculate new balance
+        const totalIncomes = wallet.inComes
+          .filter((income: any) => income.status === "verified")
+          .reduce((sum: number, income: any) => sum + income.amount, 0);
+
+        const totalOutcomes = wallet.outComes
+          .filter((outcome: any) => outcome.status === "verified")
+          .reduce((sum: number, outcome: any) => sum + outcome.amount, 0);
+
+        const newBalance = totalIncomes - totalOutcomes;
+
+        // Update balance
+        wallet.balance.push({
+          amount: newBalance,
+          updatedAt: new Date(),
+        });
+
+        await wallet.save();
+
+        // Also update user's wallet balance field
+        await User.findByIdAndUpdate(reward.user, {
+          "wallet.balance": newBalance,
+        });
+      }
+
       // Update reward status and set claimed date
       reward.status = "claimed";
       reward.claimedAt = new Date();
       await reward.save();
-
-      // TODO: Here you would add the actual reward logic
-      // For example, if rewardType is "wallet_credit", add to user's wallet
-      // This depends on your wallet implementation
 
       await reward.populate("referral");
       await reward.populate("user", "nationalCredentials.firstName nationalCredentials.lastName");

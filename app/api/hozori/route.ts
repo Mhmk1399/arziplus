@@ -4,6 +4,7 @@ import connect from "@/lib/data";
 import Hozori from "@/models/hozori";
 import { getAuthUser } from "@/lib/auth";
 import { sendStatusUpdateSMS } from "@/lib/sms";
+import { processReferralReward } from "@/lib/referralRewardProcessor";
 
 // Type for POST request body
 interface CreateHozoriBody {
@@ -300,6 +301,24 @@ export async function POST(request: NextRequest) {
     console.log(
       `New hozori reservation created: ${savedHozori._id} for user: ${authUser.id}`
     );
+
+    // Process referral rewards (using a standard fee for hozori service)
+    const hozoriServiceFee = 500000; // Standard hozori service fee (adjust as needed)
+    try {
+      const rewardResult = await processReferralReward({
+        userId: authUser.id,
+        actionType: "hozori",
+        transactionAmount: hozoriServiceFee,
+        transactionId: savedHozori._id.toString(),
+      });
+      
+      if (rewardResult.success && (rewardResult.referrerReward || rewardResult.refereeReward)) {
+        console.log(`Referral rewards processed for hozori ${savedHozori._id}:`, rewardResult);
+      }
+    } catch (error) {
+      console.error("Error processing referral reward:", error);
+      // Don't fail the request if reward processing fails
+    }
 
     return NextResponse.json(
       {

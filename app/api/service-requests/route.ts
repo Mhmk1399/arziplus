@@ -4,6 +4,7 @@ import connect from "@/lib/data";
 import Request from "@/models/request";
 import DynamicService from "@/models/services";
 import { sendStatusUpdateSMS } from "@/lib/sms";
+import { processReferralReward } from "@/lib/referralRewardProcessor";
 import "@/models/users"; // Import User model for populate to work
 
 // Type for MongoDB query filters
@@ -170,6 +171,26 @@ export async function POST(request: NextRequest) {
 
     // Populate the service details for response
     await serviceRequest.populate('service', 'title icon slug fee');
+
+    // Process referral rewards
+    if (paymentAmount && paymentAmount > 0) {
+      try {
+        const rewardResult = await processReferralReward({
+          userId: body.customer,
+          actionType: "dynamicServices",
+          serviceSlug: service.slug,
+          transactionAmount: paymentAmount,
+          transactionId: serviceRequest._id.toString(),
+        });
+        
+        if (rewardResult.success && (rewardResult.referrerReward || rewardResult.refereeReward)) {
+          console.log(`Referral rewards processed for service request ${serviceRequest._id}:`, rewardResult);
+        }
+      } catch (error) {
+        console.error("Error processing referral reward:", error);
+        // Don't fail the request if reward processing fails
+      }
+    }
 
     return NextResponse.json(
       {
