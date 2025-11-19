@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import useSWR from "swr";
 import Image from "next/image";
 import {
@@ -101,6 +101,17 @@ const ServiceHelperModal = ({
   isOpen: boolean;
   onClose: () => void;
 }) => {
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [isOpen]);
+
   if (!isOpen) return null;
 
   return (
@@ -314,6 +325,7 @@ type FormData = Record<string, FormFieldValue>;
 // Main Service Detail Page Component
 export default function ServiceDetailPage() {
   const params = useParams();
+  const router = useRouter();
   const slug = params.slug as string;
   const [showHelperModal, setShowHelperModal] = useState(false);
   const [helperRead, setHelperRead] = useState(false);
@@ -329,6 +341,45 @@ export default function ServiceDetailPage() {
   const [calculatedFee, setCalculatedFee] = useState(0);
   const [acceptedTerms, setAcceptedTerms] = useState(false);
   const { user: currentUser } = useCurrentUser();
+
+  // Check token and redirect if not authenticated
+  useEffect(() => {
+    const verifyAuth = async () => {
+      const token = localStorage.getItem("authToken");
+      if (!token) {
+        showToast.error("برای ثبت سفارش ابتدا وارد شوید");
+        const currentPath = `/services/${slug}`;
+        localStorage.setItem("redirectAfterAuth", currentPath);
+        router.push("/auth/sms");
+        return;
+      }
+
+      try {
+        const response = await fetch("/api/auth/me", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (!response.ok) {
+          showToast.error("توکن شما منقضی شده، لطفا دوباره وارد شوید");
+          localStorage.removeItem("authToken");
+          const currentPath = `/services/${slug}`;
+          localStorage.setItem("redirectAfterAuth", currentPath);
+          router.push("/auth/sms");
+        }
+      } catch (error) {
+        console.log("Auth verification error:", error);
+        showToast.error("خطا در احراز هویت، لطفا دوباره وارد شوید");
+        localStorage.removeItem("authToken");
+        const currentPath = `/services/${slug}`;
+        localStorage.setItem("redirectAfterAuth", currentPath);
+        router.push("/auth/sms");
+      }
+    };
+
+    verifyAuth();
+  }, [slug, router]);
 
   // Fetch service using SWR
   const {
@@ -477,7 +528,11 @@ export default function ServiceDetailPage() {
             ].find((opt) => opt.key === key);
             if (option) {
               const currencyPrice = getCurrencyPrice(option.value);
-              const optionWithRead = option as { key: string; value: string; read?: string };
+              const optionWithRead = option as {
+                key: string;
+                value: string;
+                read?: string;
+              };
               const multiplier = optionWithRead.read
                 ? parseFloat(String(formData[optionWithRead.read])) || 1
                 : numberValue;
@@ -491,7 +546,11 @@ export default function ServiceDetailPage() {
           ].find((opt) => opt.key === fieldValue);
           if (option) {
             const currencyPrice = getCurrencyPrice(option.value);
-            const optionWithRead = option as { key: string; value: string; read?: string };
+            const optionWithRead = option as {
+              key: string;
+              value: string;
+              read?: string;
+            };
             const multiplier = optionWithRead.read
               ? parseFloat(String(formData[optionWithRead.read])) || 1
               : numberValue;
@@ -509,7 +568,11 @@ export default function ServiceDetailPage() {
             ].find((opt) => opt.key === key);
             if (option) {
               const accountValue = parseFloat(option.value) || 0;
-              const optionWithRead = option as { key: string; value: string; read?: string };
+              const optionWithRead = option as {
+                key: string;
+                value: string;
+                read?: string;
+              };
               const multiplier = optionWithRead.read
                 ? parseFloat(String(formData[optionWithRead.read])) || 1
                 : numberValue;
@@ -523,7 +586,11 @@ export default function ServiceDetailPage() {
           ].find((opt) => opt.key === fieldValue);
           if (option) {
             const accountValue = parseFloat(option.value) || 0;
-            const optionWithRead = option as { key: string; value: string; read?: string };
+            const optionWithRead = option as {
+              key: string;
+              value: string;
+              read?: string;
+            };
             const multiplier = optionWithRead.read
               ? parseFloat(String(formData[optionWithRead.read])) || 1
               : numberValue;
@@ -886,9 +953,7 @@ export default function ServiceDetailPage() {
     // Check if user is completely verified
     // bankingInfo is an array, check if at least one is accepted
     const hasBankingAccepted = Array.isArray(currentUser.bankingInfo)
-      ? currentUser.bankingInfo.some(
-          (bank) => bank.status === "accepted"
-        )
+      ? currentUser.bankingInfo.some((bank) => bank.status === "accepted")
       : currentUser.bankingInfo?.status === "accepted";
 
     const isCompletelyVerified =
@@ -1282,8 +1347,7 @@ export default function ServiceDetailPage() {
                             currentUser.bankingInfo
                           )
                             ? currentUser.bankingInfo.some(
-                                (bank) =>
-                                  bank.status === "accepted"
+                                (bank) => bank.status === "accepted"
                               )
                             : currentUser.bankingInfo?.status === "accepted";
 
@@ -1303,11 +1367,12 @@ export default function ServiceDetailPage() {
                                   {!hasBankingAccepted && "اطلاعات بانکی"} خود
                                   را تکمیل کنید
                                 </p>
-                                <Link href="/dashboard#securities">
-                                  <div className="text-blue-600 mt-2 text-center mx-auto hover:underline">
-                                    تکمیل پروفایل{" "}
-                                  </div>
-                                </Link>
+                                <button
+                                  onClick={() => router.push("/dashboard#securities")}
+                                  className="text-blue-600 mt-2 text-center mx-auto hover:underline w-full"
+                                >
+                                  تکمیل پروفایل
+                                </button>
                               </div>
                             );
                           }
@@ -1323,8 +1388,7 @@ export default function ServiceDetailPage() {
                             "accepted" ||
                           !(Array.isArray(currentUser?.bankingInfo)
                             ? currentUser.bankingInfo.some(
-                                (bank) =>
-                                  bank.status === "accepted"
+                                (bank) => bank.status === "accepted"
                               )
                             : currentUser?.bankingInfo?.status === "accepted")
                         }
@@ -1336,8 +1400,7 @@ export default function ServiceDetailPage() {
                             "accepted" ||
                           !(Array.isArray(currentUser?.bankingInfo)
                             ? currentUser.bankingInfo.some(
-                                (bank) =>
-                                  bank.status === "accepted"
+                                (bank) => bank.status === "accepted"
                               )
                             : currentUser?.bankingInfo?.status === "accepted")
                             ? "bg-gray-300 text-gray-500 cursor-not-allowed"

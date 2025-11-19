@@ -106,91 +106,69 @@ export default function HeroSection({
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Enhanced entrance animations with stagger effect
       const tl = gsap.timeline({ delay: animationDelay });
 
-      // Background particles animation
+      // Faster background particles with will-change
       gsap.to(".floating-particle", {
         y: "random(-20, 20)",
         x: "random(-10, 10)",
         rotation: "random(-180, 180)",
-        duration: "random(3, 6)",
+        duration: "random(2, 4)",
         repeat: -1,
         yoyo: true,
         ease: "sine.inOut",
-        stagger: 0.2,
+        stagger: 0.1,
+        force3D: true,
       });
 
-      // Main content entrance
+      // Faster content entrance
       tl.fromTo(
         headingRef.current,
-        {
-          y: 100,
-          opacity: 0,
-          rotationX: 45,
-          transformPerspective: 1000,
-        },
-        {
-          y: 0,
-          opacity: 1,
-          rotationX: 0,
-          duration: 1.2,
-          ease: "power3.out",
-        }
+        { y: 50, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.5, ease: "power2.out" }
       )
         .fromTo(
           descriptionRef.current,
-          { y: 80, opacity: 0, filter: "blur(10px)" },
-          {
-            y: 0,
-            opacity: 1,
-            filter: "blur(0px)",
-            duration: 1,
-            ease: "power2.out",
-          },
-          "-=0.6"
+          { y: 30, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.4, ease: "power2.out" },
+          "-=0.3"
         )
         .fromTo(
           Array.from(buttonsRef.current?.children || []),
-          {
-            y: 60,
-            opacity: 0,
-            scale: 0.8,
-            rotationY: 25,
-          },
+          { y: 20, opacity: 0, scale: 0.95 },
           {
             y: 0,
             opacity: 1,
             scale: 1,
-            rotationY: 0,
-            duration: 0.8,
-            ease: "back.out(1.7)",
-            stagger: 0.15,
+            duration: 0.4,
+            ease: "power2.out",
+            stagger: 0.1,
           },
-          "-=0.4"
+          "-=0.3"
         );
 
-      // Media entrance
+      // Faster media entrance
       if (mediaRef.current) {
         tl.fromTo(
           mediaRef.current,
-          { opacity: 0, y: 30 },
-          { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" },
-          "-=0.6"
+          { opacity: 0, y: 20 },
+          { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" },
+          "-=0.4"
         );
       }
 
-      // Interactive button hover animations
+      // Faster button hover animations with GPU acceleration
       const buttonElements = buttonsRef.current?.querySelectorAll("a, button");
       buttonElements?.forEach((button) => {
+        gsap.set(button, { force3D: true });
+        
         const handleMouseEnter = () => {
           gsap.to(button, {
-            scale: 1.08,
-            y: -5,
-            rotationY: 5,
-            boxShadow: "0 20px 40px rgba(0,0,0,0.3)",
-            duration: 0.4,
+            scale: 1.05,
+            y: -3,
+            duration: 0.2,
             ease: "power2.out",
+            force3D: true,
           });
         };
 
@@ -198,10 +176,9 @@ export default function HeroSection({
           gsap.to(button, {
             scale: 1,
             y: 0,
-            rotationY: 0,
-            boxShadow: "0 10px 25px rgba(0,0,0,0.15)",
-            duration: 0.4,
+            duration: 0.2,
             ease: "power2.out",
+            force3D: true,
           });
         };
 
@@ -214,41 +191,36 @@ export default function HeroSection({
         };
       });
 
-      // Stats counter animation with enhanced effects
+      // Faster stats counter with RAF optimization
       const statNumbers = statsRef.current?.querySelectorAll(".stat-number");
-      statNumbers?.forEach((stat) => {
-        const finalValue = stat.textContent || "0";
-        const numericValue = parseInt(finalValue.replace(/[^\d]/g, "")) || 0;
+      if (statNumbers && statNumbers.length > 0) {
+        requestAnimationFrame(() => {
+          statNumbers.forEach((stat) => {
+            const finalValue = stat.textContent || "0";
+            const numericValue = parseInt(finalValue.replace(/[^\d]/g, "")) || 0;
 
-        gsap.fromTo(
-          stat,
-          { textContent: 0 },
-          {
-            textContent: numericValue,
-            duration: 2.5,
-            ease: "power2.out",
-            snap: { textContent: 1 },
-            delay: 1.5,
-            onUpdate: function () {
-              const currentValue = Math.round(this.targets()[0].textContent);
-              if (finalValue.includes("+")) {
-                stat.textContent = `+${currentValue}`;
-              } else {
-                stat.textContent = currentValue.toString();
+            gsap.fromTo(
+              stat,
+              { textContent: 0 },
+              {
+                textContent: numericValue,
+                duration: 1.5,
+                ease: "power2.out",
+                snap: { textContent: 1 },
+                delay: 0.5,
+                onUpdate: function () {
+                  const currentValue = Math.round(this.targets()[0].textContent);
+                  if (finalValue.includes("+")) {
+                    stat.textContent = `+${currentValue}`;
+                  } else {
+                    stat.textContent = currentValue.toString();
+                  }
+                },
               }
-            },
-            onComplete: () => {
-              gsap.to(stat, {
-                scale: 1.1,
-                duration: 0.3,
-                yoyo: true,
-                repeat: 1,
-                ease: "power2.inOut",
-              });
-            },
-          }
-        );
-      });
+            );
+          });
+        });
+      }
     }, heroRef);
 
     return () => ctx.revert();
@@ -289,7 +261,6 @@ export default function HeroSection({
       ? "max-w-6xl mx-auto px-4 md:px-8 text-center"
       : "max-w-7xl mx-auto px-4 md:px-8";
 
-
   const renderMedia = () => {
     if (media.type === "video") {
       return (
@@ -322,8 +293,13 @@ export default function HeroSection({
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             unoptimized={true}
             priority
+            fetchPriority="high"
+            loading="eager"
             onError={() => {
-              console.log("Failed to load hero image with Next.js Image:", media.src);
+              console.log(
+                "Failed to load hero image with Next.js Image:",
+                media.src
+              );
               setImageError(true);
             }}
           />
@@ -332,6 +308,8 @@ export default function HeroSection({
             src={media.src}
             alt={media.alt || "Hero Image"}
             className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110"
+            fetchPriority="high"
+            loading="eager"
             onError={(e) => {
               console.log("Failed to load hero image with img tag:", media.src);
               const img = e.target as HTMLImageElement;
@@ -366,7 +344,6 @@ export default function HeroSection({
     <section
       ref={heroRef}
       className={`  relative min-h-screen flex items-center justify-center overflow-hidden py-24 px-2`}
-       
     >
       {/* Animated Background Elements */}
       <div

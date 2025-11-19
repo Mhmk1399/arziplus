@@ -25,6 +25,10 @@ export default function RootLayout({
   return (
     <html lang="fa">
       <head>
+        {/* Preconnect to critical domains */}
+        <link rel="preconnect" href="https://www.googletagmanager.com" />
+        <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+        
         {/* Google Tag Manager */}
         <script
           dangerouslySetInnerHTML={{
@@ -85,6 +89,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
           {/* Telegram Button */}
           <Link
             href="https://t.me/ArziPlus"
+            aria-label="telegram"
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center justify-center w-14 h-14 bg-gradient-to-br from-blue-500/40 to-blue-600/40 hover:from-blue-500 hover:to-blue-800 backdrop-blur-sm text-white rounded-full shadow-lg hover:scale-110 hover:shadow-xl transition-all duration-300"
@@ -94,6 +99,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
           {/* WhatsApp Button */}
           <Link
+            aria-label="whatsApp"
             href="https://wa.me/message/BMUIYPPM3P3GI1" // شماره رو با فرمت بین‌المللی بزن مثل 989123456789+
             target="_blank"
             rel="noopener noreferrer"

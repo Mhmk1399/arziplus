@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import mongoose from "mongoose";
-import connect from "@/lib/data";
+ import connect from "@/lib/data";
 import Referral from "@/models/Referral";
 import ReferralReward from "@/models/ReferralReward";
 import User from "@/models/users";

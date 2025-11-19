@@ -7,8 +7,7 @@ import {
   FaCheck,
   FaExclamationTriangle,
 } from "react-icons/fa";
-import { estedadBold } from "@/next-persian-fonts/estedad/index";
-import { showToast } from "@/utilities/toast";
+ import { showToast } from "@/utilities/toast";
 
 interface requestData {
   bankName?: string;

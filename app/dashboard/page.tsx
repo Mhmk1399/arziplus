@@ -560,7 +560,7 @@ const Dashboard: React.FC = () => {
     handleHashChange();
     window.addEventListener("hashchange", handleHashChange);
     return () => window.removeEventListener("hashchange", handleHashChange);
-  }, [currentUser]);
+  }, [currentUser, menuItems]);
 
   // Check authentication and redirect if needed
   useEffect(() => {
@@ -593,6 +593,11 @@ const Dashboard: React.FC = () => {
     const tabParam = searchParams.get("tab");
     const targetTab = hash || tabParam;
 
+    // Wait for menuItems to load before processing
+    if (menuItems.length === 0) {
+      return;
+    }
+
     // Set menu item based on URL hash/parameter or user role
     if (targetTab) {
       let found = false;
@@ -620,17 +625,12 @@ const Dashboard: React.FC = () => {
         if (!hash && tabParam) {
           window.location.hash = targetTab;
         }
-      } else {
-        // Invalid tab, set default
-        const isAdmin =
-          currentUser?.roles?.includes("admin") ||
-          currentUser?.roles?.includes("super_admin");
-        const defaultTab = isAdmin ? "users" : "services";
-        setSelectedMenuItem(defaultTab);
-        window.location.hash = defaultTab;
+        return;
       }
-    } else {
-      // No tab parameter, set default based on role
+    }
+    
+    // Set default only if no hash/tab provided
+    if (!targetTab) {
       const isAdmin =
         currentUser?.roles?.includes("admin") ||
         currentUser?.roles?.includes("super_admin");
@@ -638,7 +638,7 @@ const Dashboard: React.FC = () => {
       setSelectedMenuItem(defaultTab);
       window.location.hash = defaultTab;
     }
-  }, [isLoggedIn, currentUser, userLoading, router, searchParams]);
+  }, [isLoggedIn, currentUser, userLoading, router, searchParams, menuItems]);
 
   // Handle responsive sidebar - close on mobile by default
   useEffect(() => {

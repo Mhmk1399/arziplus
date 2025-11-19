@@ -25,7 +25,6 @@ export default function NewNavbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [user, setUser] = useState<AuthUser | null>(null);
   const [showUserDropdown, setShowUserDropdown] = useState(false);
-
   const navRef = useRef<HTMLElement>(null);
   const mobileMenuRef = useRef<HTMLDivElement>(null);
   const logoRef = useRef<HTMLDivElement>(null);
@@ -317,15 +316,15 @@ export default function NewNavbar() {
       {/* Navbar */}
       <nav
         ref={navRef}
-        className="fixed top-0 left-0 right-0 z-50 backdrop-blur-sm transition-all duration-500 border-b border-white/10"
+        className="fixed top-0 left-0 right-0 z-50 backdrop-blur-lg transition-all duration-500 border-b border-white/10"
         style={{
-          backgroundColor: "rgba(255, 255, 255, 0.2)",
+          backgroundColor: "rgba(255, 255, 255, 0.1)",
         }}
         dir="rtl"
         suppressHydrationWarning
       >
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="flex items-center justify-between h-20 lg:h-24">
+          <div className="flex items-center justify-between h-14 lg:h-20">
             {/* Logo */}
             <Link href="/">
               {" "}
@@ -472,6 +471,7 @@ export default function NewNavbar() {
             {/* Mobile Menu Button */}
             <button
               onClick={toggleMobileMenu}
+              aria-label="toggle"
               className="lg:hidden p-2 rounded-xl bg-gradient-to-r from-[#0A1D37]/10 to-[#4DBFF0]/10 backdrop-blur-sm transition-all duration-300 hover:scale-105 border border-[#0A1D37]/20"
               suppressHydrationWarning
             >
@@ -509,7 +509,7 @@ export default function NewNavbar() {
           <div
             ref={megaMenuRef}
             className="fixed left-1/2 transform -translate-x-1/2 z-50 w-[95vw] max-w-7xl transition-opacity duration-200"
-            style={{ top: "100px" }}
+            style={{ top: "86px" }}
             onMouseEnter={handleMegaMenuMouseEnter}
             onMouseLeave={handleMegaMenuMouseLeave}
             dir="rtl"
@@ -657,6 +657,7 @@ export default function NewNavbar() {
 
                 <button
                   onClick={toggleMobileMenu}
+                  aria-label="close"
                   className="p-2 rounded-xl bg-gradient-to-r from-[#0A1D37]/10 to-[#4DBFF0]/10 hover:scale-110 transition-transform duration-300"
                 >
                   <MdClose className="text-2xl text-[#0A1D37]" />

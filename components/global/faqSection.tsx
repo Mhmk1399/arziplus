@@ -104,7 +104,7 @@ export default function FAQSection({
     }
   };
 
-  // Enhanced entrance animations
+  // Optimized entrance animations
   useEffect(() => {
     if (!animate || hasAnimated) return;
 
@@ -113,93 +113,72 @@ export default function FAQSection({
         scrollTrigger: {
           trigger: containerRef.current,
           start: "top 80%",
-          end: "bottom 20%",
           toggleActions: "play none none none",
           once: true,
         },
         onStart: () => setHasAnimated(true),
       });
 
-      // Header entrance with 3D rotation
+      // Faster header entrance
       tl.fromTo(
         headerRef.current,
-        { opacity: 0, y: 60, rotationX: 45, scale: 0.9 },
-        {
-          opacity: 1,
-          y: 0,
-          rotationX: 0,
-          scale: 1,
-          duration: 1,
-          ease: "power3.out",
-        }
+        { opacity: 0, y: 30 },
+        { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" }
       );
 
-      // Text elements stagger animation
+      // Faster text elements
       const textElements = headerRef.current?.querySelectorAll(".animate-text");
       if (textElements) {
         tl.fromTo(
           textElements,
-          { y: 40, opacity: 0, rotationY: 20 },
-          {
-            y: 0,
-            opacity: 1,
-            rotationY: 0,
-            duration: 0.8,
-            stagger: 0.2,
-            ease: "power2.out",
-          },
-          "-=0.6"
+          { y: 20, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.3, stagger: 0.1, ease: "power2.out" },
+          "-=0.2"
         );
       }
 
-      // FAQ items with enhanced stagger
+      // Faster FAQ items
       const faqElements = faqListRef.current?.children;
       if (faqElements) {
         tl.fromTo(
           faqElements,
-          { opacity: 0, y: 50, x: -30, scale: 0.9, rotationY: -15 },
+          { opacity: 0, y: 20 },
           {
             opacity: 1,
             y: 0,
-            x: 0,
-            scale: 1,
-            rotationY: 0,
-            duration: 0.8,
-            stagger: 0.15,
-            ease: "back.out(1.7)",
+            duration: 0.3,
+            stagger: 0.08,
+            ease: "power2.out",
           },
-          "-=0.4"
+          "-=0.2"
         );
       }
 
-      // Buttons with bounce effect
+      // Faster buttons
       if (buttonsRef.current) {
         tl.fromTo(
           buttonsRef.current.children,
-          { opacity: 0, y: 30, scale: 0.8, rotationZ: -10 },
+          { opacity: 0, y: 15 },
           {
             opacity: 1,
             y: 0,
-            scale: 1,
-            rotationZ: 0,
-            duration: 0.6,
-            stagger: 0.1,
-            ease: "back.out(2)",
+            duration: 0.3,
+            stagger: 0.08,
+            ease: "power2.out",
           },
-          "-=0.3"
+          "-=0.2"
         );
       }
 
-      // Floating elements animation
+      // Lighter floating animation
       gsap.to(".floating-element", {
-        y: "random(-20, 20)",
-        x: "random(-10, 10)",
-        rotation: "random(-10, 10)",
-        duration: "random(3, 6)",
+        y: "random(-15, 15)",
+        x: "random(-8, 8)",
+        duration: "random(2, 4)",
         repeat: -1,
         yoyo: true,
         ease: "sine.inOut",
-        stagger: 0.2,
+        stagger: 0.15,
       });
     }, containerRef);
 
@@ -255,7 +234,7 @@ export default function FAQSection({
       <div className={`relative z-10 ${layoutClasses[layout]}`}>
         <div className="max-w-7xl mx-auto grid md:grid-cols-1 gap-12 items-start">
           {/* Left Side - FAQ Items (scrollable) */}
-          <div className="md:order-2">
+          <div className="md:order-2 order-1">
             <div ref={faqListRef}>
               {/* Enhanced Categories */}
               {showCategories && categories.length > 0 && (
@@ -350,9 +329,9 @@ export default function FAQSection({
                         </div>
                       </button>
 
-                      {/* Enhanced Answer with smooth animation */}
+                      {/* Optimized Answer animation */}
                       <div
-                        className={`overflow-hidden transition-all duration-300 ease-in-out ${
+                        className={`overflow-hidden transition-all duration-200 ease-out ${
                           openItem === item.id
                             ? "max-h-96 opacity-100"
                             : "max-h-0 opacity-0"
@@ -451,7 +430,7 @@ export default function FAQSection({
           {/* Right Side - Header & Search (sticky on desktop) */}
           <div
             ref={headerRef}
-            className="p-6 lg:p-8 rounded-3xl shadow-sm border border-white/20 backdrop-blur-sm bg-gradient-to-br from-white/10 via-white/5 to-transparent self-start md:sticky top-24 transition-all duration-300 hover:shadow-2xl hover:border-white/30 md:order-1"
+            className="p-6 lg:p-8 rounded-3xl shadow-sm border border-white/20 backdrop-blur-sm bg-gradient-to-br from-white/10 via-white/5 to-transparent self-start md:sticky top-24 transition-all duration-300 hover:shadow-2xl hover:border-white/30   md:order-1"
           >
             {/* Header Content */}
             <div className="relative text-center lg:text-right mb-8">

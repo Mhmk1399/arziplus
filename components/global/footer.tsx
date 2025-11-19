@@ -370,7 +370,7 @@ export default function Footer() {
                     referrerPolicy="origin"
                     src="/assets/images/enamad.png"
                     alt="نماد اعتماد الکترونیکی"
-                    className="cursor-pointer w-28 h-28 rounded-lg"
+                    className="cursor-pointer h-28 w-auto rounded-lg"
                   />
                 </a>
                 <a
@@ -380,7 +380,7 @@ export default function Footer() {
                   <img
                     src="https://cdn.zarinpal.com/badges/trustLogo/1.png"
                     alt="درگاه پرداخت زرین پال"
-                    className="w-15 h-15 rounded-lg"
+                    className="h-28 w-auto rounded-lg"
                   />
                 </a>
               </div>

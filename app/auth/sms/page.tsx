@@ -47,7 +47,11 @@ function SMSAuthContent() {
       showToast.info("شما از طریق لینک دعوت وارد شده‌اید");
     }
 
-    if (redirect) {
+    const storedRedirect = localStorage.getItem("redirectAfterAuth");
+
+    if (storedRedirect) {
+      setRedirectUrl(storedRedirect);
+    } else if (redirect) {
       setRedirectUrl(decodeURIComponent(redirect));
     } else if (referrer && !referrer.includes("/auth")) {
       // Extract path from referrer if it's from the same domain
@@ -137,6 +141,9 @@ function SMSAuthContent() {
         // Store token
         console.log("Storing token:", data.token?.substring(0, 20) + "...");
         localStorage.setItem("authToken", data.token);
+
+        // Clear stored redirect
+        localStorage.removeItem("redirectAfterAuth");
 
         const finalRedirect =
           redirectUrl !== "/dashboard" ? redirectUrl : data.redirectTo;
