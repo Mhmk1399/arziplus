@@ -36,6 +36,7 @@ const ServiceBuilder: React.FC<ServiceBuilderProps> = ({
     status: initialData?.status || "draft",
     image: initialData?.image || "",
     fields: initialData?.fields || [],
+    validationeneed: initialData?.validationeneed || false,
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -61,13 +62,13 @@ const ServiceBuilder: React.FC<ServiceBuilderProps> = ({
 
   const handleInputChange = (
     key: keyof ServiceBuilderFormData,
-    value: string
+    value: string | boolean
   ) => {
     setFormData((prev) => {
       const newData = { ...prev, [key]: value };
 
       // Auto-generate slug from title
-      if (key === "title" && !isEditing) {
+      if (key === "title" && !isEditing && typeof value === "string") {
         newData.slug = generateSlug(value);
       }
 
@@ -421,11 +422,25 @@ const ServiceBuilder: React.FC<ServiceBuilderProps> = ({
                     type="checkbox"
                     checked={formData.wallet}
                     onChange={(e) =>
-                      handleInputChange("wallet", e.target.checked.toString())
+                      handleInputChange("wallet", e.target.checked)
                     }
                     className="w-5 h-5 text-purple-600 bg-white/10 border-[#4DBFF0] rounded focus:ring-[#0A1D37] focus:ring-2"
                   />
                   <span className="text-[#0A1D37]">نیاز به کیف پول دارد</span>
+                </label>
+              </div>
+
+              <div className="mt-4">
+                <label className="flex items-center gap-3">
+                  <input
+                    type="checkbox"
+                    checked={formData.validationeneed || false}
+                    onChange={(e) =>
+                      handleInputChange("validationeneed", e.target.checked)
+                    }
+                    className="w-5 h-5 text-purple-600 bg-white/10 border-[#4DBFF0] rounded focus:ring-[#0A1D37] focus:ring-2"
+                  />
+                  <span className="text-[#0A1D37]">نیاز به تایید دارد</span>
                 </label>
               </div>
             </div>

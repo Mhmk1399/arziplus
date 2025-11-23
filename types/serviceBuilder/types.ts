@@ -48,6 +48,7 @@ export interface DynamicService {
   status: "active" | "inactive" | "draft";
   image?: string;
   fields: ServiceField[];
+  validationeneed?: boolean;
   createdAt?: string;
   updatedAt?: string;
 }
@@ -64,6 +65,7 @@ export interface ServiceBuilderFormData {
   status: "active" | "inactive" | "draft";
   image: string;
   fields: ServiceField[];
+  validationeneed?: boolean;
 }
 
 export interface ServiceRequest {

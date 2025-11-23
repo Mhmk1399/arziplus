@@ -48,6 +48,7 @@ const DynamicServiceSchema = new mongoose.Schema(
     },
     image: { type: String },
     fields: [FieldDefinitionSchema],
+    validationeneed: { type: Boolean, default: false },
   },
   {
     timestamps: true, // This adds createdAt and updatedAt automatically

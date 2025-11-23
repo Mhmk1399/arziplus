@@ -37,6 +37,7 @@ interface ServiceDocument {
   wallet: boolean;
   status: string;
   fields?: ServiceField[];
+  validationeneed?: boolean;
   createdAt?: Date;
   updatedAt?: Date;
 }

@@ -56,6 +56,7 @@ interface Service {
   image?: string;
   status: string;
   fields: ServiceField[];
+  validationeneed?: boolean;
 }
 
 // API Response interface
@@ -369,7 +370,6 @@ export default function ServiceDetailPage() {
           router.push("/auth/sms");
         }
       } catch (error) {
-        console.log("Auth verification error:", error);
         showToast.error("خطا در احراز هویت، لطفا دوباره وارد شوید");
         localStorage.removeItem("authToken");
         const currentPath = `/services/${slug}`;
@@ -396,7 +396,7 @@ export default function ServiceDetailPage() {
 
   // const conditions = service?.fields.
 
-  console.log(service, "[[[[[[[[");
+ 
 
   // Fetch wallet balance
   const fetchWalletBalance = async () => {
@@ -418,7 +418,6 @@ export default function ServiceDetailPage() {
         );
       }
     } catch (error) {
-      console.log("Error fetching wallet balance:", error);
     }
   };
 
@@ -438,7 +437,6 @@ export default function ServiceDetailPage() {
             };
           });
           setCurrencies(currencyMap);
-          console.log("💱 Currency prices loaded:", currencyMap);
         }
       }
     } catch (error) {
@@ -601,13 +599,7 @@ export default function ServiceDetailPage() {
     });
 
     const totalFee = baseFee + currencySum + accountSum;
-    console.log("Calculation:", {
-      baseFee,
-      currencySum,
-      accountSum,
-      numberValue,
-      totalFee,
-    });
+   
     return totalFee;
   };
 
@@ -945,29 +937,34 @@ export default function ServiceDetailPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+
     if (!service || !currentUser?.id) {
       showToast.error("ابتدا وارد حساب کاربری خود شوید");
       return;
     }
 
-    // Check if user is completely verified
-    // bankingInfo is an array, check if at least one is accepted
-    const hasBankingAccepted = Array.isArray(currentUser.bankingInfo)
-      ? currentUser.bankingInfo.some((bank) => bank.status === "accepted")
-      : currentUser.bankingInfo?.status === "accepted";
+  
 
-    const isCompletelyVerified =
-      currentUser.nationalCredentials?.status === "accepted" &&
-      hasBankingAccepted;
+    if (service.validationeneed === true) {
+      
+      // bankingInfo is an array, check if at least one is accepted
+      const hasBankingAccepted = Array.isArray(currentUser.bankingInfo)
+        ? currentUser.bankingInfo.some((bank) => bank.status === "accepted")
+        : currentUser.bankingInfo?.status === "accepted";
 
-    if (!isCompletelyVerified) {
-      showToast.error(
-        "برای ثبت درخواست، لطفاً ابتدا اطلاعات هویتی و بانکی خود را تکمیل و تایید کنید"
-      );
-      setTimeout(() => {
-        window.location.href = "/dashboard";
-      }, 2000);
-      return;
+      const isCompletelyVerified =
+        currentUser.nationalCredentials?.status === "accepted" &&
+        hasBankingAccepted;
+
+
+      if (!isCompletelyVerified) {
+       
+        setTimeout(() => {
+          window.location.href = "/dashboard";
+        }, 2000);
+        return;
+      }
+    } else {
     }
 
     if (!validateForm()) return;
@@ -1342,6 +1339,7 @@ export default function ServiceDetailPage() {
                     {/* Submit Button */}
                     <div className="flex flex-col items-center pt-6 w-full">
                       {currentUser &&
+                        service.validationeneed === true &&
                         (() => {
                           const hasBankingAccepted = Array.isArray(
                             currentUser.bankingInfo
@@ -1384,25 +1382,29 @@ export default function ServiceDetailPage() {
                           submitting ||
                           !currentUser ||
                           !acceptedTerms ||
-                          currentUser?.nationalCredentials?.status !==
-                            "accepted" ||
-                          !(Array.isArray(currentUser?.bankingInfo)
-                            ? currentUser.bankingInfo.some(
-                                (bank) => bank.status === "accepted"
-                              )
-                            : currentUser?.bankingInfo?.status === "accepted")
+                          (service.validationeneed === true &&
+                            (currentUser?.nationalCredentials?.status !==
+                              "accepted" ||
+                              !(Array.isArray(currentUser?.bankingInfo)
+                                ? currentUser.bankingInfo.some(
+                                    (bank) => bank.status === "accepted"
+                                  )
+                                : currentUser?.bankingInfo?.status ===
+                                  "accepted")))
                         }
                         className={`flex items-center gap-3 px-8 py-4 rounded-xl font-bold text-lg transition-all duration-300 ${
                           submitting ||
                           !currentUser ||
                           !acceptedTerms ||
-                          currentUser?.nationalCredentials?.status !==
-                            "accepted" ||
-                          !(Array.isArray(currentUser?.bankingInfo)
-                            ? currentUser.bankingInfo.some(
-                                (bank) => bank.status === "accepted"
-                              )
-                            : currentUser?.bankingInfo?.status === "accepted")
+                          (service.validationeneed === true &&
+                            (currentUser?.nationalCredentials?.status !==
+                              "accepted" ||
+                              !(Array.isArray(currentUser?.bankingInfo)
+                                ? currentUser.bankingInfo.some(
+                                    (bank) => bank.status === "accepted"
+                                  )
+                                : currentUser?.bankingInfo?.status ===
+                                  "accepted")))
                             ? "bg-gray-300 text-gray-500 cursor-not-allowed"
                             : "bg-gradient-to-l from-[#0A1D37] to-[#4DBFF0] text-white hover:opacity-90 transform hover:scale-105 shadow-lg"
                         }`}
