@@ -2,7 +2,7 @@
 
 import { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { FaPhone, FaKey, FaSpinner } from "react-icons/fa";
+import { FaPhone, FaKey, FaSpinner, FaIdCard, FaUser, FaCheckCircle, FaExclamationTriangle, FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import { showToast } from "@/utilities/toast";
 import { estedadBold } from "@/next-persian-fonts/estedad";
 import Link from "next/link";
@@ -25,7 +25,9 @@ function SMSAuthLoading() {
 function SMSAuthContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const [step, setStep] = useState<"phone" | "verification">("phone");
+  const [isSignupMode, setIsSignupMode] = useState(true); // Toggle between signup and login
+  const [step, setStep] = useState<"nationalCode" | "phone" | "verification" | "profile">("nationalCode");
+  const [nationalCode, setNationalCode] = useState("");
   const [phone, setPhone] = useState("");
   const [verificationCode, setVerificationCode] = useState("");
   const [userId, setUserId] = useState("");
@@ -34,6 +36,16 @@ function SMSAuthContent() {
   const [countdown, setCountdown] = useState(0);
   const [redirectUrl, setRedirectUrl] = useState<string>("/dashboard");
   const [referralCode, setReferralCode] = useState<string | null>(null);
+  const [shahkarVerified, setShahkarVerified] = useState(false);
+  const [showShahkarModal, setShowShahkarModal] = useState(false);
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [errors, setErrors] = useState<{
+    nationalCode?: string;
+    phoneNumber?: string;
+    firstName?: string;
+    lastName?: string;
+  }>({});
 
   // Capture redirect URL and referral code from query params
   useEffect(() => {
@@ -65,6 +77,131 @@ function SMSAuthContent() {
       }
     }
   }, [searchParams]);
+
+  // Validate national code format and checksum
+  const validateNationalCode = (code: string): boolean => {
+    if (!/^\d{10}$/.test(code)) return false;
+
+    const digits = code.split("").map(Number);
+    const checksum =
+      digits.reduce((sum, digit, index) => {
+        if (index < 9) return sum + digit * (10 - index);
+        return sum;
+      }, 0) % 11;
+
+    const lastDigit = digits[9];
+    return checksum < 2 ? lastDigit === checksum : lastDigit === 11 - checksum;
+  };
+
+  // Step 1: Shahkar Verification
+  const handleShahkarVerification = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const newErrors: typeof errors = {};
+
+    if (!nationalCode.trim()) {
+      newErrors.nationalCode = "کد ملی الزامی است";
+    } else if (!validateNationalCode(nationalCode)) {
+      newErrors.nationalCode = "کد ملی معتبر نیست";
+    }
+
+    if (!phone.trim()) {
+      newErrors.phoneNumber = "شماره موبایل الزامی است";
+    } else if (!/^09\d{9}$/.test(phone)) {
+      newErrors.phoneNumber = "فرمت شماره موبایل صحیح نیست (09xxxxxxxxx)";
+    }
+
+    setErrors(newErrors);
+
+    if (Object.keys(newErrors).length > 0) {
+      Object.values(newErrors).forEach(error => showToast.error(error));
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const response = await fetch("/api/verification/shahkar-verify", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          nationalCode,
+          phoneNumber: phone,
+        }),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || "خطا در تایید اطلاعات");
+      }
+
+      if (result.verified) {
+        setShahkarVerified(true);
+        setShowShahkarModal(true);
+        showToast.success("✅ کد ملی و شماره موبایل با هم مطابقت دارند");
+
+        // Auto close modal and proceed after 2 seconds
+        setTimeout(() => {
+          setShowShahkarModal(false);
+          handleSendOTP();
+        }, 2000);
+      } else {
+        showToast.error("❌ کد ملی و شماره موبایل با هم مطابقت ندارند");
+      }
+    } catch (error: any) {
+      console.error("Shahkar verification error:", error);
+      showToast.error(error.message || "خطا در تایید اطلاعات");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Send OTP after Shahkar verification
+  const handleSendOTP = async () => {
+    setLoading(true);
+
+    try {
+      const response = await fetch("/api/auth/send-sms", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          phone: phone,
+        }),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || "خطا در ارسال کد تایید");
+      }
+
+      setUserId(result.userId);
+      setIsExistingUser(result.isExistingUser);
+      setStep("verification");
+      showToast.success("کد تایید به شماره شما ارسال شد");
+
+      // Start countdown timer
+      setCountdown(120);
+      const timer = setInterval(() => {
+        setCountdown((prev) => {
+          if (prev <= 1) {
+            clearInterval(timer);
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+    } catch (error: any) {
+      console.error("Send OTP error:", error);
+      showToast.error(error.message || "خطا در ارسال کد تایید");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handlePhoneSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -142,6 +279,14 @@ function SMSAuthContent() {
         console.log("Storing token:", data.token?.substring(0, 20) + "...");
         localStorage.setItem("authToken", data.token);
 
+        // Check if new user in signup mode and Shahkar was verified - show profile step
+        if (!isExistingUser && shahkarVerified && isSignupMode) {
+          showToast.success("✅ شماره موبایل با موفقیت تایید شد");
+          setStep("profile");
+          setLoading(false);
+          return;
+        }
+
         // Clear stored redirect
         localStorage.removeItem("redirectAfterAuth");
 
@@ -173,6 +318,79 @@ function SMSAuthContent() {
     } catch (error) {
       console.log(error);
       showToast.error("خطا در تایید کد");
+    } finally {
+      if (step !== "profile") {
+        setLoading(false);
+      }
+    }
+  };
+
+  // Step 4: Complete profile with names
+  const handleCompleteProfile = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const newErrors: typeof errors = {};
+
+    if (!firstName.trim()) {
+      newErrors.firstName = "نام الزامی است";
+    } else if (firstName.trim().length < 2) {
+      newErrors.firstName = "نام باید حداقل 2 کاراکتر باشد";
+    }
+
+    if (!lastName.trim()) {
+      newErrors.lastName = "نام خانوادگی الزامی است";
+    } else if (lastName.trim().length < 2) {
+      newErrors.lastName = "نام خانوادگی باید حداقل 2 کاراکتر باشد";
+    }
+
+    setErrors(newErrors);
+
+    if (Object.keys(newErrors).length > 0) {
+      Object.values(newErrors).forEach(error => showToast.error(error));
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const token = localStorage.getItem("authToken");
+
+      const response = await fetch("/api/verification/complete-profile", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          firstName,
+          lastName,
+          nationalNumber: nationalCode,
+          phoneNumber: phone,
+        }),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || "خطا در ثبت اطلاعات");
+      }
+
+      showToast.success("✅ اطلاعات با موفقیت ثبت شد");
+
+      // Clear stored redirect
+      localStorage.removeItem("redirectAfterAuth");
+
+      const finalRedirect = redirectUrl !== "/dashboard" ? redirectUrl : "/dashboard";
+
+      // Trigger navbar refresh
+      window.dispatchEvent(new CustomEvent("userLoggedIn"));
+
+      // Redirect
+      setTimeout(() => {
+        router.push(finalRedirect);
+      }, 1500);
+    } catch (error: any) {
+      console.error("Complete profile error:", error);
+      showToast.error(error.message || "خطا در ثبت اطلاعات");
     } finally {
       setLoading(false);
     }
@@ -284,10 +502,14 @@ function SMSAuthContent() {
               <div
                 className={`inline-flex items-center justify-center md:w-20 md:h-20 rounded-2xl bg-gradient-to-br from-[#0A1D37]/20 to-[#4DBFF0]/20 backdrop-blur-sm border border-[#0A1D37]/30 shadow-lg text-[#0A1D37]`}
               >
-                {step === "phone" ? (
-                  <FaPhone className="text-xl" />
-                ) : (
+                {step === "nationalCode" ? (
+                  <FaIdCard className="text-xl" />
+                ) : step === "verification" ? (
                   <FaKey className="text-xl" />
+                ) : step === "profile" ? (
+                  <FaUser className="text-xl" />
+                ) : (
+                  <FaPhone className="text-xl" />
                 )}
               </div>
             </div>
@@ -295,22 +517,47 @@ function SMSAuthContent() {
             <h1
               className={`text-xl md:text-2xl text-[#0A1D37] ${estedadBold.className} mb-2 relative z-10`}
             >
-              {step === "phone" ? "ورود / ثبت نام" : "تایید شماره تلفن"}
+              {step === "nationalCode" ? "ثبت نام" : 
+               step === "verification" ? "تایید شماره تلفن" :
+               step === "profile" ? "تکمیل اطلاعات" : 
+               isSignupMode ? "ثبت نام" : "ورود"}
             </h1>
 
+            {/* Toggle Button for Signup/Login - Only show on initial steps */}
+            {(step === "phone" || step === "nationalCode") && (
+              <div className="mt-3 mb-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    const newMode = !isSignupMode;
+                    setIsSignupMode(newMode);
+                    setStep(newMode ? "nationalCode" : "phone");
+                    setErrors({});
+                    setNationalCode("");
+                    setPhone("");
+                  }}
+                  className="text-sm text-[#4DBFF0] hover:text-[#0A1D37] transition-colors duration-300 underline font-medium"
+                >
+                  {isSignupMode ? "قبلاً ثبت نام کرده‌اید؟ وارد شوید" : "حساب کاربری ندارید؟ ثبت نام کنید"}
+                </button>
+              </div>
+            )}
+
             <p className="text-[#A0A0A0] text-base leading-relaxed relative z-10 max-w-md mx-auto">
-              {step === "phone" ? (
-                redirectUrl !== "/dashboard" ? (
-                  "برای ادامه، شماره تلفن خود را وارد کنید"
-                ) : (
-                  "شماره تلفن خود را وارد کنید"
-                )
-              ) : (
+              {step === "nationalCode" ? (
+                "کد ملی و شماره موبایل خود را وارد کنید"
+              ) : step === "verification" ? (
                 <>
                   کد تایید ارسال شده به{" "}
                   <strong className="font-bold text-[#0A1D37]">{phone}</strong>{" "}
                   را وارد کنید
                 </>
+              ) : step === "profile" ? (
+                "نام و نام خانوادگی خود را وارد کنید"
+              ) : redirectUrl !== "/dashboard" ? (
+                "برای ادامه، شماره تلفن خود را وارد کنید"
+              ) : (
+                "شماره تلفن خود را وارد کنید"
               )}
             </p>
 
@@ -354,8 +601,81 @@ function SMSAuthContent() {
             )}
           </div>
 
-          {/* Phone Input Form */}
-          {step === "phone" && (
+          {/* National Code Input Form - Only for Signup */}
+          {step === "nationalCode" && isSignupMode && (
+            <form
+              onSubmit={handleShahkarVerification}
+              className="relative z-10 space-y-6"
+            >
+              <div className="relative">
+                <FaIdCard className="absolute right-4 top-1/2 transform -translate-y-1/2 text-[#0A1D37]" />
+                <input
+                  type="text"
+                  placeholder="کد ملی (10 رقم)"
+                  value={nationalCode}
+                  onChange={(e) => {
+                    const value = e.target.value.replace(/\D/g, "").slice(0, 10);
+                    setNationalCode(value);
+                    setErrors({ ...errors, nationalCode: undefined });
+                  }}
+                  className={`w-full pr-12 pl-4 py-4 bg-white/10 border ${
+                    errors.nationalCode ? "border-red-500" : "border-[#0A1D37]/30"
+                  } text-[#0A1D37] rounded-2xl focus:ring-2 focus:ring-[#4DBFF0] focus:border-[#4DBFF0] focus:outline-none backdrop-blur-sm transition-all duration-300 placeholder:text-[#A0A0A0] text-left hover:bg-white/15`}
+                  maxLength={10}
+                  dir="ltr"
+                  required
+                />
+              </div>
+
+              <div className="relative">
+                <FaPhone className="absolute right-4 top-1/2 transform -translate-y-1/2 text-[#0A1D37]" />
+                <input
+                  type="tel"
+                  placeholder="09123456789"
+                  value={phone}
+                  onChange={(e) => {
+                    const value = e.target.value.replace(/\D/g, "").slice(0, 11);
+                    setPhone(value);
+                    setErrors({ ...errors, phoneNumber: undefined });
+                  }}
+                  className={`w-full pr-12 pl-4 py-4 bg-white/10 border ${
+                    errors.phoneNumber ? "border-red-500" : "border-[#0A1D37]/30"
+                  } text-[#0A1D37] rounded-2xl focus:ring-2 focus:ring-[#4DBFF0] focus:border-[#4DBFF0] focus:outline-none backdrop-blur-sm transition-all duration-300 placeholder:text-[#A0A0A0] text-left hover:bg-white/15`}
+                  maxLength={11}
+                  dir="ltr"
+                  required
+                />
+              </div>
+
+              <div className="bg-white/10 border border-[#4DBFF0]/30 rounded-2xl p-4 flex items-start gap-3 backdrop-blur-sm">
+                <FaExclamationTriangle className="text-[#4DBFF0] mt-1 flex-shrink-0" />
+                <p className="text-sm text-[#A0A0A0]">
+                  کد ملی و شماره موبایل شما از طریق سامانه شاهکار وزارت ارتباطات تایید می‌شود
+                </p>
+              </div>
+
+              <button
+                type="submit"
+                disabled={loading || nationalCode.length !== 10 || phone.length !== 11}
+                className="w-full py-4 bg-gradient-to-r from-[#0A1D37] to-[#4DBFF0] text-[#FFFFFF] rounded-2xl transition-all duration-300 shadow-lg hover:shadow-2xl font-semibold disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center backdrop-blur-sm hover:scale-105 transform"
+              >
+                {loading ? (
+                  <>
+                    <FaSpinner className="animate-spin ml-2" />
+                    در حال تایید...
+                  </>
+                ) : (
+                  <>
+                    تایید و ادامه
+                    <FaArrowLeft className="mr-2" />
+                  </>
+                )}
+              </button>
+            </form>
+          )}
+
+          {/* Phone Input Form - For Login Mode */}
+          {step === "phone" && !isSignupMode && (
             <form
               onSubmit={handlePhoneSubmit}
               className="relative z-10 space-y-6"
@@ -480,16 +800,111 @@ function SMSAuthContent() {
               <button
                 type="button"
                 onClick={() => {
-                  setStep("phone");
+                  setStep(isSignupMode ? "nationalCode" : "phone");
                   setVerificationCode("");
                   setCountdown(0);
                 }}
-                className="w-full py-3 text-[#A0A0A0]   font-semibold bg-white/10 border border-white/20 rounded-2xl hover:bg-white/20 transition-all duration-300 backdrop-blur-sm hover:scale-105 transform"
+                className="w-full py-3 text-[#A0A0A0] font-semibold bg-white/10 border border-white/20 rounded-2xl hover:bg-white/20 transition-all duration-300 backdrop-blur-sm hover:scale-105 transform"
               >
                 تغییر شماره تلفن
               </button>
             </form>
           )}
+
+          {/* Profile Completion Form */}
+          {step === "profile" && (
+            <form
+              onSubmit={handleCompleteProfile}
+              className="relative z-10 space-y-6"
+            >
+              <div className="relative">
+                <FaUser className="absolute right-4 top-1/2 transform -translate-y-1/2 text-[#0A1D37]" />
+                <input
+                  type="text"
+                  placeholder="نام"
+                  value={firstName}
+                  onChange={(e) => {
+                    const value = e.target.value.replace(/[^a-zA-Zآ-ی\s]/g, "");
+                    setFirstName(value);
+                    setErrors({ ...errors, firstName: undefined });
+                  }}
+                  className={`w-full pr-12 pl-4 py-4 bg-white/10 border ${
+                    errors.firstName ? "border-red-500" : "border-[#0A1D37]/30"
+                  } text-[#0A1D37] rounded-2xl focus:ring-2 focus:ring-[#4DBFF0] focus:border-[#4DBFF0] focus:outline-none backdrop-blur-sm transition-all duration-300 placeholder:text-[#A0A0A0] hover:bg-white/15`}
+                  required
+                />
+              </div>
+
+              <div className="relative">
+                <FaUser className="absolute right-4 top-1/2 transform -translate-y-1/2 text-[#0A1D37]" />
+                <input
+                  type="text"
+                  placeholder="نام خانوادگی"
+                  value={lastName}
+                  onChange={(e) => {
+                    const value = e.target.value.replace(/[^a-zA-Zآ-ی\s]/g, "");
+                    setLastName(value);
+                    setErrors({ ...errors, lastName: undefined });
+                  }}
+                  className={`w-full pr-12 pl-4 py-4 bg-white/10 border ${
+                    errors.lastName ? "border-red-500" : "border-[#0A1D37]/30"
+                  } text-[#0A1D37] rounded-2xl focus:ring-2 focus:ring-[#4DBFF0] focus:border-[#4DBFF0] focus:outline-none backdrop-blur-sm transition-all duration-300 placeholder:text-[#A0A0A0] hover:bg-white/15`}
+                  required
+                />
+              </div>
+
+              <div className="bg-white/10 border border-green-500/30 rounded-2xl p-4 backdrop-blur-sm">
+                <div className="flex items-center gap-2 text-green-700 mb-2">
+                  <FaCheckCircle />
+                  <span className="font-bold text-sm">تایید شده</span>
+                </div>
+                <div className="text-xs text-[#A0A0A0] space-y-1">
+                  <p>✓ کد ملی: {nationalCode}</p>
+                  <p>✓ شماره موبایل: {phone}</p>
+                </div>
+              </div>
+
+              <button
+                type="submit"
+                disabled={loading || !firstName.trim() || !lastName.trim()}
+                className="w-full py-4 bg-gradient-to-r from-green-600 to-emerald-600 text-[#FFFFFF] rounded-2xl transition-all duration-300 shadow-lg hover:shadow-2xl font-semibold disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center backdrop-blur-sm hover:scale-105 transform"
+              >
+                {loading ? (
+                  <>
+                    <FaSpinner className="animate-spin ml-2" />
+                    در حال ثبت...
+                  </>
+                ) : (
+                  <>
+                    <FaCheckCircle className="ml-2" />
+                    ثبت نهایی و ورود
+                  </>
+                )}
+              </button>
+            </form>
+          )}
+
+          {/* Shahkar Success Modal */}
+          {showShahkarModal && (
+            <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50">
+              <div className="bg-white rounded-3xl p-8 max-w-md mx-4 text-center shadow-2xl">
+                <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <FaCheckCircle className="text-5xl text-green-500" />
+                </div>
+                <h3 className="text-2xl font-bold mb-2 text-[#0A1D37]">تایید موفق</h3>
+                <p className="text-gray-600">
+                  کد ملی و شماره موبایل شما با موفقیت از طریق سامانه شاهکار تایید شد
+                </p>
+                <div className="mt-6">
+                  <FaSpinner className="animate-spin text-3xl text-[#4DBFF0] mx-auto" />
+                  <p className="text-sm text-gray-500 mt-2">
+                    در حال ارسال کد تایید...
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
+
           {/* Glow Effect */}
           <div className="absolute -inset-1 rounded-3xl bg-gradient-to-r from-[#0A1D37]/20 via-[#4DBFF0]/20 to-[#0A1D37]/20 blur-sm opacity-50 -z-10"></div>
         </div>
