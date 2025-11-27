@@ -125,7 +125,7 @@ export async function POST(request: NextRequest) {
 
     // Return updated user data (without password)
     const { password: _, ...userWithoutPassword } = dbUser.toObject();
-
+console.log(_)
     return NextResponse.json({
       message: "اطلاعات با موفقیت ثبت شد",
       user: userWithoutPassword,

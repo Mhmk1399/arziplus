@@ -150,7 +150,7 @@ function SMSAuthContent() {
       } else {
         showToast.error("❌ کد ملی و شماره موبایل با هم مطابقت ندارند");
       }
-    } catch (error: any) {
+    } catch (error) {
       console.error("Shahkar verification error:", error);
       showToast.error(error.message || "خطا در تایید اطلاعات");
     } finally {
