@@ -2,7 +2,17 @@
 
 import { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { FaPhone, FaKey, FaSpinner, FaIdCard, FaUser, FaCheckCircle, FaExclamationTriangle, FaArrowLeft, FaArrowRight } from "react-icons/fa";
+import {
+  FaPhone,
+  FaKey,
+  FaSpinner,
+  FaIdCard,
+  FaUser,
+  FaCheckCircle,
+  FaExclamationTriangle,
+  FaArrowLeft,
+  FaArrowRight,
+} from "react-icons/fa";
 import { showToast } from "@/utilities/toast";
 import { estedadBold } from "@/next-persian-fonts/estedad";
 import Link from "next/link";
@@ -26,12 +36,15 @@ function SMSAuthContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [isSignupMode, setIsSignupMode] = useState(true); // Toggle between signup and login
-  const [step, setStep] = useState<"nationalCode" | "phone" | "verification" | "profile">("nationalCode");
+  const [step, setStep] = useState<
+    "nationalCode" | "phone" | "verification" | "profile" | "nationalVerify"
+  >("nationalCode");
   const [nationalCode, setNationalCode] = useState("");
   const [phone, setPhone] = useState("");
   const [verificationCode, setVerificationCode] = useState("");
   const [userId, setUserId] = useState("");
   const [isExistingUser, setIsExistingUser] = useState(false);
+  const [needsNationalVerification, setNeedsNationalVerification] = useState(false);
   const [loading, setLoading] = useState(false);
   const [countdown, setCountdown] = useState(0);
   const [redirectUrl, setRedirectUrl] = useState<string>("/dashboard");
@@ -113,7 +126,7 @@ function SMSAuthContent() {
     setErrors(newErrors);
 
     if (Object.keys(newErrors).length > 0) {
-      Object.values(newErrors).forEach(error => showToast.error(error));
+      Object.values(newErrors).forEach((error) => showToast.error(error));
       return;
     }
 
@@ -150,7 +163,7 @@ function SMSAuthContent() {
       } else {
         showToast.error("❌ کد ملی و شماره موبایل با هم مطابقت ندارند");
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error("Shahkar verification error:", error);
       showToast.error(error.message || "خطا در تایید اطلاعات");
     } finally {
@@ -225,20 +238,30 @@ function SMSAuthContent() {
       if (response.ok) {
         setUserId(data.userId);
         setIsExistingUser(data.isExistingUser);
-        setStep("verification");
-        showToast.success(data.message);
+        setNeedsNationalVerification(data.needsNationalVerification || false);
+        
+        // If existing user needs national verification, ask for national code first
+        if (data.needsNationalVerification && !isSignupMode) {
+          setStep("nationalVerify");
+          showToast.info("لطفاً کد ملی خود را برای تایید هویت وارد کنید");
+        } else {
+          setStep("verification");
+          showToast.success(data.message);
+        }
 
-        // Start countdown
-        setCountdown(120); // 2 minutes
-        const timer = setInterval(() => {
-          setCountdown((prev) => {
-            if (prev <= 1) {
-              clearInterval(timer);
-              return 0;
-            }
-            return prev - 1;
-          });
-        }, 1000);
+        // Start countdown only if not going to national verify step
+        if (!data.needsNationalVerification || isSignupMode) {
+          setCountdown(120); // 2 minutes
+          const timer = setInterval(() => {
+            setCountdown((prev) => {
+              if (prev <= 1) {
+                clearInterval(timer);
+                return 0;
+              }
+              return prev - 1;
+            });
+          }, 1000);
+        }
       } else {
         showToast.error(data.error);
       }
@@ -264,11 +287,11 @@ function SMSAuthContent() {
       const response = await fetch("/api/auth/verify-sms", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ 
-          phone, 
-          code: verificationCode, 
+        body: JSON.stringify({
+          phone,
+          code: verificationCode,
           userId,
-          referralCode: referralCode // Send referral code if present
+          referralCode: referralCode, // Send referral code if present
         }),
       });
 
@@ -345,7 +368,7 @@ function SMSAuthContent() {
     setErrors(newErrors);
 
     if (Object.keys(newErrors).length > 0) {
-      Object.values(newErrors).forEach(error => showToast.error(error));
+      Object.values(newErrors).forEach((error) => showToast.error(error));
       return;
     }
 
@@ -379,7 +402,8 @@ function SMSAuthContent() {
       // Clear stored redirect
       localStorage.removeItem("redirectAfterAuth");
 
-      const finalRedirect = redirectUrl !== "/dashboard" ? redirectUrl : "/dashboard";
+      const finalRedirect =
+        redirectUrl !== "/dashboard" ? redirectUrl : "/dashboard";
 
       // Trigger navbar refresh
       window.dispatchEvent(new CustomEvent("userLoggedIn"));
@@ -436,6 +460,79 @@ function SMSAuthContent() {
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = seconds % 60;
     return `${minutes}:${remainingSeconds.toString().padStart(2, "0")}`;
+  };
+
+  // Handle national verification for existing users during login
+  const handleNationalVerification = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!validateNationalCode(nationalCode)) {
+      showToast.error("کد ملی معتبر نیست");
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      // Verify with Shahkar
+      const shahkarResponse = await fetch("/api/verification/shahkar-verify", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          nationalCode,
+          phoneNumber: phone,
+        }),
+      });
+
+      const shahkarResult = await shahkarResponse.json();
+
+      if (!shahkarResponse.ok || !shahkarResult.verified) {
+        showToast.error("کد ملی با شماره موبایل شما مطابقت ندارد");
+        setLoading(false);
+        return;
+      }
+
+      showToast.success("✅ کد ملی با موفقیت تایید شد");
+
+      // Update national credentials status
+      const token = localStorage.getItem("authToken");
+      if (token) {
+        await fetch("/api/verification/update-national-status", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            nationalCode,
+            phoneNumber: phone,
+          }),
+        });
+      }
+
+      // Proceed to verification step
+      setStep("verification");
+      
+      // Start countdown
+      setCountdown(120);
+      const timer = setInterval(() => {
+        setCountdown((prev) => {
+          if (prev <= 1) {
+            clearInterval(timer);
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+
+    } catch (error: any) {
+      console.error("National verification error:", error);
+      showToast.error(error.message || "خطا در تایید کد ملی");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -517,31 +614,20 @@ function SMSAuthContent() {
             <h1
               className={`text-xl md:text-2xl text-[#0A1D37] ${estedadBold.className} mb-2 relative z-10`}
             >
-              {step === "nationalCode" ? "ثبت نام" : 
-               step === "verification" ? "تایید شماره تلفن" :
-               step === "profile" ? "تکمیل اطلاعات" : 
-               isSignupMode ? "ثبت نام" : "ورود"}
+              {step === "nationalCode"
+                ? "ثبت نام"
+                : step === "verification"
+                ? "تایید شماره تلفن"
+                : step === "profile"
+                ? "تکمیل اطلاعات"
+                : step === "nationalVerify"
+                ? "احراز هویت"
+                : isSignupMode
+                ? "ثبت نام"
+                : "ورود"}
             </h1>
 
             {/* Toggle Button for Signup/Login - Only show on initial steps */}
-            {(step === "phone" || step === "nationalCode") && (
-              <div className="mt-3 mb-2">
-                <button
-                  type="button"
-                  onClick={() => {
-                    const newMode = !isSignupMode;
-                    setIsSignupMode(newMode);
-                    setStep(newMode ? "nationalCode" : "phone");
-                    setErrors({});
-                    setNationalCode("");
-                    setPhone("");
-                  }}
-                  className="text-sm text-[#4DBFF0] hover:text-[#0A1D37] transition-colors duration-300 underline font-medium"
-                >
-                  {isSignupMode ? "قبلاً ثبت نام کرده‌اید؟ وارد شوید" : "حساب کاربری ندارید؟ ثبت نام کنید"}
-                </button>
-              </div>
-            )}
 
             <p className="text-[#A0A0A0] text-base leading-relaxed relative z-10 max-w-md mx-auto">
               {step === "nationalCode" ? (
@@ -554,6 +640,8 @@ function SMSAuthContent() {
                 </>
               ) : step === "profile" ? (
                 "نام و نام خانوادگی خود را وارد کنید"
+              ) : step === "nationalVerify" ? (
+                "برای امنیت حساب، کد ملی خود را تایید کنید"
               ) : redirectUrl !== "/dashboard" ? (
                 "برای ادامه، شماره تلفن خود را وارد کنید"
               ) : (
@@ -614,12 +702,16 @@ function SMSAuthContent() {
                   placeholder="کد ملی (10 رقم)"
                   value={nationalCode}
                   onChange={(e) => {
-                    const value = e.target.value.replace(/\D/g, "").slice(0, 10);
+                    const value = e.target.value
+                      .replace(/\D/g, "")
+                      .slice(0, 10);
                     setNationalCode(value);
                     setErrors({ ...errors, nationalCode: undefined });
                   }}
                   className={`w-full pr-12 pl-4 py-4 bg-white/10 border ${
-                    errors.nationalCode ? "border-red-500" : "border-[#0A1D37]/30"
+                    errors.nationalCode
+                      ? "border-red-500"
+                      : "border-[#0A1D37]/30"
                   } text-[#0A1D37] rounded-2xl focus:ring-2 focus:ring-[#4DBFF0] focus:border-[#4DBFF0] focus:outline-none backdrop-blur-sm transition-all duration-300 placeholder:text-[#A0A0A0] text-left hover:bg-white/15`}
                   maxLength={10}
                   dir="ltr"
@@ -634,12 +726,16 @@ function SMSAuthContent() {
                   placeholder="09123456789"
                   value={phone}
                   onChange={(e) => {
-                    const value = e.target.value.replace(/\D/g, "").slice(0, 11);
+                    const value = e.target.value
+                      .replace(/\D/g, "")
+                      .slice(0, 11);
                     setPhone(value);
                     setErrors({ ...errors, phoneNumber: undefined });
                   }}
                   className={`w-full pr-12 pl-4 py-4 bg-white/10 border ${
-                    errors.phoneNumber ? "border-red-500" : "border-[#0A1D37]/30"
+                    errors.phoneNumber
+                      ? "border-red-500"
+                      : "border-[#0A1D37]/30"
                   } text-[#0A1D37] rounded-2xl focus:ring-2 focus:ring-[#4DBFF0] focus:border-[#4DBFF0] focus:outline-none backdrop-blur-sm transition-all duration-300 placeholder:text-[#A0A0A0] text-left hover:bg-white/15`}
                   maxLength={11}
                   dir="ltr"
@@ -650,13 +746,16 @@ function SMSAuthContent() {
               <div className="bg-white/10 border border-[#4DBFF0]/30 rounded-2xl p-4 flex items-start gap-3 backdrop-blur-sm">
                 <FaExclamationTriangle className="text-[#4DBFF0] mt-1 flex-shrink-0" />
                 <p className="text-sm text-[#A0A0A0]">
-                  کد ملی و شماره موبایل شما از طریق سامانه شاهکار وزارت ارتباطات تایید می‌شود
+                  کد ملی و شماره موبایل شما از طریق سامانه شاهکار وزارت ارتباطات
+                  تایید می‌شود
                 </p>
               </div>
 
               <button
                 type="submit"
-                disabled={loading || nationalCode.length !== 10 || phone.length !== 11}
+                disabled={
+                  loading || nationalCode.length !== 10 || phone.length !== 11
+                }
                 className="w-full py-4 bg-gradient-to-r from-[#0A1D37] to-[#4DBFF0] text-[#FFFFFF] rounded-2xl transition-all duration-300 shadow-lg hover:shadow-2xl font-semibold disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center backdrop-blur-sm hover:scale-105 transform"
               >
                 {loading ? (
@@ -670,6 +769,103 @@ function SMSAuthContent() {
                     <FaArrowLeft className="mr-2" />
                   </>
                 )}
+              </button>
+              <div className="mt-3 mb-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    const newMode = !isSignupMode;
+                    setIsSignupMode(newMode);
+                    setStep(newMode ? "nationalCode" : "phone");
+                    setErrors({});
+                    setNationalCode("");
+                    setPhone("");
+                  }}
+                  className="w-full py-4 bg-gradient-to-r from-[#0A1D37] to-[#4DBFF0] text-[#FFFFFF] rounded-2xl transition-all duration-300 shadow-lg hover:shadow-2xl font-semibold disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center backdrop-blur-sm hover:scale-105 transform"
+                >
+                  {isSignupMode
+                    ? "قبلاً ثبت نام کرده‌اید؟ وارد شوید"
+                    : "حساب کاربری ندارید؟ ثبت نام کنید"}
+                </button>
+              </div>
+            </form>
+          )}
+
+          {/* National Verification Form - For Existing Users During Login */}
+          {step === "nationalVerify" && !isSignupMode && (
+            <form
+              onSubmit={handleNationalVerification}
+              className="relative z-10 space-y-6"
+            >
+              <div className="bg-yellow-50 border border-yellow-200 rounded-2xl p-4 mb-4">
+                <div className="flex items-start gap-3">
+                  <FaExclamationTriangle className="text-yellow-600 mt-1 flex-shrink-0" />
+                  <div className="text-sm text-yellow-800">
+                    <p className="font-semibold mb-1">تکمیل احراز هویت</p>
+                    <p>
+                      برای امنیت حساب شما، لطفاً کد ملی خود را وارد کنید تا با
+                      شماره موبایل شما تطابق داده شود.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="relative">
+                <FaIdCard className="absolute right-4 top-1/2 transform -translate-y-1/2 text-[#0A1D37]" />
+                <input
+                  type="text"
+                  placeholder="کد ملی (10 رقم)"
+                  value={nationalCode}
+                  onChange={(e) => {
+                    const value = e.target.value
+                      .replace(/\D/g, "")
+                      .slice(0, 10);
+                    setNationalCode(value);
+                  }}
+                  className="w-full pr-12 pl-4 py-4 bg-white/10 border border-[#0A1D37]/30 text-[#0A1D37] rounded-2xl focus:ring-2 focus:ring-[#4DBFF0] focus:border-[#4DBFF0] focus:outline-none backdrop-blur-sm transition-all duration-300 placeholder:text-[#A0A0A0] text-left hover:bg-white/15"
+                  maxLength={10}
+                  dir="ltr"
+                  required
+                />
+              </div>
+
+              <div className="bg-white/10 border border-[#4DBFF0]/30 rounded-2xl p-4 flex items-start gap-3 backdrop-blur-sm">
+                <FaCheckCircle className="text-[#4DBFF0] mt-1 flex-shrink-0" />
+                <p className="text-sm text-[#A0A0A0]">
+                  کد ملی شما از طریق سامانه شاهکار با شماره موبایل{" "}
+                  <strong className="text-[#0A1D37]">{phone}</strong> تطابق داده
+                  می‌شود
+                </p>
+              </div>
+
+              <button
+                type="submit"
+                disabled={loading || nationalCode.length !== 10}
+                className="w-full py-4 bg-gradient-to-r from-[#0A1D37] to-[#4DBFF0] text-[#FFFFFF] rounded-2xl transition-all duration-300 shadow-lg hover:shadow-2xl font-semibold disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center backdrop-blur-sm hover:scale-105 transform"
+              >
+                {loading ? (
+                  <>
+                    <FaSpinner className="animate-spin ml-2" />
+                    در حال تایید...
+                  </>
+                ) : (
+                  <>
+                    تایید و ادامه
+                    <FaArrowLeft className="mr-2" />
+                  </>
+                )}
+              </button>
+
+              {/* Back Button */}
+              <button
+                type="button"
+                onClick={() => {
+                  setStep("phone");
+                  setNationalCode("");
+                }}
+                className="w-full py-3 text-[#A0A0A0] font-semibold bg-white/10 border border-white/20 rounded-2xl hover:bg-white/20 transition-all duration-300 backdrop-blur-sm hover:scale-105 transform"
+              >
+                تغییر شماره تلفن
               </button>
             </form>
           )}
@@ -891,9 +1087,12 @@ function SMSAuthContent() {
                 <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
                   <FaCheckCircle className="text-5xl text-green-500" />
                 </div>
-                <h3 className="text-2xl font-bold mb-2 text-[#0A1D37]">تایید موفق</h3>
+                <h3 className="text-2xl font-bold mb-2 text-[#0A1D37]">
+                  تایید موفق
+                </h3>
                 <p className="text-gray-600">
-                  کد ملی و شماره موبایل شما با موفقیت از طریق سامانه شاهکار تایید شد
+                  کد ملی و شماره موبایل شما با موفقیت از طریق سامانه شاهکار
+                  تایید شد
                 </p>
                 <div className="mt-6">
                   <FaSpinner className="animate-spin text-3xl text-[#4DBFF0] mx-auto" />

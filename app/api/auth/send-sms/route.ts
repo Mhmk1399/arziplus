@@ -28,6 +28,7 @@ export async function POST(request: NextRequest) {
 
     // Generate verification code
     const verificationCode = generateVerificationCode();
+    console.log(`Generated verification code for  ${verificationCode}`);
     const expiresAt = new Date(Date.now() + 5 * 60 * 1000); // 5 minutes
 
     // Check if user exists
@@ -38,19 +39,21 @@ export async function POST(request: NextRequest) {
       user.verifications.phone.verificationCode = verificationCode;
       user.verifications.phone.verificationCodeExpires = expiresAt;
       user.verifications.phone.isVerified = false;
-      
+
       // Ensure existing user has a referral code
       if (!user.referralCode) {
         const referralCode = await generateUniqueReferralCode();
         user.referralCode = referralCode;
-        console.log(`Generated referral code for existing user: ${referralCode}`);
+        console.log(
+          `Generated referral code for existing user: ${referralCode}`
+        );
       }
-      
+
       await user.save();
     } else {
       // Generate referral code for new user
       const referralCode = await generateUniqueReferralCode();
-      
+
       // Create new user with phone number only
       const username = `user_${phone.slice(-8)}`;
       const tempEmail = `${phone}@temp.arziPlus.com`;
@@ -74,7 +77,7 @@ export async function POST(request: NextRequest) {
         },
         status: "pending_verification",
       });
-      
+
       console.log(`Created new user with referral code: ${referralCode}`);
     }
 
@@ -88,10 +91,22 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Check if user needs national credential verification
+    const needsNationalVerification =
+      !!user.nationalCredentials?.firstName &&
+      user.nationalCredentials?.status !== "accepted";
+
     return NextResponse.json({
       message: "کد تایید به شماره شما ارسال شد",
       userId: user._id.toString(),
       isExistingUser: !!user.nationalCredentials?.firstName,
+      needsNationalVerification,
+      nationalCredentials: needsNationalVerification
+        ? {
+            status: user.nationalCredentials.status,
+            hasNationalCode: !!user.nationalCredentials.nationalNumber,
+          }
+        : undefined,
     });
   } catch (error) {
     console.error("SMS send error:", error);

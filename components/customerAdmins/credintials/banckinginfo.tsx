@@ -7,7 +7,10 @@ import {
   FaCheck,
   FaExclamationTriangle,
 } from "react-icons/fa";
- import { showToast } from "@/utilities/toast";
+import { showToast } from "@/utilities/toast";
+import { useCurrentUser } from "@/hooks/useCurrentUser";
+import { useRouter } from "next/navigation";
+import BankingVerificationModal from "./BankingVerificationModal";
 
 interface requestData {
   bankName?: string;
@@ -51,6 +54,16 @@ const BankingInfo = ({
   const [errors, setErrors] = useState<Partial<BankingInfoData>>({});
   const [isLoading, setIsLoading] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
+  const [isVerifyingBanking, setIsVerifyingBanking] = useState(false);
+  const [showBankingVerificationModal, setShowBankingVerificationModal] = useState(false);
+  const [bankingVerificationResult, setBankingVerificationResult] = useState<{
+    verified: boolean;
+    message: string;
+    details?: any;
+  } | null>(null);
+  
+  const { user, loading: userLoading } = useCurrentUser();
+  const router = useRouter();
 
   // Validation functions
   const validateShebaNumber = (sheba: string): boolean => {
@@ -119,9 +132,84 @@ const BankingInfo = ({
     }
   };
 
-  const handleSave = async () => {
+  const verifyBankingInfo = async () => {
     if (!validateForm()) return;
 
+    // Check if user has national credentials
+    if (userLoading) {
+      showToast.info("در حال بارگذاری اطلاعات کاربر...");
+      return;
+    }
+
+    if (!user?.nationalCredentials?.nationalNumber) {
+      showToast.error("لطفاً ابتدا وارد حساب کاربری خود شوید");
+      setTimeout(() => {
+        router.push("/auth/sms");
+      }, 2000);
+      return;
+    }
+
+    setIsVerifyingBanking(true);
+    setShowBankingVerificationModal(true);
+
+    try {
+      const token = localStorage.getItem("authToken");
+
+      const response = await fetch("/api/verification/validate-banking", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          cardNumber: formData.cardNumber.replace(/\s/g, ""),
+          shebaNumber: formData.shebaNumber.trim(),
+        }),
+      });
+
+      const result = await response.json();
+      console.log(result,"bankingverificationresult")
+
+      if (result.requiresLogin) {
+        showToast.error(result.message);
+        setShowBankingVerificationModal(false);
+        setTimeout(() => {
+          router.push("/auth/sms");
+        }, 2000);
+        return;
+      }
+
+      setBankingVerificationResult({
+        verified: result.verified || false,
+        message:
+          result.message ||
+          (result.verified
+            ? "اطلاعات بانکی با موفقیت تایید شد"
+            : "اطلاعات بانکی با کد ملی شما مطابقت ندارد"),
+        details: result.details,
+      });
+    } catch (error) {
+      console.error("Error verifying banking info:", error);
+      setBankingVerificationResult({
+        verified: false,
+        message: "خطا در احراز هویت اطلاعات بانکی",
+      });
+    } finally {
+      setIsVerifyingBanking(false);
+    }
+  };
+
+  const handleConfirmBankingVerification = async () => {
+    setShowBankingVerificationModal(false);
+    await proceedWithSave(bankingVerificationResult?.verified || false);
+  };
+
+  const handleCancelBankingVerification = () => {
+    setShowBankingVerificationModal(false);
+    setBankingVerificationResult(null);
+  };
+
+  const proceedWithSave = async (isVerified: boolean) => {
     setIsLoading(true);
     try {
       const token = localStorage.getItem("authToken");
@@ -131,7 +219,7 @@ const BankingInfo = ({
       const method = isUpdate ? "PATCH" : "POST";
 
       // Clean and format data before sending
-      const requestData: requestData = {
+      const requestData: any = {
         bankName: formData.bankName.trim(),
         cardNumber: formData.cardNumber.replace(/\s/g, ""), // Remove spaces from card number
         shebaNumber: formData.shebaNumber.trim().toUpperCase(),
@@ -142,6 +230,10 @@ const BankingInfo = ({
       if (isUpdate) {
         requestData.bankingInfoId = formData._id;
       }
+
+      // Add verification status - auto-accept if verified
+      requestData.status = isVerified ? "accepted" : "pending_verification";
+      requestData.isVerified = isVerified;
 
       console.log(
         `${isUpdate ? "Updating" : "Creating"} banking data:`,
@@ -171,15 +263,19 @@ const BankingInfo = ({
       if (!isUpdate && result.bankingInfo && result.bankingInfo.length > 0) {
         const newBankingInfo =
           result.bankingInfo[result.bankingInfo.length - 1];
-        setFormData((prev) => ({ ...prev, _id: newBankingInfo._id }));
+        setFormData((prev) => ({ ...prev, _id: newBankingInfo._id, status: isVerified ? "accepted" : "pending_verification" }));
+      } else if (isVerified) {
+        setFormData((prev) => ({ ...prev, status: "accepted" }));
       }
 
       onSave?.(formData);
       setIsSaved(true);
       showToast.success(
-        isUpdate
-          ? "اطلاعات بانکی با موفقیت به‌روزرسانی شد"
-          : "اطلاعات بانکی با موفقیت ذخیره شد"
+        isVerified
+          ? "اطلاعات بانکی تایید و ذخیره شد"
+          : isUpdate
+          ? "اطلاعات بانکی به‌روزرسانی شد و در انتظار تایید است"
+          : "اطلاعات بانکی ذخیره شد و در انتظار تایید است"
       );
       setTimeout(() => setIsSaved(false), 3000);
     } catch (error) {
@@ -373,8 +469,8 @@ const BankingInfo = ({
         {/* Action Buttons */}
         <div className="flex justify-end gap-4 mt-8 pt-6 border-t border-gray-100">
           <button
-            onClick={handleSave}
-            disabled={isLoading}
+            onClick={verifyBankingInfo}
+            disabled={isLoading || isVerifyingBanking || userLoading}
             className={`flex items-center gap-2 px-6 py-3 rounded-xl font-medium transition-all duration-200 ${
               isLoading
                 ? "bg-gray-200 text-gray-500 cursor-not-allowed"
@@ -401,6 +497,15 @@ const BankingInfo = ({
           </button>
         </div>
       </div>
+
+      {/* Banking Verification Modal */}
+      <BankingVerificationModal
+        isOpen={showBankingVerificationModal}
+        isVerifying={isVerifyingBanking}
+        verificationResult={bankingVerificationResult}
+        onConfirm={handleConfirmBankingVerification}
+        onCancel={handleCancelBankingVerification}
+      />
     </div>
   );
 };
