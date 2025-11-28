@@ -15,6 +15,8 @@ export interface PaymentRequestData {
     mobile?: string;
     email?: string;
     order_id?: string;
+    card_pan?: string; // 16-digit card number for payment restriction
+    [key: string]: any; // Allow additional metadata fields
   };
 }
 
@@ -38,10 +40,10 @@ export interface PaymentVerifyResponse {
   data: {
     code: number;
     message: string;
-    card_hash?: string;
-    card_pan?: string;
+    card_hash?: string; // SHA256 hash of card
+    card_pan?: string; // Masked card number
     ref_id?: number;
-    fee_type?: string;
+    fee_type?: string; // Who pays fee: 'Payer' or 'Merchant'
     fee?: number;
   };
   errors: string[];

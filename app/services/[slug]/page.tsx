@@ -1056,6 +1056,20 @@ export default function ServiceDetailPage() {
       const token = localStorage.getItem("authToken");
       const finalAmount = calculatedFee || service!.fee;
 
+      // Get accepted card number for validation-required services
+      let cardPan: string | undefined;
+      if (service!.validationeneed === true && currentUser?.bankingInfo) {
+        const acceptedBank = Array.isArray(currentUser.bankingInfo)
+          ? currentUser.bankingInfo.find((bank) => bank.status === "accepted")
+          : currentUser.bankingInfo.status === "accepted"
+          ? currentUser.bankingInfo
+          : undefined;
+        
+        if (acceptedBank && acceptedBank.cardNumber) {
+          cardPan = acceptedBank.cardNumber.replace(/\s/g, ""); // Remove spaces
+        }
+      }
+
       // Prepare payment data similar to addamount.tsx
       const paymentData = {
         amount: finalAmount, // Send in Toman directly - use calculated fee
@@ -1077,6 +1091,7 @@ export default function ServiceDetailPage() {
           serviceSlug: service!.slug,
           type: "service_payment", // Mark as service payment
           calculatedAmount: finalAmount, // Store calculated amount
+          ...(cardPan && { card_pan: cardPan }), // Add card_pan for validation-required services
         },
       };
 
