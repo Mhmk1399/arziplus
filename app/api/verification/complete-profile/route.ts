@@ -130,11 +130,11 @@ console.log(_)
       message: "اطلاعات با موفقیت ثبت شد",
       user: userWithoutPassword,
     });
-  } catch (error: any) {
+  } catch (error) {
     console.error("❌ Complete profile error:", error);
 
     // Handle duplicate key error for national number
-    if (error.code === 11000) {
+    if (error && typeof error === 'object' && 'code' in error && error.code === 11000) {
       return NextResponse.json(
         { error: "این کد ملی قبلا ثبت شده است" },
         { status: 400 }

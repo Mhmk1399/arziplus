@@ -163,9 +163,9 @@ function SMSAuthContent() {
       } else {
         showToast.error("❌ کد ملی و شماره موبایل با هم مطابقت ندارند");
       }
-    } catch (error: any) {
+    } catch (error) {
       console.error("Shahkar verification error:", error);
-      showToast.error(error.message || "خطا در تایید اطلاعات");
+      showToast.error(error instanceof Error ? error.message : "خطا در تایید اطلاعات");
     } finally {
       setLoading(false);
     }
@@ -208,9 +208,9 @@ function SMSAuthContent() {
           return prev - 1;
         });
       }, 1000);
-    } catch (error: any) {
+    } catch (error) {
       console.error("Send OTP error:", error);
-      showToast.error(error.message || "خطا در ارسال کد تایید");
+      showToast.error(error instanceof Error ? error.message : "خطا در ارسال کد تایید");
     } finally {
       setLoading(false);
     }
@@ -412,9 +412,9 @@ function SMSAuthContent() {
       setTimeout(() => {
         router.push(finalRedirect);
       }, 1500);
-    } catch (error: any) {
+    } catch (error) {
       console.error("Complete profile error:", error);
-      showToast.error(error.message || "خطا در ثبت اطلاعات");
+      showToast.error(error instanceof Error ? error.message : "خطا در ثبت اطلاعات");
     } finally {
       setLoading(false);
     }
@@ -527,9 +527,9 @@ function SMSAuthContent() {
         });
       }, 1000);
 
-    } catch (error: any) {
+    } catch (error) {
       console.error("National verification error:", error);
-      showToast.error(error.message || "خطا در تایید کد ملی");
+      showToast.error(error instanceof Error ? error.message : "خطا در تایید کد ملی");
     } finally {
       setLoading(false);
     }

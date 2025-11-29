@@ -120,9 +120,9 @@ const MultiStepVerification = ({
       } else {
         showToast.error("❌ کد ملی و شماره موبایل با هم مطابقت ندارند");
       }
-    } catch (error: any) {
+    } catch (error) {
       console.error("Shahkar verification error:", error);
-      showToast.error(error.message || "خطا در تایید اطلاعات");
+      showToast.error(error instanceof Error ? error.message : "خطا در تایید اطلاعات");
     } finally {
       setIsLoading(false);
     }
@@ -164,9 +164,9 @@ const MultiStepVerification = ({
           return prev - 1;
         });
       }, 1000);
-    } catch (error: any) {
+    } catch (error) {
       console.error("Send OTP error:", error);
-      showToast.error(error.message || "خطا در ارسال کد تایید");
+      showToast.error(error instanceof Error ? error.message : "خطا در ارسال کد تایید");
     } finally {
       setIsLoading(false);
     }
@@ -211,9 +211,9 @@ const MultiStepVerification = ({
 
       showToast.success("✅ شماره موبایل با موفقیت تایید شد");
       setCurrentStep(3);
-    } catch (error: any) {
+    } catch (error) {
       console.error("OTP verification error:", error);
-      showToast.error(error.message || "کد تایید اشتباه است");
+      showToast.error(error instanceof Error ? error.message : "کد تایید اشتباه است");
     } finally {
       setIsLoading(false);
     }
@@ -277,9 +277,9 @@ const MultiStepVerification = ({
       setTimeout(() => {
         window.location.reload();
       }, 1500);
-    } catch (error: any) {
+    } catch (error) {
       console.error("Complete profile error:", error);
-      showToast.error(error.message || "خطا در ثبت اطلاعات");
+      showToast.error(error instanceof Error ? error.message : "خطا در ثبت اطلاعات");
     } finally {
       setIsLoading(false);
     }

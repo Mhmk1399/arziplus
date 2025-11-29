@@ -18,6 +18,8 @@ interface requestData {
   shebaNumber?: string;
   accountHolderName?: string;
   bankingInfoId?: string; // For updates
+  status?: "accepted" | "rejected" | "pending_verification";
+  isVerified?: boolean;
 }
 
 interface BankingInfoData {
@@ -55,13 +57,19 @@ const BankingInfo = ({
   const [isLoading, setIsLoading] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
   const [isVerifyingBanking, setIsVerifyingBanking] = useState(false);
-  const [showBankingVerificationModal, setShowBankingVerificationModal] = useState(false);
+  const [showBankingVerificationModal, setShowBankingVerificationModal] =
+    useState(false);
   const [bankingVerificationResult, setBankingVerificationResult] = useState<{
     verified: boolean;
     message: string;
-    details?: any;
+    details?:
+      | {
+          card?: { verified: boolean; error?: string | undefined } | undefined;
+          sheba?: { verified: boolean; error?: string | undefined } | undefined;
+        }
+      | undefined;
   } | null>(null);
-  
+
   const { user, loading: userLoading } = useCurrentUser();
   const router = useRouter();
 
@@ -168,7 +176,7 @@ const BankingInfo = ({
       });
 
       const result = await response.json();
-      console.log(result,"bankingverificationresult")
+      console.log(result, "bankingverificationresult");
 
       if (result.requiresLogin) {
         showToast.error(result.message);
@@ -219,7 +227,7 @@ const BankingInfo = ({
       const method = isUpdate ? "PATCH" : "POST";
 
       // Clean and format data before sending
-      const requestData: any = {
+      const requestData: requestData = {
         bankName: formData.bankName.trim(),
         cardNumber: formData.cardNumber.replace(/\s/g, ""), // Remove spaces from card number
         shebaNumber: formData.shebaNumber.trim().toUpperCase(),
@@ -263,7 +271,11 @@ const BankingInfo = ({
       if (!isUpdate && result.bankingInfo && result.bankingInfo.length > 0) {
         const newBankingInfo =
           result.bankingInfo[result.bankingInfo.length - 1];
-        setFormData((prev) => ({ ...prev, _id: newBankingInfo._id, status: isVerified ? "accepted" : "pending_verification" }));
+        setFormData((prev) => ({
+          ...prev,
+          _id: newBankingInfo._id,
+          status: isVerified ? "accepted" : "pending_verification",
+        }));
       } else if (isVerified) {
         setFormData((prev) => ({ ...prev, status: "accepted" }));
       }
@@ -290,7 +302,6 @@ const BankingInfo = ({
 
   return (
     <div className="w-full max-w-7xl mx-auto">
-  
       {/* Status Display */}
       {formData.status && (
         <div

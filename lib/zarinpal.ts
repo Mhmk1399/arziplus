@@ -16,7 +16,7 @@ export interface PaymentRequestData {
     email?: string;
     order_id?: string;
     card_pan?: string; // 16-digit card number for payment restriction
-    [key: string]: any; // Allow additional metadata fields
+    [key: string]: undefined | string | number | boolean | null; // Allow additional metadata fields
   };
 }
 
