@@ -51,7 +51,7 @@ const HeroSection = () => {
 
   // ⏳ شمارش معکوس تا 30 نوامبر 2025
   useEffect(() => {
-    const targetDate = new Date("2025-11-30T23:59:00.000Z").getTime();
+    const targetDate = new Date("2025-12-30T23:59:00.000Z").getTime();
 
     const updateTimer = () => {
       const now = Date.now() + serverOffset;

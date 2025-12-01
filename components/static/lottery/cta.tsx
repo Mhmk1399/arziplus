@@ -13,17 +13,18 @@ const CTASection = () => {
   });
   const [serverOffset, setServerOffset] = useState(0);
 
+  // 🕒 دریافت زمان UTC از سرور امن
   useEffect(() => {
     const getServerTime = async () => {
-      const endpoints = [
+      const apis = [
         "https://worldtimeapi.org/api/timezone/Etc/UTC",
         "https://timeapi.io/api/Time/current/zone?timeZone=UTC",
       ];
 
-      for (const url of endpoints) {
+      for (const api of apis) {
         try {
-          const res = await fetch(url);
-          const data = await res.json();
+          const response = await fetch(api);
+          const data = await response.json();
 
           let serverTime;
           if (data.utc_datetime)
@@ -34,36 +35,35 @@ const CTASection = () => {
             serverTime = new Date(data.currentDateTime).getTime();
           else continue;
 
-          const localTime = Date.now();
-          setServerOffset(serverTime - localTime);
+          setServerOffset(serverTime - Date.now());
           return;
         } catch {
           continue;
         }
       }
 
-      // fallback: approximate UTC time
-      const now = new Date();
-      const utcTime = now.getTime() + now.getTimezoneOffset() * 60000;
-      setServerOffset(utcTime - Date.now());
+      // fallback → استفاده از زمان سیستم
+      setServerOffset(0);
     };
 
     getServerTime();
   }, []);
 
+  // ⏳ شمارش معکوس تا 30 نوامبر 2025
   useEffect(() => {
-    // 🎯 هدف شمارش معکوس - آخر نوامبر 2025
-    const targetDate = new Date("2025-11-30T23:59:00.000Z").getTime();
+    const targetDate = new Date("2025-12-30T23:59:00.000Z").getTime();
 
     const updateTimer = () => {
       const now = Date.now() + serverOffset;
-      const diff = targetDate - now;
+      const distance = targetDate - now;
 
-      if (diff > 0) {
-        const d = Math.floor(diff / (1000 * 60 * 60 * 24));
-        const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-        const s = Math.floor((diff % (1000 * 60)) / 1000);
+      if (distance > 0) {
+        const d = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const h = Math.floor(
+          (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+        );
+        const m = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const s = Math.floor((distance % (1000 * 60)) / 1000);
 
         setTimeLeft({
           days: d.toString().padStart(2, "0"),
@@ -76,9 +76,10 @@ const CTASection = () => {
       }
     };
 
-    const interval = setInterval(updateTimer, 1000);
+    const timer = setInterval(updateTimer, 1000);
     updateTimer();
-    return () => clearInterval(interval);
+
+    return () => clearInterval(timer);
   }, [serverOffset]);
 
   return (

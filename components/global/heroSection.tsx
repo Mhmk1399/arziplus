@@ -1,14 +1,8 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { estedadBold } from "@/next-persian-fonts/estedad/index";
-
-if (typeof window !== "undefined") {
-  gsap.registerPlugin(ScrollTrigger);
-}
 
 interface HeroButton {
   text: string;
@@ -73,158 +67,12 @@ export default function HeroSection({
   animationDelay = 0,
 }: HeroProps) {
   const heroRef = useRef<HTMLDivElement>(null);
-  const headingRef = useRef<HTMLHeadingElement>(null);
-  const descriptionRef = useRef<HTMLParagraphElement>(null);
-  const buttonsRef = useRef<HTMLDivElement>(null);
-  const mediaRef = useRef<HTMLDivElement>(null);
-  const statsRef = useRef<HTMLDivElement>(null);
-  const backgroundRef = useRef<HTMLDivElement>(null);
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [imageError, setImageError] = useState(false);
   const {
     headingColor = "text-[#0A1D37]",
     subheadingColor = "text-[#A0A0A0]",
     featuresColor = "text-[#FFFFFF]",
   } = theme;
-
-  // Mouse tracking for interactive effects
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      const rect = heroRef.current?.getBoundingClientRect();
-      if (rect) {
-        setMousePosition({
-          x: (e.clientX - rect.left) / rect.width,
-          y: (e.clientY - rect.top) / rect.height,
-        });
-      }
-    };
-
-    heroRef.current?.addEventListener("mousemove", handleMouseMove);
-    return () =>
-      heroRef.current?.removeEventListener("mousemove", handleMouseMove);
-  }, []);
-
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      const tl = gsap.timeline({ delay: animationDelay });
-
-      // Faster background particles with will-change
-      gsap.to(".floating-particle", {
-        y: "random(-20, 20)",
-        x: "random(-10, 10)",
-        rotation: "random(-180, 180)",
-        duration: "random(2, 4)",
-        repeat: -1,
-        yoyo: true,
-        ease: "sine.inOut",
-        stagger: 0.1,
-        force3D: true,
-      });
-
-      // Faster content entrance
-      tl.fromTo(
-        headingRef.current,
-        { y: 50, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.5, ease: "power2.out" }
-      )
-        .fromTo(
-          descriptionRef.current,
-          { y: 30, opacity: 0 },
-          { y: 0, opacity: 1, duration: 0.4, ease: "power2.out" },
-          "-=0.3"
-        )
-        .fromTo(
-          Array.from(buttonsRef.current?.children || []),
-          { y: 20, opacity: 0, scale: 0.95 },
-          {
-            y: 0,
-            opacity: 1,
-            scale: 1,
-            duration: 0.4,
-            ease: "power2.out",
-            stagger: 0.1,
-          },
-          "-=0.3"
-        );
-
-      // Faster media entrance
-      if (mediaRef.current) {
-        tl.fromTo(
-          mediaRef.current,
-          { opacity: 0, y: 20 },
-          { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" },
-          "-=0.4"
-        );
-      }
-
-      // Faster button hover animations with GPU acceleration
-      const buttonElements = buttonsRef.current?.querySelectorAll("a, button");
-      buttonElements?.forEach((button) => {
-        gsap.set(button, { force3D: true });
-        
-        const handleMouseEnter = () => {
-          gsap.to(button, {
-            scale: 1.05,
-            y: -3,
-            duration: 0.2,
-            ease: "power2.out",
-            force3D: true,
-          });
-        };
-
-        const handleMouseLeave = () => {
-          gsap.to(button, {
-            scale: 1,
-            y: 0,
-            duration: 0.2,
-            ease: "power2.out",
-            force3D: true,
-          });
-        };
-
-        button.addEventListener("mouseenter", handleMouseEnter);
-        button.addEventListener("mouseleave", handleMouseLeave);
-
-        return () => {
-          button.removeEventListener("mouseenter", handleMouseEnter);
-          button.removeEventListener("mouseleave", handleMouseLeave);
-        };
-      });
-
-      // Faster stats counter with RAF optimization
-      const statNumbers = statsRef.current?.querySelectorAll(".stat-number");
-      if (statNumbers && statNumbers.length > 0) {
-        requestAnimationFrame(() => {
-          statNumbers.forEach((stat) => {
-            const finalValue = stat.textContent || "0";
-            const numericValue = parseInt(finalValue.replace(/[^\d]/g, "")) || 0;
-
-            gsap.fromTo(
-              stat,
-              { textContent: 0 },
-              {
-                textContent: numericValue,
-                duration: 1.5,
-                ease: "power2.out",
-                snap: { textContent: 1 },
-                delay: 0.5,
-                onUpdate: function () {
-                  const currentValue = Math.round(this.targets()[0].textContent);
-                  if (finalValue.includes("+")) {
-                    stat.textContent = `+${currentValue}`;
-                  } else {
-                    stat.textContent = currentValue.toString();
-                  }
-                },
-              }
-            );
-          });
-        });
-      }
-    }, heroRef);
-
-    return () => ctx.revert();
-  }, [animationDelay, media.type, media.autoplay]);
 
   const getButtonClasses = (button: HeroButton) => {
     const baseClasses =
@@ -346,42 +194,23 @@ export default function HeroSection({
       className={`  relative min-h-screen flex items-center justify-center overflow-hidden py-24 px-2`}
     >
       {/* Animated Background Elements */}
-      <div
-        ref={backgroundRef}
-        className="absolute inset-0 opacity-30"
-        style={{
-          transform: `translate(${mousePosition.x * 20}px, ${
-            mousePosition.y * 20
-          }px)`,
-          transition: "transform 0.3s ease-out",
-        }}
-      >
+      <div className="absolute inset-0 opacity-20">
         {/* Floating Particles */}
-        {[...Array(12)].map((_, i) => (
+        {[...Array(6)].map((_, i) => (
           <div
             key={i}
-            className="floating-particle absolute rounded-full opacity-20"
+            className="absolute rounded-full animate-float"
             style={{
-              left: `${10 + ((i * 8) % 80)}%`,
-              top: `${15 + ((i * 7) % 70)}%`,
-              width: `${8 + (i % 4) * 4}px`,
-              height: `${8 + (i % 4) * 4}px`,
-              background: `linear-gradient(45deg, 
-                ${
-                  i % 3 === 0 ? "#0A1D37" : i % 3 === 1 ? "#4DBFF0" : "#0A1D37"
-                }, 
-                ${
-                  i % 3 === 0 ? "#0A1D37" : i % 3 === 1 ? "#4DBFF0" : "#0A1D37"
-                })`,
-              filter: "blur(1px)",
+              left: `${20 + i * 15}%`,
+              top: `${20 + i * 12}%`,
+              width: `${12 + (i % 3) * 8}px`,
+              height: `${12 + (i % 3) * 8}px`,
+              background: i % 2 === 0 ? "#0A1D37" : "#4DBFF0",
+              animationDelay: `${i * 0.5}s`,
+              animationDuration: `${3 + i}s`,
             }}
           />
         ))}
-
-        {/* Geometric Shapes */}
-        <div className="absolute top-20 right-20 w-32 h-32 border border-[#4DBFF0]/20 rounded-full animate-spin-slow"></div>
-        <div className="absolute bottom-32 left-16 w-24 h-24 border-2 border-[#0A1D37]/20 rotate-45 animate-pulse"></div>
-        <div className="absolute top-1/3 left-1/4 w-16 h-16 bg-gradient-to-br from-[#0A1D37]/10 to-[#4DBFF0]/10 rounded-lg rotate-12 animate-float"></div>
       </div>
 
       {/* Glass Morphism Overlay */}
@@ -395,7 +224,7 @@ export default function HeroSection({
         >
           {/* Enhanced Media Section */}
           {layout !== "centered" && (
-            <div ref={mediaRef} className="relative group">
+            <div className="relative group animate-fade-in-up">
               {/* Luxury Frame */}
               <div className="relative z-10 p-8 bg-gradient-to-br from-white/10 via-white/5 to-transparent backdrop-blur-sm rounded-3xl border border-white/20 shadow-2xl">
                 <div className="relative overflow-hidden rounded-2xl">
@@ -446,10 +275,7 @@ export default function HeroSection({
 
           {/* Enhanced Centered Media */}
           {layout === "centered" && (
-            <div
-              ref={mediaRef}
-              className="order-1 relative max-w-4xl mx-auto group"
-            >
+            <div className="order-1 relative max-w-4xl mx-auto group animate-fade-in-up">
               <div className="relative p-6 bg-gradient-to-br from-white/15 via-white/8 to-transparent backdrop-blur-lg rounded-3xl border border-white/20 shadow-2xl">
                 <div className="relative overflow-hidden rounded-2xl">
                   {renderMedia()}
@@ -491,8 +317,7 @@ export default function HeroSection({
 
             {/* Luxury Main Heading */}
             <h1
-              ref={headingRef}
-              className={`mb-8 text-xl md:text-4xl  md:leading-12   -tracking-wide ${
+              className={`mb-8 text-xl md:text-4xl md:leading-12 -tracking-wide animate-fade-in-up ${
                 estedadBold.className
               } ${headingColor} ${
                 layout === "centered"
@@ -516,8 +341,7 @@ export default function HeroSection({
 
             {/* Enhanced Description */}
             <p
-              ref={descriptionRef}
-              className={`md:mb-8 mb-4 text-center md:text-justify text-sm md:text-lg lg:text-base text-[#A0A0A0] leading-relaxed font-medium `}
+              className={`md:mb-8 mb-4 text-center md:text-justify text-sm md:text-lg lg:text-base text-[#A0A0A0] leading-relaxed font-medium animate-fade-in-up animation-delay-200`}
               style={{
                 textShadow: "0 2px 10px rgba(0,0,0,0.1)",
               }}
@@ -575,8 +399,7 @@ export default function HeroSection({
 
             {/* Enhanced Luxury Buttons */}
             <div
-              ref={buttonsRef}
-              className={`flex flex-col sm:flex-row gap-6 ${
+              className={`flex flex-col sm:flex-row gap-6 animate-fade-in-up animation-delay-400 ${
                 layout === "centered" ? "justify-center items-center" : ""
               }`}
             >
@@ -627,6 +450,47 @@ export default function HeroSection({
           </div>
         </div>
       </div>
+
+      <style jsx global>{`
+        @keyframes fadeInUp {
+          from {
+            opacity: 0;
+            transform: translateY(30px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        @keyframes float {
+          0%,
+          100% {
+            transform: translateY(0) translateX(0);
+          }
+          50% {
+            transform: translateY(-20px) translateX(10px);
+          }
+        }
+
+        .animate-fade-in-up {
+          animation: fadeInUp 0.6s ease-out forwards;
+        }
+
+        .animate-float {
+          animation: float 4s ease-in-out infinite;
+        }
+
+        .animation-delay-200 {
+          animation-delay: 0.2s;
+          opacity: 0;
+        }
+
+        .animation-delay-400 {
+          animation-delay: 0.4s;
+          opacity: 0;
+        }
+      `}</style>
     </section>
   );
 }
